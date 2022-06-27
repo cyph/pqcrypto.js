@@ -1,0 +1,23 @@
+{
+	"name": "mceliece",
+	"version": "4.1.2",
+	"description": "JavaScript wrapper for a WebAssembly build of McEliece",
+	"main": "dist/mceliece.js",
+	"types": "./mceliece.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/cyph/mceliece.js.git"
+	},
+	"keywords": [
+		"cryptography",
+		"post-quantum",
+		"mceliece",
+		"asm.js",
+		"webassembly"
+	],
+	"author": "Cyph, Inc. <mceliece@cyph.com> (https://github.com/cyph)",
+	"license": "BSD-2-Clause",
+	"bugs": {
+		"url": "https://github.com/cyph/mceliece.js/issues"
+	}
+}
