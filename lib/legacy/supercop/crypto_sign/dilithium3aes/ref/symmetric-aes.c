@@ -1,0 +1,1 @@
+../../dilithium2aes/ref/symmetric-aes.c

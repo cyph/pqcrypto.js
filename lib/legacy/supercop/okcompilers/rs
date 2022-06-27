@@ -1,0 +1,4 @@
+rustc -C target-cpu=native -C opt-level=3
+rustc -C target-cpu=native -C opt-level=s
+rustc -C target-cpu=native -C opt-level=2
+rustc -C target-cpu=native -C opt-level=1

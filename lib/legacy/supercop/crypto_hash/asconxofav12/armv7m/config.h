@@ -1,0 +1,1 @@
+../../asconhashav12/armv6/config.h

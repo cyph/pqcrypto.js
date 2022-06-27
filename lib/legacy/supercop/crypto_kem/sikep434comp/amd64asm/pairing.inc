@@ -1,0 +1,1 @@
+../arm/pairing.inc

@@ -1,0 +1,9 @@
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 gcc_-march=native_-mtune=native_-Os_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 gcc_-march=native_-mtune=native_-O2_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 gcc_-march=native_-mtune=native_-O_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 clang_-march=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 clang_-march=native_-Os_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 clang_-march=native_-O2_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 clang_-march=native_-O_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20210114 titan0 amd64 20210122 crypto_hashblocks sha512/constbranchindex timecop_pass crypto_hashblocks/sha512/avx2 clang_-mcpu=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0

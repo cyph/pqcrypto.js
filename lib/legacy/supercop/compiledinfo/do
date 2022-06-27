@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+mkdir bin
+
+( cat top
+
+  # XXX: figure out "size" API on this machine, select appropriately
+  cat size-bsd
+
+  # XXX: figure out "nm" API on this machine, select appropriately
+  cat namespace-gnu
+
+) > bin/compiledinfo
+
+chmod 755 bin/compiledinfo

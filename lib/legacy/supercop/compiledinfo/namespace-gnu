@@ -1,0 +1,26 @@
+
+# XXX: support analysis of C++ namespace mangling
+if [ "$language" = c ]
+then
+  for obj in *.o
+  do
+    [ -f "$obj" ] || continue
+    nm -pP --defined-only "$obj" \
+    | while read symbol type etc
+    do
+      case "$type" in
+        b*|d*|r*|t*) continue
+          ;;
+      esac
+      case "$symbol" in
+        $opi) continue ;;
+        _$opi) continue ;;
+        ${opi}_*) continue ;;
+        _${opi}_*) continue ;;
+        '__x86.get_pc_thunk.'*) continue ;;
+        *) echo "$version $shorthostname $abi $startdate $o $p namespace $implementationdir $compilerword $obj $symbol $type" >&5
+          ;;
+      esac
+    done
+  done
+fi

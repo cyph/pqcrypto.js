@@ -1,0 +1,5 @@
+20210423 pi3bplus aarch64 20210422 crypto_sort int32/constbranchindex timecop_pass crypto_sort/int32/aarch64 gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210423 pi3bplus aarch64 20210422 crypto_sort int32/constbranchindex timecop_pass crypto_sort/int32/aarch64 gcc_-march=native_-mtune=native_-Os_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210423 pi3bplus aarch64 20210422 crypto_sort int32/constbranchindex timecop_pass crypto_sort/int32/aarch64 gcc_-march=native_-mtune=native_-O2_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210423 pi3bplus aarch64 20210422 crypto_sort int32/constbranchindex timecop_pass crypto_sort/int32/aarch64 gcc_-march=native_-mtune=native_-O_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210423 pi3bplus aarch64 20210422 crypto_sort int32/constbranchindex timecop_pass crypto_sort/int32/aarch64 clang_-mcpu=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0

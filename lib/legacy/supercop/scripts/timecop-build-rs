@@ -1,0 +1,30 @@
+#!/bin/sh
+
+op="$1"
+shift
+
+echo 'use std::env;'
+echo ''
+echo 'fn main() {'
+if [ -f "lib$op.a" ]
+then
+  echo '  println!("cargo:rustc-link-lib=static='"$op"'");'
+  echo '  println!("cargo:rustc-link-search=native=.");'
+fi
+for d in "$@"
+do
+  echo '  println!("cargo:rustc-link-search=native='"$d"'");'
+done
+echo '  let out_dir = env::var("OUT_DIR").unwrap();'
+echo '  println!("cargo:rustc-link-search=native={}",out_dir);'
+echo '  cc::Build::new()'
+echo '    .cargo_metadata(false)'
+echo '    .file("try-timecop.c")'
+echo '    .compile("try-timecop");'
+echo '  println!("cargo:rerun-if-changed=try-timecop.c");'
+echo '  cc::Build::new()'
+echo '    .cargo_metadata(false)'
+echo '    .file("try-anything.c")'
+echo '    .compile("try-anything");'
+echo '  println!("cargo:rerun-if-changed=try-anything.c");'
+echo '}'

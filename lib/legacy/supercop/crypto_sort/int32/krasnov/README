@@ -1,0 +1,7 @@
+Original (Vlad Krasnov): https://github.com/vkrasnov/avx_qsort
+Specifically qsort_AVX2_HSW_256bit_int.s, gcc_sort_long.cpp.
+
+Tweaks (djb):
+* PIC port.
+* int32 instead of long long int sorted_type.
+* crypto_sort wrapper.

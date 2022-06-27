@@ -1,0 +1,10 @@
+Original (Michael Herf): http://stereopsis.com/radix.html
+
+Tweaks (djb):
+* Sort int32 instead of float32. (Slightly simpler.)
+* Manually inline the flips instead of telling compiler to inline.
+* Use types from crypto_int32.h, crypto_uint32.h.
+* Add crypto_sort() wrapper.
+* Include the final memcpy() to the input/output array.
+* Remove main() test function.
+* C instead of C++: remove one C++-style cast.

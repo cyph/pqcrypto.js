@@ -1,0 +1,1 @@
+../../cubehash81/spec/cubehash.c

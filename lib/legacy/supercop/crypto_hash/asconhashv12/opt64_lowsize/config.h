@@ -1,0 +1,1 @@
+../../asconhashav12/armv7m_small/config.h

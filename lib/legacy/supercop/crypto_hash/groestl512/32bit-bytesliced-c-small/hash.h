@@ -1,0 +1,1 @@
+../../groestl256/32bit-bytesliced-c-small/hash.h

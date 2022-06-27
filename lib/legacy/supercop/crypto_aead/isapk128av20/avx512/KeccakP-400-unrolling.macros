@@ -1,0 +1,69 @@
+#define rounds20X \
+    thetaRhoPiChiIota( 0, S, E) \
+    thetaRhoPiChiIota( 1, E, S) \
+    thetaRhoPiChiIota( 2, S, E) \
+    thetaRhoPiChiIota( 3, E, S) \
+    thetaRhoPiChiIota( 4, S, E) \
+    thetaRhoPiChiIota( 5, E, S) \
+    thetaRhoPiChiIota( 6, S, E) \
+    thetaRhoPiChiIota( 7, E, S) \
+    thetaRhoPiChiIota( 8, S, E) \
+    thetaRhoPiChiIota( 9, E, S) \
+    thetaRhoPiChiIota(10, S, E) \
+    thetaRhoPiChiIota(11, E, S) \
+    thetaRhoPiChiIota(12, S, E) \
+    thetaRhoPiChiIota(13, E, S) \
+    thetaRhoPiChiIota(14, S, E) \
+    thetaRhoPiChiIota(15, E, S) \
+    thetaRhoPiChiIota(16, S, E) \
+    thetaRhoPiChiIota(17, E, S) \
+    thetaRhoPiChiIota(18, S, E) \
+    thetaRhoPiChiIota(19, E, S) \
+
+#define rounds16X \
+    thetaRhoPiChiIota( 4, S, E) \
+    thetaRhoPiChiIota( 5, E, S) \
+    thetaRhoPiChiIota( 6, S, E) \
+    thetaRhoPiChiIota( 7, E, S) \
+    thetaRhoPiChiIota( 8, S, E) \
+    thetaRhoPiChiIota( 9, E, S) \
+    thetaRhoPiChiIota(10, S, E) \
+    thetaRhoPiChiIota(11, E, S) \
+    thetaRhoPiChiIota(12, S, E) \
+    thetaRhoPiChiIota(13, E, S) \
+    thetaRhoPiChiIota(14, S, E) \
+    thetaRhoPiChiIota(15, E, S) \
+    thetaRhoPiChiIota(16, S, E) \
+    thetaRhoPiChiIota(17, E, S) \
+    thetaRhoPiChiIota(18, S, E) \
+    thetaRhoPiChiIota(19, E, S) \
+
+#define rounds12X \
+    thetaRhoPiChiIota( 8, S, E) \
+    thetaRhoPiChiIota( 9, E, S) \
+    thetaRhoPiChiIota(10, S, E) \
+    thetaRhoPiChiIota(11, E, S) \
+    thetaRhoPiChiIota(12, S, E) \
+    thetaRhoPiChiIota(13, E, S) \
+    thetaRhoPiChiIota(14, S, E) \
+    thetaRhoPiChiIota(15, E, S) \
+    thetaRhoPiChiIota(16, S, E) \
+    thetaRhoPiChiIota(17, E, S) \
+    thetaRhoPiChiIota(18, S, E) \
+    thetaRhoPiChiIota(19, E, S) \
+
+#define rounds8X \
+    thetaRhoPiChiIota(12, S, E) \
+    thetaRhoPiChiIota(13, E, S) \
+    thetaRhoPiChiIota(14, S, E) \
+    thetaRhoPiChiIota(15, E, S) \
+    thetaRhoPiChiIota(16, S, E) \
+    thetaRhoPiChiIota(17, E, S) \
+    thetaRhoPiChiIota(18, S, E) \
+    thetaRhoPiChiIota(19, E, S) \
+
+#define rounds1X \
+    thetaRhoPiChiIota(19, S, E) \
+    copyStateVariables(S, E) \
+
+// prevent "warning: backslash-newline at end of file"

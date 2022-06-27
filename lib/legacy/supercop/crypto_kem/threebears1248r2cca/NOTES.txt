@@ -1,0 +1,3 @@
+By Mike Hamburg, 2019.
+Implementation of PapaBear as of NIST PQC middle round 2 (July 2019 spec update)
+

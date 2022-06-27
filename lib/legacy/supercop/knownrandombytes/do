@@ -1,0 +1,33 @@
+#!/bin/sh -e
+
+rm -f done test knownrandombytes.o lib/$abi
+mkdir -p lib/$abi
+
+rng=chacha20
+
+okc-$abi | (
+  while read c
+  do
+    [ -e done ] && continue
+    echo "=== `date` === Trying crypto_rng_$rng with $c..." >&2
+    rm -f test knownrandombytes.o
+    (
+      echo '#ifndef crypto_rng_h'
+      echo '#define crypto_rng_h'
+      echo '#include "crypto_rng_'"$rng"'.h"'
+      echo "#define crypto_rng crypto_rng_$rng"
+      echo "#define crypto_rng_KEYBYTES crypto_rng_${rng}_KEYBYTES"
+      echo "#define crypto_rng_OUTPUTBYTES crypto_rng_${rng}_OUTPUTBYTES"
+      echo '#endif'
+    ) > crypto_rng.h
+    $c -c knownrandombytes.c $include || continue
+    $c -o test test.c knownrandombytes.o $include $libs || continue
+    killafter 300 ./test || continue
+    echo "=== `date` === Success. Using crypto_rng_$rng with $c." >&2
+    mv knownrandombytes.o lib/$abi/knownrandombytes.o
+    touch done
+  done
+)
+[ -e done ] || (
+  echo "=== `date` === No working knownrandombytes.o for $abi." >&2
+)

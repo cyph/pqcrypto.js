@@ -1,0 +1,33 @@
+Reverse-chronological changelog for *ntru*/ref:
+
+Added crypto_declassify() for the rejection sampling in Streamlined NTRU
+Prime key generation to work with TIMECOP.
+
+Added support for extra sizes 953, 1013, 1277.
+
+Added abort if crypto_stream_aes256ctr() fails. (There are some AES
+implementations that never fail, but OpenSSL can fail if it runs out of
+memory.)
+
+Used CRYPTO_NAMESPACE.
+
+Ported the NTRU LPRime software to big-endian CPUs.
+
+Renamed Hash() as Hash_prefix().
+
+Removed KAT support.
+
+Removed built-in uint32_sort.c in favor of separate crypto_sort_uint32
+library.
+
+Removed built-in sha512.c, sha512.h in favor of separate
+crypto_hash_sha512 library.
+
+Removed built-in aes256ctr.c, aes256ctr.h in favor of separate
+crypto_stream_aes256ctr library.
+
+Ported Expand() to big-endian machines. Thanks to Douglas Stebila for
+pointing out the portability problem.
+
+Started from ref code submitted to round 2 of the NIST Post-Quantum
+Standardization Project.

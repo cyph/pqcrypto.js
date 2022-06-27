@@ -1,0 +1,2 @@
+From the original ntruprime software release.
+Tweaked to use long long instead of int for indices.

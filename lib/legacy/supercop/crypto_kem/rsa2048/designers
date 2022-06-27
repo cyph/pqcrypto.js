@@ -1,0 +1,5 @@
+Ronald L. Rivest
+Adi Shamir
+Leonard M. Adleman
+Michael O. Rabin (small exponent)
+Victor Shoup (session key is hash of random integer)

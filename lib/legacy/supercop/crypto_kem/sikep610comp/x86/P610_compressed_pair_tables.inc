@@ -1,0 +1,1 @@
+../arm/P610_compressed_pair_tables.inc

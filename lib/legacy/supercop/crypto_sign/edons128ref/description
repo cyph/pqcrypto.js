@@ -1,0 +1,3 @@
+Reference proposal for signature scheme Edon-S128.
+Conjectured security requires computational resources comparable to 
+or greater than those required for finding collisions in SHA256 - Category 2

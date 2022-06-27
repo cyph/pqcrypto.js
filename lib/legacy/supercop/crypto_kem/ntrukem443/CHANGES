@@ -1,0 +1,5 @@
+Eliminate 1024. Patched version still gives "crypto_kem_dec returns nonzero".
+All files in top directory.
+Remove PQC*.
+Include randombytes.h instead of rng.h.
+Include crypto_kem.h in kem.c.

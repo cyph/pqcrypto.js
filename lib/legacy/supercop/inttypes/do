@@ -1,0 +1,204 @@
+#!/bin/sh -e
+
+okabi | (
+  while read abi
+  do
+    (
+      echo 'int8 8 signed char'
+      echo 'int16 16 short'
+      echo 'int32 32 int'
+      echo 'int32 32 long'
+      echo 'int64 64 long long'
+      echo 'int64 64 long'
+      echo 'int64 64 int __attribute__((__mode__(__DI__)))'
+      echo 'uint8 8 unsigned char'
+      echo 'uint16 16 unsigned short'
+      echo 'uint32 32 unsigned int'
+      echo 'uint32 32 unsigned long'
+      echo 'uint64 64 unsigned long long'
+      echo 'uint64 64 unsigned long'
+      echo 'uint64 64 unsigned int __attribute__((__mode__(__DI__)))'
+    ) | (
+      while read target bits source
+      do
+        ct=crypto_$target
+        bits1=`expr $bits - 1`
+
+        okc-$abi | (
+          while read c
+	  do
+            [ -f include/$abi/crypto_$target.h ] && continue
+            echo "=== `date` === $abi trying $source as $target under $c..." >&2
+            rm -f $ct $ct.h
+            (
+              echo "#ifndef ${ct}_h"
+              echo "#define ${ct}_h"
+              echo ""
+              echo "typedef ${source} ${ct};"
+              echo ""
+
+              case $target in
+                i*)
+                  echo "static ${ct} ${ct}_negative_mask(${ct} ${ct}_x)"
+                  echo "{"
+                  echo "  return ${ct}_x >> ${bits1};"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_nonzero_mask(${ct} ${ct}_x)"
+                  echo "{"
+                  echo "  return ${ct}_negative_mask(${ct}_x) | ${ct}_negative_mask(-${ct}_x);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_zero_mask(${ct} ${ct}_x)"
+                  echo "{"
+                  echo "  return ~${ct}_nonzero_mask(${ct}_x);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_positive_mask(${ct} ${ct}_x)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_z = -${ct}_x;"
+                  echo "  ${ct}_z ^= ${ct}_x & ${ct}_z;"
+                  echo "  return ${ct}_negative_mask(${ct}_z);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_unequal_mask(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_xy = ${ct}_x ^ ${ct}_y;"
+                  echo "  return ${ct}_nonzero_mask(${ct}_xy);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_equal_mask(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  return ~${ct}_unequal_mask(${ct}_x,${ct}_y);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_smaller_mask(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_xy = ${ct}_x ^ ${ct}_y;"
+                  echo "  ${ct} ${ct}_z = ${ct}_x - ${ct}_y;"
+                  echo "  ${ct}_z ^= ${ct}_xy & (${ct}_z ^ ${ct}_x);"
+                  echo "  return ${ct}_negative_mask(${ct}_z);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_min(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_xy = ${ct}_y ^ ${ct}_x;"
+                  echo "  ${ct} ${ct}_z = ${ct}_y - ${ct}_x;"
+                  echo "  ${ct}_z ^= ${ct}_xy & (${ct}_z ^ ${ct}_y);"
+                  echo "  ${ct}_z = ${ct}_negative_mask(${ct}_z);"
+                  echo "  ${ct}_z &= ${ct}_xy;"
+                  echo "  return ${ct}_x ^ ${ct}_z;"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_max(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_xy = ${ct}_y ^ ${ct}_x;"
+                  echo "  ${ct} ${ct}_z = ${ct}_y - ${ct}_x;"
+                  echo "  ${ct}_z ^= ${ct}_xy & (${ct}_z ^ ${ct}_y);"
+                  echo "  ${ct}_z = ${ct}_negative_mask(${ct}_z);"
+                  echo "  ${ct}_z &= ${ct}_xy;"
+                  echo "  return ${ct}_y ^ ${ct}_z;"
+                  echo "}"
+                  echo ""
+                  echo "static void ${ct}_minmax(${ct} *${ct}_a,${ct} *${ct}_b)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_x = *${ct}_a;"
+                  echo "  ${ct} ${ct}_y = *${ct}_b;"
+                  echo "  ${ct} ${ct}_xy = ${ct}_y ^ ${ct}_x;"
+                  echo "  ${ct} ${ct}_z = ${ct}_y - ${ct}_x;"
+                  echo "  ${ct}_z ^= ${ct}_xy & (${ct}_z ^ ${ct}_y);"
+                  echo "  ${ct}_z = ${ct}_negative_mask(${ct}_z);"
+                  echo "  ${ct}_z &= ${ct}_xy;"
+                  echo "  *${ct}_a = ${ct}_x ^ ${ct}_z;"
+                  echo "  *${ct}_b = ${ct}_y ^ ${ct}_z;"
+                  echo "}"
+                  echo ""
+                ;;
+                u*)
+                  signedsource=`echo $source | sed 's/unsigned /signed /'`
+                  cs=${ct}_signed
+
+                  echo "typedef ${signedsource} ${cs};"
+                  echo ""
+                  echo "static ${cs} ${cs}_negative_mask(${cs} ${cs}_x)"
+                  echo "{"
+                  echo "  return ${cs}_x >> ${bits1};"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_nonzero_mask(${ct} ${ct}_x)"
+                  echo "{"
+                  echo "  return ${cs}_negative_mask(${ct}_x) | ${cs}_negative_mask(-${ct}_x);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_zero_mask(${ct} ${ct}_x)"
+                  echo "{"
+                  echo "  return ~${ct}_nonzero_mask(${ct}_x);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_unequal_mask(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_xy = ${ct}_x ^ ${ct}_y;"
+                  echo "  return ${ct}_nonzero_mask(${ct}_xy);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_equal_mask(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  return ~${ct}_unequal_mask(${ct}_x,${ct}_y);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_smaller_mask(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_xy = ${ct}_x ^ ${ct}_y;"
+                  echo "  ${ct} ${ct}_z = ${ct}_x - ${ct}_y;"
+                  echo "  ${ct}_z ^= ${ct}_xy & (${ct}_z ^ ${ct}_x ^ (((${ct}) 1) << ${bits1}));"
+                  echo "  return ${cs}_negative_mask(${ct}_z);"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_min(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_xy = ${ct}_y ^ ${ct}_x;"
+                  echo "  ${ct} ${ct}_z = ${ct}_y - ${ct}_x;"
+                  echo "  ${ct}_z ^= ${ct}_xy & (${ct}_z ^ ${ct}_y ^ (((${ct}) 1) << ${bits1}));"
+                  echo "  ${ct}_z = ${cs}_negative_mask(${ct}_z);"
+                  echo "  ${ct}_z &= ${ct}_xy;"
+                  echo "  return ${ct}_x ^ ${ct}_z;"
+                  echo "}"
+                  echo ""
+                  echo "static ${ct} ${ct}_max(${ct} ${ct}_x,${ct} ${ct}_y)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_xy = ${ct}_y ^ ${ct}_x;"
+                  echo "  ${ct} ${ct}_z = ${ct}_y - ${ct}_x;"
+                  echo "  ${ct}_z ^= ${ct}_xy & (${ct}_z ^ ${ct}_y ^ (((${ct}) 1) << ${bits1}));"
+                  echo "  ${ct}_z = ${cs}_negative_mask(${ct}_z);"
+                  echo "  ${ct}_z &= ${ct}_xy;"
+                  echo "  return ${ct}_y ^ ${ct}_z;"
+                  echo "}"
+                  echo ""
+                  echo "static void ${ct}_minmax(${ct} *${ct}_a,${ct} *${ct}_b)"
+                  echo "{"
+                  echo "  ${ct} ${ct}_x = *${ct}_a;"
+                  echo "  ${ct} ${ct}_y = *${ct}_b;"
+                  echo "  ${ct} ${ct}_xy = ${ct}_y ^ ${ct}_x;"
+                  echo "  ${ct} ${ct}_z = ${ct}_y - ${ct}_x;"
+                  echo "  ${ct}_z ^= ${ct}_xy & (${ct}_z ^ ${ct}_y ^ (((${ct}) 1) << ${bits1}));"
+                  echo "  ${ct}_z = ${cs}_negative_mask(${ct}_z);"
+                  echo "  ${ct}_z &= ${ct}_xy;"
+                  echo "  *${ct}_a = ${ct}_x ^ ${ct}_z;"
+                  echo "  *${ct}_b = ${ct}_y ^ ${ct}_z;"
+                  echo "}"
+                  echo ""
+                ;;
+              esac
+              echo "#endif"
+            ) > crypto_$target.h
+            $c -o crypto_$target crypto_$target.c || continue
+            ./crypto_$target 1 0 || continue
+            echo "=== `date` === $abi found $source as $target" >&2
+            mkdir -p include/$abi
+            cp crypto_$target.h include/$abi/crypto_$target.h
+	  done
+	)
+      done
+    )
+  done
+)

@@ -1,0 +1,4 @@
+Reference proposal KEM Edon-K128 in Category 1.
+Conjectured security requires computational resources comparable to 
+or greater than those required for key search on a block cipher with 
+a 128-bit key (e.g. AES128) - Category 1

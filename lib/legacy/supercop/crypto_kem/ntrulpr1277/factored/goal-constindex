@@ -1,0 +1,2 @@
+20200906 titan0 amd64 20201021 crypto_kem ntrulpr1277/constbranchindex timecop_pass crypto_kem/ntrulpr1277/factored gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 1 0
+20200906 titan0 amd64 20201021 crypto_kem ntrulpr1277/constbranchindex timecop_output crypto_kem/ntrulpr1277/factored gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 7fe410ea62620c05a05a764e8756e51a7190def93c58f533598091dcf0b0ba33 659708432 4302272340 3500000000 crypto_kem/ntrulpr1277/factored

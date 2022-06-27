@@ -1,0 +1,461 @@
+#!/bin/sh
+
+# supercop/data-init
+# D. J. Bernstein
+# Public domain.
+
+. ./data-vars
+
+if [ -d supercop-data ]
+then
+  mkdir -p "$top"
+else
+  if ln -s ../supercop-data supercop-data
+  then
+    mkdir -p ../supercop-data
+  else
+    mkdir -p supercop-data
+  fi
+  mkdir -p "$top"
+fi
+
+exec </dev/null
+exec >"$top/log"
+exec 2>&1
+exec 6>"$top/$abi/todo"
+
+echo "=== `date` === starting data-init"
+
+echo "=== `date` === building machineinfo"
+rm -rf "$top/machineinfo"
+mkdir -p "$top/machineinfo"
+cp -pR machineinfo/* "$top/machineinfo"
+( cd "$top/machineinfo" && sh do )
+
+echo "=== `date` === building scripts"
+rm -rf "$top/scripts"
+mkdir -p "$top/scripts"
+cp -pR scripts/* "$top/scripts"
+
+echo "=== `date` === building okcompilers"
+rm -rf "$top/okcompilers"
+mkdir -p "$top/okcompilers"
+cp -pR okcompilers/* "$top/okcompilers"
+( cd "$top/okcompilers" && sh do )
+
+echo "=== `date` === building basic dependencies"
+okabi \
+| while read abi
+do
+  mkdir -p "$top/$abi"
+  mkdir -p "$top/$abi/bin"
+  mkdir -p "$top/$abi/security/constbranchindex"
+  mkdir -p "$top/$abi/security/timingleaks"
+  mkdir -p "$top/$abi/include/constbranchindex"
+  mkdir -p "$top/$abi/include/timingleaks"
+  echo "=== `date` === cleaning up BUILD in $abi"
+  find "$top/$abi" -name BUILD | xargs rm -f
+  echo "=== `date` === cleaning up LOCKED in $abi"
+  find "$top/$abi" -name LOCKED | xargs rm -f
+  echo "=== `date` === cleaning up LOCK in $abi"
+  find "$top/$abi" -name LOCK | xargs rm -f
+
+  mkdir -p "$top/$abi/lib"
+  touch "$top/$abi/lib/LOCK"
+
+  mkdir -p "$top/$abi/base"
+  touch "$top/$abi/base/BUILD"
+  touch "$top/$abi/base/LOCK"
+  : > "$top/$abi/base/dep"
+  echo "$abi/base" >&6
+
+  mkdir -p "$top/$abi/cryptopp"
+  touch "$top/$abi/cryptopp/BUILD"
+  touch "$top/$abi/cryptopp/LOCK"
+  : > "$top/$abi/cryptopp/dep"
+  echo "$abi/cryptopp" >&6
+
+  mkdir -p "$top/$abi/openssl"
+  touch "$top/$abi/openssl/BUILD"
+  touch "$top/$abi/openssl/LOCK"
+  : > "$top/$abi/openssl/dep"
+  echo "$abi/openssl" >&6
+
+  mkdir -p "$top/$abi/gmp"
+  touch "$top/$abi/gmp/BUILD"
+  touch "$top/$abi/gmp/LOCK"
+  : > "$top/$abi/gmp/dep"
+  echo "$abi/gmp" >&6
+
+  mkdir -p "$top/$abi/ntl"
+  touch "$top/$abi/ntl/BUILD"
+  touch "$top/$abi/ntl/LOCK"
+  echo gmp > "$top/$abi/ntl/dep"
+  echo "$abi/ntl" >&6
+
+  mkdir -p "$top/$abi/keccak"
+  touch "$top/$abi/keccak/BUILD"
+  touch "$top/$abi/keccak/LOCK"
+  : > "$top/$abi/keccak/dep"
+  echo "$abi/keccak" >&6
+done
+
+
+echo "=== `date` === building killafter"
+rm -rf "$top/killafter"
+mkdir -p "$top/killafter"
+cp -pR killafter/* "$top/killafter"
+( cd "$top/killafter" && sh do )
+
+echo "=== `date` === building compiledinfo"
+rm -rf "$top/compiledinfo"
+mkdir -p "$top/compiledinfo"
+cp -pR compiledinfo/* "$top/compiledinfo"
+( cd "$top/compiledinfo" && sh do )
+
+echo "=== `date` === building sinceepoch"
+rm -rf "$top/sinceepoch"
+mkdir -p "$top/sinceepoch"
+cp -pR sinceepoch/* "$top/sinceepoch"
+( cd "$top/sinceepoch" && sh do )
+
+echo "=== `date` === building checksum"
+rm -rf "$top/checksum"
+mkdir -p "$top/checksum"
+cp -pR checksum/* "$top/checksum"
+( cd "$top/checksum" && sh do )
+
+echo "=== `date` === building baseinclude"
+okabi \
+| while read abi
+do
+  cp -p include/* "$top/$abi/include/"
+done
+
+echo "=== `date` === building cpuid"
+rm -rf "$top/cpuid"
+mkdir -p "$top/cpuid"
+cp -pR cpuid/* "$top/cpuid"
+( cd "$top/cpuid" && sh do )
+okabi \
+| while read abi
+do
+  cp -p "$top/cpuid/include"/* "$top/$abi/include/"
+done
+
+echo "=== `date` === building inttypes"
+rm -rf "$top/inttypes"
+mkdir -p "$top/inttypes"
+cp -pR inttypes/* "$top/inttypes"
+( cd "$top/inttypes" && sh do )
+okabi \
+| while read abi
+do
+  cp -p "$top/inttypes/include/$abi"/* "$top/$abi/include/"
+done
+
+echo "=== `date` === building cpucycles"
+rm -rf "$top/cpucycles"
+mkdir -p "$top/cpucycles"
+cp -pR cpucycles/* "$top/cpucycles"
+( cd "$top/cpucycles" && sh do )
+okabi \
+| while read abi
+do
+  cp -p "$top/cpucycles/include/$abi"/* "$top/$abi/include/"
+  cp -p "$top/cpucycles/lib/$abi"/* "$top/$abi/lib/"
+done
+
+echo "=== `date` === building kernelrandombytes"
+rm -rf "$top/kernelrandombytes"
+mkdir -p "$top/kernelrandombytes"
+cp -pR kernelrandombytes/* "$top/kernelrandombytes"
+( cd "$top/kernelrandombytes" && sh do )
+okabi \
+| while read abi
+do
+  cp -p "$top/kernelrandombytes/lib/$abi"/* "$top/$abi/lib/"
+done
+
+
+okabi \
+| while read abi
+do
+  for language in c cpp
+  do
+    ok${language}-$abi \
+    | while read compiler
+    do
+      compilerword=`echo "$compiler" | tr ' ' '_'`
+      echo "=== `date` === todo $abi/compiler/$language/$compilerword"
+      echo "$abi/compiler/$language/$compilerword" >&6
+      mkdir -p "$top/$abi/compiler/$language/$compilerword"
+      touch "$top/$abi/compiler/$language/$compilerword/BUILD"
+      touch "$top/$abi/compiler/$language/$compilerword/LOCK"
+      : > "$top/$abi/compiler/$language/$compilerword/dep"
+    done
+  done
+done
+
+
+cat OPERATIONS \
+| while read o
+do
+  [ -d "$o" ] || continue
+  [ -k "$o" ] 2>&1 && continue
+
+  ls "$o" \
+  | sort \
+  | while read p
+  do
+    [ -d "$o/$p" ] || continue
+    [ -k "$o/$p" ] 2>&1 && continue
+    okabi \
+    | while read abi
+    do
+      find "$o/$p" -follow -name "api.h" \
+      | sort \
+      | while read doth
+      do
+        implementationdir=`dirname $doth`
+        opi=`echo "$implementationdir" | tr ./- !!!`
+
+        [ -k "$implementationdir" ] 2>&1 && continue
+
+        if [ -f "$implementationdir/architectures" ]
+        then
+          if grep '^'"$abi"'$' "$implementationdir/architectures" >/dev/null
+          then
+            :
+          else
+            echo "=== `date` === skipping $abi/implementation/$implementationdir"
+            continue
+          fi
+        fi
+
+        echo "=== `date` === todo $abi/implementation/$implementationdir"
+        echo "$abi/implementation/$implementationdir" >&6
+        mkdir -p "$top/$abi/implementation/$implementationdir"
+        touch "$top/$abi/implementation/$implementationdir/BUILD"
+        touch "$top/$abi/implementation/$implementationdir/LOCK"
+
+        (
+          cat "$o/try.c"
+          cat "$o/measure.c"
+          cat "try-anything.c"
+          cat "measure-anything.c"
+          find "$implementationdir" -follow -type f \
+          | egrep '\.h$|\.c$|\.s$|\.S$|\.cc$|\.cpp$' \
+          | xargs cat
+        ) \
+        | grep '#include' \
+        | sed 's/#include[      ]*//' \
+        | sed 's_/.*/__' \
+        | sed 's_//.*__' \
+        | tr -d '<>"\040\011\014' \
+        | sed 's_\.h$__' \
+        | sort -u \
+        | while read incl
+        do
+          case "$incl" in
+            openssl*)
+              echo openssl
+              ;;
+            cryptopp*)
+              echo cryptopp
+              ;;
+            gmp*)
+              echo gmp
+              ;;
+            NTL*)
+              echo gmp
+              echo ntl
+              ;;
+            libkeccak.a.headers/*)
+              echo keccak
+              ;;
+            crypto_*_*)
+              op=`echo "$incl" | sed 's/_\(.*\)_/_\1\//'`
+              if [ -d "$top/$abi/integrate/$op" ]
+              then
+                echo "integrate/$op"
+              fi
+              ;;
+          esac
+        done | sort -u > "$top/$abi/implementation/$implementationdir/dep"
+
+        userandombytes=0
+        [ $o = crypto_scalarmult ] && userandombytes=1
+        [ $o = crypto_box ] && userandombytes=1
+        [ $o = crypto_dh ] && userandombytes=1
+        [ $o = crypto_encrypt ] && userandombytes=1
+        [ $o = crypto_kem ] && userandombytes=1
+        [ $o = crypto_sign ] && userandombytes=1
+        if [ $userandombytes = 1 ]
+        then
+          echo "knownrandombytes" >> "$top/$abi/implementation/$implementationdir/dep"
+          echo "fastrandombytes" >> "$top/$abi/implementation/$implementationdir/dep"
+        fi
+
+        (
+          if [ -f "$implementationdir/goal-constbranch" ]
+          then
+            if [ -f "$implementationdir/goal-constindex" ]
+            then
+              echo constbranchindex
+            fi
+          fi
+          echo timingleaks
+        ) | while read security
+        do
+          echo "=== `date` === todo $abi/try/.../$security/$implementationdir"
+          opi=`echo "$implementationdir" | tr ./- !!!`
+  
+          cfiles=`ls "$implementationdir" | grep '\.c$' || :`
+          sfiles=`ls "$implementationdir" | grep '\.[sS]$' || :`
+          ccfiles=`ls "$implementationdir" | grep '\.cc$' || :`
+          cppfiles=`ls "$implementationdir" | grep '\.cpp$' || :`
+  
+          language=c
+          [ "x$cppfiles" = x ] || language=cpp
+          [ "x$ccfiles" = x ] || language=cpp
+  
+          ok${language}-$abi \
+          | while read compiler
+          do
+            compilerword=`echo "$compiler" | tr ' ' '_'`
+            mkdir -p "$top/$abi/try/$language/$compilerword/$security/$implementationdir"
+            touch "$top/$abi/try/$language/$compilerword/$security/$implementationdir/BUILD"
+            touch "$top/$abi/try/$language/$compilerword/$security/$implementationdir/LOCK"
+            (
+              echo "compiler/$language/$compilerword"
+              echo "implementation/$implementationdir"
+            ) > "$top/$abi/try/$language/$compilerword/$security/$implementationdir/dep"
+            echo "$abi/try/$language/$compilerword/$security/$implementationdir" >&6
+          done
+        done
+
+      done
+    done
+
+    okabi \
+    | while read abi
+    do
+      echo "=== `date` === todo $abi/integrate/$o/$p"
+      echo "$abi/integrate/$o/$p" >&6
+      mkdir -p "$top/$abi/integrate/$o/$p"
+      touch "$top/$abi/integrate/$o/$p/BUILD"
+      touch "$top/$abi/integrate/$o/$p/LOCK"
+      (
+        echo base
+        find "$o/$p" -follow -name "api.h" \
+        | sort \
+        | while read doth
+        do
+          implementationdir=`dirname $doth`
+          [ -f "$implementationdir/Cargo.toml" ] && continue
+          for language in c
+          do
+            ok${language}-$abi \
+            | while read compiler
+            do
+              compilerword=`echo "$compiler" | tr ' ' '_'`
+              for security in constbranchindex timingleaks
+              do
+                source="try/$language/$compilerword/$security/$implementationdir"
+                if [ -d "$top/$abi/$source" ]
+                then
+                  echo "$source"
+                fi
+              done
+            done
+          done
+        done
+      ) > "$top/$abi/integrate/$o/$p/dep"
+    done
+  done
+  
+  if [ $o = crypto_rng ]
+  then
+    okabi \
+    | while read abi
+    do
+      echo "=== `date` === todo $abi/knownrandombytes"
+      echo $abi/knownrandombytes >&6
+      mkdir -p "$top/$abi/knownrandombytes"
+      touch "$top/$abi/knownrandombytes/BUILD"
+      touch "$top/$abi/knownrandombytes/LOCK"
+      ls $o \
+      | sort \
+      | while read p
+      do
+        [ -d "$o/$p" ] || continue
+        echo integrate/$o/$p
+      done > "$top/$abi/knownrandombytes/dep"
+
+      echo "=== `date` === todo $abi/fastrandombytes"
+      echo $abi/fastrandombytes >&6
+      mkdir -p "$top/$abi/fastrandombytes"
+      touch "$top/$abi/fastrandombytes/BUILD"
+      touch "$top/$abi/fastrandombytes/LOCK"
+      ls $o \
+      | sort \
+      | while read p
+      do
+        [ -d "$o/$p" ] || continue
+        echo integrate/$o/$p
+      done > "$top/$abi/fastrandombytes/dep"
+    done
+  fi
+done
+
+
+cat OPERATIONS \
+| while read o
+do
+  [ -d "$o" ] || continue
+  for m in 1 2 3
+  do
+    ls "$o" \
+    | sort \
+    | while read p
+    do
+      [ -d "$o" ] || continue
+      okabi \
+      | while read abi
+      do
+        [ -d "$o/$p" ] || continue
+        echo "=== `date` === todo $abi/measure$m/$o/$p"
+        echo "$abi/measure$m/$o/$p" >&6
+        mkdir -p "$top/$abi/measure$m/$o/$p"
+        touch "$top/$abi/measure$m/$o/$p/BUILD"
+        touch "$top/$abi/measure$m/$o/$p/LOCK"
+        find "$o/$p" -follow -name "api.h" \
+        | sort \
+        | while read doth
+        do
+          implementationdir=`dirname $doth`
+          for language in c cpp
+          do
+            ok${language}-$abi \
+            | while read compiler
+            do
+              compilerword=`echo "$compiler" | tr ' ' '_'`
+              for security in constbranchindex timingleaks
+              do
+                source="try/$language/$compilerword/$security/$implementationdir"
+                if [ -d "$top/$abi/$source" ]
+                then
+                  echo "$source"
+                fi
+              done
+            done
+          done
+        done > "$top/$abi/measure$m/$o/$p/dep"
+      done
+    done
+  done
+done
+
+
+echo "=== `date` === ending data-init"

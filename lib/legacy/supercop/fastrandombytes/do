@@ -1,0 +1,47 @@
+#!/bin/sh -e
+
+rm -f done cyclesbest test fastrandombytes.o lib/$abi
+echo 999999999 > cyclesbest
+mkdir -p lib/$abi
+(
+  echo chacha20
+  echo salsa20
+  echo aes256
+) | (
+  while read rng
+  do
+    okc-$abi | (
+      while read c
+      do
+        echo "=== `date` === Trying crypto_rng_$rng with $c..." >&2
+        rm -f test fastrandombytes.o
+        (
+          echo '#ifndef crypto_rng_h'
+          echo '#define crypto_rng_h'
+	  echo '#include "crypto_rng_'"$rng"'.h"'
+          echo "#define crypto_rng crypto_rng_$rng"
+          echo "#define crypto_rng_KEYBYTES crypto_rng_${rng}_KEYBYTES"
+          echo "#define crypto_rng_OUTPUTBYTES crypto_rng_${rng}_OUTPUTBYTES"
+          echo '#endif'
+        ) > crypto_rng.h
+        $c -c fastrandombytes.c $include || continue
+        $c -o test test.c fastrandombytes.o $include $libs || continue
+        killafter 300 ./test > cycles || continue
+        cycles=`cat cycles`
+        cyclesbest=`cat cyclesbest`
+        if [ $cycles -lt $cyclesbest ]
+        then
+          echo "=== `date` === $cycles cycles: using crypto_rng_$rng with $c." >&2
+          mv fastrandombytes.o lib/$abi/fastrandombytes.o
+          echo $cycles > cyclesbest
+          touch done
+        else
+          echo "=== `date` === $cycles cycles no better than $cyclesbest cycles." >&2
+        fi
+      done
+    )
+  done
+)
+[ -e done ] || (
+  echo "=== `date` === No working fastrandombytes.o for $abi." >&2
+)

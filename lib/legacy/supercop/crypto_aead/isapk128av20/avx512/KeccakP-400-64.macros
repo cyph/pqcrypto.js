@@ -1,0 +1,85 @@
+typedef unsigned char UINT8;
+typedef unsigned short UINT16;
+typedef unsigned long long UINT64;
+
+static const UINT16 KeccakF400RoundConstants[20] = {
+    0x0001,
+    0x8082,
+    0x808a,
+    0x8000,
+    0x808b,
+    0x0001,
+    0x8081,
+    0x8009,
+    0x008a,
+    0x0088,
+    0x8009,
+    0x000a,
+    0x808b,
+    0x008b,
+    0x8089,
+    0x8003,
+    0x8002,
+    0x0080,
+    0x800a,
+    0x000a,
+};
+
+#define ROL16(a, offset) ((((UINT16)a) << offset) ^ (((UINT16)a) >> (16-offset)))
+
+#define declareABCDEX \
+    union State S; \
+    union State B; \
+    union State C1; \
+    union State C2; \
+    union State C3; \
+    union State C4; \
+    union State C5; \
+    union State D; \
+    union State B1; \
+    union State B2; \
+    union State E; \
+    __m512i pchi1 = _mm512_set_epi32(0, 0, 0, 0x000014, 0x180017, 0x160015, 0x0f0013, 0x120011, 0x10000a, 0xe000d, 0xc000b, 0x50009, 0x80007, 0x60000, 0x40003, 0x20001); \
+    __m512i pchi2 = _mm512_set_epi32(0, 0, 0, 0x000015, 0x140018, 0x170016, 0x10000f, 0x130012, 0x11000b, 0xa000e, 0xd000c, 0x60005, 0x90008, 0x70001, 0x00004, 0x30002); \
+    __m512i ppi = _mm512_set_epi32(0, 0, 0, 0x0015, 0xf000e, 0x80002, 0x170011, 0xb0005, 0x40014, 0x13000d, 0x70001, 0x160010, 0xa0009, 0x30018, 0x12000c, 0x60000); \
+    __m512i lrho = _mm512_set_epi32(0, 0, 0, 0x000e, 0x8000d, 0x20002, 0x80005, 0xf000d, 0x90007, 0x9000b, 0xa0003, 0x40007, 0x6000c, 0x4000b, 0xc000e, 0x10000); \
+    __m512i rrho = _mm512_set_epi32(0, 0, 0, 0x100010 - 0x000e, 0x100010 - 0x8000d, 0x100010 - 0x20002, 0x100010 - 0x80005, 0x100010 - 0xf000d, 0x100010 - 0x90007, 0x100010 - 0x9000b, 0x100010 - 0xa0003, 0x100010 - 0x40007, 0x100010 - 0x6000c, 0x100010 - 0x4000b, 0x100010 - 0xc000e, 0x100010 - 0x10000); \
+    __m512i ptheta1 = _mm512_set_epi32(0, 0, 0, 0x00014, 0x180017, 0x160015, 0x0f0013, 0x120011, 0x10000a, 0xe000d, 0xc000b, 0x50009, 0x80007, 0x60000, 0x40003, 0x20001); \
+    __m512i ptheta2 = _mm512_set_epi32(0, 0, 0, 0x0000, 0x40003, 0x20001, 0x140018, 0x170016, 0x15000f, 0x130012, 0x110010, 0xa000e, 0xd000c, 0xb0005, 0x90008, 0x70006); \
+    __m512i ptheta3 = _mm512_set_epi32(0, 0, 0, 0x0005, 0x90008, 0x70006, 0x00004, 0x30002, 0x10014, 0x180017, 0x160015, 0x0f0013, 0x120011, 0x10000a, 0xe000d, 0xc000b); \
+    __m512i ptheta4 = _mm512_set_epi32(0, 0, 0, 0x000a, 0xe000d, 0xc000b, 0x50009, 0x80007, 0x60000, 0x40003, 0x20001, 0x140018, 0x170016, 0x15000f, 0x130012, 0x110010); \
+    __m512i ptheta5 = _mm512_set_epi32(0, 0, 0, 0x000f, 0x130012, 0x110010, 0xa000e, 0xd000c, 0xb0005, 0x90008, 0x70006, 0x00004, 0x30002, 0x10014, 0x180017, 0x160015); \
+    __m512i ptheta6 = _mm512_set_epi32(0, 0, 0, 0x0016, 0x150014, 0x180017, 0x110010, 0xf0013, 0x12000c, 0xb000a, 0xe000d, 0x70006, 0x50009, 0x80002, 0x10000, 0x40003); \
+
+
+/* --- Code for round */
+#define thetaRhoPiChiIota(i, A, E) \
+    C1.S = _mm512_permutexvar_epi16(ptheta1, A.S); \
+    C2.S = _mm512_permutexvar_epi16(ptheta2, A.S); \
+    C3.S = _mm512_permutexvar_epi16(ptheta3, A.S); \
+    C4.S = _mm512_permutexvar_epi16(ptheta4, A.S); \
+    C5.S = _mm512_permutexvar_epi16(ptheta5, A.S); \
+    D.S = _mm512_ternarylogic_epi64(C1.S, C2.S, C3.S, 0x96); \
+    D.S = _mm512_ternarylogic_epi64(D.S, C4.S, C5.S, 0x96); \
+    C3.S = _mm512_permutexvar_epi16(ptheta6, D.S); \
+    C1.S = _mm512_slli_epi16 (D.S, 1); \
+    C2.S = _mm512_srli_epi16 (D.S, 15); \
+    D.S = _mm512_or_epi32 (C1.S, C2.S); \
+    A.S = _mm512_ternarylogic_epi64(A.S, D.S, C3.S, 0x96); \
+    B1.S = _mm512_sllv_epi16 (A.S, lrho); \
+    B2.S = _mm512_srlv_epi16 (A.S, rrho); \
+    B.S = _mm512_or_epi32 (B1.S, B2.S); \
+    B.S = _mm512_permutexvar_epi16(ppi, B.S); \
+    B1.S = _mm512_permutexvar_epi16(pchi1, B.S); \
+    B2.S = _mm512_permutexvar_epi16(pchi2, B.S); \
+    E.S = _mm512_ternarylogic_epi64(B.S, B1.S, B2.S, 0xd2); \
+    E.S = _mm512_xor_epi64 (E.S, _mm512_set_epi64(0,0,0,0,0,0,0,KeccakF400RoundConstants[i])); \
+\
+
+
+
+#define copyStateVariables(A, Y) \
+    A.S = Y.S; \
+\
+
+// prevent "warning: backslash-newline at end of file"

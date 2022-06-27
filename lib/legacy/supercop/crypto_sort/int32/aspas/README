@@ -1,0 +1,5 @@
+Original: https://github.com/vtsynergy/aspas_sort
+
+Tweaks (djb):
+* #include <utility> in aspas.h.
+* crypto_sort wrapper.

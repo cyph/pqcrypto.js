@@ -1,0 +1,5 @@
+By Mike Hamburg, 2019.
+Implementation of BabyBearEphem as of NIST PQC middle round 2 (July 2019 spec update)
+
+Caching implementation: remembers the expanded public and private key, but not the public matrix.
+This should make it a fair benchmark against the likes of Kyber.

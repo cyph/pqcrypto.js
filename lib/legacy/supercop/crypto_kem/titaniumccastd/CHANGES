@@ -1,0 +1,4 @@
+CPA versions fail to implement crypto_encrypt API; eliminate.
+Include randombytes.h instead of rng.h.
+Include crypto_kem.h instead of api.h in kem.c.
+Remove rng*, Makefile, PQCgen*.

@@ -1,0 +1,1 @@
+../../ascon128av12/asm_esp32/encrypt.c

@@ -1,0 +1,8 @@
+Fix bug: dec was overwriting ciphertext.
+Fix bogus use of m256 in sse2/* triggered by __AVX2__.
+Move bit-slice/* to top directory.
+Remove Makefile, test/*, nist/*.
+#include "crypto_kem.h" in kem.c.
+crypto_kem_ instead of CRYPTO_ in kem.c.
+Eliminate randombytes() from random.c, random.h.
+#include "randombytes.h" in random.h.

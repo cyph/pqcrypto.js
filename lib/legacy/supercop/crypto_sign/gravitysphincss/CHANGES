@@ -1,0 +1,8 @@
+All files in top directory; adjust #include accordingly.
+#include "crypto_sign.h" in sign.c.
+Removed randombytes.c, randombytes.h.
+Removed bench.c, sign.h, Makefile.
+Change common.h to do what Makefile did:
+  VERSION_S= -DPORS_k=24 -DMERKLE_h=5  -DGRAVITY_d=1  -DGRAVITY_c=10
+  VERSION_M= -DPORS_k=32 -DMERKLE_h=5  -DGRAVITY_d=7  -DGRAVITY_c=15
+  VERSION_L= -DPORS_k=28 -DMERKLE_h=5  -DGRAVITY_d=10 -DGRAVITY_c=14

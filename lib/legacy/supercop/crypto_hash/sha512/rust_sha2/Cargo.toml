@@ -1,0 +1,7 @@
+[package]
+name = "crypto_hash_sha512"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+sha2 = "^0.9"

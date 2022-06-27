@@ -1,0 +1,4 @@
+An alternative Edon-S signature scheme proposal in Category 2.
+Conjectured security requires computational resources comparable to 
+or greater than those required for finding collisions in SHA256 - Category 2
+

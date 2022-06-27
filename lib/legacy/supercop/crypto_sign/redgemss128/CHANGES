@@ -1,0 +1,543 @@
+Changes for SUPERCOP.
+
+api.h:
+#define SUPERCOP 0 is replaced by #define SUPERCOP 1
+
+KAT_int.h:
+#define KAT_INT is replaced by #undef KAT_INT
+
+Remove PQCgenKAT_sign.c, rng.h, rng.c, randombytes.h.
+
+
+
+
+
+
+
+
+
+
+Changes in the reference implementation.
+
+08/10/2019 (August)
+
+In signHFE.cpp, the function compress_signHFE can be incorrect when (Delta+v)<8.
+An "else" is missing in the following code.
+So, we replace:
+"
+            /* Other bytes of sm8 */
+            nb_rem2=(HFEDELTA+HFEv)-val_n;
+            if(nb_rem2)
+            {
+                /* Number of bits used of sm64, mod 8 */
+                nb_rem_m=(HFEm+val_n)&7U;
+
+                /* Other bytes */
+                if(nb_rem_m)
+                {
+                    /* -1 to take the ceil of /8, -1 */
+                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
+                    {
+                        sm8[nb_bits>>3]=((*sm64)>>nb_rem_m)^((*(sm64+1))<<(8-nb_rem_m));
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte of sm8, between 1 and 8 bits to put */
+                    sm8[nb_bits>>3]=(*sm64)>>nb_rem_m;
+                    ++sm64;
+
+                    /* nb_rem2 between 1 and 8 bits */
+                    nb_rem2=((nb_rem2+7U)&7U)+1U;
+                    if(nb_rem2>(8-nb_rem_m))
+                    {
+                        sm8[nb_bits>>3]^=(*sm64)<<(8-nb_rem_m);
+                        ++sm64;
+                    }
+
+                    nb_bits+=nb_rem2;
+                } else
+                {
+                    /* We are at the beginning of the bytes of sm8 and sm64 */
+
+                    /* +7 to take the ceil of /8 */
+                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
+                    {
+                        sm8[nb_bits>>3]=*sm64;
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte has AT MOST 8 bits. */
+                    nb_bits-=(8-(nb_rem2&7U))&7U;
+                }
+            }
+"
+by:
+"
+            /* Other bytes of sm8 */
+            nb_rem2=(HFEDELTA+HFEv)-val_n;
+            /*nb_rem2 can be zero only in this case */
+            #if ((HFEDELTA+HFEv)<8)
+            if(nb_rem2)
+            {
+            #endif
+                /* Number of bits used of sm64, mod 8 */
+                nb_rem_m=(HFEm+val_n)&7U;
+
+                /* Other bytes */
+                if(nb_rem_m)
+                {
+                    /* -1 to take the ceil of /8, -1 */
+                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
+                    {
+                        sm8[nb_bits>>3]=((*sm64)>>nb_rem_m)^((*(sm64+1))<<(8-nb_rem_m));
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte of sm8, between 1 and 8 bits to put */
+                    sm8[nb_bits>>3]=(*sm64)>>nb_rem_m;
+                    ++sm64;
+
+                    /* nb_rem2 between 1 and 8 bits */
+                    nb_rem2=((nb_rem2+7U)&7U)+1U;
+                    if(nb_rem2>(8-nb_rem_m))
+                    {
+                        sm8[nb_bits>>3]^=(*sm64)<<(8-nb_rem_m);
+                        ++sm64;
+                    }
+
+                    nb_bits+=nb_rem2;
+                } else
+                {
+                    /* We are at the beginning of the bytes of sm8 and sm64 */
+
+                    /* +7 to take the ceil of /8 */
+                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
+                    {
+                        sm8[nb_bits>>3]=*sm64;
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte has AT MOST 8 bits. */
+                    nb_bits-=(8-(nb_rem2&7U))&7U;
+                }
+            #if ((HFEDELTA+HFEv)<8)
+            } else
+            {
+                ++sm64;
+            }
+            #endif
+".
+This change saves one "if" in the NIST submission GeMSS since (Delta+v)>8.
+
+
+
+
+In sign_openHFE.c, the function uncompress_signHFE can be incorrect when 
+(Delta+v)<8. An "else" is missing in the following code.
+So, we replace:
+"
+            /* Other bytes of sm8 */
+            nb_rem2=(HFEDELTA+HFEv)-val_n;
+            if(nb_rem2)
+            {
+                /* Number of bits used of sm64, mod 8 */
+                nb_rem_m=(HFEm+val_n)&7U;
+
+                /* Other bytes */
+                if(nb_rem_m)
+                {
+                    /* -1 to take the ceil of /8, -1 */
+                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
+                    {
+                        *sm64^=sm8[nb_bits>>3]<<nb_rem_m;
+                        ++sm64;
+                        *sm64=sm8[nb_bits>>3]>>(8-nb_rem_m);
+
+                        nb_bits+=8;
+                    }
+                    /* The last byte of sm8, between 1 and 8 bits to put */
+                    *sm64^=sm8[nb_bits>>3]<<nb_rem_m;
+                    ++sm64;
+
+                    /* nb_rem2 between 1 and 8 bits */
+                    nb_rem2=((nb_rem2+7U)&7U)+1U;
+                    if(nb_rem2>(8-nb_rem_m))
+                    {
+                        *sm64=sm8[nb_bits>>3]>>(8-nb_rem_m);
+                        ++sm64;
+                    }
+
+                    nb_bits+=nb_rem2;
+                } else
+                {
+                    /* We are at the beginning of the bytes of sm8 and sm64 */
+
+                    /* +7 to take the ceil of /8 */
+                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
+                    {
+                        *sm64=sm8[nb_bits>>3];
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte has AT MOST 8 bits. */
+                    nb_bits-=(8-(nb_rem2&7U))&7U;
+                }
+            }
+"
+by:
+"
+            /* Other bytes of sm8 */
+            nb_rem2=(HFEDELTA+HFEv)-val_n;
+            /*nb_rem2 can be zero only in this case */
+            #if ((HFEDELTA+HFEv)<8)
+            if(nb_rem2)
+            {
+            #endif
+                /* Number of bits used of sm64, mod 8 */
+                nb_rem_m=(HFEm+val_n)&7U;
+
+                /* Other bytes */
+                if(nb_rem_m)
+                {
+                    /* -1 to take the ceil of /8, -1 */
+                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
+                    {
+                        *sm64^=sm8[nb_bits>>3]<<nb_rem_m;
+                        ++sm64;
+                        *sm64=sm8[nb_bits>>3]>>(8-nb_rem_m);
+
+                        nb_bits+=8;
+                    }
+                    /* The last byte of sm8, between 1 and 8 bits to put */
+                    *sm64^=sm8[nb_bits>>3]<<nb_rem_m;
+                    ++sm64;
+
+                    /* nb_rem2 between 1 and 8 bits */
+                    nb_rem2=((nb_rem2+7U)&7U)+1U;
+                    if(nb_rem2>(8-nb_rem_m))
+                    {
+                        *sm64=sm8[nb_bits>>3]>>(8-nb_rem_m);
+                        ++sm64;
+                    }
+
+                    nb_bits+=nb_rem2;
+                } else
+                {
+                    /* We are at the beginning of the bytes of sm8 and sm64 */
+
+                    /* +7 to take the ceil of /8 */
+                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
+                    {
+                        *sm64=sm8[nb_bits>>3];
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte has AT MOST 8 bits. */
+                    nb_bits-=(8-(nb_rem2&7U))&7U;
+                }
+            #if ((HFEDELTA+HFEv)<8)
+            } else
+            {
+                ++sm64;
+            }
+            #endif
+".
+This change saves one "if" in the NIST submission GeMSS since (Delta+v)>8.
+
+
+
+
+
+
+
+
+
+
+Changes in the optimized and Skylake implementations.
+
+08/10/2019 (August)
+
+In div_gf2nx.c, the function div_r_HFE_gf2nx_d_cst contains an error affecting 
+the performance when ENABLED_REMOVE_ODD_DEGREE is set to 1.
+"
+    for(d=(HFEDeg-1)<<1;d>(HFEDeg+HFE_odd_degree);d-=2)
+"
+should be:
+"
+    for(;d>(HFEDeg+HFE_odd_degree);d-=2)
+".
+This change impacts the NIST submission GeMSS, but the effect is almost
+invisible since this function is used only when s!=0, and only one time in the 
+Frobenius map.
+
+
+
+
+A header is missing in evalMQShybrid_gf2.c and generates an error when n<64.
+So, we have added:
+"
+#include "MQ_gf2.h"
+"
+in the includes of evalMQShybrid_gf2.c.
+
+
+
+
+In signHFE.c, the function compress_signHFE can be incorrect when (Delta+v)<8.
+An "else" is missing in the following code.
+So, we replace:
+"
+            /* Other bytes of sm8 */
+            nb_rem2=(HFEDELTA+HFEv)-val_n;
+            if(nb_rem2)
+            {
+                /* Number of bits used of sm64, mod 8 */
+                nb_rem_m=(HFEm+val_n)&7U;
+
+                /* Other bytes */
+                if(nb_rem_m)
+                {
+                    /* -1 to take the ceil of /8, -1 */
+                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
+                    {
+                        sm8[nb_bits>>3]=((*sm64)>>nb_rem_m)^((*(sm64+1))<<(8-nb_rem_m));
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte of sm8, between 1 and 8 bits to put */
+                    sm8[nb_bits>>3]=(*sm64)>>nb_rem_m;
+                    ++sm64;
+
+                    /* nb_rem2 between 1 and 8 bits */
+                    nb_rem2=((nb_rem2+7U)&7U)+1U;
+                    if(nb_rem2>(8-nb_rem_m))
+                    {
+                        sm8[nb_bits>>3]^=(*sm64)<<(8-nb_rem_m);
+                        ++sm64;
+                    }
+
+                    nb_bits+=nb_rem2;
+                } else
+                {
+                    /* We are at the beginning of the bytes of sm8 and sm64 */
+
+                    /* +7 to take the ceil of /8 */
+                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
+                    {
+                        sm8[nb_bits>>3]=*sm64;
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte has AT MOST 8 bits. */
+                    nb_bits-=(8-(nb_rem2&7U))&7U;
+                }
+            }
+"
+by:
+"
+            /* Other bytes of sm8 */
+            nb_rem2=(HFEDELTA+HFEv)-val_n;
+            /*nb_rem2 can be zero only in this case */
+            #if ((HFEDELTA+HFEv)<8)
+            if(nb_rem2)
+            {
+            #endif
+                /* Number of bits used of sm64, mod 8 */
+                nb_rem_m=(HFEm+val_n)&7U;
+
+                /* Other bytes */
+                if(nb_rem_m)
+                {
+                    /* -1 to take the ceil of /8, -1 */
+                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
+                    {
+                        sm8[nb_bits>>3]=((*sm64)>>nb_rem_m)^((*(sm64+1))<<(8-nb_rem_m));
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte of sm8, between 1 and 8 bits to put */
+                    sm8[nb_bits>>3]=(*sm64)>>nb_rem_m;
+                    ++sm64;
+
+                    /* nb_rem2 between 1 and 8 bits */
+                    nb_rem2=((nb_rem2+7U)&7U)+1U;
+                    if(nb_rem2>(8-nb_rem_m))
+                    {
+                        sm8[nb_bits>>3]^=(*sm64)<<(8-nb_rem_m);
+                        ++sm64;
+                    }
+
+                    nb_bits+=nb_rem2;
+                } else
+                {
+                    /* We are at the beginning of the bytes of sm8 and sm64 */
+
+                    /* +7 to take the ceil of /8 */
+                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
+                    {
+                        sm8[nb_bits>>3]=*sm64;
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte has AT MOST 8 bits. */
+                    nb_bits-=(8-(nb_rem2&7U))&7U;
+                }
+            #if ((HFEDELTA+HFEv)<8)
+            } else
+            {
+                ++sm64;
+            }
+            #endif
+".
+This change saves one "if" in the NIST submission GeMSS since (Delta+v)>8.
+
+
+
+
+In sign_openHFE.c, the function uncompress_signHFE can be incorrect when 
+(Delta+v)<8. An "else" is missing in the following code.
+So, we replace:
+"
+            /* Other bytes of sm8 */
+            nb_rem2=(HFEDELTA+HFEv)-val_n;
+            if(nb_rem2)
+            {
+                /* Number of bits used of sm64, mod 8 */
+                nb_rem_m=(HFEm+val_n)&7U;
+
+                /* Other bytes */
+                if(nb_rem_m)
+                {
+                    /* -1 to take the ceil of /8, -1 */
+                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
+                    {
+                        *sm64^=sm8[nb_bits>>3]<<nb_rem_m;
+                        ++sm64;
+                        *sm64=sm8[nb_bits>>3]>>(8-nb_rem_m);
+
+                        nb_bits+=8;
+                    }
+                    /* The last byte of sm8, between 1 and 8 bits to put */
+                    *sm64^=sm8[nb_bits>>3]<<nb_rem_m;
+                    ++sm64;
+
+                    /* nb_rem2 between 1 and 8 bits */
+                    nb_rem2=((nb_rem2+7U)&7U)+1U;
+                    if(nb_rem2>(8-nb_rem_m))
+                    {
+                        *sm64=sm8[nb_bits>>3]>>(8-nb_rem_m);
+                        ++sm64;
+                    }
+
+                    nb_bits+=nb_rem2;
+                } else
+                {
+                    /* We are at the beginning of the bytes of sm8 and sm64 */
+
+                    /* +7 to take the ceil of /8 */
+                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
+                    {
+                        *sm64=sm8[nb_bits>>3];
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte has AT MOST 8 bits. */
+                    nb_bits-=(8-(nb_rem2&7U))&7U;
+                }
+            }
+"
+by:
+"
+            /* Other bytes of sm8 */
+            nb_rem2=(HFEDELTA+HFEv)-val_n;
+            /*nb_rem2 can be zero only in this case */
+            #if ((HFEDELTA+HFEv)<8)
+            if(nb_rem2)
+            {
+            #endif
+                /* Number of bits used of sm64, mod 8 */
+                nb_rem_m=(HFEm+val_n)&7U;
+
+                /* Other bytes */
+                if(nb_rem_m)
+                {
+                    /* -1 to take the ceil of /8, -1 */
+                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
+                    {
+                        *sm64^=sm8[nb_bits>>3]<<nb_rem_m;
+                        ++sm64;
+                        *sm64=sm8[nb_bits>>3]>>(8-nb_rem_m);
+
+                        nb_bits+=8;
+                    }
+                    /* The last byte of sm8, between 1 and 8 bits to put */
+                    *sm64^=sm8[nb_bits>>3]<<nb_rem_m;
+                    ++sm64;
+
+                    /* nb_rem2 between 1 and 8 bits */
+                    nb_rem2=((nb_rem2+7U)&7U)+1U;
+                    if(nb_rem2>(8-nb_rem_m))
+                    {
+                        *sm64=sm8[nb_bits>>3]>>(8-nb_rem_m);
+                        ++sm64;
+                    }
+
+                    nb_bits+=nb_rem2;
+                } else
+                {
+                    /* We are at the beginning of the bytes of sm8 and sm64 */
+
+                    /* +7 to take the ceil of /8 */
+                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
+                    {
+                        *sm64=sm8[nb_bits>>3];
+                        nb_bits+=8;
+                        ++sm64;
+                    }
+                    /* The last byte has AT MOST 8 bits. */
+                    nb_bits-=(8-(nb_rem2&7U))&7U;
+                }
+            #if ((HFEDELTA+HFEv)<8)
+            } else
+            {
+                ++sm64;
+            }
+            #endif
+".
+This change saves one "if" in the NIST submission GeMSS since (Delta+v)>8.
+
+
+
+
+In frobeniusMap_gf2nx.c, when n<32, the frobeniusMap_gf2nx function can return 
+X^(2^n) instead of X^(2^n)-X.
+We replace:
+"
+    #if (HFEn<32)
+        d=(1U<<HFEn);
+        if(d<df)
+        {
+            /* X^(2^n) mod F = X^(2^n) */
+            Xqn[d*NB_WORD_GFqn]=1UL;
+            return d;
+        }
+    #endif
+"
+by:
+"
+    #if (HFEn<32)
+        d=(1U<<HFEn);
+        if(d<df)
+        {
+            /* X^(2^n) mod F = X^(2^n) */
+            Xqn[d*NB_WORD_GFqn]=1UL;
+            /* X^(2^n) - X */
+            Xqn[NB_WORD_GFqn]=1UL;
+            return d;
+        }
+    #endif
+"
+
+
+
+

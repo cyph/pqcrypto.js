@@ -1,0 +1,4 @@
+Remove main.c, test*.
+Remove randombytes.
+Include crypto_kem.h in kem.c.
+Handle c=t overlap in dec.

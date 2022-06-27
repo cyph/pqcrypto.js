@@ -1,0 +1,950 @@
+#!/bin/sh -e
+
+# supercop/do-part
+# D. J. Bernstein
+# Public domain.
+
+focus="$1"
+pfocus="$2"
+opfocus=${focus}_${pfocus}
+
+version=`cat version`
+project=supercop
+shorthostname=`hostname | sed 's/\..*//' | tr -cd '[a-z][A-Z][0-9]' | tr '[A-Z]' '[a-z]'`
+
+top="`pwd`/bench/$shorthostname"
+bin="$top/bin"
+lib="$top/lib"
+securitymodelsdir="$top/security"
+include="$top/include"
+work="$top/work"
+
+PATH="/usr/local/bin:$PATH"
+PATH="/usr/sfw/bin:$PATH"
+PATH="$bin:$PATH"
+export PATH
+
+LD_LIBRARY_PATH="/usr/local/lib/sparcv9:/usr/local/lib:$LD_LIBRARY_PATH"
+LD_LIBRARY_PATH="/usr/sfw/lib/sparcv9:/usr/sfw/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH
+
+# and wacky MacOS X
+DYLD_LIBRARY_PATH="/usr/local/lib/sparcv9:/usr/local/lib:$DYLD_LIBRARY_PATH"
+DYLD_LIBRARY_PATH="/usr/sfw/lib/sparcv9:/usr/sfw/lib:$DYLD_LIBRARY_PATH"
+export DYLD_LIBRARY_PATH
+
+# and work around bug in GNU sort
+LANG=C
+export LANG
+
+if [ x"$focus" = x"all" -o x"$focus" = x"used" -o x"$focus" = x"init" ]
+then
+  rm -rf "$top"
+  mkdir -p "$top"
+  mkdir -p "$bin"
+  mkdir -p "$lib/nontimecop"
+  mkdir -p "$lib/timecop"
+  mkdir -p "$include/nontimecop"
+  mkdir -p "$include/timecop"
+  cp include/* "$include"
+fi
+
+if [ x"$focus" = x"all" ]
+then
+  exec >"$top/log"
+  exec 2>&1
+fi
+
+exec 5>"$top/data"
+exec </dev/null
+
+echo "=== `date` === starting"
+
+if [ x"$focus" = x"all" -o x"$focus" = x"used" -o x"$focus" = x"init" ]
+then
+  echo "=== `date` === building machineinfo"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR machineinfo/* "$work"
+  ( cd "$work" && sh do )
+
+  echo "=== `date` === building scripts"
+  cp -p scripts/* "$bin"
+  
+  echo "=== `date` === building okcompilers"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR okcompilers/* "$work"
+  ( cd "$work" && sh do )
+  cp -p "$work"/bin/* "$bin"
+  
+  echo "=== `date` === building cpuid"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR cpuid/* "$work"
+  ( cd "$work" && sh do )
+  cp -pR "$work"/include/* "$include"
+  
+  echo "=== `date` === building inttypes"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR inttypes/* "$work"
+  ( cd "$work" && sh do )
+  cp -pR "$work"/include/* "$include"
+  
+  echo "=== `date` === building killafter"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR killafter/* "$work"
+  ( cd "$work" && sh do )
+  cp -p "$work"/bin/* "$bin"
+  
+  echo "=== `date` === building compiledinfo"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR compiledinfo/* "$work"
+  ( cd "$work" && sh do )
+  cp -p "$work"/bin/* "$bin"
+  
+  echo "=== `date` === building sinceepoch"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR sinceepoch/* "$work"
+  ( cd "$work" && sh do )
+  cp -p "$work"/bin/* "$bin"
+  
+  echo "=== `date` === building cpucycles for non-TIMECOP"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR cpucycles/* "$work"
+  ( cd "$work" && env CPUCYCLESWRAPPER="killafter 300" sh do )
+  cp -pR "$work"/lib/* "$lib/nontimecop"
+  cp -pR "$work"/include/* "$include/nontimecop"
+  
+  if valgrind pwd >/dev/null 2>&1
+  then
+    echo "=== `date` === building cpucycles for TIMECOP"
+    rm -rf "$work"
+    mkdir -p "$work"
+    cp -pR cpucycles/* "$work"
+    ( cd "$work" && env CPUCYCLESWRAPPER="killafter 300 valgrind" sh do )
+    cp -pR "$work"/lib/* "$lib/timecop"
+    cp -pR "$work"/include/* "$include/timecop"
+  else
+    echo "=== `date` === skipping cpucycles for TIMECOP: valgrind not found"
+  fi
+
+  echo "=== `date` === building kernelrandombytes"
+  rm -rf "$work"
+  mkdir -p "$work"
+  cp -pR kernelrandombytes/* "$work"
+  ( cd "$work" && sh do )
+  cp -pR "$work"/lib/* "$lib"
+
+  okabi \
+  | while read abi
+  do
+    mkdir -p "$lib/$abi"
+    mkdir -p "$include/$abi"
+    rm -rf "$work"
+    mkdir -p "$work"
+    echo 'void crypto_'"$project"'_base(void) { ; }' > "$work/${project}_base.c"
+    okc-$abi \
+    | while read compiler
+    do
+      ( cd "$work" && $compiler -c ${project}_base.c ) && break
+    done
+    okar-$abi cr "$lib/$abi/lib${project}.a" "$work/${project}_base.o"
+    ( ranlib "$lib/$abi/lib${project}.a" || exit 0 )
+  done
+fi
+
+okabi \
+| while read abi
+do
+  [ x"$focus" = x"all" -o x"$focus" = x"used" -o x"$focus" = x"gmp" ] || continue
+  echo "=== `date` === building gmp for $abi"
+  mkdir -p "$lib/$abi"
+  mkdir -p "$include/$abi"
+  okc-$abi | head -1 \
+  | while read c copts
+  do
+    okcpp-$abi | head -1 \
+    | while read cpp cppopts
+    do
+      for gmpabi in 64 32 2.0w 2.0n 1.0 o32 n32 aix64 mode64 mode32 standard
+      do
+        [ -s "$lib/$abi/libgmp.a" ] && continue
+        echo "=== `date` === trying CC=$c CXX=$cpp CFLAGS=$copts CXXFLAGS=$cppopts ABI=$gmpabi"
+        rm -rf "$work"
+        mkdir -p "$work"
+        cp -pR gmp/* "$work"
+        ( cd "$work" \
+          && ./configure --enable-cxx \
+             ABI="$gmpabi" \
+             CC="$c" CXX="$cpp" CFLAGS="$copts" CXXFLAGS="$cppopts" LDFLAGS="$copts" \
+          && make \
+          && make check \
+          && cp gmp.h gmpxx.h gmp-impl.h longlong.h \
+          config.h gmp-mparam.h fac_table.h fib_table.h mp_bases.h "$include/$abi" \
+          && ( ranlib ".libs/libgmp.a" || : ) \
+          && cp .libs/libgmp.a "$lib/$abi/libgmp.a" \
+          && chmod 644 "$lib/$abi/libgmp.a" \
+          && ( ranlib ".libs/libgmpxx.a" || : ) \
+          && ( cp .libs/libgmpxx.a "$lib/$abi/libgmpxx.a" || : ) \
+          && ( chmod 644 "$lib/$abi/libgmpxx.a" || : )
+        ) && break
+      done
+    done
+  done
+done
+
+okabi \
+| while read abi
+do
+  [ x"$focus" = x"all" -o x"$focus" = x"used" -o x"$focus" = x"ntl" ] || continue
+  echo "=== `date` === building ntl for $abi"
+  mkdir -p "$lib/$abi"
+  mkdir -p "$include/$abi"
+  okcpp-$abi | head -1 \
+  | while read cpp cppopts
+  do
+    echo "=== `date` === trying CXX=$cpp CXXFLAGS=$cppopts"
+    rm -rf "$work"
+    mkdir -p "$work"
+    cp -pR ntl/* "$work"
+    ( cd "$work/src" \
+      && ./configure \
+         CXX="$cpp" CXXFLAGS="$cppopts" \
+         NTL_STD_CXX11=off NTL_THREADS=off NTL_SAFE_VECTORS=off \
+         INCLUDEDIR="$include/$abi" LIBDIR="$lib/$abi" \
+         DOCDIR="$work/installdoc" \
+         GMP_INCDIR="$include/$abi" GMP_LIBDIR="$lib/$abi" \
+      && make \
+      && make check \
+      && make install
+    ) && break
+  done
+done
+
+okabi \
+| while read abi
+do
+  [ x"$focus" = x"all" -o x"$focus" = x"used" -o x"$focus" = x"keccak" ] || continue
+  echo "=== `date` === building keccak for $abi"
+  mkdir -p "$lib/$abi"
+  mkdir -p "$include/$abi"
+  okc-$abi | head -1 \
+  | while read c copts
+  do
+    for keccaktarget in \
+      AVR8 \
+      ARMv8A ARMv7A ARMv7M ARMv6M \
+      KnightsLanding Haswell Bulldozer SandyBridge Nehalem \
+      asmX86-64shdl asmX86-64 \
+      generic64 generic32 reference reference32bits compact
+    do
+      [ -s "$lib/$abi/libkeccak.a" ] && continue
+      echo "=== `date` === trying CC=$c CFLAGS=$copts TARGET=$keccaktarget"
+      rm -rf "$work"
+      mkdir -p "$work"
+      cp -pR k/* "$work"
+      ( cd "$work" \
+        && env CC="$c" CFLAGS="$copts" make $keccaktarget/libkeccak.a \
+        && mkdir -p "$include/$abi/libkeccak.a.headers" \
+        && cp bin/$keccaktarget/libkeccak.a.headers/* "$include/$abi/libkeccak.a.headers" \
+        && cp bin/$keccaktarget/libkeccak.a "$lib/$abi/libkeccak.a" \
+        && chmod 644 "$lib/$abi/libkeccak.a"
+      ) && break || :
+    done
+  done
+done
+
+okabi \
+| while read abi
+do
+  [ x"$focus" = x"all" -o x"$focus" = x"used" -o x"$focus" = x"cryptopp" ] || continue
+  echo "=== `date` === building cryptopp for $abi"
+  mkdir -p "$lib/$abi"
+  mkdir -p "$include/$abi/cryptopp"
+  okcpp-$abi | head -1 \
+  | while read cpp cppopts
+  do
+    [ -s "$lib/$abi/libcryptopp.a" ] && continue
+    echo "=== `date` === trying CXX=$cpp CXXFLAGS=$cppopts"
+    rm -rf "$work"
+    mkdir -p "$work"
+    cp -pR cryptopp/* "$work"
+    ( cd "$work" \
+      && make CXX="$cpp" CXXFLAGS="-DNDEBUG $cppopts" LDFLAGS="$cppopts" \
+      && cp libcryptopp.a "$lib/$abi/libcryptopp.a" \
+      && cp *.h "$include/$abi/cryptopp/"
+    ) && break
+  done
+done
+
+# loop over operations
+cat OPERATIONS \
+| while read o
+do
+  [ -d "$o" ] || continue
+
+  # not sure -k is portable enough, but failures aren't a disaster
+  # alternative: find "$o" -prune -perm -01000 -exec sh -c 'exit 1' '{}' +
+  if [ -k "$o" ] 2>&1
+  then
+    echo "=== `date` === sticky $o"
+    continue
+  fi
+
+  [ x"$focus" = x"all" -o x"$focus" = x"used" -o x"$focus" = x"$o" ] || continue
+
+  # for each operation, loop over primitives
+  ls "$o" \
+  | sort \
+  | while read p
+  do
+    [ -d "$o/$p" ] || continue
+
+    if [ -k "$o/$p" ] 2>&1
+    then
+      echo "=== `date` === sticky $o/$p"
+      continue
+    fi
+
+    expectedchecksumbig=''
+    [ -f "$o/$p/checksumbig" ] && expectedchecksumbig=`cat "$o/$p/checksumbig"`
+    expectedchecksumsmall=''
+    [ -f "$o/$p/checksumsmall" ] && expectedchecksumsmall=`cat "$o/$p/checksumsmall"`
+    op="${o}_${p}"
+
+    [ x"$focus" = x"all" -o x"$focus" = x"used" -o x"$opfocus" = x"$op" -o x"$opfocus" = x"$o"_ ] || continue
+
+    if [ x"$focus" = x"used" ]
+    then
+      [ -f "$o/$p/used" ] || continue
+    fi
+
+    startdate=`date +%Y%m%d`
+
+    # for each operation primitive, loop over abis
+    okabi \
+    | while read abi
+    do
+      echo "=== `date` === $abi $o/$p"
+      libs=`"oklibs-$abi"`
+      libs="$lib/nontimecop/$abi/cpucycles.o $libs"
+      libs="$lib/$abi/kernelrandombytes.o $libs"
+      [ -f "$lib/$abi/libgmp.a" ] && libs="$lib/$abi/libgmp.a $libs"
+      [ -f "$lib/$abi/libgmpxx.a" ] && libs="$lib/$abi/libgmpxx.a $libs"
+      [ -f "$lib/$abi/libntl.a" ] && libs="$lib/$abi/libntl.a $libs"
+      [ -f "$lib/$abi/libkeccak.a" ] && libs="$lib/$abi/libkeccak.a $libs"
+      [ -f "$lib/$abi/libcryptopp.a" ] && libs="$lib/$abi/libcryptopp.a $libs"
+      [ -f "$lib/$abi/lib${project}.a" ] && libs="$lib/$abi/lib${project}.a $libs"
+
+      timecoplibs=`"oklibs-$abi"`
+      timecoplibs="$lib/timecop/$abi/cpucycles.o $timecoplibs"
+      timecoplibs="$lib/$abi/kernelrandombytes.o $timecoplibs"
+      [ -f "$lib/$abi/libgmp.a" ] && timecoplibs="$lib/$abi/libgmp.a $timecoplibs"
+      [ -f "$lib/$abi/libgmpxx.a" ] && timecoplibs="$lib/$abi/libgmpxx.a $timecoplibs"
+      [ -f "$lib/$abi/libntl.a" ] && timecoplibs="$lib/$abi/libntl.a $timecoplibs"
+      [ -f "$lib/$abi/libkeccak.a" ] && timecoplibs="$lib/$abi/libkeccak.a $timecoplibs"
+      [ -f "$lib/$abi/libcryptopp.a" ] && timecoplibs="$lib/$abi/libcryptopp.a $timecoplibs"
+      [ -f "$lib/$abi/lib${project}.a" ] && timecoplibs="$lib/$abi/lib${project}.a $timecoplibs"
+
+      rslibs=`"oklibs-$abi" | tr ' ' '\012' | sed 's/-l//' | tr '\012' ' '`
+      rslibs="cpucycles $rslibs"
+      rslibs="kernelrandombytes $rslibs"
+      [ -f "$lib/$abi/libgmp.a" ] && rslibs="gmp $rslibs"
+      [ -f "$lib/$abi/libgmpxx.a" ] && rslibs="gmpxx $rslibs"
+      [ -f "$lib/$abi/libntl.a" ] && rslibs="ntl $rslibs"
+      [ -f "$lib/$abi/libkeccak.a" ] && rslibs="keccak $rslibs"
+      [ -f "$lib/$abi/libcryptopp.a" ] && rslibs="cryptopp $rslibs"
+      [ -f "$lib/$abi/lib${project}.a" ] && rslibs="${project} $rslibs"
+
+      trylibs="$libs"
+      timecoptrylibs="$timecoplibs"
+      rstrylibs="$rslibs"
+      measurelibs="$libs"
+      rsmeasurelibs="$rslibs"
+
+      userandombytes=0
+      [ $o = crypto_scalarmult ] && userandombytes=1
+      [ $o = crypto_box ] && userandombytes=1
+      [ $o = crypto_dh ] && userandombytes=1
+      [ $o = crypto_encrypt ] && userandombytes=1
+      [ $o = crypto_kem ] && userandombytes=1
+      [ $o = crypto_sign ] && userandombytes=1
+      if [ $userandombytes = 1 ]
+      then
+        trylibs="$lib/$abi/knownrandombytes.o $libs"
+        timecoptrylibs="$lib/$abi/knownrandombytes.o $timecoplibs"
+        rstrylibs="knownrandombytes $rslibs"
+        measurelibs="$lib/$abi/fastrandombytes.o $libs"
+        rsmeasurelibs="fastrandombytes $rslibs"
+      fi
+
+      rm -rf "$work"
+      mkdir -p "$work"
+      for security in constbranchindex timingleaks
+      do
+        mkdir -p "$work/$security/best"
+        mkdir -p "$work/$security/bestc"
+        mkdir -p "$include/$abi/$security"
+        mkdir -p "$securitymodelsdir/$abi/$security"
+        rm -f "$securitymodelsdir/$abi/$security/$op"
+      done
+
+      for security in constbranchindex timingleaks
+      do
+        includes="-I. -I$include -I$include/nontimecop/$abi -I$include/$abi -I$include/$abi/$security"
+        timecopincludes="-I. -I$include -I$include/timecop/$abi -I$include/$abi -I$include/$abi/$security"
+
+        find "$o/$p" -follow -name "api.h" \
+        | sort \
+        | while read doth
+        do
+          implementationdir=`dirname $doth`
+          opi=`echo "$implementationdir/$security" | tr ./- ___`
+
+          if [ -k "$implementationdir" ] 2>&1
+          then
+            echo "=== `date` === sticky $implementationdir"
+            continue
+          fi
+
+          rm -f "$work/$security/allowed"
+
+          if [ -f "$implementationdir/goal-constbranch" ] && [ -f "$implementationdir/goal-constindex" ]
+          then
+            # _top level_ of implementation is constbranchindex
+  
+            touch "$work/all-subroutines-allow-constbranchindex"
+            rm -f "$work/some-subroutine-allows-timingleaks"
+  
+            (
+              cat "$o/try.c"
+              cat "$o/measure.c"
+              cat "try-anything.c"
+              cat "measure-anything.c"
+              find "$implementationdir" -follow -type f \
+              | egrep '\.h$|\.c$|\.s$|\.S$|\.cc$|\.cpp$' \
+              | xargs cat
+            ) \
+            | grep '#include' \
+            | sed 's/#include[      ]*//' \
+            | sed 's_/.*/__' \
+            | sed 's_//.*__' \
+            | tr -d '<>"\040\011\014' \
+            | sed 's_\.h$__' \
+            | grep -v '_publicinputs$' \
+            | sort -u \
+            | while read incl
+            do
+              case "$incl" in
+                crypto_*_*)
+                  [ -f "$securitymodelsdir/$abi/constbranchindex/$incl" ] || rm -f "$work/all-subroutines-allow-constbranchindex"
+                  [ -f "$securitymodelsdir/$abi/timingleaks/$incl" ] && touch "$work/some-subroutine-allows-timingleaks" || :
+
+                  if [ -f "$securitymodelsdir/$abi/constbranchindex/$incl" ] || [ -f "$securitymodelsdir/$abi/timingleaks/$incl" ]
+                  then
+                    :
+                  else
+                    echo "=== `date` === missing $incl in $abi/implementation/$implementationdir"
+                  fi
+                  ;;
+              esac
+            done
+
+            [ -f "$work/all-subroutines-allow-constbranchindex" ] && touch "$work/constbranchindex/allowed" || :
+            [ -f "$work/some-subroutine-allows-timingleaks" ] && touch "$work/timingleaks/allowed" || :
+          else
+            touch "$work/timingleaks/allowed"
+          fi
+
+          [ -f "$work/$security/allowed" ] || continue
+
+          if [ -f "$implementationdir/architectures" ]
+          then
+            if grep '^'"$abi"'$' "$implementationdir/architectures" >/dev/null 
+            then
+              :
+            else
+              echo "=== `date` === skipping $abi/implementation/$implementationdir"
+              continue
+            fi
+          fi
+
+          echo "=== `date` === $abi $implementationdir $security"
+  
+          rm -rf "$work/compile"
+          mkdir -p "$work/compile"
+          cp -LpR "$implementationdir"/* "$work/compile"
+    
+          cfiles=`ls "$work/compile" | grep '\.c$' || :`
+          sfiles=`ls "$work/compile" | grep '\.[sS]$' || :`
+          ccfiles=`ls "$work/compile" | grep '\.cc$' || :`
+          cppfiles=`ls "$work/compile" | grep '\.cpp$' || :`
+
+          language=c
+          [ "x$cppfiles" = x ] || language=cpp
+          [ "x$ccfiles" = x ] || language=cpp
+    
+          cp -p "$o/try.c" "$work/compile/try.$language"
+          cp -p "$o/measure.c" "$work/compile/measure.$language"
+          cp -p "try-anything.c" "$work/compile/try-anything.$language"
+          cp -p "measure-anything.c" "$work/compile/measure-anything.$language"
+
+          ( echo '#define SMALL'
+            echo '#include "try.'"$language"'"'
+          ) > "$work/compile/try-small.$language"
+
+          touch "$work/compile/test-more.inc"
+          [ -f "$o/$p/supercop/test-more.inc" ] && cp -p "$o/$p/supercop/test-more.inc" "$work/compile/test-more.inc" || :
+          touch "$work/compile/test-loops.inc"
+          [ -f "$o/$p/supercop/test-loops.inc" ] && cp -p "$o/$p/supercop/test-loops.inc" "$work/compile/test-loops.inc" || :
+  
+          cp -p MACROS "$work/compile/MACROS"
+          cp -p PROTOTYPES.c "$work/compile/PROTOTYPES.c"
+
+          wanttimecop=''
+          if [ ${TIMECOP+yes} ] && [ "$security" = "constbranchindex" ]
+          then
+            wanttimecop=yes
+            ( echo '#define TIMECOP'
+              echo "#define TIMECOP_LOOPS $TIMECOP"
+              echo '#include "try.'"$language"'"'
+            ) > "$work/compile/try-timecop.$language"
+            ( echo '#define TIMECOP'
+              echo "#define TIMECOP_LOOPS $TIMECOP"
+              echo '#include "try-anything.'"$language"'"'
+            ) > "$work/compile/try-anything-timecop.$language"
+          fi
+
+          rust=''
+          if [ -f "$work/compile/Cargo.toml" ]
+          then
+            rust=yes
+            sed 's/int main/int c_main/' < "try-anything.c" > "$work/compile/try-anything.$language"
+            sed 's/int main/int c_main/' < "measure-anything.c" > "$work/compile/measure-anything.$language"
+            cp -pr rusthooks "$work/compile/rusthooks"
+          fi
+          # XXX: also support standalone *.rs via okrs-${abi}
+
+          (
+            cd "$work/compile"
+
+            (
+              echo "#ifndef ${o}_H"
+              echo "#define ${o}_H"
+              echo ""
+              echo "#include \"${op}.h\""
+              echo ""
+              egrep "${o}"'$|'"${o}"'\(|'"${o}"'_' < MACROS \
+              | sed "s/$o/$op/" | while read mop
+              do
+                echo "#define ${mop} ${mop}" | sed "s/$op/$o/"
+              done
+              echo "#define ${o}_PRIMITIVE \"${p}\""
+              echo "#define ${o}_IMPLEMENTATION ${op}_IMPLEMENTATION"
+              echo "#define ${o}_VERSION ${op}_VERSION"
+              echo ""
+              echo "#endif"
+            ) > "$o.h"
+            for opp in "$op" "${op}_publicinputs"
+            do
+              (
+                echo "#ifndef ${opp}_H"
+                echo "#define ${opp}_H"
+                echo ""
+                sed 's/[         ]CRYPTO_/ '"${opi}"'_/g' < api.h
+                echo ' '
+                echo '#ifdef __cplusplus'
+                echo 'extern "C" {'
+                echo '#endif'
+                egrep "${o}"'$|'"${o}"'\(|'"${o}"'_' < PROTOTYPES.c \
+                | sed "s/$o/$opi/"
+                echo '#ifdef __cplusplus'
+                echo '}'
+                echo '#endif'
+                echo ""
+                egrep "${o}"'$|'"${o}"'\(|'"${o}"'_' < MACROS \
+                | sed "s/$o/$opi/" | while read mopi
+                do
+                  echo "#define ${mopi} ${mopi}" | sed "s/$opi/$opp/"
+                done
+                echo "#define ${opp}_IMPLEMENTATION \"${implementationdir}\""
+                echo "#ifndef ${opi}_VERSION"
+                echo "#define ${opi}_VERSION \"-\""
+                echo "#endif"
+                echo "#define ${opp}_VERSION ${opi}_VERSION"
+                echo ""
+                echo "#endif"
+              ) > "$opp.h"
+            done
+
+            if [ "$rust" ]
+            then
+              mkdir -p src/bin
+              supercop-bin-rs "$o" "$op" "$opi" try-anything try-small $rstrylibs > src/bin/try-small.rs
+              supercop-bin-rs "$o" "$op" "$opi" try-anything try $rstrylibs > src/bin/try.rs
+              supercop-bin-rs "$o" "$op" "$opi" measure-anything measure $rsmeasurelibs > src/bin/measure.rs
+              supercop-cargo-extra >> Cargo.toml
+              if [ "$wanttimecop" ]
+              then
+                supercop-bin-rs "$o" "$op" "$opi" try-anything try-timecop $rstrylibs > src/bin/try-timecop.rs
+                timecop-cargo-extra >> Cargo.toml
+              fi
+            fi
+  
+            ok${language}-$abi \
+            | while read compilerbin compileropts
+            do
+              compiler="$compilerbin $compileropts"
+              echo "=== `date` === $abi $implementationdir $security $compiler"
+              compilerword=`echo "$compiler" | tr ' ' '_'`
+              ok=1
+              madeo=0
+              for f in $cfiles $sfiles $ccfiles $cppfiles
+              do
+                madeo=1
+                if [ "$ok" = 1 ]
+                then
+                  $compiler -DSUPERCOP \
+                    -D'CRYPTO_NAMESPACETOP='"$opi" \
+                    -D'_CRYPTO_NAMESPACETOP=_'"$opi" \
+                    -D'CRYPTO_NAMESPACE(name)='"$opi"'_##name' \
+                    -D'_CRYPTO_NAMESPACE(name)=_'"$opi"'_##name' \
+                    $includes \
+                    -c "$f" >../errors 2>&1 || ok=0
+                  ( if [ `wc -l < ../errors` -lt 25 ]
+                    then
+                      cat ../errors
+                    else
+                      head ../errors
+                      echo ...
+                      tail ../errors
+                    fi
+                  ) \
+                  | while read err
+                  do
+                    echo "$version $shorthostname $abi $startdate $o $p/$security fromcompiler $implementationdir $compilerword $f $err" >&5
+                  done
+                fi
+              done
+  
+              [ "$ok" = 1 ] || continue
+              if [ "$madeo" = 1 ]
+              then
+                okar-$abi cr "lib$op.a" *.o || continue
+                ranlib "lib$op.a" || :
+              fi
+
+              if [ "$rust" ]
+              then
+                supercop-build-rs "$op" "$lib/$abi" "$lib/nontimecop/$abi" > build.rs
+                if killafter 300 \
+                   env \
+                   CC="$compilerbin" \
+                   CFLAGS="$compileropts $includes -DSUPERCOP -DCOMPILER=\"$compilerword\"" \
+                   RUSTFLAGS='-C target_cpu=native' \
+                   cargo build -q --release --bin try-small --bin try --bin measure >../errors 2>&1
+                then
+                  cp target/release/try-small try-small || ok=0
+                  cp target/release/try try || ok=0
+                  cp target/release/measure measure || ok=0
+                  strip try-small try measure || :
+                else
+                  ok=0
+                fi
+                cat ../errors \
+                | while read err
+                do
+                  echo "$version $shorthostname $abi $startdate $o $p/$security fromcompiler $implementationdir $compilerword try.$language $err" >&5
+                done
+                cargo clean -q || :
+              fi
+              [ "$ok" = 1 ] || continue
+
+              if [ ! "$rust" ]
+              then
+                killafter 300 \
+                $compiler -DSUPERCOP \
+                  $includes \
+                  -o try-small try-small.$language try-anything.$language \
+                  "lib$op.a" $trylibs >../errors 2>&1 || ok=0
+                cat ../errors \
+                | while read err
+                do
+                  echo "$version $shorthostname $abi $startdate $o $p/$security fromcompiler $implementationdir $compilerword try.$language $err" >&5
+                done
+              fi
+              [ "$ok" = 1 ] || continue
+  
+              if sh -c "killafter 3600 ./try-small $version $abi $implementationdir $compilerword"' || exit $?' >../outputs 2>../errors
+              then
+                checksumsmall=`awk '{print $1}' < ../outputs`
+                cycles=`awk '{print $2}' < ../outputs`
+                checksumcycles=`awk '{print $3}' < ../outputs`
+                cyclespersecond=`awk '{print $4}' < ../outputs`
+                impl=`awk '{print $5}' < ../outputs`
+              else
+                echo "$version $shorthostname $abi $startdate $o $p/$security tryfails $implementationdir $compilerword error $?" >&5
+                cat ../outputs ../errors \
+                | while read err
+                do
+                  echo "$version $shorthostname $abi $startdate $o $p/$security tryfails $implementationdir $compilerword $err" >&5
+                done
+                continue
+              fi
+  
+              [ x"$expectedchecksumsmall" != x ] \
+              && [ x"$expectedchecksumsmall" != "x$checksumsmall" ] \
+              && echo "$version $shorthostname $abi $startdate $o $p/$security try $checksumsmall fails $cycles $checksumcycles $cyclespersecond $impl $compilerword" >&5 \
+              && continue
+  
+              if [ ! "$rust" ]
+              then
+                killafter 300 \
+                $compiler -DSUPERCOP \
+                  $includes \
+                  -o try try.$language try-anything.$language \
+                  "lib$op.a" $trylibs >../errors 2>&1 || ok=0
+                cat ../errors \
+                | while read err
+                do
+                  echo "$version $shorthostname $abi $startdate $o $p/$security fromcompiler $implementationdir $compilerword try.$language $err" >&5
+                done
+              fi
+              [ "$ok" = 1 ] || continue
+  
+              if sh -c "killafter 3600 ./try $version $abi $implementationdir $compilerword"' || exit $?' >../outputs 2>../errors
+              then
+                checksumbig=`awk '{print $1}' < ../outputs`
+                cycles=`awk '{print $2}' < ../outputs`
+                checksumcycles=`awk '{print $3}' < ../outputs`
+                cyclespersecond=`awk '{print $4}' < ../outputs`
+                impl=`awk '{print $5}' < ../outputs`
+              else
+                echo "$version $shorthostname $abi $startdate $o $p/$security tryfails $implementationdir $compilerword error $?" >&5
+                cat ../outputs ../errors \
+                | while read err
+                do
+                  echo "$version $shorthostname $abi $startdate $o $p/$security tryfails $implementationdir $compilerword $err" >&5
+                done
+                continue
+              fi
+  
+              [ x"$expectedchecksumbig" != x ] \
+              && [ x"$expectedchecksumbig" != "x$checksumbig" ] \
+              && echo "$version $shorthostname $abi $startdate $o $p/$security try $checksumbig fails $cycles $checksumcycles $cyclespersecond $impl $compilerword" >&5 \
+              && continue
+  
+              checksumok=ok
+              [ "x$expectedchecksumsmall" = "x" ] && checksumok=unknown
+              [ "x$expectedchecksumbig" = "x" ] && checksumok=unknown
+              echo "$version $shorthostname $abi $startdate $o $p/$security try $checksumsmall/$checksumbig $checksumok $cycles $checksumcycles $cyclespersecond $impl $compilerword" >&5
+  
+              compiledinfo "$version" "$shorthostname" "$abi" "$startdate" "$o" "$p/$security" "$implementationdir" "$compilerword" "$opi" "$language"
+
+              if [ "$wanttimecop" ]
+              then
+                ok=1
+
+                if [ "$rust" ]
+                then
+                  timecop-build-rs "$op" "$lib/$abi" "$lib/timecop/$abi" > build.rs
+                  if killafter 300 \
+                     env \
+                     CC="$compilerbin" \
+                     CFLAGS="$compileropts $timecopincludes -DSUPERCOP -DCOMPILER=\"$compilerword\"" \
+                     RUSTFLAGS='-C target_cpu=native' \
+                     cargo build -q --release --bin try-timecop >../errors 2>&1
+                  then
+                    cp target/release/try-timecop try-timecop || ok=0
+                    strip try-timecop || :
+                  else
+                    ok=0
+                  fi
+                  cat ../errors \
+                  | while read err
+                  do
+                    echo "$version $shorthostname $abi $startdate $o $p/$security fromcompiler $implementationdir $compilerword try.$language $err" >&5
+                  done
+                  cargo clean -q || :
+                fi
+                [ "$ok" = 1 ] || continue
+
+                if [ ! "$rust" ]
+                then
+                  killafter 300 \
+                  $compiler -DSUPERCOP \
+                    $timecopincludes \
+                    -o try-timecop try-timecop.$language try-anything-timecop.$language \
+                    "lib$op.a" $timecoptrylibs >../errors 2>&1 || ok=0
+                  cat ../errors \
+                  | while read err
+                  do
+                    echo "$version $shorthostname $abi $startdate $o $p/$security fromcompiler $implementationdir $compilerword try.$language $err" >&5
+                  done
+                fi
+                [ "$ok" = 1 ] || continue
+
+                if sh -c "killafter 3600 valgrind -q --max-stackframe=16777216 --error-exitcode=99 --track-origins=yes ./try-timecop $version $abi $implementationdir $compilerword"' || exit $?' >../outputs 2>../errors
+                then
+                  echo "$version $shorthostname $abi $startdate $o $p/$security timecop_pass $implementationdir $compilerword $TIMECOP $?" >&5
+                  word=timecop_output
+                else
+                  exitcode=$?
+                  if [ "$exitcode" = "99" ] && grep -q "client request" ../outputs ../errors
+                  then
+                    word=timecop_fail
+                  else
+                    word=timecop_error
+                  fi
+                  echo "$version $shorthostname $abi $startdate $o $p/$security $word $implementationdir $compilerword error $exitcode" >&5
+                fi
+
+                cat ../outputs ../errors \
+                | while read err
+                do
+                  echo "$version $shorthostname $abi $startdate $o $p/$security $word $implementationdir $compilerword $err" >&5
+                done
+
+              fi
+  
+              [ -s "../constbranchindex/bestc/median" ] && [ `cat "../constbranchindex/bestc/median"` -le $cycles ] && continue
+              [ -s "../$security/bestc/median" ] && [ `cat "../$security/bestc/median"` -le $cycles ] && continue
+  
+              if [ ! "$rust" ]
+              then
+                killafter 3600 \
+                $compiler -D'COMPILER="'"$compiler"'"' \
+                  -DSUPERCOP -DLOOPS=3 \
+                  $includes \
+                  -o measure measure.$language measure-anything.$language \
+                  "lib$op.a" $measurelibs >../errors 2>&1 || ok=0
+                cat ../errors \
+                | while read err
+                do
+                  echo "$version $shorthostname $abi $startdate $o $p/$security fromcompiler $implementationdir $compilerword measure.$language $err" >&5
+                done
+              fi
+              [ "$ok" = 1 ] || continue
+    
+              for b in best bestc
+              do
+                [ $language = cpp ] && [ $b = bestc ] && continue
+                [ "$rust" ] && [ $b = bestc ] && continue
+                [ -s "../constbranchindex/$b/median" ] && [ `cat "../constbranchindex/$b/median"` -le $cycles ] && continue
+                [ -s "../$security/$b/median" ] && [ `cat "../$security/$b/median"` -le $cycles ] && continue
+                echo "$cycles" > ../"$security/$b/median"
+                rm -f ../$security/$b/*.o ../$security/$b/measure || continue
+                for f in *.o
+                do
+                  [ -f "$f" ] || continue
+                  cp -p "$f" "../$security/$b/${opi}-$f"
+                done
+                cp -p "${op}_publicinputs.h" "../$security/$b/${op}_publicinputs.h"
+                cp -p "$op.h" "../$security/$b/$op.h"
+                cp -p "$o.h" "../$security/$b/$o.h"
+                cp -p measure ../$security/$b/measure
+              done
+            done
+          )
+
+        done
+
+        [ -f "$work/$security/best/measure" ] || continue
+
+        echo "=== `date` === $abi $o/$p $security measuring"
+  
+        killafter 86400 \
+        "$work/$security/best/measure" "$version" "$abi" "$o/$p" \
+        | while read measurement
+        do
+          echo "$version $shorthostname $abi $startdate $o $p/$security $measurement" >&5
+        done
+  
+        [ -f "$o/$p/used" ] \
+        && okar-$abi cr "$lib/$abi/lib${project}.a" "$work/$security/bestc"/*.o \
+        && ( ranlib "$lib/$abi/lib${project}.a" || exit 0 ) \
+        && cp -p "$work/$security/bestc/$op.h" "$include/$abi/$security/$op.h" \
+        && cp -p "$work/$security/bestc/${op}_publicinputs.h" "$include/$abi/$security/${op}_publicinputs.h" \
+        && touch "$securitymodelsdir/$abi/$security/$op" \
+        || :
+      done
+
+      if [ -f "$securitymodelsdir/$abi/constbranchindex/$op" ]
+      then
+        if [ -f "$securitymodelsdir/$abi/timingleaks/$op" ]
+        then
+          # can use timingleaks _for public inputs_ as a constbranchindex subroutine
+          cp "$include/$abi/timingleaks/${op}_publicinputs.h" "$include/$abi/constbranchindex/${op}_publicinputs.h"
+        else
+          # can use a constbranchindex subroutine as a timingleaks subroutine
+          cp "$include/$abi/constbranchindex/${op}_publicinputs.h" "$include/$abi/timingleaks/${op}_publicinputs.h"
+          cp "$include/$abi/constbranchindex/${op}.h" "$include/$abi/timingleaks/${op}.h"
+        fi
+      fi
+    done
+  done
+
+  if [ $o = crypto_rng ]
+  then
+    okabi \
+    | while read abi
+    do
+      includes="-I. -I$include -I$include/nontimecop/$abi -I$include/$abi -I$include/$abi/constbranchindex"
+
+      libs=`"oklibs-$abi"`
+      libs="$lib/nontimecop/$abi/cpucycles.o $libs"
+      libs="$lib/$abi/kernelrandombytes.o $libs"
+      [ -f "$lib/$abi/libgmp.a" ] && libs="$lib/$abi/libgmp.a $libs"
+      [ -f "$lib/$abi/libgmpxx.a" ] && libs="$lib/$abi/libgmpxx.a $libs"
+      [ -f "$lib/$abi/libntl.a" ] && libs="$lib/$abi/libntl.a $libs"
+      [ -f "$lib/$abi/libkeccak.a" ] && libs="$lib/$abi/libkeccak.a $libs"
+      [ -f "$lib/$abi/libcryptopp.a" ] && libs="$lib/$abi/libcryptopp.a $libs"
+      [ -f "$lib/$abi/lib${project}.a" ] && libs="$lib/$abi/lib${project}.a $libs"
+
+      echo "=== `date` === $abi knownrandombytes"
+
+      rm -rf "$work"
+      mkdir -p "$work"
+      cp -pR knownrandombytes/* "$work"
+
+      ( cd "$work" \
+        && env abi="$abi" libs="$libs" include="$includes" sh do \
+        && cp -p "lib/$abi/knownrandombytes.o" "$lib/$abi/knownrandombytes.o" \
+        && okar-$abi cr "$lib/$abi/libknownrandombytes.a" "$lib/$abi/knownrandombytes.o" \
+        && ( ranlib "$lib/$abi/libknownrandombytes.a" || exit 0 )
+      )
+
+      echo "=== `date` === $abi fastrandombytes"
+
+      rm -rf "$work"
+      mkdir -p "$work"
+      cp -pR fastrandombytes/* "$work"
+
+      ( cd "$work" \
+        && env abi="$abi" libs="$libs" include="$includes" sh do \
+        && cp -p "lib/$abi/fastrandombytes.o" "$lib/$abi/fastrandombytes.o" \
+        && okar-$abi cr "$lib/$abi/libfastrandombytes.a" "$lib/$abi/fastrandombytes.o" \
+        && ( ranlib "$lib/$abi/libfastrandombytes.a" || exit 0 )
+      )
+    done
+  fi
+
+done
+
+echo "=== `date` === finishing"
+
+if [ x"$focus" = x"all" ]
+then
+  sed 's/^/+ /' <"$top/log" >&5
+  gzip -9 "$top/data"
+  touch "$top/done-$version"
+else
+  echo "=== `date` === database size for this run: `wc $top/data`"
+  cat "$work/errors"
+fi

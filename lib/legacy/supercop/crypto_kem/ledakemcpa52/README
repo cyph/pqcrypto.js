@@ -1,0 +1,19 @@
+This is a portable, optimized implementation of LEDACrypt KEM
+with ephemeral keys.
+Intrinsics for AVX2 ISA extensions are automatically selected
+if gcc/clang provides appropriate macros (e.g., as when compiling 
+with -march=native on an AVX2 enabled computer).
+
+Level of copyright protection (according to SUPERCOP tips):
+
+Level 0: There are no known present or future claims by a copyright 
+holder that the distribution of this software infringes the copyright. 
+In particular, the author of the software is not making such claims 
+and does not intend to make such claims.
+
+Level of patent protection (according to SUPERCOP tips):
+
+Level 0: There are no known present or future claims by a patent holder 
+that the use of this software infringes the patent. In particular, 
+the author of the software is not making such claims and does not 
+intend to make such claims. 

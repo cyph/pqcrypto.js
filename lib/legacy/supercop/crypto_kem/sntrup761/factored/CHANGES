@@ -1,0 +1,49 @@
+Reverse-chronological changelog for sntrup*/factored:
+
+Added crypto_declassify() for the rejection sampling in key generation
+to work with TIMECOP.
+
+Used CRYPTO_NAMESPACE.
+
+Used crypto_verify_clen.
+
+Rearranged variables for better stack usage.
+
+Factored out crypto_core_wforcesntrup761. (Same for other sizes.)
+Factored out crypto_core_scale3sntrup761. (Same for other sizes.)
+Switched to 16-bit arithmetic for Rq_mult3.
+Factored out crypto_encode_761xfreeze3. (Same for other sizes.)
+
+Introduced ppadsort.
+
+Factored out crypto_core_mult3sntrup761. (Same for other sizes.)
+Factored out crypto_core_multsntrup761. (Same for other sizes.)
+Factored out crypto_core_inv3sntrup761. (Same for other sizes.)
+Factored out crypto_core_invsntrup761. (Same for other sizes.)
+Returned reciprocal success/failure as extra byte in array.
+
+Special-cased reduction mod 3 for F3_freeze().
+Special-cased reduction mod q for Fq_freeze().
+Delayed reduction inside multiplication.
+
+Factored out crypto_encode_761x1531round. (Same for other sizes.)
+Factored out crypto_{encode,decode}_761x4591. (Same for other sizes.)
+Factored out crypto_{encode,decode}_761x1531. (Same for other sizes.)
+Factored out crypto_{encode,decode}_761x3. (Same for other sizes.)
+
+Allocated an extra byte at the beginning of r_enc.
+Inlined HashConfirm.
+Inlined HashSession (at two spots).
+Inlined prefix part of Hash_prefix(), leaving Hash().
+
+Inlined KEM_KeyGen, ZKeyGen, KeyGen.
+Inlined Encap, ZEncrypt, Encrypt.
+Inlined Decap, ZDecrypt, Decrypt.
+Inlined Inputs_random, Inputs_bytes, Inputs_encode.
+Inlined Short_fromlist.
+
+Integrated paramsmenu.h into params.h.
+
+Removed NTRU LPRime code.
+
+Started from ref.

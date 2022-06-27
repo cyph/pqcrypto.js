@@ -1,0 +1,8 @@
+g++ -march=native -mtune=native -O3 -fomit-frame-pointer -fwrapv -fPIC -fPIE
+g++ -march=native -mtune=native -Os -fomit-frame-pointer -fwrapv -fPIC -fPIE
+g++ -march=native -mtune=native -O2 -fomit-frame-pointer -fwrapv -fPIC -fPIE
+g++ -march=native -mtune=native -O -fomit-frame-pointer -fwrapv -fPIC -fPIE
+clang++ -march=native -O3 -fomit-frame-pointer -fwrapv -Qunused-arguments -fPIC -fPIE
+clang++ -march=native -Os -fomit-frame-pointer -fwrapv -Qunused-arguments -fPIC -fPIE
+clang++ -march=native -O2 -fomit-frame-pointer -fwrapv -Qunused-arguments -fPIC -fPIE
+clang++ -march=native -O -fomit-frame-pointer -fwrapv -Qunused-arguments -fPIC -fPIE

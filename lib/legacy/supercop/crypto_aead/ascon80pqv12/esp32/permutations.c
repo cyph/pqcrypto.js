@@ -1,0 +1,1 @@
+../../ascon128v12/esp32/permutations.c

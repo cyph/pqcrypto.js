@@ -1,0 +1,76 @@
+if { $gui_mode } {
+  add wave clk
+  add wave reset
+  add wave i_mode
+  add wave i_dom_sep
+  add wave o_ready
+  add wave i_valid
+  add wave i_data
+  add wave i_padding
+  add wave o_valid
+  add wave o_data
+
+  if { $sim_mode eq "PROG_MODE" } then {
+  
+  add wave -noupdate -divider -height 32 STUFF
+  add wave /uut/u_ctl/state
+  add wave /uut/u_ctl/o_ready
+  add wave /uut/u_ctl/i_valid
+  add wave /uut/u_dp/i_data
+  add wave /uut/u_ctl/o_valid
+  add wave /uut/u_dp/o_data
+
+  add wave -noupdate -divider -height 32 DP
+  add wave -radix binary /uut/u_dp/ctl_const
+  add wave /uut/u_dp/i_data
+  add wave /uut/u_dp/o_data
+  add wave -radix binary /uut/u_dp/ctl_const
+  add wave /uut/u_dp/lfsr_c_en
+  add wave /uut/u_dp/lfsr_c_reset
+  add wave /uut/u_dp/permoff
+  add wave /uut/u_dp/endstep
+  add wave /uut/u_dp/absorb
+  add wave /uut/u_dp/replace
+  add wave /uut/u_dp/output
+  add wave /uut/u_dp/dsxor
+  add wave /uut/u_dp/post_input
+  add wave /uut/u_dp/pre_round
+  add wave /uut/u_dp/post_round
+  add wave /uut/u_dp/post_xor
+  add wave /uut/u_dp/post_step_const
+  add wave /uut/u_dp/post_linear
+  add wave /uut/u_dp/ace_path
+  add wave /uut/u_dp/ace_state
+
+  add wave -noupdate -divider -height 32 CTL
+  add wave /uut/u_ctl/state
+  add wave -radix unsigned /uut/u_ctl/count
+  add wave /uut/u_ctl/i_valid
+  add wave /uut/u_ctl/o_valid
+  add wave /uut/u_ctl/o_ready
+  add wave -radix binary /uut/u_ctl/onehot
+  add wave /uut/u_ctl/lfsr_c_reset
+  add wave -radix binary /uut/u_ctl/i_mode
+  add wave -radix binary /uut/u_ctl/i_dom_sep
+  }
+
+}
+
+vcd file ace.vcd
+vcd add /ace_tb/uut/*
+
+vcd add -r *
+vcd on
+
+run -all
+
+vcd checkpoint
+vcd off
+vcd flush
+
+
+if { $gui_mode } {
+  wave zoom full
+} else {  
+  exit
+}

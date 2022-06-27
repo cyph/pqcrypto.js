@@ -1,0 +1,21 @@
+This is the version 2.0 of the "new" McBits software. Three implementations are 
+included in this version, namely
+
+- m12_t62_simple,
+- m13_t128_sse, and
+- m13_t128_avx.
+
+The parameters m (for field size 2^m) and t (for the degree of the Goppa 
+polynomial) are indicated by the names of the implementations. The code length n 
+is assumed to be 2^m.
+
+m12_t62_simple serves as a simple C implementation that hopefully helps users
+understand how the new McBits software works. m13_t128_sse is optimized for the 
+Intel Sandy Bridge/Ivy Bridge microarchitectures, while m13_t128_avx is 
+optimized for the Haswell microarchitecture.
+
+The implementations are in the form such that they can be put directly into 
+SUPERCOP (https://bench.cr.yp.to/supercop.html) for benchmarking. The 
+implementations also make use functions (e.g. randombytes()) and some symmetric 
+primitives in SUPERCOP.
+

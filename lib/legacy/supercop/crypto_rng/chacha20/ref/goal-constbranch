@@ -1,0 +1,2 @@
+20200809 titan0 amd64 20200809 crypto_rng chacha20/constbranchindex timecop_pass crypto_rng/chacha20/ref gcc_-march=native_-mtune=native_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0
+20200809 novenablue armeabi 20200809 crypto_rng chacha20/constbranchindex timecop_pass crypto_rng/chacha20/ref clang_-mcpu=native_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0

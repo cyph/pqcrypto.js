@@ -1,0 +1,1 @@
+../../sikep434comp/arm/sike_compressed.inc

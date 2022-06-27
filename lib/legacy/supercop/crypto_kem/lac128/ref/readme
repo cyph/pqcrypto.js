@@ -1,0 +1,62 @@
+1. Getting started
+-------------------------
+This file is a reference implementation of our LAC algorithm. This program uses some functions of OpenSSl, so you need to install OpenSSL for running this program successfully. For building, just run:
+
+         make 
+
+         and then execute:
+
+         ./lac
+
+to see the command format.
+
+There are four types of tests:
+  - Test the speed of LAC. You can run:
+	./lac speed
+  - Test the cpucycles of LAC. You can run:
+	./lac cpucycles
+  - Test the correctness of LAC. You can run:
+	./lac correctness
+  - Test the speed of basic blocks used in lac. You can run:
+	./lac basicblock
+
+The test data is under just one security level. If you want to change security level, modify it in "lac_param.h". Change the third line as,
+	
+	#define LAC128
+
+or 
+
+	#define LAC192
+
+or 
+	
+	#define LAC256
+
+Supported platforms:
+  Linux and Windows (with msys2).
+
+2. Main modules
+-------------------------
+There are five main modules. 
+  - ENCRYPT: the key generation, encryption and decryption algorithms, which is corresponding to LAC.CPA in the documentation.
+  - KEM: The IND-CCA secure key encapsulation mechanism algorithms, which is corresponding to LAC.CCA in the documentation.
+  - KE: the key exchange algorithm, which is corresponding to LAC.KE in the documentation.
+  - AKE: the authenticated key exchange algorithm, which is corresponding to LAC.AKE in the documentation.
+  - Basic: the randomness generator, pseudo-randomness generator, and hash function. These basic blocks mainly based on the functions supported by OpenSSL.
+
+3 Parameters
+-------------------------
+According to current attacks, there are three sets of security parameters. 
+  - LAC128: provides 1 and 2 security categories in NIST documentation.
+  - LAC192: provides 3 and 4 security categories in NIST documentation.
+  - LAC256: provides 5 security category in NIST documentation.
+
+If you have any questions or suggestions, please contact luxianhui@iie.ac.cn. 
+
+
+
+
+
+
+
+

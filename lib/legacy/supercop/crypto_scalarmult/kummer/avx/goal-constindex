@@ -1,0 +1,2 @@
+20200809 titan0 amd64 20200809 crypto_scalarmult kummer/constbranchindex timecop_pass crypto_scalarmult/kummer/avx gcc_-march=native_-mtune=native_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0
+20200810 titan0 amd64 20200810 crypto_scalarmult kummer/constbranchindex timecop_pass crypto_scalarmult/kummer/avx gcc_-march=native_-mtune=native_-O3_-g_-fwrapv_-fPIC_-fPIE 10 0

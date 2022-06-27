@@ -1,0 +1,6 @@
+Original (Siddharth Santurkar):
+https://github.com/sid1607/avx2-merge-sort.git
+
+Tweaks (djb):
+* crypto_sort wrapper.
+* For n not divisible by 64, use std::sort instead of crashing.

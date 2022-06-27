@@ -1,0 +1,1 @@
+../../groestl256/arm32/groestl_core_asm_q.h

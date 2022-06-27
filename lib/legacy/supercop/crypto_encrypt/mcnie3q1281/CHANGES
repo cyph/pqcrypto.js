@@ -1,0 +1,5 @@
+Increase CRYPTO_BYTES to 100000.
+  (This limits message length; should instead use hybrid.)
+Remove Makefile, KAT_encrypt.c.
+Include crypto_encrypt.h in crypt.c.
+Rename randombytes() as xrandombytes() to avoid conflict.

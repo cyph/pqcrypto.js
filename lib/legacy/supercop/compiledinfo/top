@@ -1,0 +1,12 @@
+#!/bin/sh
+
+version="$1"
+shorthostname="$2"
+abi="$3"
+startdate="$4"
+o="$5"
+p="$6"
+implementationdir="$7"
+compilerword="$8"
+opi="$9"
+language="$10"

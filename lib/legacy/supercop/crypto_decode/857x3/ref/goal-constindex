@@ -1,0 +1,13 @@
+20200809 titan0 amd64 20200809 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref gcc_-march=native_-mtune=native_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0
+20200809 titan0 x86 20200809 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref gcc_-m32_-march=core2_-mtune=core2_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0
+20200809 novenablue armeabi 20200809 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref clang_-mcpu=native_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0
+20200906 titan0 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 1 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref gcc_-march=native_-mtune=native_-Os_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref gcc_-march=native_-mtune=native_-O2_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref gcc_-march=native_-mtune=native_-O_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref clang_-march=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref clang_-march=native_-Os_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref clang_-march=native_-O2_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref clang_-march=native_-O_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_decode 857x3/constbranchindex timecop_pass crypto_decode/857x3/ref clang_-mcpu=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0

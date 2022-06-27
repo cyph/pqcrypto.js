@@ -1,0 +1,1 @@
+Include crypto_kem.h in kem.c.

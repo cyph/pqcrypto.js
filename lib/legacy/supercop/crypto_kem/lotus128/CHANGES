@@ -1,0 +1,4 @@
+Incorporate lotus_kem.patch for ref, and imitate for opt+avx2.
+Eliminate OpenSSL 1.1-based SHA-512 function in favor of calling crypto_hash_sha512().
+Remove randombytes.h, which has conflicting prototype.
+Include crypto_kem.h in kem.c.

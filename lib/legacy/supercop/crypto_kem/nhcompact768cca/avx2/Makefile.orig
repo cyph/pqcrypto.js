@@ -1,0 +1,32 @@
+CC = /usr/bin/gcc
+CFLAGS = -Wall -Wextra -O3 -fomit-frame-pointer -mavx2 -march=native -mtune=native 
+
+HEADERS = params.h poly.h randombytes.h ntt.h reduce.h verify.h cpapke.h
+SOURCES = poly.c reduce.c fips202.c verify.c cpapke.c ntt.c nttasm.S 
+SOURCES += fips202x4.c  KeccakP-1600-times4-SIMD256.o
+KEM  = kem.c
+
+all:	test_kem768 \
+	speed_kem768
+
+
+test_kem768: $(HEADERS) $(SOURCES) $(KEM) test.c randombytes.c
+	$(CC) $(CFLAGS) $(SOURCES) $(KEM) randombytes.c test.c -o $@
+
+speed_kem768: $(HEADERS) $(SOURCES) $(KEM) speed.c randombytes.c cpucycles.h cpucycles.c
+	$(CC) $(CFLAGS) $(SOURCES) $(KEM) randombytes.c cpucycles.c speed.c -o $@
+
+keccak4x/KeccakP-1600-times4-SIMD256.o: keccak4x/KeccakP-1600-times4-SIMD256.c \
+																				align.h \
+																				brg_endian.h \
+																				KeccakP-1600-times4-SIMD256.c \
+																				KeccakP-1600-times4-SnP.h \
+																				KeccakP-1600-unrolling.macros \
+																			SIMD256-config.h
+	$(CC) $(CFLAGS) -c keccak4x/KeccakP-1600-times4-SIMD256.c -o $@
+
+.PHONY: clean
+
+clean:
+	-rm *_kem*
+	-rm *.o

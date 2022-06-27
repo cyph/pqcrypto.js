@@ -1,0 +1,1 @@
+../../mceliece8192128/sse/syndrome_asm.S

@@ -1,0 +1,1 @@
+Based on rsa2048 but sends along a random 12-byte nonce for AES-256-GCM instead of using nonce 0.

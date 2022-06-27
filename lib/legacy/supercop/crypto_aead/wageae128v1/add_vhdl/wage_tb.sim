@@ -1,0 +1,49 @@
+if { $gui_mode } {
+  add wave clk
+  add wave reset
+  add wave -noupdate -divider -height 32 "WAGE"
+  add wave i_dom_sep
+  add wave i_valid
+  add wave i_data
+  add wave o_valid
+  add wave o_data
+  if { $sim_mode eq "PROG_MODE" } then {
+  add wave /uut/u_dp/wage_state/sa
+  add wave wage_state_a_2
+  }
+
+
+  add wave -noupdate -divider -height 32 "WAGE CONTROL"  
+  add wave i_padding
+  add wave i_mode
+  if { $sim_mode eq "PROG_MODE" } then {
+    add wave /uut/ctl_control
+  }
+  add wave tb_state_2
+
+  
+
+  if { $sim_mode eq "PROG_MODE" } then {
+
+
+  }
+
+}
+
+vcd file wage.vcd
+vcd add /wage_tb/uut/*
+
+vcd add -r *
+vcd on
+
+run -all
+
+vcd checkpoint
+vcd off
+vcd flush
+
+if { $gui_mode } {
+  wave zoom full
+} else {  
+  exit
+}

@@ -1,0 +1,48 @@
+NTS-KEM(13,80)
+
+This directory contains the ANSI C optimized implementation of NTS-KEM(13,80)
+for SSE2/SSE4.1 platforms. The files in this directory are submitted to NIST 
+as part of the Post-Quantum Cryptography Standardization Process.
+
+
+How to Build
+------------
+In order to build the code, run the following command:
+
+make 
+
+Note that the code here depends on OpenSSL development library. You may need
+to adjust OPENSSLDIR and LIBCRYPTO variables in the 'Makefile' to suit your
+platform.
+
+Once the build is completed, you will have the following files:
+
+./lib/libntskem-13-80-sse2.a : a static library of NTS-KEM(13,80) code
+./bin/ntskem-13-80-sse2-test : a binary that tests key-gen, encap, decap and
+                               check decap status for a number of iterations
+./bin/ntskem-13-80-sse2-kat  : a binary that generates the required KAT file
+
+The code here has been tested on gcc 4.9.2 and gcc 6.3 on Linux and clang-800
+on OS X.
+
+
+How to Generate the KAT Files
+-----------------------------
+The KAT files contain a pair of req and rsp files and these can be obtained
+by executing the following command:
+
+./bin/ntskem-13-80-sse2-kat
+
+It may take a while to run. It produces PQCkemKAT_17524.req and 
+PQCkemKAT_17524.rsp, which contains 100 runs of NTS-KEM key-generation,
+encapsulation and decapsulation. The number of iterations can be changed
+from nist/PQCgenKAT.c file, look for KATNUM macro.
+
+
+
+NTS-KEM team (in alphabetical order):
+- Martin Albrecht, martin.albrecht@rhul.ac.uk
+- Carlos Cid, carlos.cid@rhul.ac.uk
+- Kenneth G. Paterson, kenny.paterson@rhul.ac.uk
+- Cen Jung Tjhai, cjt@post-quantum.com
+- Martin Tomlinson, mt@post-quantum.com

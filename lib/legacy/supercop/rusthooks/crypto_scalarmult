@@ -1,0 +1,32 @@
+use std::os::raw::c_int;
+
+#[no_mangle]
+pub unsafe extern "C"
+fn CRYPTO_NAMESPACETOP(
+  c_q:*mut u8,
+  c_n:*const u8,
+  c_p:*const u8,
+) -> c_int {
+  let n = slice::from_raw_parts(c_n,CRYPTO_SCALARBYTES);
+  let n:&[u8;CRYPTO_SCALARBYTES] = n.try_into().unwrap();
+  let p = slice::from_raw_parts(c_p,CRYPTO_BYTES);
+  let p:&[u8;CRYPTO_BYTES] = p.try_into().unwrap();
+  let q = slice::from_raw_parts_mut(c_q,CRYPTO_BYTES);
+  let q:&mut[u8;CRYPTO_BYTES] = q.try_into().unwrap();
+  crypto_scalarmult::crypto_scalarmult(q,n,p);
+  0
+}
+
+#[no_mangle]
+pub unsafe extern "C"
+fn CRYPTO_NAMESPACE(base)(
+  c_q:*mut u8,
+  c_n:*const u8,
+) -> c_int {
+  let n = slice::from_raw_parts(c_n,CRYPTO_SCALARBYTES);
+  let n:&[u8;CRYPTO_SCALARBYTES] = n.try_into().unwrap();
+  let q = slice::from_raw_parts_mut(c_q,CRYPTO_BYTES);
+  let q:&mut[u8;CRYPTO_BYTES] = q.try_into().unwrap();
+  crypto_scalarmult::crypto_scalarmult_base(q,n);
+  0
+}

@@ -1,0 +1,2 @@
+MODE = 1
+KEYBYTES = 16

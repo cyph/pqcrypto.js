@@ -1,0 +1,37 @@
+use std::os::raw::{c_int,c_ulonglong};
+
+#[no_mangle]
+pub unsafe extern "C"
+fn CRYPTO_NAMESPACETOP(
+  c_c:*mut u8,c_clen:c_ulonglong,
+  c_n:*const u8,
+  c_k:*const u8,
+) -> c_int {
+  let clen:usize = c_clen.try_into().unwrap();
+  let c = slice::from_raw_parts_mut(c_c,clen);
+  let n = slice::from_raw_parts(c_n,CRYPTO_NONCEBYTES);
+  let n:&[u8;CRYPTO_NONCEBYTES] = n.try_into().unwrap();
+  let k = slice::from_raw_parts(c_k,CRYPTO_KEYBYTES);
+  let k:&[u8;CRYPTO_KEYBYTES] = k.try_into().unwrap();
+  crypto_stream::crypto_stream(c,n,k);
+  0
+}
+
+#[no_mangle]
+pub unsafe extern "C"
+fn CRYPTO_NAMESPACE(xor)(
+  c_c:*mut u8,
+  c_m:*const u8,c_mlen:c_ulonglong,
+  c_n:*const u8,
+  c_k:*const u8,
+) -> c_int {
+  let mlen:usize = c_mlen.try_into().unwrap();
+  let m = slice::from_raw_parts(c_m,mlen);
+  let c = slice::from_raw_parts_mut(c_c,mlen);
+  let n = slice::from_raw_parts(c_n,CRYPTO_NONCEBYTES);
+  let n:&[u8;CRYPTO_NONCEBYTES] = n.try_into().unwrap();
+  let k = slice::from_raw_parts(c_k,CRYPTO_KEYBYTES);
+  let k:&[u8;CRYPTO_KEYBYTES] = k.try_into().unwrap();
+  crypto_stream::crypto_stream_xor(c,m,n,k);
+  0
+}

@@ -1,0 +1,8 @@
+All files in top directory.
+Define CATEGORY, N0 and DFR_SL_LEVEL in qc_ldpc_parameters.h.
+#include "crypto_kem.h"  in kem.c.
+Remove randombytes(), randombytes_init().
+#include "randombytes.h" in niederreiter_encrypt.c, niederreiter_keygen.c.
+Remove initialize_pseudo_random_generator_seed().
+Define LITTLE_ENDIAN in gf2x_limbs.h only if not already defined.
+Remove __USE_POSIX199309 definition from rng.h.

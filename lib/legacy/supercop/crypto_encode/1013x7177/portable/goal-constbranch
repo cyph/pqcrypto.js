@@ -1,0 +1,10 @@
+20200906 titan0 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 1 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable gcc_-march=native_-mtune=native_-Os_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable gcc_-march=native_-mtune=native_-O2_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable gcc_-march=native_-mtune=native_-O_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable clang_-march=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable clang_-march=native_-Os_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable clang_-march=native_-O2_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable clang_-march=native_-O_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201021 crypto_encode 1013x7177/constbranchindex timecop_pass crypto_encode/1013x7177/portable clang_-mcpu=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0

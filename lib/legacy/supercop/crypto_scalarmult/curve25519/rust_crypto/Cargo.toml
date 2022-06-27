@@ -1,0 +1,7 @@
+[package]
+name = "crypto_scalarmult_curve25519"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+rust-crypto = "^0.2"

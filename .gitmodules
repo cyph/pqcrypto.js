@@ -1,0 +1,23 @@
+[submodule "lib/libsodium"]
+	path = lib/libsodium
+	url = https://github.com/jedisct1/libsodium
+	branch = stable
+[submodule "lib/sidh"]
+	path = lib/sidh
+	url = https://github.com/Microsoft/PQCrypto-SIDH
+[submodule "lib/sodiumutil"]
+	path = lib/sodiumutil
+	url = https://github.com/cyph/sodiumutil
+[submodule "lib/pqclean"]
+	path = lib/pqclean
+	url = https://github.com/PQClean/PQClean
+[submodule "lib/legacy/ntru"]
+	path = lib/legacy/ntru
+	url = https://github.com/buu700/NTRUEncrypt-Archive
+[submodule "lib/legacy/sphincs-erlang-binding"]
+	path = lib/legacy/sphincs-erlang-binding
+	url = https://github.com/ahf/sphincs
+[submodule "lib/openssl"]
+	path = lib/openssl
+	url = https://github.com/openssl/openssl
+	branch = OpenSSL_1_1_1-stable

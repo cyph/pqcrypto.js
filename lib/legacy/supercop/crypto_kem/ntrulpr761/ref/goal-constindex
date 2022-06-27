@@ -1,0 +1,2 @@
+20200906 titan0 amd64 20201021 crypto_kem ntrulpr761/constbranchindex timecop_pass crypto_kem/ntrulpr761/ref gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 1 0
+20200906 titan0 amd64 20201021 crypto_kem ntrulpr761/constbranchindex timecop_output crypto_kem/ntrulpr761/ref gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 297cf8cfda15531359689ee2edc121f31891606521c6b576a992ca4d44711fbe 7258493328 35290362932 3500000000 crypto_kem/ntrulpr761/ref

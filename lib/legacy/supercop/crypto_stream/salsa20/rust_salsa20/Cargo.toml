@@ -1,0 +1,7 @@
+[package]
+name = "crypto_stream_salsa20"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+salsa20 = "^0.7"

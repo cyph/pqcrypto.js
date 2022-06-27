@@ -1,0 +1,1 @@
+../../../kumfp127g/v02/var/_core.h

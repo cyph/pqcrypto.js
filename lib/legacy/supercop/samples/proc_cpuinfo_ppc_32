@@ -1,0 +1,11 @@
+processor	: 0
+cpu		: 750CL
+clock		: 729.000000MHz
+revision	: 114.0 (pvr 0008 7200)
+bogomips	: 121.56
+timebase	: 60750000
+platform	: wii
+model		: nintendo,wii
+vendor		: IBM
+machine		: Nintendo Wii
+Memory		: 317 MB

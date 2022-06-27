@@ -1,0 +1,1 @@
+../../jh224/bitslice_opt32/nist.c

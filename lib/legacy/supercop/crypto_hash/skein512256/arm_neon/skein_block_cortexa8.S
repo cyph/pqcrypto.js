@@ -1,0 +1,1 @@
+../../skein256256/arm_neon/skein_block_cortexa8.S

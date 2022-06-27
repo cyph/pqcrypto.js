@@ -1,0 +1,8 @@
+This implementation precompiles the top level of the "factored"
+implementation and various small subroutines, while still calling
+crypto_hash_sha512, crypto_sort_uint32, crypto_core_mult*, and
+crypto_core_inv* by reference.
+
+"./merge" uses the local compilers to rebuild all .s and .c files here.
+In the table of subroutines inside the script, specifying a compiler as
+"False" means that the subroutine is called by reference.

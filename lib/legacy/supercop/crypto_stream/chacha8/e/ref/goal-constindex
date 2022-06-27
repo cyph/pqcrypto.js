@@ -1,0 +1,3 @@
+20200809 titan0 amd64 20200809 crypto_stream chacha8/constbranchindex timecop_pass crypto_stream/chacha8/e/ref gcc_-march=native_-mtune=native_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0
+20200809 titan0 x86 20200809 crypto_stream chacha8/constbranchindex timecop_pass crypto_stream/chacha8/e/ref gcc_-m32_-march=core2_-mtune=core2_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0
+20200809 novenablue armeabi 20200809 crypto_stream chacha8/constbranchindex timecop_pass crypto_stream/chacha8/e/ref clang_-mcpu=native_-O3_-g_-fwrapv_-fPIC_-fPIE 1 0

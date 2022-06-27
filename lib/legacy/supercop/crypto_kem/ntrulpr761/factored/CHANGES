@@ -1,0 +1,49 @@
+Reverse-chronological changelog for ntrulpr*/factored:
+
+Added abort if crypto_stream_aes256ctr() fails. (There are some AES
+implementations that never fail, but OpenSSL can fail if it runs out of
+memory.)
+
+Used crypto_stream_aes256ctr_publicinputs() for the public generator.
+
+Used CRYPTO_NAMESPACE.
+
+Used crypto_verify_clen.
+
+Rearranged variables for better stack usage.
+
+Introduced ppadsort.
+
+Factored out crypto_core_multsntrup761. (Same for other sizes.)
+
+Special-cased reduction mod 3 for F3_freeze().
+Special-cased reduction mod q for Fq_freeze().
+Special-cased reduction mod q for Generator().
+Delayed reduction inside multiplication.
+
+Factored out crypto_encode_761x1531round. (Same for other sizes.)
+Factored out crypto_{encode,decode}_761x1531. (Same for other sizes.)
+Factored out crypto_{encode,decode}_761x3. (Same for other sizes.)
+Factored out crypto_{encode,decode}_256x16.
+Factored out crypto_{encode,decode}_256x2.
+
+Merged r_enc into x to avoid copies.
+Allocated an extra byte at the beginning of r_enc.
+Allocated an extra byte at the beginning of s for Hash5.
+Allocated an extra byte at the beginning of x for Hash2.
+Inlined HashShort.
+Inlined HashConfirm.
+Inlined HashSession (at two spots).
+Inlined prefix part of Hash_prefix(), leaving Hash().
+
+Inlined KEM_KeyGen, ZKeyGen, XKeyGen, KeyGen.
+Inlined Encap, ZEncrypt, XEncrypt, Encrypt.
+Inlined Decap, ZDecrypt, XDecrypt, Decrypt.
+Inlined Inputs_random.
+Inlined Seeds_random.
+
+Integrated paramsmenu.h into params.h.
+
+Removed Streamlined NTRU Prime code.
+
+Started from ref.

@@ -1,0 +1,2 @@
+CCA-2 secure product-form NTRU public-key encryption with 256-bit equivalent security.
+Relevant parameters: parameter set: NTRU_EES1499EP1, N=1499, q=2048, maximum message length = 247 bytes.

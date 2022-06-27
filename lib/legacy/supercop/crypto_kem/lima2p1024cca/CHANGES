@@ -1,0 +1,4 @@
+All files in top directory.
+Remove PQC*, rng.c, rng.h.
+Include randombytes.h instead of rng.h.
+Include crypto_kem.h in kem.c.

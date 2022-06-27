@@ -1,0 +1,1 @@
+../../ascon128av12/bi32_armv6m/config.h

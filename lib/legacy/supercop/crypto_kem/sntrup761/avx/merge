@@ -1,0 +1,235 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+import re
+import subprocess
+
+p,q,clen = sys.argv[1:]
+q23 = (int(q)+2)//3
+
+target = ('crypto_kem','sntrup%s'%p,'avx')
+
+clangOs = 'clang -fno-addrsig -fPIC -fPIE -fwrapv -Os -fomit-frame-pointer -march=haswell -mtune=haswell'
+clangO2 = 'clang -fno-addrsig -fPIC -fPIE -fwrapv -O2 -fomit-frame-pointer -march=haswell -mtune=haswell'
+clangO3 = 'clang -fno-addrsig -fPIC -fPIE -fwrapv -O3 -fomit-frame-pointer -march=haswell -mtune=haswell'
+gccOs = 'gcc -fPIC -fPIE -fwrapv -Os -fomit-frame-pointer -march=haswell -mtune=haswell'
+gccO2 = 'gcc -fPIC -fPIE -fwrapv -O2 -fomit-frame-pointer -march=haswell -mtune=haswell'
+gccO3 = 'gcc -fPIC -fPIE -fwrapv -O3 -fomit-frame-pointer -march=haswell -mtune=haswell'
+
+subroutines = (
+  ('crypto_hash','sha512','ref',False),
+  ('crypto_sort','uint32','useint32',False),
+  ('crypto_verify',clen,'avx',gccOs),
+  ('crypto_decode','int16','ref',clangOs),
+  ('crypto_decode','%sx3'%p,'avx',clangOs),
+  ('crypto_decode','%sx%s'%(p,q23),'avx',clangOs),
+  ('crypto_decode','%sx%s'%(p,q),'avx',clangOs),
+  ('crypto_decode','%sxint16'%p,'little',clangOs),
+  ('crypto_decode','%sxint32'%p,'little',clangOs),
+  ('crypto_encode','int16','ref',clangOs),
+  ('crypto_encode','%sx3'%p,'avx',clangOs),
+  ('crypto_encode','%sxfreeze3'%p,'avx',clangO2),
+  ('crypto_encode','%sx%s'%(p,q23),'avx',gccOs),
+  ('crypto_encode','%sx%sround'%(p,q23),'avx',gccOs),
+  ('crypto_encode','%sx%s'%(p,q),'avx',gccO2),
+  ('crypto_encode','%sxint16'%p,'little',clangOs),
+  ('crypto_core','scale3sntrup%s'%p,'avx',clangO3),
+  ('crypto_core','weightsntrup%s'%p,'avx',clangOs),
+  ('crypto_core','wforcesntrup%s'%p,'avx',gccO2),
+  ('crypto_core','mult3sntrup%s'%p,'ref',False),
+  ('crypto_core','multsntrup%s'%p,'ref',False),
+  ('crypto_core','inv3sntrup%s'%p,'ref',False),
+  ('crypto_core','invsntrup%s'%p,'ref',False),
+  ('crypto_kem','sntrup%s'%p,'factored',gccO3),
+)
+
+moresymbols = (
+  'crypto_core_mult3sntrup%s_avx2unsigned_mult3_32x32'%p,
+  'crypto_core_mult3sntrup%s_avx2unsigned_mult3_768_refined_karatsuba3'%p,
+  'crypto_core_mult3sntrup%s_avx2unsigned_mult3_768_karatsuba3'%p,
+  'crypto_core_multsntrup%s_avx_ntt512_7681'%p,
+  'crypto_core_multsntrup%s_avx_ntt512_10753'%p,
+  'crypto_core_multsntrup%s_avx_invntt512_7681'%p,
+  'crypto_core_multsntrup%s_avx_invntt512_10753'%p,
+)
+
+topdir = '../../..'
+
+namespace = '%s_%s_%s'%target
+
+def readfile(fn):
+  with open(fn,'r') as f:
+    return f.read()
+
+def writefile(fn,s):
+  with open(fn,'w') as f:
+    f.write(s)
+
+def crypto_namespace(fn,opi):
+  x = readfile(fn)
+  x = re.sub(r'\b%s_(\w*)\b'%opi,r'CRYPTO_NAMESPACE(\1)',x)
+  writefile(fn,x)
+
+operations = readfile('%s/OPERATIONS'%topdir).splitlines()
+macros = readfile('%s/MACROS'%topdir).splitlines()
+prototypes = readfile('%s/PROTOTYPES.c'%topdir).splitlines()
+macros += moresymbols
+
+writefile('crypto_declassify.h',
+  'extern void crypto_declassify(void *,unsigned long long);\n')
+
+for x,y in (
+  ('crypto_int8','int8_t'),
+  ('crypto_int16','int16_t'),
+  ('crypto_int32','int32_t'),
+  ('crypto_int64','int64_t'),
+  ('crypto_uint8','uint8_t'),
+  ('crypto_uint16','uint16_t'),
+  ('crypto_uint32','uint32_t'),
+  ('crypto_uint64','uint64_t'),
+):
+  writefile('%s.h'%x,"""\
+#ifndef %s_H
+#define %s_H
+#include <stdint.h>
+typedef %s %s;
+#endif
+"""%(x,x,y,x))
+
+for x in ('randombytes',):
+  writefile('%s.h'%x,"""\
+#ifndef %s_H
+#define %s_H
+extern void %s(unsigned char *,unsigned long long);
+#endif
+"""%(x,x,x))
+
+for o,p,i,compiler in subroutines:
+  implementationdir='%s/%s/%s/%s'%(topdir,o,p,i)
+  op = '%s_%s'%(o,p)
+  origopi = '%s_%s'%(op,i)
+  opi = '%s_%s'%(namespace,op)
+  if (o,p) == target[:2]:
+    opi = namespace
+
+  api = readfile('%s/api.h' % implementationdir)
+  api = api.splitlines()
+  apidict = {}
+  for line in api:
+    apiline = line.strip().split()
+    if len(apiline) == 0: continue
+    try:
+      assert apiline[0] == '#define'
+      assert len(apiline) == 3
+      assert apiline[2] == str(int(apiline[2]))
+      apidict[apiline[1]] = apiline[2]
+    except:
+      raise Exception('api.h looseness: %s'%line)
+
+  x = ''
+  x += '#ifndef %s_H\n' % op
+  x += '#define %s_H\n' % op
+  x += '\n'
+  for m in macros:
+    m = m.strip()
+    if m == o or m.startswith(o + '_'):
+      x += '#define %s%s %s%s\n' % (op,m[len(o):],opi,m[len(o):])
+  x += '#define %s_implementation %s_implementation\n' % (op,opi)
+  x += '#define %s_version %s_version\n' % (op,opi)
+  x += '#define %s_compiler %s_compiler\n' % (op,opi)
+
+  x += '\n'
+  for m in macros:
+    m = m.strip()
+    if m.startswith(o + '_'):
+      key = 'CRYPTO%s' % m[len(o):]
+      if key in apidict:
+        x += '#define %s%s %s\n' % (opi,m[len(o):],apidict[key])
+        x += '#define %s%s %s\n' % (origopi,m[len(o):],apidict[key])
+
+  x += '\n'
+  for fun in prototypes:
+    fun = fun.strip()
+    if re.search(' %s[(_]' % o,fun):
+      x += '%s\n' % re.sub(' %s' % o,' %s' % op,fun)
+
+  x += '\n'
+  x += '#endif\n'
+
+  writefile('%s.h'%op,x)
+
+  if compiler:
+    x = ''
+    x += '#ifndef %s_H\n' % o
+    x += '#define %s_H\n' % o
+    x += '\n'
+    x += '#include "%s.h"\n' % op
+    for m in macros:
+      m = m.strip()
+      if m == o or m.startswith(o + '_'):
+        x += '#define %s %s%s\n' % (m,op,m[len(o):])
+    x += '#define %s_primitive "%s"\n' % (o,p)
+    x += '#define %s_implementation %s_implementation\n' % (o,op)
+    x += '#define %s_version %s_version\n' % (o,op)
+    x += '#define %s_compiler %s_compiler\n' % (o,op)
+    x += '\n'
+    x += '#endif\n'
+  
+    writefile('%s.h'%o,x)
+  
+    files = sorted(os.listdir(implementationdir))
+    cfiles = [x for x in files if x.endswith('.c')]
+    sfiles = [x for x in files if x.endswith('.s') or x.endswith('.S')]
+    files = cfiles+sfiles
+  
+    for fn in files:
+      if fn.startswith('batch'): continue
+      infile = '%s/%s'%(implementationdir,fn)
+      outfile = '%s_%s_%s_%s.S'%(o,p,i,fn[:-2])
+      c = compiler
+      if callable(c): c = c(fn)
+      subprocess.run(c.split()+['-S','-I.','-o',outfile,infile])
+      crypto_namespace(outfile,namespace)
+      when = os.stat(infile).st_mtime
+      os.utime(outfile,(when,when))
+
+  else:
+    x = ''
+    x += '#include "%s.h"\n' % op
+    for fun in prototypes:
+      fun = fun.strip()
+      if re.search(' %s[(]' % o,fun):
+        fun = re.sub('^extern ','',fun)
+        fun = re.sub(';$','',fun)
+
+        fun,params = fun.split('(')
+        params = params.split(')')[0]
+        params = params.split(',')
+
+        contents = re.sub('.* %s'%o,op,fun)
+        fun = re.sub(' %s'%o,' %s'%opi,fun)
+        
+        args = ['v%d'%i for i in range(len(params))]
+        for i in range(len(params)):
+          if params[i][-1] != '*':
+            params[i] += ' '
+          params[i] += args[i]
+
+        if not fun.startswith('void'):
+          contents = 'return '+contents
+        x += '\n'
+        x += '%s(%s)\n'%(fun,','.join(params))
+        x += '{\n'
+        x += '  %s(%s);\n'%(contents,','.join(args))
+        x += '}\n'
+
+    writefile('%s_hook.c'%op,x)
+    crypto_namespace('%s_hook.c'%op,namespace)
+    when = os.stat('merge').st_mtime
+    os.utime('%s_hook.c'%op,(when,when))
+
+os.remove('randombytes.h')
+for fn in os.listdir():
+  if fn.startswith('crypto_') and fn.endswith('.h'):
+    os.remove(fn)

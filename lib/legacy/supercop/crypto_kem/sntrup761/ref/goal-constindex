@@ -1,0 +1,8 @@
+20200906 titan0 amd64 20201021 crypto_kem sntrup761/constbranchindex timecop_pass crypto_kem/sntrup761/ref gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 1 0
+20200906 titan0 amd64 20201021 crypto_kem sntrup761/constbranchindex timecop_output crypto_kem/sntrup761/ref gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 6ed36f5f679c34f70528d4dace29b7e53109051f5b113dcffb0e7844d976ec4f 4955974360 40673583812 3500000000 crypto_kem/sntrup761/ref
+20201018 bolerobullseye1 amd64 20201023 crypto_kem sntrup761/constbranchindex timecop_pass crypto_kem/sntrup761/ref gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201023 crypto_kem sntrup761/constbranchindex timecop_pass crypto_kem/sntrup761/ref gcc_-march=native_-mtune=native_-O2_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201023 crypto_kem sntrup761/constbranchindex timecop_pass crypto_kem/sntrup761/ref clang_-march=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201023 crypto_kem sntrup761/constbranchindex timecop_pass crypto_kem/sntrup761/ref clang_-march=native_-O2_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201023 crypto_kem sntrup761/constbranchindex timecop_pass crypto_kem/sntrup761/ref clang_-march=native_-O_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0
+20201018 bolerobullseye1 amd64 20201023 crypto_kem sntrup761/constbranchindex timecop_pass crypto_kem/sntrup761/ref clang_-mcpu=native_-O3_-fomit-frame-pointer_-fwrapv_-Qunused-arguments_-fPIC_-fPIE 10 0

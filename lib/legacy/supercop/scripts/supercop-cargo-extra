@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo ''
+echo '[build-dependencies]'
+echo 'cc = { git = "https://github.com/alexcrichton/cc-rs", version = "1.0.67", rev = "3283434ee41f2a1be6c78fe6d6a3ec8eb92b1833" }'
+echo ''
+echo '[[bin]]'
+echo 'name = "try-small"'
+echo ''
+echo '[[bin]]'
+echo 'name = "try"'
+echo ''
+echo '[[bin]]'
+echo 'name = "measure"'

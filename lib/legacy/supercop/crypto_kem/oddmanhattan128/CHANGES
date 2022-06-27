@@ -1,0 +1,7 @@
+Remove Makefile.
+#include "crypto_kem.h" instead of #include "api.h".
+crypto_kem_* instead of CRYPTO_*.
+Remove function prototypes and #ifndef etc. from api.h.
+Remove randombytes* functions.
+#include "randombytes.h"
+Handle c=t overlap in dec.

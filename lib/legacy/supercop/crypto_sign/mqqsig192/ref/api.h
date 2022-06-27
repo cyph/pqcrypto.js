@@ -1,0 +1,8 @@
+#include "mqqsig.h"
+
+
+#define CRYPTO_SECRETKEYBYTES (N*2+9*9)
+#define CRYPTO_PUBLICKEYBYTES (PUBLICKEY_SIZE_L*PUBLICKEY_SIZE_S)
+#define CRYPTO_BYTES (N/8)
+#define CRYPTO_VERSION "1.00"
+

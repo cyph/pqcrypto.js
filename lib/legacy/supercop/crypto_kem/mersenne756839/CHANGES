@@ -1,0 +1,6 @@
+Include NIST's rng.c, rng.h without randombytes().
+Copy api.h definitions into Mersenne_kem.c.
+#include "crypto_kem.h" in Mersenne_kem.c.
+#include "randombytes.h" in Mersenne_kem.c.
+Replace api.h with minimalist numeric api.h.
+Handle c=t overlap in dec.

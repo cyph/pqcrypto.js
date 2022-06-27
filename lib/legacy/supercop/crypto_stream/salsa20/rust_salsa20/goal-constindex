@@ -1,0 +1,2 @@
+20210423 titan0 amd64 20210422 crypto_stream salsa20/constbranchindex timecop_pass crypto_stream/salsa20/rust_salsa20 gcc_-march=native_-mtune=native_-O3_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0
+20210423 titan0 amd64 20210422 crypto_stream salsa20/constbranchindex timecop_pass crypto_stream/salsa20/rust_salsa20 gcc_-march=native_-mtune=native_-O2_-fomit-frame-pointer_-fwrapv_-fPIC_-fPIE 10 0

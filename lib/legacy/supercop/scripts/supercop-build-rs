@@ -1,0 +1,46 @@
+#!/bin/sh
+
+op="$1"
+shift
+
+echo 'use std::env;'
+echo ''
+echo 'fn main() {'
+if [ -f "lib$op.a" ]
+then
+  echo '  println!("cargo:rustc-link-lib=static='"$op"'");'
+  echo '  println!("cargo:rustc-link-search=native=.");'
+fi
+for d in "$@"
+do
+  echo '  println!("cargo:rustc-link-search=native='"$d"'");'
+done
+echo '  let out_dir = env::var("OUT_DIR").unwrap();'
+echo '  println!("cargo:rustc-link-search=native={}",out_dir);'
+echo '  cc::Build::new()'
+echo '    .cargo_metadata(false)'
+echo '    .file("try-small.c")'
+echo '    .compile("try-small");'
+echo '  println!("cargo:rerun-if-changed=try-small.c");'
+echo '  cc::Build::new()'
+echo '    .cargo_metadata(false)'
+echo '    .file("try.c")'
+echo '    .compile("try");'
+echo '  println!("cargo:rerun-if-changed=try.c");'
+echo '  cc::Build::new()'
+echo '    .cargo_metadata(false)'
+echo '    .file("try-anything.c")'
+echo '    .compile("try-anything");'
+echo '  println!("cargo:rerun-if-changed=try-anything.c");'
+echo '  cc::Build::new()'
+echo '    .cargo_metadata(false)'
+echo '    .define("LOOPS","3")'
+echo '    .file("measure.c")'
+echo '    .compile("measure");'
+echo '  println!("cargo:rerun-if-changed=measure.c");'
+echo '  cc::Build::new()'
+echo '    .cargo_metadata(false)'
+echo '    .file("measure-anything.c")'
+echo '    .compile("measure-anything");'
+echo '  println!("cargo:rerun-if-changed=measure-anything.c");'
+echo '}'

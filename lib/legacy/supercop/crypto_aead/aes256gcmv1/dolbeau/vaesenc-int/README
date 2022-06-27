@@ -1,0 +1,1 @@
+This implemenation requires VPCLMULQDQ & VAES, which Intel document #319433-034 & the Intel Software Development Emulator both describe as arriving in Ice Lake/Icelake.

@@ -1,0 +1,37 @@
+#!/bin/sh
+
+o="$1"; shift
+op="$1"; shift
+opi="$1"; shift
+
+# works with rust 2015 and 2018:
+echo "extern crate $op as $o;"
+# works only with rust 2018:
+# echo "use $op as $o;"
+echo ''
+
+echo 'use std::convert::TryInto;'
+echo 'use std::slice;'
+echo ''
+
+api=`sed 's:#define CRYPTO_\([A-Z]*\) \([0-9]*\):s/CRYPTO_\1/\2/g:' < api.h`
+
+sed 's/CRYPTO_NAMESPACETOP/'"$opi"'/g' < "rusthooks/$o" \
+| sed 's/CRYPTO_NAMESPACE(\([a-zA-Z0-9_]*\))/'"$opi"'_\1/g' \
+| sed "$api"
+
+echo ''
+
+for lib in "$@"
+do
+  echo '#[link(name="'"$lib"'")]'
+done
+echo 'extern "C" {'
+echo '  fn c_main() -> c_int;'
+echo '}'
+echo ''
+echo 'fn main() {'
+echo '  unsafe {'
+echo '    std::process::exit(c_main())'
+echo '  }'
+echo '}'

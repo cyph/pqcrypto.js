@@ -1,0 +1,96 @@
+NTS-KEM(13,136)
+
+This directory contains the ANSI C reference implementation of NTS-KEM(13,136)
+submitted to NIST as part of the Post-Quantum Cryptography Standardization
+Process.
+
+
+How to Build
+------------
+In order to build the code, run the following command:
+
+make 
+
+Note that the code here depends on OpenSSL development library. You may need
+to adjust OPENSSLDIR and LIBCRYPTO variables in the 'Makefile' to suit your
+platform.
+
+Once the build is completed, you will have the following files:
+
+./lib/libntskem-13-136.a   : a static library of NTS-KEM(13,136) code
+./bin/ntskem-13-136-test   : a binary that tests key-gen, encap, decap and
+                             check decap status for a number of iterations
+./bin/ntskem-13-136-kat    : a binary that generates the required KAT file
+./bin/ntskem-13-136-intval : a binary that in addition to generate the KAT
+                             file, also produce intermediate values
+
+The code here has been tested on gcc 4.9.2 and gcc 6.3 on Linux and clang-800
+on OS X.
+
+
+How to Generate the KAT Files
+-----------------------------
+The KAT files contain a pair of req and rsp files and these can be obtained
+by executing the following command:
+
+./bin/ntskem-13-136-kat
+
+It may take a while to run. It produces PQCkemKAT_19890.req and 
+PQCkemKAT_19890.rsp, which contains 100 runs of NTS-KEM key-generation,
+encapsulation and decapsulation. The number of iterations can be changed
+from nist/PQCgenKAT.c file, look for KATNUM macro.
+
+
+How to Generate the Intermediate Values
+---------------------------------------
+The intermediate values may be obtained by executing the following command:
+
+./bin/ntskem-13-136-intval
+
+and the intermediate values are printed to stdout. Like the KAT files, the
+binary produces the intermediate values of NTS-KEM key-generation,
+encapsulation and decapsulation for 100 iterations.
+
+Currently, the following intermediate values are output. The step numbers
+are matched to NTS-KEM specifications (Section 3 of the supporting document).
+
+Key-generation:
+   Step 1. Randomly generated monic Goppa polynomial Gz. Each sampled Goppa 
+           polynomial is shown, including its status (valid or invalid)
+   Step 2. Random permutation vector p
+   Step 3. Construct a generator matrix:
+     (a) Vector a after permutation by p
+     (b) Vector h after permutation by p
+     (c) The parity-check matrix H (not in reduced-echelon form)
+     (d) The parity-check matrix H (in reduced-echelon form)
+     (d) Vectors p, a, h after potential column swapping introduced in (d)
+     (e) The matrix Q
+   Step 4. The vector a* (labelled a_ast) and h* (labelled h_ast)
+
+Encapsulation:
+   Step 1-2. Randomly error vector e.
+   Step 3. The vector k_e = SHAKE256(e)
+   Step 4. The message vector m
+   Step 5. The two parts of the ciphertext: c_b and c_c
+   Step 6. The vector k_r
+
+Decapsulation:
+   Step 1(a)-(c). The syndrome vector s
+   Step 1(d). The output of Berlekamp-Massey algorithm: sigma and xi
+   Step 1(e). The output of multipoint evaluation of sigma with FFT
+   Step 1(f). The error vector e_prime
+   Step 2. The permuted version of e_prime: vector e
+   Step 3. The vector k_e, recovered from ciphertext and vector e
+   Step 4. Output of SHAKE256(e) and vector k_r
+
+Note that all random bytes are obtained using AES_CTR_DRBG (SP800-90A section 
+10.2.1.5.1), initialised by the per-run 'seed' value.
+
+
+
+NTS-KEM team (in alphabetical order):
+- Martin Albrecht, martin.albrecht@rhul.ac.uk
+- Carlos Cid, carlos.cid@rhul.ac.uk
+- Kenneth G. Paterson, kenny.paterson@rhul.ac.uk
+- Cen Jung Tjhai, cjt@post-quantum.com
+- Martin Tomlinson, mt@post-quantum.com
