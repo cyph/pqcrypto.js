@@ -1,1 +1,1 @@
-var ntru = (function () { 
+var ntru = (function () {

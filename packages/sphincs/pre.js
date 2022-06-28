@@ -1,3 +1,3 @@
-var sphincs	= (function () { 
+var sphincs	= (function () {
 
 var getSphincsModule	= function () {

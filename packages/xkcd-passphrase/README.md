@@ -33,7 +33,7 @@ itself has not yet been audited. Use at your own risk.
 		 * avalanche shady launder issueless freebee maude unedited spearhead nickname fleshed
 		 * dissuade rudolph spouse lupe babolat severity chapman liquefy skunk humongous chatroom
 		 * eatable kay cypress olson found emergency tree
-		 */ 
+		 */
 
 		console.log(await xkcdPassphrase.generate(32, [
 			'my',
@@ -47,7 +47,7 @@ itself has not yet been audited. Use at your own risk.
 			'while',
 			'drunk'
 		]));
-		/* that awful that custom list word list that custom custom */ 
+		/* that awful that custom list word list that custom custom */
 
 		console.log(await xkcdPassphrase.generateWithWordCount(4));
 		/* oscar jury email tugboat */

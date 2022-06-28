@@ -2,7 +2,7 @@
 
 ## Overview
 
-[RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) with key length 2048 and 
+[RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) with key length 2048 and
 hash function [SHA-256](https://en.wikipedia.org/wiki/SHA-2) wrapped for usage in JavaScript.
 
 The platform native RSA implementation (via
@@ -33,7 +33,7 @@ Otherwise, the OpenSSL implementation compiled to pure JavaScript with
 		;
 
 		/* Detached signatures */
-		
+
 		const signature /*: Uint8Array */ =
 			await rsaSign.signDetached(message, keyPair.privateKey)
 		;

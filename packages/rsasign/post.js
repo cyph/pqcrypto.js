@@ -64,7 +64,7 @@ function importJWK (key, purpose) {
 		});
 	});
 }
-	
+
 function exportJWK (key, bytes) {
 	return Promise.resolve().then(function () {
 		if (typeof key === 'string') {

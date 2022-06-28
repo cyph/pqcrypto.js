@@ -32,7 +32,7 @@ instead.
 		;
 
 		/* Detached signatures */
-		
+
 		const signature /*: Uint8Array */ =
 			await falcon.signDetached(message, keyPair.privateKey)
 		;

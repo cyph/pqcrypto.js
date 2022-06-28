@@ -113,7 +113,7 @@ function deriveEncryptionKey (password, salt) {
 		});
 	}
 	else {
-		return Promise.resolve().then(function () {	
+		return Promise.resolve().then(function () {
 			return crypto.subtle.importKey(
 				'raw',
 				sodiumUtil.from_string(password),

@@ -50,7 +50,7 @@ Breaking changes in major versions:
 
   - Upgraded to McBits 2.0 and switched symmetric cypher from Salsa20 to ChaCha20.
 
-  - Fixed a bug that sometimes caused invalid output. 
+  - Fixed a bug that sometimes caused invalid output.
 
   - Decreased maximum plaintext size from 403 to 106 (for consistency with ntru.js, as well as
     smaller output).

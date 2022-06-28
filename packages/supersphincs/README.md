@@ -2,9 +2,11 @@
 
 ## Overview
 
-SuperSPHINCS combines the post-quantum [SPHINCS](https://sphincs.cr.yp.to) with the more conventional [RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
-SPHINCS is provided by [sphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs) and RSA signing is performed
-using [rsasign](https://github.com/cyph/pqcrypto.js/tree/master/packages/rsasign).
+SuperSPHINCS combines the post-quantum [SPHINCS](https://sphincs.cr.yp.to) with the more conventional
+[RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
+SPHINCS is provided by [sphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs)
+and RSA signing is performed using
+[rsasign](https://github.com/cyph/pqcrypto.js/tree/master/packages/rsasign).
 
 Before signing, a SHA-512 hash is performed, using the current platform's native implementation
 where available or an efficient JavaScript implementation from
@@ -39,7 +41,7 @@ where available or an efficient JavaScript implementation from
 		;
 
 		/* Detached signatures */
-		
+
 		const signature /*: Uint8Array */ =
 			await superSphincs.signDetached(message, keyPair.privateKey, additionalData)
 		;

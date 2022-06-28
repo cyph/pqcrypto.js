@@ -36,7 +36,7 @@ long rsasignjs_keypair (
 	if (RSA_generate_key_ex(rsa, RSASIGNJS_BITS, prime, NULL) != 1) {
 		return 1;
 	}
-	
+
 	i2d_RSA_PUBKEY(rsa, &public_key);
 	i2d_RSAPrivateKey(rsa, &private_key);
 
