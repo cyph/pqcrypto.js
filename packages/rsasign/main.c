@@ -122,6 +122,10 @@ int RAND_bytes (unsigned char *buf, int num) {
 	return 1;
 }
 
+int RAND_priv_bytes (unsigned char *buf, int num) {
+	return RAND_bytes(buf, num);
+}
+
 int RAND_pseudo_bytes (unsigned char *buf, int num) {
 	return RAND_bytes(buf, num);
 }
@@ -135,3 +139,5 @@ int RAND_status () {
 }
 
 void rand_cleanup_int () {}
+
+void rand_pool_free (void *pool) {}

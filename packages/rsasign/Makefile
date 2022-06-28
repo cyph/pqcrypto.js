@@ -23,6 +23,7 @@ all:
 			-Ilibsodium/src/libsodium/include/sodium \
 			-Iopenssl -Iopenssl/include -Iopenssl/crypto \
 			libsodium/src/libsodium/randombytes/randombytes.c \
+			openssl/crypto/rand/drbg_lib.o \
 			openssl/crypto/rand/rand_err.o \
 			$$(find openssl/crypto -type f -name "*.o" -not -path "openssl/crypto/rand/*" | tr "\n" " ") \
 			main.c \
