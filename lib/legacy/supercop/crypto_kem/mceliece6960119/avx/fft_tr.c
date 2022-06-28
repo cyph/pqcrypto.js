@@ -1,9 +1,6 @@
 /*
   This file is for transpose of the Gao-Mateer FFT
   Functions with names ending with _tr are (roughly) the transpose of the corresponding functions in fft.c
-
-  For the implementation strategy, see
-  https://eprint.iacr.org/2017/793.pdf
 */
 
 #include "fft_tr.h"

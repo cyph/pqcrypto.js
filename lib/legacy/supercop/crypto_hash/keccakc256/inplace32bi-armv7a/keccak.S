@@ -462,8 +462,8 @@
 @// --- code and constants
 
 @//int crypto_hash( unsigned char *out, const unsigned char *in, unsigned long long inlen )
-.global   CRYPTO_NAMESPACETOP           @
-CRYPTO_NAMESPACETOP:                    @
+.global   crypto_hash_keccakc256_inplace32bi_armv7a           @
+crypto_hash_keccakc256_inplace32bi_armv7a:                    @
 
     push  {r4-r12,lr}
     sub    sp, sp, #10*4

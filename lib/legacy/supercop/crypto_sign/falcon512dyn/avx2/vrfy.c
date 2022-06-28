@@ -663,7 +663,7 @@ falcon512dyn_avx2_verify_raw(const uint16_t *c0, const int16_t *s2,
 	}
 
 	/*
-	 * Compute -s1 = s2*h - c0 mod phi mod q (in tt[]).
+	 * Compute s1 = s2*h - c0 mod phi mod q (in tt[]).
 	 */
 	mq_NTT(tt, logn);
 	mq_poly_montymul_ntt(tt, h, logn);
@@ -671,7 +671,7 @@ falcon512dyn_avx2_verify_raw(const uint16_t *c0, const int16_t *s2,
 	mq_poly_sub(tt, c0, logn);
 
 	/*
-	 * Normalize -s1 elements into the [-q/2..q/2] range.
+	 * Normalize s1 elements into the [-q/2..q/2] range.
 	 */
 	for (u = 0; u < n; u ++) {
 		int32_t w;
@@ -682,7 +682,7 @@ falcon512dyn_avx2_verify_raw(const uint16_t *c0, const int16_t *s2,
 	}
 
 	/*
-	 * Signature is valid if and only if the aggregate (-s1,s2) vector
+	 * Signature is valid if and only if the aggregate (s1,s2) vector
 	 * is short enough.
 	 */
 	return falcon512dyn_avx2_is_short((int16_t *)tt, s2, logn);
@@ -714,7 +714,7 @@ falcon512dyn_avx2_compute_public(uint16_t *h,
 	return 1;
 }
 
-/* see inner.h */
+/* see internal.h */
 int
 falcon512dyn_avx2_complete_private(int8_t *G,
 	const int8_t *f, const int8_t *g, const int8_t *F,
@@ -758,114 +758,4 @@ falcon512dyn_avx2_complete_private(int8_t *G,
 		G[u] = (int8_t)gi;
 	}
 	return 1;
-}
-
-/* see inner.h */
-int
-falcon512dyn_avx2_is_invertible(
-	const int16_t *s2, unsigned logn, uint8_t *tmp)
-{
-	size_t u, n;
-	uint16_t *tt;
-	uint32_t r;
-
-	n = (size_t)1 << logn;
-	tt = (uint16_t *)tmp;
-	for (u = 0; u < n; u ++) {
-		uint32_t w;
-
-		w = (uint32_t)s2[u];
-		w += Q & -(w >> 31);
-		tt[u] = (uint16_t)w;
-	}
-	mq_NTT(tt, logn);
-	r = 0;
-	for (u = 0; u < n; u ++) {
-		r |= (uint32_t)(tt[u] - 1);
-	}
-	return (int)(1u - (r >> 31));
-}
-
-/* see inner.h */
-int
-falcon512dyn_avx2_verify_recover(uint16_t *h,
-	const uint16_t *c0, const int16_t *s1, const int16_t *s2,
-	unsigned logn, uint8_t *tmp)
-{
-	size_t u, n;
-	uint16_t *tt;
-	uint32_t r;
-
-	n = (size_t)1 << logn;
-
-	/*
-	 * Reduce elements of s1 and s2 modulo q; then write s2 into tt[]
-	 * and c0 - s1 into h[].
-	 */
-	tt = (uint16_t *)tmp;
-	for (u = 0; u < n; u ++) {
-		uint32_t w;
-
-		w = (uint32_t)s2[u];
-		w += Q & -(w >> 31);
-		tt[u] = (uint16_t)w;
-
-		w = (uint32_t)s1[u];
-		w += Q & -(w >> 31);
-		w = mq_sub(c0[u], w);
-		h[u] = (uint16_t)w;
-	}
-
-	/*
-	 * Compute h = (c0 - s1) / s2. If one of the coefficients of s2
-	 * is zero (in NTT representation) then the operation fails. We
-	 * keep that information into a flag so that we do not deviate
-	 * from strict constant-time processing; if all coefficients of
-	 * s2 are non-zero, then the high bit of r will be zero.
-	 */
-	mq_NTT(tt, logn);
-	mq_NTT(h, logn);
-	r = 0;
-	for (u = 0; u < n; u ++) {
-		r |= (uint32_t)(tt[u] - 1);
-		h[u] = mq_div_12289(h[u], tt[u]);
-	}
-	mq_iNTT(h, logn);
-
-	/*
-	 * Signature is acceptable if and only if it is short enough,
-	 * and s2 was invertible mod phi mod q. The caller must still
-	 * check that the rebuilt public key matches the expected
-	 * value (e.g. through a hash).
-	 */
-	r = ~r & (uint32_t)-falcon512dyn_avx2_is_short(s1, s2, logn);
-	return (int)(r >> 31);
-}
-
-/* see inner.h */
-int
-falcon512dyn_avx2_count_nttzero(int16_t *sig, unsigned logn, uint8_t *tmp)
-{
-	uint16_t *s2;
-	size_t u, n;
-	uint32_t r;
-
-	n = (size_t)1 << logn;
-	s2 = (uint16_t *)tmp;
-	for (u = 0; u < n; u ++) {
-		uint32_t w;
-
-		w = (uint32_t)sig[u];
-		w += Q & -(w >> 31);
-		s2[u] = (uint16_t)w;
-	}
-	mq_NTT(s2, logn);
-	r = 0;
-	for (u = 0; u < n; u ++) {
-		uint32_t w;
-
-		w = (uint32_t)s2[u] - 1u;
-		r += (w >> 31);
-	}
-	return (int)r;
 }

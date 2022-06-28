@@ -1,1 +1,1 @@
-../../dilithium2/ref/reduce.c
+../../dilithium3/ref/reduce.c

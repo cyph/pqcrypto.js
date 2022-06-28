@@ -1,8 +1,5 @@
 /*
   This file is for Benes network related functions
-
-  For the implementation strategy, see
-  https://eprint.iacr.org/2017/793.pdf
 */
 
 #include "benes.h"

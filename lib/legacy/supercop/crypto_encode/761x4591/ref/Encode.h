@@ -1,7 +1,7 @@
 #ifndef Encode_H
 #define Encode_H
 
-#define Encode CRYPTO_NAMESPACE(Encode)
+#define Encode crypto_encode_761x4591_ref_Encode
 
 #include "crypto_uint16.h"
 

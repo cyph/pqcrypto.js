@@ -21,18 +21,19 @@
 #include <arm_neon.h>
 #endif
 
+#if defined(__GNUC__) && !(defined(__APPLE__) && (__clang_major__ <= 8)) &&                        \
+    !defined(__MINGW32__) && !defined(__MINGW64__)
+#define BUILTIN_CPU_SUPPORTED
+#endif
+
 #include "cpu.h"
 
 #if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
 #if defined(BUILTIN_CPU_SUPPORTED)
-#if !defined(BUILTIN_CPU_SUPPORTED_BROKEN_BMI2)
 #define CPU_SUPPORTS_AVX2 (__builtin_cpu_supports("avx2") && __builtin_cpu_supports("bmi2"))
-#else
-#define CPU_SUPPORTS_AVX2 (__builtin_cpu_supports("avx2") && cpu_supports(CPU_CAP_BMI2))
-#endif
 #define CPU_SUPPORTS_POPCNT __builtin_cpu_supports("popcnt")
 #else
-#define CPU_SUPPORTS_AVX2 cpu_supports(CPU_CAP_AVX2 | CPU_CAP_BMI2)
+#define CPU_SUPPORTS_AVX2 cpu_supports(CPU_CAP_AVX2)
 #define CPU_SUPPORTS_POPCNT cpu_supports(CPU_CAP_POPCNT)
 #endif
 #endif
@@ -40,7 +41,6 @@
 #if defined(__x86_64__) || defined(_M_X64)
 // X86-64 CPUs always support SSE2
 #define CPU_SUPPORTS_SSE2 1
-#define NO_UINT64_FALLBACK
 #elif defined(__i386__) || defined(_M_IX86)
 #if defined(BUILTIN_CPU_SUPPORTED)
 #define CPU_SUPPORTS_SSE2 __builtin_cpu_supports("sse2")
@@ -103,31 +103,24 @@ typedef __m256i word256;
 #endif
 
 #define mm256_zero _mm256_setzero_si256()
-#define mm256_xor(l, r) _mm256_xor_si256((l), (r))
-#define mm256_and(l, r) _mm256_and_si256((l), (r))
-/* !l & r */
-#define mm256_nand(l, r) _mm256_andnot_si256((l), (r))
+#define mm256_xor(l, r) _mm256_xor_si256(l, r)
+#define mm256_and(l, r) _mm256_and_si256(l, r)
 
-apply_region(mm256_xor_region, word256, mm256_xor, FN_ATTRIBUTES_AVX2)
-apply_mask_region(mm256_xor_mask_region, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2)
-apply_mask(mm256_xor_mask, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2_CONST)
+apply_region(mm256_xor_region, word256, mm256_xor, FN_ATTRIBUTES_AVX2);
+apply_mask_region(mm256_xor_mask_region, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2);
+apply_mask(mm256_xor_mask, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2_CONST);
 
 typedef __m128i word128;
 
 #define mm128_zero _mm_setzero_si128()
-#define mm128_xor(l, r) _mm_xor_si128((l), (r))
-#define mm128_and(l, r) _mm_and_si128((l), (r))
-/* !l & r */
-#define mm128_nand(l, r) _mm_andnot_si128((l), (r))
-#define mm128_broadcast_u64(x) _mm_set1_epi64x((x))
-#define mm128_sl_u64(x, s) _mm_slli_epi64((x), (s))
-#define mm128_sr_u64(x, s) _mm_srli_epi64((x), (s))
+#define mm128_xor(l, r) _mm_xor_si128(l, r)
+#define mm128_and(l, r) _mm_and_si128(l, r)
 
-apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_SSE2)
-apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2)
-apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2_CONST)
-apply_array(mm256_xor_sse, word128, mm128_xor, 2, FN_ATTRIBUTES_SSE2)
-apply_array(mm256_and_sse, word128, mm128_and, 2, FN_ATTRIBUTES_SSE2)
+apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_SSE2);
+apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2);
+apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2_CONST);
+apply_array(mm256_xor_sse, word128, mm128_xor, 2, FN_ATTRIBUTES_SSE2);
+apply_array(mm256_and_sse, word128, mm128_and, 2, FN_ATTRIBUTES_SSE2);
 
 
 #if defined(_MSC_VER)

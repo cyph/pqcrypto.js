@@ -17,13 +17,13 @@ static inline void store_i(unsigned char *out, uint64_t in, int i)
 		out[j] = (in >> (j * 8)) & 0xFF;
 }
 
-static inline void store_gf(unsigned char *dest, uint16_t a)
+static inline void store2(unsigned char *dest, uint16_t a)
 {
 	dest[0] = a & 0xFF;
 	dest[1] = a >> 8;
 }
 
-static inline uint16_t load_gf(const unsigned char *src)
+static inline uint16_t load2(const unsigned char *src)
 {
 	uint16_t a;
 
@@ -53,7 +53,10 @@ static inline void irr_load(vec out[][GFBITS], const unsigned char * in)
 	uint16_t irr[ SYS_T + 1 ];	
 
 	for (i = 0; i < SYS_T; i++) 
-		irr[i] = load_gf(in + i*2);
+	{
+		irr[i] = load2(in + i*2);
+		irr[i] &= GFMASK;
+	}
 
 	irr[ SYS_T ] = 1;
 

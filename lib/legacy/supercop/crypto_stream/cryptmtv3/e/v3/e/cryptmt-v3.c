@@ -30,24 +30,24 @@ typedef struct SFMT_T sfmt_t;
 /* prototypes */
 static int is_simd_cpu(void);
 static INLINE void do_recursion(u32 a[4], const u32 b[4], const u32 c[4]);
-static void genrand_bytes_first(ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[],
+static void genrand_bytes_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[],
 				u32 len);
-static void fast_genrand_bytes_first(ECRYPT_ctx * ctx, u8 cipher[],
+static void fast_genrand_bytes_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 				     const u8 plain[], u32 len);
-static void genrand_bytes(ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[], 
+static void genrand_bytes(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[], 
 			  u32 len);
-static INLINE void fast_genrand_bytes(ECRYPT_ctx * ctx, u8 cipher[],
+static INLINE void fast_genrand_bytes(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 				      const u8 plain[], u32 len);
-static void genrand_block_first(ECRYPT_ctx * ctx, u8 cipher[], 
+static void genrand_block_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], 
 				const u8 plain[]);
-static void fast_genrand_block_first(ECRYPT_ctx * ctx, u8 cipher[], 
+static void fast_genrand_block_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], 
 					    const u8 plain[]);
-static INLINE void genrand_block(ECRYPT_ctx * ctx, u8 cipher[],
+static INLINE void genrand_block(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 				 const u8 plain[]);
-static INLINE void fast_genrand_block(ECRYPT_ctx * ctx, u8 cipher[],
+static INLINE void fast_genrand_block(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 				      const u8 plain[]);
-static INLINE void boot_up(ECRYPT_ctx *ctx, s32 length);
-static INLINE void fast_boot_up(ECRYPT_ctx *ctx, s32 length);
+static INLINE void boot_up(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx *ctx, s32 length);
+static INLINE void fast_boot_up(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx *ctx, s32 length);
 static void filter_16bytes(u32 sfmt[], u32 accum[4], u8 cipher[],
 			   const u8 plain[], s32 count);
 static INLINE void filter_bytes(u32 sfmt[], u32 accum[4], u8 cipher[],
@@ -70,31 +70,31 @@ static int is_simd_cpu(void) {
     return 0;
 }
 
-static void fast_genrand_bytes_first(ECRYPT_ctx * ctx, u8 cipher[],
+static void fast_genrand_bytes_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 					    const u8 plain[], u32 len) {
     fprintf(stderr, "ERROR:fast_genrand_bytes_first not implemented\n");
     exit(1);
 }
 
-static INLINE void fast_genrand_bytes(ECRYPT_ctx * ctx, u8 cipher[],
+static INLINE void fast_genrand_bytes(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 				      const u8 plain[], u32 len) {
     fprintf(stderr, "ERROR:fast_genrand_bytes not implemented\n");
     exit(1);
 }
 
-static void fast_genrand_block_first(ECRYPT_ctx * ctx, u8 cipher[], 
+static void fast_genrand_block_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], 
 					    const u8 plain[]) {
     fprintf(stderr, "ERROR:fast_genrand_block_first not implemented\n");
     exit(1);
 }
 
-static INLINE void fast_genrand_block(ECRYPT_ctx * ctx, u8 cipher[],
+static INLINE void fast_genrand_block(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 				      const u8 plain[]) {
     fprintf(stderr, "ERROR:fast_genrand_block not implemented\n");
     exit(1);
 }
 
-static INLINE void fast_boot_up(ECRYPT_ctx *ctx, s32 length) {
+static INLINE void fast_boot_up(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx *ctx, s32 length) {
     fprintf(stderr, "ERROR:fast_boot_up not implemented\n");
     exit(1);
 }
@@ -104,7 +104,7 @@ static INLINE void fast_boot_up(ECRYPT_ctx *ctx, s32 length) {
 /**********************
  * IMPLEMRNT FUNCTIONS
  **********************/
-static void genrand_bytes_first(ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[],
+static void genrand_bytes_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[],
 				u32 len)
 {
     s32 i, p, count;
@@ -143,7 +143,7 @@ static INLINE void do_recursion(u32 a[4], const u32 b[4], const u32 c[4]) {
     a[3] = tmp  ^ b[2] ^ bb[3] ^ (c[3] & MSK4);
 }
 
-static void genrand_bytes(ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[],
+static void genrand_bytes(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[],
 			  u32 len)
 {
     u32 *accum;
@@ -172,7 +172,7 @@ static void genrand_bytes(ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[],
     }
 }
 
-static void genrand_block_first(ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[])
+static void genrand_block_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], const u8 plain[])
 {
     s32 p;
     sfmt_t *ps;
@@ -321,7 +321,7 @@ static INLINE void filter_bytes(u32 sfmt[], u32 accum[4], u8 cipher[],
 }
 
 
-static INLINE void genrand_block(ECRYPT_ctx * ctx, u8 cipher[],
+static INLINE void genrand_block(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 				 const u8 plain[])
 {
     int i;
@@ -367,7 +367,7 @@ static INLINE void booter_am(u32 acc[4], u32 pos1[][4], u32 pos2[][4],
     }
 }
 
-static void boot_up(ECRYPT_ctx *ctx, s32 length)
+static void boot_up(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx *ctx, s32 length)
 {
     s32 i, p;
 
@@ -384,9 +384,9 @@ static void boot_up(ECRYPT_ctx *ctx, s32 length)
 }
 
 /************************
- * ECRYPT API FUNCTIONS
+ * crypto_stream_cryptmtv3_e_v3_ECRYPT API FUNCTIONS
  ************************/
-void ECRYPT_init(void)
+void crypto_stream_cryptmtv3_e_v3_ECRYPT_init(void)
 {
     if (fast_code) {
 	fast_code = is_simd_cpu();
@@ -395,12 +395,12 @@ void ECRYPT_init(void)
 
 /* Key size in bits. */
 /* IV size in bits. */
-void ECRYPT_keysetup(ECRYPT_ctx * ctx, const u8 * key, u32 keysize,
+void crypto_stream_cryptmtv3_e_v3_ECRYPT_keysetup(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, const u8 * key, u32 keysize,
 		     u32 ivsize)
 {
     s32 i;
 
-    memset(ctx, 0, sizeof(ECRYPT_ctx));
+    memset(ctx, 0, sizeof(ctx));
     ctx->keysize = keysize / 128;
     ctx->ivsize = ivsize / 128;
     for (i = 0; i < keysize / 32; i++) {
@@ -409,7 +409,7 @@ void ECRYPT_keysetup(ECRYPT_ctx * ctx, const u8 * key, u32 keysize,
     }
 }
 
-void ECRYPT_ivsetup(ECRYPT_ctx * ctx, const u8 * iv)
+void crypto_stream_cryptmtv3_e_v3_ECRYPT_ivsetup(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, const u8 * iv)
 {
     s32 p, ivsize, keysize, i, j;
     u32 block_size;
@@ -440,50 +440,50 @@ void ECRYPT_ivsetup(ECRYPT_ctx * ctx, const u8 * iv)
 }
 
 /* Message length in bytes. */
-void ECRYPT_encrypt_bytes(ECRYPT_ctx * ctx,
+void crypto_stream_cryptmtv3_e_v3_ECRYPT_encrypt_bytes(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx,
 			  const u8 * plaintext,
 			  u8 * ciphertext, u32 msglen)
 {
     if (fast_code) {
 	if (ctx->first && (msglen > 0)) {
-	    if (msglen >= ECRYPT_BLOCKLENGTH) {
+	    if (msglen >= crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH) {
 	    	fast_genrand_block_first(ctx, ciphertext, plaintext);
-		ciphertext += ECRYPT_BLOCKLENGTH;
-		plaintext += ECRYPT_BLOCKLENGTH;
-		msglen -= ECRYPT_BLOCKLENGTH;
+		ciphertext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+		plaintext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+		msglen -= crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
 		ctx->first = 0;
 	    } else {
 		fast_genrand_bytes_first(ctx, ciphertext, plaintext, msglen);
 		return;
 	    }
 	}
-	while (msglen >= ECRYPT_BLOCKLENGTH) {
+	while (msglen >= crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH) {
 	    fast_genrand_block(ctx, ciphertext, plaintext);
-	    ciphertext += ECRYPT_BLOCKLENGTH;
-	    plaintext += ECRYPT_BLOCKLENGTH;
-	    msglen -= ECRYPT_BLOCKLENGTH;
+	    ciphertext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+	    plaintext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+	    msglen -= crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
 	}
 	if (msglen != 0) {
 	    fast_genrand_bytes(ctx, ciphertext, plaintext, msglen);
 	}
     } else {
 	if (ctx->first && (msglen > 0)) {
-	    if (msglen >= ECRYPT_BLOCKLENGTH) {
+	    if (msglen >= crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH) {
 	    	genrand_block_first(ctx, ciphertext, plaintext);
-		ciphertext += ECRYPT_BLOCKLENGTH;
-		plaintext += ECRYPT_BLOCKLENGTH;
-		msglen -= ECRYPT_BLOCKLENGTH;
+		ciphertext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+		plaintext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+		msglen -= crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
 		ctx->first = 0;
 	    } else {
 		genrand_bytes_first(ctx, ciphertext, plaintext, msglen);
 		return;
 	    }
 	}
-	while (msglen >= ECRYPT_BLOCKLENGTH) {
+	while (msglen >= crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH) {
 	    genrand_block(ctx, ciphertext, plaintext);
-	    ciphertext += ECRYPT_BLOCKLENGTH;
-	    plaintext += ECRYPT_BLOCKLENGTH;
-	    msglen -= ECRYPT_BLOCKLENGTH;
+	    ciphertext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+	    plaintext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+	    msglen -= crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
 	}
 	if (msglen != 0) {
 	    genrand_bytes(ctx, ciphertext, plaintext, msglen);
@@ -492,15 +492,15 @@ void ECRYPT_encrypt_bytes(ECRYPT_ctx * ctx,
 }
 
 /* Message length in bytes. */
-void ECRYPT_decrypt_bytes(ECRYPT_ctx * ctx,
+void crypto_stream_cryptmtv3_e_v3_ECRYPT_decrypt_bytes(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx,
 			  const u8 * ciphertext,
 			  u8 * plaintext, u32 msglen)
 {
-    ECRYPT_encrypt_bytes(ctx, ciphertext, plaintext, msglen);
+    crypto_stream_cryptmtv3_e_v3_ECRYPT_encrypt_bytes(ctx, ciphertext, plaintext, msglen);
 }
 
 /* Message length in blocks. */
-void ECRYPT_process_blocks(int action, ECRYPT_ctx * ctx,
+void crypto_stream_cryptmtv3_e_v3_ECRYPT_encrypt_blocks(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx,
 			   const u8 * plaintext,
 			   u8 * ciphertext, u32 blocks)
 {
@@ -509,28 +509,36 @@ void ECRYPT_process_blocks(int action, ECRYPT_ctx * ctx,
     if (fast_code) {
 	if (ctx->first && (blocks > 0)) {
 	    fast_genrand_block_first(ctx, ciphertext, plaintext);
-	    ciphertext += ECRYPT_BLOCKLENGTH;
-	    plaintext += ECRYPT_BLOCKLENGTH;
+	    ciphertext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+	    plaintext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
 	    blocks--;
 	    ctx->first = 0;
 	}
 	for (i = 0; i < blocks; i++) {
 	    fast_genrand_block(ctx, ciphertext, plaintext);
-	    ciphertext += ECRYPT_BLOCKLENGTH;
-	    plaintext += ECRYPT_BLOCKLENGTH;
+	    ciphertext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+	    plaintext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
 	}
     } else {
 	if (ctx->first && (blocks > 0)) {
 	    genrand_block_first(ctx, ciphertext, plaintext);
-	    ciphertext += ECRYPT_BLOCKLENGTH;
-	    plaintext += ECRYPT_BLOCKLENGTH;
+	    ciphertext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+	    plaintext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
 	    blocks--;
 	    ctx->first = 0;
 	}
 	for (i = 0; i < blocks; i++) {
 	    genrand_block(ctx, ciphertext, plaintext);
-	    ciphertext += ECRYPT_BLOCKLENGTH;
-	    plaintext += ECRYPT_BLOCKLENGTH;
+	    ciphertext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
+	    plaintext += crypto_stream_cryptmtv3_e_v3_ECRYPT_BLOCKLENGTH;
 	}
     }
+}
+
+/* Message length in blocks. */
+void crypto_stream_cryptmtv3_e_v3_ECRYPT_decrypt_blocks(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx,
+			   const u8 * ciphertext,
+			   u8 * plaintext, u32 blocks)
+{
+    crypto_stream_cryptmtv3_e_v3_ECRYPT_encrypt_blocks(ctx, ciphertext, plaintext, blocks);
 }

@@ -19,8 +19,8 @@
 #define ARG3_L r20
 #define ARG3_H r21
 
-; Only CRYPTO_NAMESPACETOP is callable externally
-.global CRYPTO_NAMESPACETOP
+; Only crypto_hash_groestl256_avr8asm_lowram192b is callable externally
+.global crypto_hash_groestl256_avr8asm_lowram192b
 
 .text
 
@@ -574,7 +574,7 @@ permQ:
   ret
 
 /**
- * CRYPTO_NAMESPACETOP:
+ * crypto_hash_groestl256_avr8asm_lowram192b:
  *
  * Handed-over registers:
  * ARG1: pointer to output. Also used as temporary variable
@@ -589,7 +589,7 @@ permQ:
  * r19: temporary register for loop comparison
  * X, Y, Z: holding buffer, h_state, p_state or temporary calculations
  */
-CRYPTO_NAMESPACETOP:
+crypto_hash_groestl256_avr8asm_lowram192b:
   ; Push all call-saved registers
   push_registers 0,17
   push YL

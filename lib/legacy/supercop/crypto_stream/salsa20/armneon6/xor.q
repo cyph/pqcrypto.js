@@ -141,7 +141,7 @@ int32 i
 int32 ci
 int32 mi
 
-qpushenter CRYPTO_NAMESPACE(xor)
+qpushenter crypto_stream_salsa20_armneon6_xor
 
 stack64 stack_r45
 stack64 stack_r67

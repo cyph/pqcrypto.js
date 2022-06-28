@@ -1,3 +1,3 @@
-#define CRYPTO_SECRETKEYBYTES (2823)
-#define CRYPTO_PUBLICKEYBYTES (19266)
-#define CRYPTO_BYTES (37)
+#define crypto_sign_sflashv2_ref_SECRETKEYBYTES (2823)
+#define crypto_sign_sflashv2_ref_PUBLICKEYBYTES (19266)
+#define crypto_sign_sflashv2_ref_BYTES (37)

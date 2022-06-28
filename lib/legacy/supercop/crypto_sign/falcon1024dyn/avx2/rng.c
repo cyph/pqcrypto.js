@@ -115,9 +115,9 @@ falcon1024dyn_avx2_get_seed(void *seed, size_t len)
 
 /* see inner.h */
 void
-falcon1024dyn_avx2_prng_init(prng *p, inner_shake256_context *src)
+falcon1024dyn_avx2_prng_init(prng *p, shake256_context *src)
 {
-	inner_shake256_extract(src, p->state.d, 56);
+	shake256_extract(src, p->state.d, 56);
 	falcon1024dyn_avx2_prng_refill(p);
 }
 

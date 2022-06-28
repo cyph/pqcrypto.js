@@ -212,14 +212,14 @@
 
 # qhasm: stack32 caller_r14_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(core)
+# qhasm: enter crypto_hashblocks_sha256_arm11_core
 .align 2
-.global _CRYPTO_NAMESPACE(core)
-.global CRYPTO_NAMESPACE(core)
-.type _CRYPTO_NAMESPACE(core) STT_FUNC
-.type CRYPTO_NAMESPACE(core) STT_FUNC
-_CRYPTO_NAMESPACE(core):
-CRYPTO_NAMESPACE(core):
+.global _crypto_hashblocks_sha256_arm11_core
+.global crypto_hashblocks_sha256_arm11_core
+.type _crypto_hashblocks_sha256_arm11_core STT_FUNC
+.type crypto_hashblocks_sha256_arm11_core STT_FUNC
+_crypto_hashblocks_sha256_arm11_core:
+crypto_hashblocks_sha256_arm11_core:
 sub sp,sp,#192
 
 # qhasm: caller_r4_stack = caller_r4

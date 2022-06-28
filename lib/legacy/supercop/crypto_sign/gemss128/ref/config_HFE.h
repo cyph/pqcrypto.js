@@ -5,34 +5,13 @@
 #include "bit.h"
 #include "types_HFE.h"
 #include "KAT_int.h"
-#include <stdlib.h>
-
-
-/* Level of security of hash functions */
-#define K 128U
-
-/** Choice of the current cryptosystem. */
-#define GeMSS
-/* To choose parameters of GeMSS */
-/* #define GeMSS */
-/* To choose parameters of BlueGeMSS */
-/* #define BlueGeMSS */
-/* To choose parameters of RedGeMSS */
-/* #define RedGeMSS */
-/* To choose parameters of FGeMSS */
-/* #define FGeMSS */
-/* To choose parameters of DualModeMS */
-/* #define DualModeMS */
 
 
 
 /* The verification don't need constant time evaluation */
 #define verifHFE evaluateMQSnoconst
 /* The public and secret keys are the same for encryption and signature */
-#define encrypt_keypairHFE sign_keypairHFE
-
-/* To use a right multiplication by T */
-#define RIGHT_MULTIPLICATION_BY_T 1
+#define sign_keypairHFE encrypt_keypairHFE
 
 
 /****************** C++ compatibility ******************/
@@ -49,309 +28,27 @@
 /****************** PARAMETERS FOR HFE ******************/
 
 
+/* Level of security of hash functions */
+#define K 128U
 
 /* This parameter is necessarily 2 */
 /* GF(q) */
 #define HFEq 2U
 
-/* Number of variables of the public key */
-#define HFEnv (HFEn+HFEv)
-
-/* Number of equations of the public key */
-#define HFEm (HFEn-HFEDELTA)
-
-
-
-
-
-
-#ifdef GeMSS
-
-/* GeMSS128 */
-#if (K==128)
-
-    #define HFEn 174U
-    #define HFEv 12U
-    #define HFEDELTA 12U
-
-    #define NB_ITE 4
-
-    #define HFEDeg 513U
-    #define HFEDegI 9U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* GeMSS192 */
-#elif (K==192)
-
-    #define HFEn 265U
-    #define HFEv 20U
-    #define HFEDELTA 22U
-
-    #define NB_ITE 4
-
-    #define HFEDeg 513U
-    #define HFEDegI 9U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* GeMSS256 */
-#elif (K==256)
-
-    #define HFEn 354U
-    #define HFEv 33U
-    #define HFEDELTA 30U
-
-    #define NB_ITE 4
-
-    #define HFEDeg 513U
-    #define HFEDegI 9U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* GeMSS??? */
-#else
-    #error "K is not 128, 192 or 256"
-#endif
-
-
-#elif defined(BlueGeMSS)
-
-/* BlueGeMSS128 */
-#if (K==128)
-
-    #define HFEn 175U
-    #define HFEv 14U
-    #define HFEDELTA 13U
-
-    #define NB_ITE 4U
-
-    #define HFEDeg 129U
-    #define HFEDegI 7U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* BlueGeMSS192 */
-#elif (K==192)
-
-    #define HFEn 265U
-    #define HFEv 23U
-    #define HFEDELTA 22U
-
-    #define NB_ITE 4U
-
-    #define HFEDeg 129U
-    #define HFEDegI 7U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* BlueGeMSS256 */
-#elif (K==256)
-
-    #define HFEn 358U
-    #define HFEv 32U
-    #define HFEDELTA 34U
-
-    #define NB_ITE 4U
-
-    #define HFEDeg 129U
-    #define HFEDegI 7U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* BlueGeMSS??? */
-#else
-    #error "K is not 128, 192 or 256"
-#endif
-
-
-#elif defined(RedGeMSS)
-
-/* RedGeMSS128 */
-#if (K==128)
-
-    #define HFEn 177U
-    #define HFEv 15U
-    #define HFEDELTA 15U
-
-    #define NB_ITE 4U
-
-    #define HFEDeg 17U
-    #define HFEDegI 4U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* RedGeMSS192 */
-#elif (K==192)
-
-    #define HFEn 266U
-    #define HFEv 25U
-    #define HFEDELTA 23U
-
-    #define NB_ITE 4U
-
-    #define HFEDeg 17U
-    #define HFEDegI 4U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* RedGeMSS256 */
-#elif (K==256)
-
-    #define HFEn 358U
-    #define HFEv 35U
-    #define HFEDELTA 34U
-
-    #define NB_ITE 4U
-
-    #define HFEDeg 17U
-    #define HFEDegI 4U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* RedGeMSS??? */
-#else
-    #error "K is not 128, 192 or 256"
-#endif
-
-
-#elif defined(FGeMSS)
-
-    #define NB_ITE 1U
-    #define HFEs 0U
-
-    /* FGeMSS(266) */
-    #if (K==128)
-        #define HFEn 266U
-
-        #define HFEv 11U
-        #define HFEDELTA 10U
-
-        #define HFEDeg 129U
-        #define HFEDegI 7U
-        #define HFEDegJ 0U
-    /* FGeMSS(402) */
-    #elif (K==192)
-        #define HFEn 402U
-
-        #define HFEv 18U
-        #define HFEDELTA 18U
-
-        #define HFEDeg 640U
-        #define HFEDegI 9U
-        #define HFEDegJ 7U
-    /* FGeMSS(537) */
-    #elif (K==256)
-        #define HFEn 537U
-
-        #define HFEv 26U
-        #define HFEDELTA 25U
-
-        #define HFEDeg 1152U
-        #define HFEDegI 10U
-        #define HFEDegJ 7U
-    /* FGeMSS(???) */
-    #else
-        #error "K is not 128, 192 or 256"
-    #endif
-
-
-#elif defined(DualModeMS)
-
-/* DualModeMS128 */
-#if (K==128)
-
-    #define HFEn 266U
-    #define HFEv 11U
-    #define HFEDELTA 10U
-
-    /* This parameter must not be changed */
-    #define NB_ITE 1
-
-    #define HFEDeg 129U
-    #define HFEDegI 7U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* DualModeMS192 */
-#elif (K==192)
-
-    #define HFEn 402U
-    #define HFEv 18U
-    #define HFEDELTA 18U
-
-    /* This parameter must not be changed */
-    #define NB_ITE 1
-
-    #define HFEDeg 129U
-    #define HFEDegI 7U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-/* DualModeMS256 */
-#elif (K==256)
-
-    #define HFEn 544U
-    #define HFEv 32U
-    #define HFEDELTA 32U
-
-    /* This parameter must not be changed */
-    #define NB_ITE 1
-
-    #define HFEDeg 129U
-    #define HFEDegI 7U
-    #define HFEDegJ 0U
-
-    #define HFEs 0U
-
-#else
-    /* DualModeMS??? */
-    #error "K is not 128, 192 or 256"
-#endif
-
-
-#else
-    /* To test an other choice of parameters */
-    /* The user can modify these values to test the library */
-
-    /* Degree of the extension GF(2^n) */
-    #define HFEn 174U
-    /* Number of vinegar variable */
-    #define HFEv 12U
-    /* Number of removed equations (the minus) */
-    #define HFEDELTA 12U
-
-    /* Number of iterations of the signature */
-    #define NB_ITE 4
-
-    /* Degree of HFE polynomial: Deg = 2^DegI + 2^DegJ 
-     * or Deg = 2^0 (with DegI==DegJ==0) */
-    #define HFEDeg 513U
-    #define HFEDegI 9U
-    /* Requirement : DegI>=DegJ */
-    #define HFEDegJ 0U
-
-    /* Number of removed odd degree terms in the HFE polynomial */
-    #define HFEs 0U
-#endif
-
-
-/****************** VERIFICATION OF THE PARAMETERS ******************/
+/* Degree of the extension GF(2^n) */
+#define HFEn 174U
 
 #if (!HFEn)
     #error "HFEn must be different of zero"
 #endif
+
+/* Number of vinegar variable */
+#define HFEv 12U
+/* Number of variable of the public key */
+#define HFEnv (HFEn+HFEv)
+
+/* Number of equations */
+#define HFEm 162U
 
 #if (!HFEm)
     #error "HFEm must be different of zero"
@@ -364,6 +61,16 @@
 #if (HFEm>(K<<1))
     #error "HFEm>2K is not possible for this implementation"
 #endif
+
+/* Number of iterations of the signature */
+#define NB_ITE 4
+
+/* Degree of HFE polynom : Deg = 2^DegI + 2^DegJ 
+ * or Deg = 2^0 (with DegI==DegJ==0) */
+#define HFEDeg 512U
+#define HFEDegI 8U
+/* Requirement : DegI>=DegJ */
+#define HFEDegJ 8U
 
 
 #if (!HFEDeg)
@@ -381,7 +88,7 @@
 #endif
 
 #if (HFEDegI<HFEDegJ)
-    #error "Requirement: HFEDegI>=HFEDegJ"
+    #error "Requirement : HFEDegI>=HFEDegJ"
 #endif
 
 /* X^(2^i + 2^j) >= X^(2^n) */
@@ -430,21 +137,8 @@
 
 /****************** MACRO USEFUL FOR SIZE ******************/
 
-
-/* Optimization of the representation of the public key when m%64 is small */
-#if (HFEm==324)
-    #define HYBRID_REPRESENTATION_PK 1
-#else
-    #define HYBRID_REPRESENTATION_PK 0
-#endif
-
-
 /* Public key (words) */
-#if HYBRID_REPRESENTATION_PK
-    #define SIZE_PK NB_WORD_HYBRID_EQUATIONS
-#else
-    #define SIZE_PK MQ_GFqm_SIZE
-#endif
+#define SIZE_PK MQ_GFqm_SIZE
 /* Public key (bytes) */
 #define SIZE_PK_BYTES (SIZE_PK<<3)
 
@@ -459,14 +153,41 @@
 /* Signature: NB_WORD_GFqnv for signature NB_ITE, NB_WORD_GFqnvm for others */
 
 /* Size of signature (words): */
-#define SIZE_SIGN_UNCOMPRESSED (NB_WORD_GFqnv+(NB_ITE-1)*NB_WORD_GFqnvm)
-
-#define SIZE_SIGN_THEORETICAL_HFE (HFEnv+(NB_ITE-1)*(HFEnv-HFEm))
-
+#define SIZE_SIGNATURE (NB_WORD_GFqnv+(NB_ITE-1)*NB_WORD_GFqnvm)
 /* Size of signature (bytes): */
-/* (x+7)/8 = Ceiling(x/8) */ 
-#define SIZE_SIGN_HFE ((SIZE_SIGN_THEORETICAL_HFE+7)>>3)
+#define SIZE_SIGNATURE_BYTES (SIZE_SIGNATURE<<3)
 
+
+/* XXX Useless for signature XXX */
+
+/* Plaintext (words) */
+#define SIZE_PLAIN NB_WORD_GFqnv
+/* Plaintext (bytes) */
+#define SIZE_PLAIN_BYTES (SIZE_PLAIN<<3)
+
+/* Ciphertext: encrypted plaintext + SHA3 of plaintext */
+
+/* In the ciphertext, the NB_BITS_HASH_PLAIN of SHA3(plaintext) are taken */
+/* Heuristic: 2*log_2((2^(HFEv)) * HFEDeg) */
+#define NB_BITS_HASH_PLAIN ((HFEv+HFEDegI+1)<<1)
+
+#if (NB_BITS_HASH_PLAIN>(SIZE_DIGEST<<3))
+    #error "The length of the hash is too short"
+#endif
+
+#define HASH_PLAIN_QUO (NB_BITS_HASH_PLAIN/NB_BITS_UINT)
+#define HASH_PLAIN_REM (NB_BITS_HASH_PLAIN%NB_BITS_UINT)
+#if HASH_PLAIN_REM
+    #define NB_WORD_HASH_PLAIN (HASH_PLAIN_QUO+1)
+#else
+    #define NB_WORD_HASH_PLAIN HASH_PLAIN_QUO
+#endif
+#define HFE_MASK_PH mask64(HASH_PLAIN_REM)
+
+/* Size of cipher (words): */
+#define SIZE_CIPHER (NB_WORD_GFqm+NB_WORD_HASH_PLAIN)
+/* Size of cipher (bytes): */
+#define SIZE_CIPHER_BYTES (SIZE_CIPHER<<3)
 
 
 /****************** MACRO USEFUL FOR HFE ******************/
@@ -564,20 +285,6 @@
 #define CALLOC_MQSn (UINT*)calloc(MQnv_GFqn_SIZE,sizeof(UINT))
 
 
-/* Size for an uncompressed equation */
-#define NB_WORD_ONE_EQUATION \
-    ((((HFEnvq*(HFEnvq+1))>>1)*NB_BITS_UINT)+(HFEnvq+1)*HFEnvr)
-
-/* Remove the last word of each coefficient in GF(2^m), \
-   excepted for the constant */
-#define ACCESS_last_equations ((NB_MONOM_PK-1)*HFEmq+NB_WORD_GFqm)
-/* It is padded to avoid to load data outside of memory 
-   during the public key evaluation */
-/* XXX We remove the padding here XXX */
-#define NB_WORD_HYBRID_EQUATIONS (ACCESS_last_equations+\
-            NB_WORD_ONE_EQUATION*HFEmr/*+((4-(NB_WORD_GFqnv&3))&3)*/)
-
-
 /* Number of UINT of matrix n*n in GF(2) */
 #define MATRIXn_SIZE (HFEn*NB_WORD_GFqn)
 /* Number of UINT of matrix (n+v)*(n+v) in GF(2) */
@@ -612,12 +319,6 @@
 /* Mask to truncate the last word */
 #define HFE_MASKm mask64(HFEmr)
 
-#define HFEmq8 (HFEm>>3)
-#define HFEmr8 (HFEm&7U)
-
-/* Number of bytes that an element of GF(2^m) needs */
-#define NB_BYTES_GFqm (HFEmq8+((HFEmr8)?1:0))
-
 /* Size of a MQ polynom with coefficients in GF(2^m) */
 #define MQ_GFqm_SIZE (NB_MONOM_PK*NB_WORD_GFqm)
 
@@ -626,6 +327,9 @@
 
 /* Number of UINT of matrix m*m in GF(2) */
 #define MATRIXm_SIZE (HFEm*NB_WORD_GFqm)
+
+/* Number of bytes that an element of GF(2^m) needs */
+#define NB_BYTES_GFqm ((HFEm>>3)+((HFEm&7)?1:0))
 
 
 #if ((HFEn==HFEm)&&(!HFEv))
@@ -640,62 +344,22 @@
 
 /****************** MACRO FOR HFE POLYNOMIAL ******************/
 
-#if HFEs
-    /* Set to 1 to remove terms which have an odd degree strictly greater than \
-       HFE_odd_degree */
-    #define ENABLED_REMOVE_ODD_DEGREE 1
-#else
-    #define ENABLED_REMOVE_ODD_DEGREE 0
-#endif
-
-#if ENABLED_REMOVE_ODD_DEGREE
-    #define LOG_odd_degree (HFEDegI-HFEs)
-    /* HFE_odd_degree = 1 + 2^LOG_odd_degree */
-    #define HFE_odd_degree ((1U<<(LOG_odd_degree))+1)
-
-    #if (HFEDeg&1)
-        #error "HFEDeg is odd, so to remove the leading term would decrease \
-                the degree."
-    #endif
-
-    #if (HFE_odd_degree>HFEDeg)
-        #error "It is useless to remove 0 term."
-    #endif
-
-    #if (HFE_odd_degree<=1)
-        #error "The case where the term X^3 is removing is not implemented."
-    #endif
-#endif
-
-
-
-
 
 /* Number of coefficients of HFE polynomial */
-#if (HFEDeg==1)
-    /* when the vinegars variables are evaluated */
-    #define NB_COEFS_HFEPOLY_EVAL 1U
-    /* do not store the leading term == only constant coefficient */
-    #define NB_COEFS_HFEPOLY NB_MONOM_VINEGAR
-
-#else
-    #if (HFEq==2)
+#if (HFEq==2)
+    #if (HFEDeg==1)
+        /* when the vinegars variables are evaluated */
+        #define NB_COEFS_HFEPOLY_EVAL 1U
+        /* do not store the leading term == only constant coefficient */
+        #define NB_COEFS_HFEPOLY NB_MONOM_VINEGAR
+    #else
         /* when the vinegars variables are evaluated */
         /* set i=HFEDegI and j=HFEDegJ, the number of no zero monom is:
            1 (constant) + 1 (X^1) + i(i+1)/2 (X^2 to X^(2*2^(i-1)) + 
   (j+1) (X^(2^i + 2^0) to X^(2^i + 2^j)) -1 (leading term == 1 is not stored) */
-
-        #if ENABLED_REMOVE_ODD_DEGREE
-            #define NB_COEFS_HFEPOLY_EVAL (2+HFEDegJ+((HFEDegI*(HFEDegI-1))>>1)+LOG_odd_degree)
-        #else
-            #define NB_COEFS_HFEPOLY_EVAL (2+HFEDegJ+((HFEDegI*(HFEDegI+1))>>1))
-        #endif
-
+        #define NB_COEFS_HFEPOLY_EVAL (2+HFEDegJ+((HFEDegI*(HFEDegI+1))>>1))
         #define NB_COEFS_HFEPOLY (NB_COEFS_HFEPOLY_EVAL+(NB_MONOM_VINEGAR-1)+\
                                   (HFEDegI+1)*HFEv)
-
-    #else
-        /* Not implemented */
     #endif
 #endif
 
@@ -775,39 +439,6 @@
     #define HFECMP_GT CMP_GT384
     #define HFEDOTPRODUCT DOTPRODUCT384
     #define HFEDOTPRODUCTN DOTPRODUCT384M
-
-#elif (NB_WORD_GFqn == 7)
-    #define HFEADD ADD448
-    #define HFEADD2 ADD448_2
-    #define HFECOPY COPY448
-    #define HFEPERMUTATION PERMUTATION448
-    #define HFESET0 SET0_448
-    #define HFECMP_LT CMP_LT448
-    #define HFECMP_GT CMP_GT448
-    #define HFEDOTPRODUCT DOTPRODUCT448
-    #define HFEDOTPRODUCTN DOTPRODUCT448M
-
-#elif (NB_WORD_GFqn == 8)
-    #define HFEADD ADD512
-    #define HFEADD2 ADD512_2
-    #define HFECOPY COPY512
-    #define HFEPERMUTATION PERMUTATION512
-    #define HFESET0 SET0_512
-    #define HFECMP_LT CMP_LT512
-    #define HFECMP_GT CMP_GT512
-    #define HFEDOTPRODUCT DOTPRODUCT512
-    #define HFEDOTPRODUCTN DOTPRODUCT512M
-
-#elif (NB_WORD_GFqn == 9)
-    #define HFEADD ADD576
-    #define HFEADD2 ADD576_2
-    #define HFECOPY COPY576
-    #define HFEPERMUTATION PERMUTATION576
-    #define HFESET0 SET0_576
-    #define HFECMP_LT CMP_LT576
-    #define HFECMP_GT CMP_GT576
-    #define HFEDOTPRODUCT DOTPRODUCT576
-    #define HFEDOTPRODUCTN DOTPRODUCT576M
 #endif
 
 
@@ -847,18 +478,6 @@
     #define HFEADDm ADD384
     #define HFEADD2m ADD384_2
     #define HFEISEQUALm ISEQUAL384
-#elif (NB_WORD_GFqm == 7)
-    #define HFEDOTPRODUCTM DOTPRODUCT448M
-    #define HFECOPY_M COPY448
-    #define HFEADDm ADD448
-    #define HFEADD2m ADD448_2
-    #define HFEISEQUALm ISEQUAL448
-#elif (NB_WORD_GFqm == 8)
-    #define HFEDOTPRODUCTM DOTPRODUCT512M
-    #define HFECOPY_M COPY512
-    #define HFEADDm ADD512
-    #define HFEADD2m ADD512_2
-    #define HFEISEQUALm ISEQUAL512
 #endif
 
 
@@ -890,14 +509,6 @@
     #define HFEDOTPRODUCTNV DOTPRODUCT448M
     #define HFESET0_NV SET0_448
     #define HFEPERMUTATIONNV PERMUTATION448
-#elif (NB_WORD_GFqnv == 8)
-    #define HFEDOTPRODUCTNV DOTPRODUCT512M
-    #define HFESET0_NV SET0_512
-    #define HFEPERMUTATIONNV PERMUTATION512
-#elif (NB_WORD_GFqnv == 9)
-    #define HFEDOTPRODUCTNV DOTPRODUCT576M
-    #define HFESET0_NV SET0_576
-    #define HFEPERMUTATIONNV PERMUTATION576
 #endif
 
 
@@ -921,9 +532,6 @@
 #elif (NB_WORD_GFqnvm == 7)
     #define HFECOPYnvm COPY448
     #define HFECOPYnvm1 COPY384
-#elif (NB_WORD_GFqnvm == 8)
-    #define HFECOPYnvm COPY512
-    #define HFECOPYnvm1 COPY448
 #endif
 
 

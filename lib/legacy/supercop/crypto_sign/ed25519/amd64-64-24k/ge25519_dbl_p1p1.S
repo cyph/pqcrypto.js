@@ -233,13 +233,13 @@
 
 # qhasm:   stack64 caller7_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(ge25519_dbl_p1p1)
+# qhasm: enter crypto_sign_ed25519_amd64_64_ge25519_dbl_p1p1
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ge25519_dbl_p1p1)
-.globl CRYPTO_NAMESPACE(ge25519_dbl_p1p1)
-_CRYPTO_NAMESPACE(ge25519_dbl_p1p1):
-CRYPTO_NAMESPACE(ge25519_dbl_p1p1):
+.globl _crypto_sign_ed25519_amd64_64_ge25519_dbl_p1p1
+.globl crypto_sign_ed25519_amd64_64_ge25519_dbl_p1p1
+_crypto_sign_ed25519_amd64_64_ge25519_dbl_p1p1:
+crypto_sign_ed25519_amd64_64_ge25519_dbl_p1p1:
 mov %rsp,%r11
 and $31,%r11
 add $192,%r11
@@ -575,8 +575,8 @@ adc %rdx,%rcx
 # asm 2: mov  <squarer4=%r11,>squarerax=%rax
 mov  %r11,%rax
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   squarer4 = squarerax
 # asm 1: mov  <squarerax=int64#7,>squarer4=int64#9
@@ -593,8 +593,8 @@ mov  %r12,%rax
 # asm 2: mov  <squarerdx=%rdx,>squarer5=%r12
 mov  %rdx,%r12
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer5 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer5=int64#10
@@ -616,8 +616,8 @@ mov  $0,%r13
 # asm 2: adc <squarerdx=%rdx,<squarer6=%r13
 adc %rdx,%r13
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer6 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer6=int64#11
@@ -639,8 +639,8 @@ mov  $0,%rcx
 # asm 2: adc <squarerdx=%rdx,<squarer7=%rcx
 adc %rdx,%rcx
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer7 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer7=int64#4
@@ -1042,8 +1042,8 @@ adc %rdx,%rcx
 # asm 2: mov  <squarer4=%r11,>squarerax=%rax
 mov  %r11,%rax
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   squarer4 = squarerax
 # asm 1: mov  <squarerax=int64#7,>squarer4=int64#9
@@ -1060,8 +1060,8 @@ mov  %r12,%rax
 # asm 2: mov  <squarerdx=%rdx,>squarer5=%r12
 mov  %rdx,%r12
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer5 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer5=int64#10
@@ -1083,8 +1083,8 @@ mov  $0,%r13
 # asm 2: adc <squarerdx=%rdx,<squarer6=%r13
 adc %rdx,%r13
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer6 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer6=int64#11
@@ -1106,8 +1106,8 @@ mov  $0,%rcx
 # asm 2: adc <squarerdx=%rdx,<squarer7=%rcx
 adc %rdx,%rcx
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer7 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer7=int64#4
@@ -1509,8 +1509,8 @@ adc %rdx,%rcx
 # asm 2: mov  <squarer4=%r11,>squarerax=%rax
 mov  %r11,%rax
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   squarer4 = squarerax
 # asm 1: mov  <squarerax=int64#7,>squarer4=int64#9
@@ -1527,8 +1527,8 @@ mov  %r12,%rax
 # asm 2: mov  <squarerdx=%rdx,>squarer5=%r12
 mov  %rdx,%r12
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer5 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer5=int64#10
@@ -1550,8 +1550,8 @@ mov  $0,%r13
 # asm 2: adc <squarerdx=%rdx,<squarer6=%r13
 adc %rdx,%r13
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer6 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer6=int64#11
@@ -1573,8 +1573,8 @@ mov  $0,%rcx
 # asm 2: adc <squarerdx=%rdx,<squarer7=%rcx
 adc %rdx,%rcx
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer7 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer7=int64#4
@@ -2631,8 +2631,8 @@ adc %rdx,%rsi
 # asm 2: mov  <squarer4=%r10,>squarerax=%rax
 mov  %r10,%rax
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   squarer4 = squarerax
 # asm 1: mov  <squarerax=int64#7,>squarer4=int64#8
@@ -2649,8 +2649,8 @@ mov  %r11,%rax
 # asm 2: mov  <squarerdx=%rdx,>squarer5=%r11
 mov  %rdx,%r11
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer5 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer5=int64#9
@@ -2672,8 +2672,8 @@ mov  $0,%r12
 # asm 2: adc <squarerdx=%rdx,<squarer6=%r12
 adc %rdx,%r12
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer6 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer6=int64#10
@@ -2695,8 +2695,8 @@ mov  $0,%rsi
 # asm 2: adc <squarerdx=%rdx,<squarer7=%rsi
 adc %rdx,%rsi
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? squarer7 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer7=int64#2

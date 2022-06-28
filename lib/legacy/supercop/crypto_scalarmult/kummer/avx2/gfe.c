@@ -1,5 +1,4 @@
 #include "gfe.h"
-#include "consts.h"
 
 typedef unsigned long long u64;
 
@@ -65,18 +64,6 @@ void gfe_pack(unsigned char *r, const gfe *x)
     r[8+i] = (x->v[1] >> 8*i) & 0xff;
 }
 
-static unsigned long long fromdouble(double d)
-{
-  d += 6755399441055744.0;
-  return *(unsigned long long *) &d - 0x4338000000000000;
-}
-
-static double todouble(unsigned long long l)
-{
-  l += 0x4338000000000000;
-  return *(double *) &l - 6755399441055744.0;
-}
-
 void gfe4x3limb_split(gfe *r, const gfe4x *x)
 {
   gfe4x t;
@@ -84,44 +71,45 @@ void gfe4x3limb_split(gfe *r, const gfe4x *x)
   gfe4x3limb_freeze(&t, x);
   for(i=0;i<4;i++)
   {
-    r[i].v[0]  = fromdouble(t.v[i]);
-    r[i].v[0] |= fromdouble(t.v[i+8]) << 43;
-    r[i].v[1]  = fromdouble(t.v[i+8]) >> 21;
-    r[i].v[1] |= fromdouble(t.v[i+16]) << 21;
+    r[i].v[0]  =  (unsigned long long) t.v[i];
+    r[i].v[0] |= ((unsigned long long) t.v[i+8]) << 43;
+    r[i].v[1]  = ((unsigned long long) t.v[i+8]) >> 21;
+    r[i].v[1] |= ((unsigned long long) t.v[i+16]) << 21;
   }
 }
 
+
 void gfe4x_unpack(gfe4x *r, const unsigned char x[16], int pos)
 {
-    r->v[ 0+pos]  = todouble( (u64)(x[ 0])       ^ ((u64)x[ 1] << 8)                        ^ ((u64)x[ 2] & 0x3f) << 16);
-    r->v[ 4+pos]  = todouble(((u64)(x[ 2]) >> 6) ^ ((u64)x[ 3] << 2) ^ ((u64)x[ 4] << 10) ^ ((u64)x[ 5] & 0x07) << 18);
+    r->v[ 0+pos]  = (double)( (u64)(x[ 0])       ^ ((u64)x[ 1] << 8)                        ^ ((u64)x[ 2] & 0x3f) << 16);
+    r->v[ 4+pos]  = (double)(((u64)(x[ 2]) >> 6) ^ ((u64)x[ 3] << 2) ^ ((u64)x[ 4] << 10) ^ ((u64)x[ 5] & 0x07) << 18);
     r->v[ 4+pos] *= 4194304.; /* 2^22 */
-    r->v[ 8+pos]  = todouble(((u64)(x[ 5]) >> 3) ^ ((u64)x[ 6] << 5) ^ ((u64)x[ 7] << 13));
+    r->v[ 8+pos]  = (double)(((u64)(x[ 5]) >> 3) ^ ((u64)x[ 6] << 5) ^ ((u64)x[ 7] << 13));
     r->v[ 8+pos] *= 8796093022208.; /* 2^43 */
-    r->v[12+pos]  = todouble( (u64)(x[ 8])       ^ ((u64)x[ 9] << 8)                        ^ ((u64)x[10] & 0x1f) << 16);
+    r->v[12+pos]  = (double)( (u64)(x[ 8])       ^ ((u64)x[ 9] << 8)                        ^ ((u64)x[10] & 0x1f) << 16);
     r->v[12+pos] *= 18446744073709551616.; /* 2^64 */
-    r->v[16+pos]  = todouble(((u64)(x[10]) >> 5) ^ ((u64)x[11] << 3) ^ ((u64)x[12] << 11) ^ ((u64)x[13] & 0x03) << 19);
+    r->v[16+pos]  = (double)(((u64)(x[10]) >> 5) ^ ((u64)x[11] << 3) ^ ((u64)x[12] << 11) ^ ((u64)x[13] & 0x03) << 19);
     r->v[16+pos] *= 38685626227668133590597632.; /* 2^85 */
-    r->v[20+pos]  = todouble(((u64)(x[13]) >> 2) ^ ((u64)x[14] << 6)                        ^ ((u64)x[15] & 0x7f) << 14);
+    r->v[20+pos]  = (double)(((u64)(x[13]) >> 2) ^ ((u64)x[14] << 6)                        ^ ((u64)x[15] & 0x7f) << 14);
     r->v[20+pos] *= 81129638414606681695789005144064.; /* 2^106 */
 }
 
 void gfe4x3limb_unpack(gfe4x *r, const unsigned char x[16], int pos)
 {
-    r->v[ 0+pos]  = todouble(  (u64)x[ 0]       
+    r->v[ 0+pos]  = (double)(  (u64)x[ 0]       
                            ^ ( (u64)x[ 1]       <<  8)                        
                            ^ ( (u64)x[ 2]       << 16)
                            ^ ( (u64)x[ 3]       << 24)
                            ^ ( (u64)x[ 4]       << 32)
                            ^ (((u64)x[ 5] &  7) << 40));
-    r->v[ 8+pos]  = todouble(( (u64)x[ 5]       >>  3)
+    r->v[ 8+pos]  = (double)(( (u64)x[ 5]       >>  3)
                            ^ ( (u64)x[ 6]       <<  5)                        
                            ^ ( (u64)x[ 7]       << 13)                        
                            ^ ( (u64)x[ 8]       << 21)                        
                            ^ ( (u64)x[ 9]       << 29)                        
                            ^ (((u64)x[10] & 31) << 37));                       
     r->v[ 8+pos] *= 8796093022208.; /* 2^43 */
-    r->v[16+pos]  = todouble( ((u64)x[10]       >>  5)
+    r->v[16+pos]  = (double)( ((u64)x[10]       >>  5)
                            ^ ( (u64)x[11]       <<  3)                        
                            ^ ( (u64)x[12]       << 11)                        
                            ^ ( (u64)x[13]       << 19)                        

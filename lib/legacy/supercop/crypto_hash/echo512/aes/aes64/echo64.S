@@ -1567,9 +1567,9 @@ T.46:
 .LFE571:
 	.size	T.46, .-T.46
 	.p2align 4,,15
-.globl CRYPTO_NAMESPACETOP
-	.type	CRYPTO_NAMESPACETOP, @function
-CRYPTO_NAMESPACETOP:
+.globl crypto_hash_echo512_aes_aes64
+	.type	crypto_hash_echo512_aes_aes64, @function
+crypto_hash_echo512_aes_aes64:
 .LFB570:
 	.cfi_startproc
 	movq	%rdi, %rax
@@ -1586,7 +1586,7 @@ CRYPTO_NAMESPACETOP:
 	ret
 	.cfi_endproc
 .LFE570:
-	.size	CRYPTO_NAMESPACETOP, .-CRYPTO_NAMESPACETOP
+	.size	crypto_hash_echo512_aes_aes64, .-crypto_hash_echo512_aes_aes64
 	.p2align 4,,15
 .globl Hash
 	.type	Hash, @function

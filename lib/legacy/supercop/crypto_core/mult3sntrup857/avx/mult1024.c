@@ -108,23 +108,27 @@ static void unstride(int16 f[2048],const int16 fpad[4][512])
 
 #define ALIGNED __attribute((aligned(32)))
 
-static const ALIGNED int16 y_7681[512] = {
-#include "precomp7681.inc"
-} ;
-
 static void mult1024(int16 h[2048],const int16 f[1024],const int16 g[1024])
 {
-  ALIGNED int16 fgpad[8][512];
-#define fpad fgpad
-#define gpad (fgpad+4)
-#define hpad fpad
+  ALIGNED int16 fpad[4][512];
+  ALIGNED int16 gpad[4][512];
   ALIGNED int16 h_7681[2048];
+  ALIGNED int16 y_7681[512];
+#define hpad fpad
   int i;
 
-  stride(fpad,f);
-  stride(gpad,g);
+  for (i = 0;i < 512;++i) y_7681[i] = 0;
+  y_7681[1] = -3593; /* 65536 */
+  ntt512_7681(y_7681,1);
+  /* XXX: could precompute this ntt */
+  /* but this would save only 1 of 13 NTTs */
+  /* and would cost 1KB for y_7681 */
 
-  ntt512_7681(fgpad[0],8);
+  stride(fpad,f);
+  ntt512_7681(fpad[0],4);
+
+  stride(gpad,g);
+  ntt512_7681(gpad[0],4);
 
   /* XXX: try arbitrary-degree Karatsuba */
 

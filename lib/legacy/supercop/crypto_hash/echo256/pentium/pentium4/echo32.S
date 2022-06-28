@@ -16336,9 +16336,9 @@ T.46:
 	ret
 	.size	T.46, .-T.46
 	.p2align 4,,15
-.globl CRYPTO_NAMESPACETOP
-	.type	CRYPTO_NAMESPACETOP, @function
-CRYPTO_NAMESPACETOP:
+.globl crypto_hash_echo256_pentium_pentium4
+	.type	crypto_hash_echo256_pentium_pentium4, @function
+crypto_hash_echo256_pentium_pentium4:
 	pushl	%ebp
 	movl	%esp, %ebp
 	subl	$24, %esp
@@ -16355,7 +16355,7 @@ CRYPTO_NAMESPACETOP:
 	sbbl	%eax, %eax
 	notl	%eax
 	ret
-	.size	CRYPTO_NAMESPACETOP, .-CRYPTO_NAMESPACETOP
+	.size	crypto_hash_echo256_pentium_pentium4, .-crypto_hash_echo256_pentium_pentium4
 	.p2align 4,,15
 .globl Hash
 	.type	Hash, @function

@@ -245,13 +245,13 @@
 
 # qhasm: stack64 i31_stack
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hash_cubehash1632_mips64
 .text
 .align 2
 .set noat
-.globl CRYPTO_NAMESPACETOP
-.ent CRYPTO_NAMESPACETOP
-CRYPTO_NAMESPACETOP:
+.globl crypto_hash_cubehash1632_mips64
+.ent crypto_hash_cubehash1632_mips64
+crypto_hash_cubehash1632_mips64:
 daddiu $sp,$sp,-320
 
 # qhasm:   i16_stack = i16
@@ -3395,4 +3395,4 @@ or $3,$5,$0
 daddiu $sp,$sp,320
 j $31
 nop
-.end CRYPTO_NAMESPACETOP
+.end crypto_hash_cubehash1632_mips64

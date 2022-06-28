@@ -1,1 +1,0 @@
-../../mult3sntrup761/round2/ntt.c

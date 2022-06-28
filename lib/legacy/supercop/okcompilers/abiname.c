@@ -27,10 +27,6 @@ const char *abi(void)
    return "armeabi";
 #elif defined(__arm__)
    return "arm";
-#elif defined(__riscv) && (__riscv_xlen == 64)
-   return "riscv64";
-#elif defined(__riscv)
-   return "riscv32";
 #elif defined(__mips__) || defined(__mips) || defined(__MIPS__)
 #  if defined(_ABIO32)
      return "mipso32";

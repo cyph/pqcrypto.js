@@ -74,7 +74,7 @@ int32 i
 int32 ci
 int32 mi
 
-enter CRYPTO_NAMESPACE(xor)
+enter crypto_stream_salsa20_armneon3_xor
 
 new stack_q4
 new stack_q5

@@ -331,18 +331,18 @@ sigma:
 
 # qhasm: int32 mi
 
-# qhasm: qpushenter CRYPTO_NAMESPACE(xor)
+# qhasm: qpushenter crypto_stream_salsa20_armneon6_xor
 .align 2
-.global _CRYPTO_NAMESPACE(xor)
-.global CRYPTO_NAMESPACE(xor)
-.type _CRYPTO_NAMESPACE(xor) STT_FUNC
-.type CRYPTO_NAMESPACE(xor) STT_FUNC
-_CRYPTO_NAMESPACE(xor):
-CRYPTO_NAMESPACE(xor):
+.global _crypto_stream_salsa20_armneon6_xor
+.global crypto_stream_salsa20_armneon6_xor
+.type _crypto_stream_salsa20_armneon6_xor STT_FUNC
+.type crypto_stream_salsa20_armneon6_xor STT_FUNC
+_crypto_stream_salsa20_armneon6_xor:
+crypto_stream_salsa20_armneon6_xor:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#352
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm: stack64 stack_r45
 

@@ -1,1 +1,1 @@
-#define CRYPTO_BYTES 64
+#define crypto_hash_whirlpool_ref_BYTES 64

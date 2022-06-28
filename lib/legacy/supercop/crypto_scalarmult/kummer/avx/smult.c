@@ -1,6 +1,5 @@
 #include "crypto_scalarmult.h"
 #include "gfe.h"
-#include "consts.h"
 
 extern const unsigned char _one[16];
 

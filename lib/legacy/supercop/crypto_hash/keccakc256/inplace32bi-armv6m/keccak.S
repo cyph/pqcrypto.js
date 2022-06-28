@@ -549,11 +549,11 @@
 @//int crypto_hash( unsigned char *out, const unsigned char *in, unsigned long long inlen )
 	@// .size ???
 	.align	2
-	.global	CRYPTO_NAMESPACETOP                 @
+	.global	crypto_hash_keccakc256_inplace32bi_armv6m                 @
 	.thumb
 	.thumb_func
-	.type	CRYPTO_NAMESPACETOP, %function      @
-CRYPTO_NAMESPACETOP:  @                         @
+	.type	crypto_hash_keccakc256_inplace32bi_armv6m, %function      @
+crypto_hash_keccakc256_inplace32bi_armv6m:  @                         @
 
 		push	{r4-r7,lr}
 		mov		r3, r8

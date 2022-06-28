@@ -6,9 +6,9 @@
 #endif
 .p2align 5
 
-.globl CRYPTO_NAMESPACE(constants)
+.globl crypto_hash_cubehash512_amd64_constants
 
-CRYPTO_NAMESPACE(constants):
+crypto_hash_cubehash512_amd64_constants:
 .long 0x781f814f
 .long 0x18f45926
 .long 0x992b7520

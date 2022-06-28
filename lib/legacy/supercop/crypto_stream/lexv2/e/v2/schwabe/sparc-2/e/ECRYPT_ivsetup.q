@@ -92,7 +92,7 @@ stack64 x42
 stack64 x43
 
 # Enter the function
-enter ECRYPT_ivsetup
+enter crypto_stream_lexv2_e_v2_schwabe_sparc_2_ECRYPT_ivsetup
 
 # Make global aes-constants reachable from within qhasm:
 constants = (aes_little_constants & 0xfffffc0000000000) >> 32

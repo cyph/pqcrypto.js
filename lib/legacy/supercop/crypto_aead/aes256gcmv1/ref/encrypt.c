@@ -1,7 +1,6 @@
 #include "crypto_aead.h"
 #include "crypto_verify_16.h"
 #include "crypto_core_aes256encrypt.h"
-#include "crypto_declassify.h"
 #define AES(out,in,k) crypto_core_aes256encrypt(out,in,k,0)
 
 static void store32(unsigned char *x,unsigned long long u)
@@ -132,7 +131,6 @@ int crypto_aead_decrypt(
   unsigned long long index;
   unsigned long long i;
   const unsigned char *origc;
-  int result;
 
   for (i = 0;i < 32;++i) kcopy[i] = k[i];
 
@@ -171,9 +169,7 @@ int crypto_aead_decrypt(
 
   addmul(accum,finalblock,16,H);
   for (i = 0;i < 16;++i) accum[i] ^= T[i];
-  result = crypto_verify_16(accum,c);
-  crypto_declassify(&result,sizeof result);
-  if (result != 0) return -1;
+  if (crypto_verify_16(accum,c) != 0) return -1;
 
   c = origc;
   mlen = origmlen;

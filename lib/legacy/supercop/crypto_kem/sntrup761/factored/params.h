@@ -5,10 +5,8 @@
 #define q 4591
 #define w 286
 
-#define ppadsort 768
-
-#include "crypto_verify_1039.h"
-#define crypto_verify_clen crypto_verify_1039
+#define q18 57 /* closest integer to 2^18/q */
+#define q27 29235 /* closest integer to 2^27/q */
 
 #include "crypto_encode_761x4591.h"
 #include "crypto_decode_761x4591.h"
@@ -29,9 +27,6 @@
 #define Small_encode crypto_encode_761x3
 #define Small_decode crypto_decode_761x3
 
-#include "crypto_encode_761xfreeze3.h"
-#define crypto_encode_pxfreeze3 crypto_encode_761xfreeze3
-
 #include "crypto_decode_761xint32.h"
 #define crypto_decode_pxint32 crypto_decode_761xint32
 
@@ -40,12 +35,6 @@
 
 #include "crypto_encode_761xint16.h"
 #define crypto_encode_pxint16 crypto_encode_761xint16
-
-#include "crypto_core_wforcesntrup761.h"
-#define crypto_core_wforce crypto_core_wforcesntrup761
-
-#include "crypto_core_scale3sntrup761.h"
-#define crypto_core_scale3 crypto_core_scale3sntrup761
 
 #include "crypto_core_invsntrup761.h"
 #define crypto_core_inv crypto_core_invsntrup761

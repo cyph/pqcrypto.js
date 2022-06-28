@@ -126,8 +126,8 @@ void scmul_cvhalv_end(elt254 b, elt254 a) {
 	//printf("k = %.16llx - %.16llx - %.16llx - %.16llx\n", a[3], a[2], a[1], a[0]);
 
 	//kpr = k * 2^(126)
-	kpr[2] = _mm_loadu_si128((__m128i *) &a[2]);
-	kpr[1] = _mm_loadu_si128((__m128i *) &a[0]);
+	kpr[2] = _mm_load_si128((__m128i *) &a[2]);
+	kpr[1] = _mm_load_si128((__m128i *) &a[0]);
 	kpr[0] = _mm_setzero_si128();
 
 	kpr[0] = _mm_alignr_epi8(kpr[1], kpr[0], 8);
@@ -143,8 +143,8 @@ void scmul_cvhalv_end(elt254 b, elt254 a) {
 	kpr[2] = _mm_srli_epi64(kpr[2], 2);
 	kpr[2] = _mm_xor_si128(kpr[2], tmp);
 	
-	_mm_storeu_si128((__m128i *) &kpr64[0], kpr[0]);
-	_mm_storeu_si128((__m128i *) &kpr64[2], kpr[1]);
+	_mm_store_si128((__m128i *) &kpr64[0], kpr[0]);
+	_mm_store_si128((__m128i *) &kpr64[2], kpr[1]);
 
 	//I PHASE
 	//Extract K_h (kpr - 253 bits)	
@@ -152,10 +152,10 @@ void scmul_cvhalv_end(elt254 b, elt254 a) {
 	tmp = _mm_srli_epi64(tmp, 61);
 	kh = _mm_slli_epi64(kpr[2], 3);
 	kh = _mm_xor_si128(kh, tmp);	
-	_mm_storeu_si128((__m128i *) &kh64[0], kh);
+	_mm_store_si128((__m128i *) &kh64[0], kh);
 	kh = _mm_srli_si128(kpr[2], 8);
 	kh = _mm_srli_epi64(kh, 61);
-	_mm_storeu_si128((__m128i *) &kh64[2], kh);
+	_mm_store_si128((__m128i *) &kh64[2], kh);
 
 	//printf("kh64 = %.16llx - %.16llx - %.16llx - %.16llx\n", kh64[3], kh64[2], kh64[1], kh64[0]);
 

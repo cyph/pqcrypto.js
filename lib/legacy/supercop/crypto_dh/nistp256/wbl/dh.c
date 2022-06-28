@@ -4,7 +4,7 @@
 #include "randombytes.h"
 
 int
-CRYPTO_NAMESPACE(keypair)(unsigned char *pk, unsigned char *sk)
+crypto_dh_nistp256_wbl_keypair(unsigned char *pk, unsigned char *sk)
 {
         point temp;
         randombytes(sk, 32);
@@ -14,7 +14,7 @@ CRYPTO_NAMESPACE(keypair)(unsigned char *pk, unsigned char *sk)
 }
 
 int
-CRYPTO_NAMESPACETOP(unsigned char *out, const unsigned char *p,
+crypto_dh_nistp256_wbl(unsigned char *out, const unsigned char *p,
                                 const unsigned char *n)
 {
         point temp;

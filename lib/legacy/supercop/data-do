@@ -1,8 +1,5 @@
 #!/bin/sh
 
-shorthostname=`hostname | sed 's/\..*//' | tr -cd '[a-z][A-Z][0-9]' | tr '[A-Z]' '[a-z]'`
-export shorthostname
-
 cores=${1-1}
 cccc=`awk 'BEGIN{for(i=0;i<'$cores';++i)print i;exit}'`
 

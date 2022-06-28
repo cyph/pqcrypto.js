@@ -1,12 +1,12 @@
 #include "ecrypt-sync.h"
 #include "table.h"
 
-void ECRYPT_init(void)
+void crypto_stream_lexv2_e_v2_schwabe_sparc_2_ECRYPT_init(void)
 { 
   ;
 }
 
-void ECRYPT_keysetup(ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
+void crypto_stream_lexv2_e_v2_schwabe_sparc_2_ECRYPT_keysetup(crypto_stream_lexv2_e_v2_schwabe_sparc_2_ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
 { 
   register u32 x0;
   register u32 x1;

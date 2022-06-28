@@ -1,5 +1,5 @@
-// Code for F_p field arithmetic, p is 2^127-1, on a Core 2 (or any modern 64-bit Intel/AMD chip)
-// Parameters passed in rdi,rsi,rdx (which are pointers to 2-element arrays storing a field element, 2x64=128)
+/ Code for F_p field arithmetic, p is 2^127-1, on a Core 2 (or any modern 64-bit Intel/AMD chip)
+/ Parameters passed in rdi,rsi,rdx (which are pointers to 2-element arrays storing a field element, 2x64=128)
 
 .text
 
@@ -10,7 +10,7 @@ modmult:
   movq %rdx,%rbx
   xorq %rcx,%rcx
 
-// multiplication 
+/ multiplication 
 
   movq (%rsi),%rax
   mulq (%rdi)
@@ -34,7 +34,7 @@ modmult:
   adcq %rdx,%r8
   adcq %rcx,%r9
 
-// reduction 
+/ reduction 
 
   rclq $1,%r11
   rclq $1,%r8
@@ -59,7 +59,7 @@ modmult:
 modsqr:
   xorq %rcx,%rcx
 
-// squaring
+/ squaring
 
   movq (%rdi),%rax
   mulq (%rdi)
@@ -80,7 +80,7 @@ modsqr:
   adcq %rdx,%r8
   adcq %rcx,%r9
 
-// reduction 
+/ reduction 
 
   rclq $1,%r11
   rclq $1,%r8
@@ -268,7 +268,7 @@ moddblsub:
 
 ret
 
-// modular divide by 2
+/ modular divide by 2
 
 .globl moddiv2
 moddiv2:
@@ -285,7 +285,7 @@ moddiv2:
 
   ret
 
-// modular negation
+/ modular negation
 
 .globl modneg
 modneg:

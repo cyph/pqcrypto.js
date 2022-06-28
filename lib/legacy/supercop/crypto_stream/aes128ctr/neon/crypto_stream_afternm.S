@@ -167,18 +167,18 @@
 
 # qhasm: int32 np
 
-# qhasm: qpushenter CRYPTO_NAMESPACE(afternm_constants)
+# qhasm: qpushenter crypto_stream_aes128ctr_neon_afternm_constants
 .align 2
-.global _CRYPTO_NAMESPACE(afternm_constants)
-.global CRYPTO_NAMESPACE(afternm_constants)
-.type _CRYPTO_NAMESPACE(afternm_constants) STT_FUNC
-.type CRYPTO_NAMESPACE(afternm_constants) STT_FUNC
-_CRYPTO_NAMESPACE(afternm_constants):
-CRYPTO_NAMESPACE(afternm_constants):
+.global _crypto_stream_aes128ctr_neon_afternm_constants
+.global crypto_stream_aes128ctr_neon_afternm_constants
+.type _crypto_stream_aes128ctr_neon_afternm_constants STT_FUNC
+.type crypto_stream_aes128ctr_neon_afternm_constants STT_FUNC
+_crypto_stream_aes128ctr_neon_afternm_constants:
+crypto_stream_aes128ctr_neon_afternm_constants:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#320
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm: stack64 stack_r45
 

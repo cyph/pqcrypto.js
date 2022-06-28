@@ -145,7 +145,7 @@ stack64 x1d_stack
 stack64 x1e_stack
 stack64 x1f_stack
 
-enter CRYPTO_NAMESPACETOP
+enter crypto_hash_cubehash512_sparcv9
 
   out_stack = out
 

@@ -179,7 +179,7 @@ aes_rval aes_encrypt(const unsigned char *in,
 
 #endif
 
-#if defined(DECRYPTION) && !defined(AES_ASM)
+#if defined(Dcrypto_stream_aes128estream_e_gladman_ECRYPTION) && !defined(AES_ASM)
 
 /* Visual C++ .Net v7.1 provides the fastest encryption code when using
    Pentium optimiation with small code but this is poor for decryption

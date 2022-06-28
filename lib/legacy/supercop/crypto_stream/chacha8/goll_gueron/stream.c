@@ -128,7 +128,7 @@ typedef long long __m512i __attribute__ ((__vector_size__ (64), __may_alias__));
 
 // Change * and ** to 'unsigned long long' if there is a need to encrypt/decrypt more than 2^32-1 bytes (~4GB) using a single call.
 // This will slightly slow down the implementation due to all loop iterators become 64-bit.
-static int chacha_xor_avx(
+int chacha_xor_avx(
 		unsigned char *out,
 		const unsigned char *in,
 		unsigned int inlen, // *

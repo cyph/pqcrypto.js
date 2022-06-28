@@ -1,9 +1,9 @@
 .text
 .align 3
-.globl _CRYPTO_NAMESPACE(ECRYPT_process_bytes_qhasm)
-.globl CRYPTO_NAMESPACE(ECRYPT_process_bytes_qhasm)
-_CRYPTO_NAMESPACE(ECRYPT_process_bytes_qhasm):
-CRYPTO_NAMESPACE(ECRYPT_process_bytes_qhasm):
+.globl _crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_process_bytes_qhasm
+.globl crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_process_bytes_qhasm
+_crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_process_bytes_qhasm:
+crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_process_bytes_qhasm:
 stwu r1,-464(r1)
 cmplwi r7,0
 blt .label.donothing
@@ -25,8 +25,8 @@ stw r27,56(r1)
 stw r28,60(r1)
 stw r29,64(r1)
 stw r30,68(r1)
-lis r3,hi16(_CRYPTO_NAMESPACE(aes_big_constants))
-ori r3,r3,lo16(_CRYPTO_NAMESPACE(aes_big_constants))
+lis r3,hi16(_aes_big_constants)
+ori r3,r3,lo16(_aes_big_constants)
 mr r8,r3
 addi r8,r8,40
 mr r9,r3

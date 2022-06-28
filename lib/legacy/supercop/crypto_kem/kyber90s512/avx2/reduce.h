@@ -1,1 +1,1 @@
-../../kyber512/avx2/reduce.h
+../../kyber768/avx2/reduce.h

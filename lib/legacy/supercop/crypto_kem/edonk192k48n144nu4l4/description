@@ -1,1 +1,4 @@
-../edonk192k16n112nu4l8/description
+An alternative Edon-K KEM proposal in Category 3.
+Conjectured security requires computational resources comparable to 
+or greater than those required for key search on a block cipher with 
+a 192-bit key (e.g. AES192) - Category 3

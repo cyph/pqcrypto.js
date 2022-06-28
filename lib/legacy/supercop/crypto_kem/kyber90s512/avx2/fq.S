@@ -1,1 +1,1 @@
-../../kyber512/avx2/fq.S
+../../kyber768/avx2/fq.s

@@ -10,7 +10,6 @@
 #include <string.h>
 #include <immintrin.h>
 #include "crypto_aead.h"
-#include "crypto_declassify.h"
 
 #define ACCBY8
 
@@ -38,8 +37,8 @@
   }while (0)
 
 static inline void aesni_key256_expand(const unsigned char* key, __m128i rkeys[16]) {
-  __m128i key0 = _mm_loadu_si128((const __m128i *)(key+0));
-  __m128i key1 = _mm_loadu_si128((const __m128i *)(key+16));
+  __m128i key0 = _mm_loadu_si128((const unsigned int *)(key+0));
+  __m128i key1 = _mm_loadu_si128((const unsigned int *)(key+16));
   __m128i temp0, temp1, temp2, temp4;
   int idx = 0;
 
@@ -958,8 +957,6 @@ int crypto_aead_decrypt(
   unsigned char F = 0;
 
   for (i = 0;i < 16;++i) F |= (c[i+(*mlen)] != (T[i] ^ accum[15-i]));
-
-  crypto_declassify(&F,sizeof F);
   if (F)
     return -111;
 

@@ -167,7 +167,7 @@ int64 ctarget
 stack64 bytes_backup
 
 
-enter ECRYPT_keystream_bytes
+enter crypto_stream_salsa208_e_amd64_xmm6_ECRYPT_keystream_bytes
 
 x = arg1
 m = arg2
@@ -185,7 +185,7 @@ out -= bytes
 goto start
 
 
-enter ECRYPT_decrypt_bytes
+enter crypto_stream_salsa208_e_amd64_xmm6_ECRYPT_decrypt_bytes
 
 x = arg1
 m = arg2
@@ -198,7 +198,7 @@ goto done if !unsigned>
 goto start
 
 
-enter ECRYPT_encrypt_bytes
+enter crypto_stream_salsa208_e_amd64_xmm6_ECRYPT_encrypt_bytes
 
 x = arg1
 m = arg2
@@ -1146,11 +1146,11 @@ in3 = diag3
 goto bytesbetween1and255
 
 
-enter ECRYPT_init
+enter crypto_stream_salsa208_e_amd64_xmm6_ECRYPT_init
 leave
 
 
-enter ECRYPT_keysetup
+enter crypto_stream_salsa208_e_amd64_xmm6_ECRYPT_keysetup
 
   k = arg2
   kbits = arg3
@@ -1221,7 +1221,7 @@ enter ECRYPT_keysetup
 leave
 
 
-enter ECRYPT_ivsetup
+enter crypto_stream_salsa208_e_amd64_xmm6_ECRYPT_ivsetup
 
   iv = arg2
   x = arg1

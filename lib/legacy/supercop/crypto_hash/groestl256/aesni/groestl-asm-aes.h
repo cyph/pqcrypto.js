@@ -84,10 +84,10 @@ __attribute__ ((aligned (16))) unsigned char TEMP[3*16];
   asm("pxor xmm"tostr(b2)", xmm"tostr(a6)"");\
   asm("pxor xmm"tostr(b0)", xmm"tostr(a6)"");\
   /* spill values y_4, y_5 to memory */\
-  asm("movaps [rip+TEMP+0*16], xmm"tostr(b0)"");\
+  asm("movaps [TEMP+0*16], xmm"tostr(b0)"");\
   asm("pxor xmm"tostr(b3)", xmm"tostr(a7)"");\
   asm("pxor xmm"tostr(b1)", xmm"tostr(a7)"");\
-  asm("movaps [rip+TEMP+1*16], xmm"tostr(b1)"");\
+  asm("movaps [TEMP+1*16], xmm"tostr(b1)"");\
   asm("pxor xmm"tostr(b4)", xmm"tostr(a0)"");\
   asm("pxor xmm"tostr(b2)", xmm"tostr(a0)"");\
   /* save values t0, t1, t2 to xmm8, xmm9 and memory */\
@@ -97,7 +97,7 @@ __attribute__ ((aligned (16))) unsigned char TEMP[3*16];
   asm("movdqa xmm"tostr(b1)", xmm"tostr(a1)"");\
   asm("pxor xmm"tostr(b6)", xmm"tostr(a2)"");\
   asm("pxor xmm"tostr(b4)", xmm"tostr(a2)"");\
-  asm("movaps [rip+TEMP+2*16], xmm"tostr(a2)"");\
+  asm("movaps [TEMP+2*16], xmm"tostr(a2)"");\
   asm("pxor xmm"tostr(b7)", xmm"tostr(a3)"");\
   asm("pxor xmm"tostr(b5)", xmm"tostr(a3)"");\
   \
@@ -109,15 +109,15 @@ __attribute__ ((aligned (16))) unsigned char TEMP[3*16];
   asm("pxor xmm"tostr(a4)", xmm"tostr(a7)"");\
   asm("pxor xmm"tostr(a5)", xmm"tostr(b0)"");\
   asm("pxor xmm"tostr(a6)", xmm"tostr(b1)"");\
-  asm("pxor xmm"tostr(a7)", [rip+TEMP+2*16]");\
+  asm("pxor xmm"tostr(a7)", [TEMP+2*16]");\
   \
   /* compute z_i : double x_i using temp xmm8 and 1B xmm9 */\
   /* compute w_i : add y_{i+4} */\
-  asm("movaps xmm"tostr(b1)", [rip+ALL_1B]");\
+  asm("movaps xmm"tostr(b1)", [ALL_1B]");\
   MUL2(a0, b0, b1);\
-  asm("pxor xmm"tostr(a0)", [rip+TEMP+0*16]");\
+  asm("pxor xmm"tostr(a0)", [TEMP+0*16]");\
   MUL2(a1, b0, b1);\
-  asm("pxor xmm"tostr(a1)", [rip+TEMP+1*16]");\
+  asm("pxor xmm"tostr(a1)", [TEMP+1*16]");\
   MUL2(a2, b0, b1);\
   asm("pxor xmm"tostr(a2)", xmm"tostr(b2)"");\
   MUL2(a3, b0, b1);\
@@ -147,8 +147,8 @@ __attribute__ ((aligned (16))) unsigned char TEMP[3*16];
   asm("pxor xmm"tostr(b4)", xmm"tostr(a7)"");\
   MUL2(a3, b0, b1);\
   MUL2(a4, b0, b1);\
-  asm("movaps xmm"tostr(b0)", [rip+TEMP+0*16]");\
-  asm("movaps xmm"tostr(b1)", [rip+TEMP+1*16]");\
+  asm("movaps xmm"tostr(b0)", [TEMP+0*16]");\
+  asm("movaps xmm"tostr(b1)", [TEMP+1*16]");\
   asm("pxor xmm"tostr(b0)", xmm"tostr(a3)"");\
   asm("pxor xmm"tostr(b1)", xmm"tostr(a4)"");\
 }/*MixBytes*/
@@ -208,32 +208,32 @@ __attribute__ ((aligned (16))) unsigned char TEMP[3*16];
  */
 #define ROUND(i, a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7){\
   /* AddRoundConstant */\
-  asm ("movaps xmm"tostr(b1)", [rip+ROUND_CONST_Lx]");\
-  asm ("pxor   xmm"tostr(a0)", [rip+ROUND_CONST_L0+"tostr(i)"*16]");\
+  asm ("movaps xmm"tostr(b1)", [ROUND_CONST_Lx]");\
+  asm ("pxor   xmm"tostr(a0)", [ROUND_CONST_L0+"tostr(i)"*16]");\
   asm ("pxor   xmm"tostr(a1)", xmm"tostr(b1)"");\
   asm ("pxor   xmm"tostr(a2)", xmm"tostr(b1)"");\
   asm ("pxor   xmm"tostr(a3)", xmm"tostr(b1)"");\
   asm ("pxor   xmm"tostr(a4)", xmm"tostr(b1)"");\
   asm ("pxor   xmm"tostr(a5)", xmm"tostr(b1)"");\
   asm ("pxor   xmm"tostr(a6)", xmm"tostr(b1)"");\
-  asm ("pxor   xmm"tostr(a7)", [rip+ROUND_CONST_L7+"tostr(i)"*16]");\
+  asm ("pxor   xmm"tostr(a7)", [ROUND_CONST_L7+"tostr(i)"*16]");\
   /* ShiftBytes + SubBytes (interleaved) */\
   asm ("pxor xmm"tostr(b0)",  xmm"tostr(b0)"");\
-  asm ("pshufb     xmm"tostr(a0)", [rip+SUBSH_MASK+0*16]");\
+  asm ("pshufb     xmm"tostr(a0)", [SUBSH_MASK+0*16]");\
   asm ("aesenclast xmm"tostr(a0)", xmm"tostr(b0)"");\
-  asm ("pshufb     xmm"tostr(a1)", [rip+SUBSH_MASK+1*16]");\
+  asm ("pshufb     xmm"tostr(a1)", [SUBSH_MASK+1*16]");\
   asm ("aesenclast xmm"tostr(a1)", xmm"tostr(b0)"");\
-  asm ("pshufb     xmm"tostr(a2)", [rip+SUBSH_MASK+2*16]");\
+  asm ("pshufb     xmm"tostr(a2)", [SUBSH_MASK+2*16]");\
   asm ("aesenclast xmm"tostr(a2)", xmm"tostr(b0)"");\
-  asm ("pshufb     xmm"tostr(a3)", [rip+SUBSH_MASK+3*16]");\
+  asm ("pshufb     xmm"tostr(a3)", [SUBSH_MASK+3*16]");\
   asm ("aesenclast xmm"tostr(a3)", xmm"tostr(b0)"");\
-  asm ("pshufb     xmm"tostr(a4)", [rip+SUBSH_MASK+4*16]");\
+  asm ("pshufb     xmm"tostr(a4)", [SUBSH_MASK+4*16]");\
   asm ("aesenclast xmm"tostr(a4)", xmm"tostr(b0)"");\
-  asm ("pshufb     xmm"tostr(a5)", [rip+SUBSH_MASK+5*16]");\
+  asm ("pshufb     xmm"tostr(a5)", [SUBSH_MASK+5*16]");\
   asm ("aesenclast xmm"tostr(a5)", xmm"tostr(b0)"");\
-  asm ("pshufb     xmm"tostr(a6)", [rip+SUBSH_MASK+6*16]");\
+  asm ("pshufb     xmm"tostr(a6)", [SUBSH_MASK+6*16]");\
   asm ("aesenclast xmm"tostr(a6)", xmm"tostr(b0)"");\
-  asm ("pshufb     xmm"tostr(a7)", [rip+SUBSH_MASK+7*16]");\
+  asm ("pshufb     xmm"tostr(a7)", [SUBSH_MASK+7*16]");\
   asm ("aesenclast xmm"tostr(a7)", xmm"tostr(b0)"");\
   /* MixBytes */\
   MixBytes(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7);\
@@ -261,7 +261,7 @@ __attribute__ ((aligned (16))) unsigned char TEMP[3*16];
  * clobbers: t0
  */
 #define Matrix_Transpose_A(i0, i1, i2, i3, o1, o2, o3, t0){\
-  asm ("movaps xmm"tostr(t0)", [rip+TRANSP_MASK]");\
+  asm ("movaps xmm"tostr(t0)", [TRANSP_MASK]");\
   \
   asm ("pshufb xmm"tostr(i0)", xmm"tostr(t0)"");\
   asm ("pshufb xmm"tostr(i1)", xmm"tostr(t0)"");\
@@ -603,30 +603,30 @@ void OF512(u64* h)
   asm ("add bl, 2");\
   asm ("1:");\
   /* AddRoundConstant P1024 */\
-  asm ("pxor xmm8, [rip+ROUND_CONST_P+eax*8]");\
+  asm ("pxor xmm8, [ROUND_CONST_P+eax*8]");\
   /* ShiftBytes P1024 + pre-AESENCLAST */\
-  asm ("pshufb xmm8,  [rip+SUBSH_MASK+0*16]");\
-  asm ("pshufb xmm9,  [rip+SUBSH_MASK+1*16]");\
-  asm ("pshufb xmm10, [rip+SUBSH_MASK+2*16]");\
-  asm ("pshufb xmm11, [rip+SUBSH_MASK+3*16]");\
-  asm ("pshufb xmm12, [rip+SUBSH_MASK+4*16]");\
-  asm ("pshufb xmm13, [rip+SUBSH_MASK+5*16]");\
-  asm ("pshufb xmm14, [rip+SUBSH_MASK+6*16]");\
-  asm ("pshufb xmm15, [rip+SUBSH_MASK+7*16]");\
+  asm ("pshufb xmm8,  [SUBSH_MASK+0*16]");\
+  asm ("pshufb xmm9,  [SUBSH_MASK+1*16]");\
+  asm ("pshufb xmm10, [SUBSH_MASK+2*16]");\
+  asm ("pshufb xmm11, [SUBSH_MASK+3*16]");\
+  asm ("pshufb xmm12, [SUBSH_MASK+4*16]");\
+  asm ("pshufb xmm13, [SUBSH_MASK+5*16]");\
+  asm ("pshufb xmm14, [SUBSH_MASK+6*16]");\
+  asm ("pshufb xmm15, [SUBSH_MASK+7*16]");\
   /* SubBytes + MixBytes */\
   SUBMIX(8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7);\
   \
   /* AddRoundConstant P1024 */\
-  asm ("pxor xmm0, [rip+ROUND_CONST_P+ebx*8]");\
+  asm ("pxor xmm0, [ROUND_CONST_P+ebx*8]");\
   /* ShiftBytes P1024 + pre-AESENCLAST */\
-  asm ("pshufb xmm0, [rip+SUBSH_MASK+0*16]");\
-  asm ("pshufb xmm1, [rip+SUBSH_MASK+1*16]");\
-  asm ("pshufb xmm2, [rip+SUBSH_MASK+2*16]");\
-  asm ("pshufb xmm3, [rip+SUBSH_MASK+3*16]");\
-  asm ("pshufb xmm4, [rip+SUBSH_MASK+4*16]");\
-  asm ("pshufb xmm5, [rip+SUBSH_MASK+5*16]");\
-  asm ("pshufb xmm6, [rip+SUBSH_MASK+6*16]");\
-  asm ("pshufb xmm7, [rip+SUBSH_MASK+7*16]");\
+  asm ("pshufb xmm0, [SUBSH_MASK+0*16]");\
+  asm ("pshufb xmm1, [SUBSH_MASK+1*16]");\
+  asm ("pshufb xmm2, [SUBSH_MASK+2*16]");\
+  asm ("pshufb xmm3, [SUBSH_MASK+3*16]");\
+  asm ("pshufb xmm4, [SUBSH_MASK+4*16]");\
+  asm ("pshufb xmm5, [SUBSH_MASK+5*16]");\
+  asm ("pshufb xmm6, [SUBSH_MASK+6*16]");\
+  asm ("pshufb xmm7, [SUBSH_MASK+7*16]");\
   /* SubBytes + MixBytes */\
   SUBMIX(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);\
   asm ("add al, 4");\
@@ -642,7 +642,7 @@ void OF512(u64* h)
   asm ("add bl, 2");\
   asm ("2:");\
   /* AddRoundConstant Q1024 */\
-  asm ("movaps xmm1,  [rip+ALL_FF]");\
+  asm ("movaps xmm1,  [ALL_FF]");\
   asm ("pxor xmm8,  xmm1");\
   asm ("pxor xmm9,  xmm1");\
   asm ("pxor xmm10, xmm1");\
@@ -650,21 +650,21 @@ void OF512(u64* h)
   asm ("pxor xmm12, xmm1");\
   asm ("pxor xmm13, xmm1");\
   asm ("pxor xmm14, xmm1");\
-  asm ("pxor xmm15, [rip+ROUND_CONST_Q+eax*8]");\
+  asm ("pxor xmm15, [ROUND_CONST_Q+eax*8]");\
   /* ShiftBytes Q1024 + pre-AESENCLAST */\
-  asm ("pshufb xmm8,  [rip+SUBSH_MASK+1*16]");\
-  asm ("pshufb xmm9,  [rip+SUBSH_MASK+3*16]");\
-  asm ("pshufb xmm10, [rip+SUBSH_MASK+5*16]");\
-  asm ("pshufb xmm11, [rip+SUBSH_MASK+7*16]");\
-  asm ("pshufb xmm12, [rip+SUBSH_MASK+0*16]");\
-  asm ("pshufb xmm13, [rip+SUBSH_MASK+2*16]");\
-  asm ("pshufb xmm14, [rip+SUBSH_MASK+4*16]");\
-  asm ("pshufb xmm15, [rip+SUBSH_MASK+6*16]");\
+  asm ("pshufb xmm8,  [SUBSH_MASK+1*16]");\
+  asm ("pshufb xmm9,  [SUBSH_MASK+3*16]");\
+  asm ("pshufb xmm10, [SUBSH_MASK+5*16]");\
+  asm ("pshufb xmm11, [SUBSH_MASK+7*16]");\
+  asm ("pshufb xmm12, [SUBSH_MASK+0*16]");\
+  asm ("pshufb xmm13, [SUBSH_MASK+2*16]");\
+  asm ("pshufb xmm14, [SUBSH_MASK+4*16]");\
+  asm ("pshufb xmm15, [SUBSH_MASK+6*16]");\
   /* SubBytes + MixBytes */\
   SUBMIX(8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7);\
   \
   /* AddConstant */\
-  asm ("movaps xmm9,  [rip+ALL_FF]");\
+  asm ("movaps xmm9,  [ALL_FF]");\
   asm ("pxor xmm0,  xmm9");\
   asm ("pxor xmm1,  xmm9");\
   asm ("pxor xmm2,  xmm9");\
@@ -672,16 +672,16 @@ void OF512(u64* h)
   asm ("pxor xmm4,  xmm9");\
   asm ("pxor xmm5,  xmm9");\
   asm ("pxor xmm6,  xmm9");\
-  asm ("pxor xmm7,  [rip+ROUND_CONST_Q+ebx*8]");\
+  asm ("pxor xmm7,  [ROUND_CONST_Q+ebx*8]");\
   /* ShiftBytes Q1024 + pre-AESENCLAST */\
-  asm ("pshufb xmm0, [rip+SUBSH_MASK+1*16]");\
-  asm ("pshufb xmm1, [rip+SUBSH_MASK+3*16]");\
-  asm ("pshufb xmm2, [rip+SUBSH_MASK+5*16]");\
-  asm ("pshufb xmm3, [rip+SUBSH_MASK+7*16]");\
-  asm ("pshufb xmm4, [rip+SUBSH_MASK+0*16]");\
-  asm ("pshufb xmm5, [rip+SUBSH_MASK+2*16]");\
-  asm ("pshufb xmm6, [rip+SUBSH_MASK+4*16]");\
-  asm ("pshufb xmm7, [rip+SUBSH_MASK+6*16]");\
+  asm ("pshufb xmm0, [SUBSH_MASK+1*16]");\
+  asm ("pshufb xmm1, [SUBSH_MASK+3*16]");\
+  asm ("pshufb xmm2, [SUBSH_MASK+5*16]");\
+  asm ("pshufb xmm3, [SUBSH_MASK+7*16]");\
+  asm ("pshufb xmm4, [SUBSH_MASK+0*16]");\
+  asm ("pshufb xmm5, [SUBSH_MASK+2*16]");\
+  asm ("pshufb xmm6, [SUBSH_MASK+4*16]");\
+  asm ("pshufb xmm7, [SUBSH_MASK+6*16]");\
   /* SubBytes + MixBytes */\
   SUBMIX(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);\
   asm ("add al, 4");\
@@ -699,7 +699,7 @@ void OF512(u64* h)
  * clobbers: t0-t7
  */
 #define Matrix_Transpose(i0, i1, i2, i3, i4, i5, i6, i7, t0, t1, t2, t3, t4, t5, t6, t7){\
-  asm ("movaps xmm"tostr(t0)", [rip+TRANSP_MASK]");\
+  asm ("movaps xmm"tostr(t0)", [TRANSP_MASK]");\
   \
   asm ("pshufb xmm"tostr(i6)", xmm"tostr(t0)"");\
   asm ("pshufb xmm"tostr(i0)", xmm"tostr(t0)"");\
@@ -787,7 +787,7 @@ void OF512(u64* h)
   asm ("punpcklqdq xmm"tostr(i4)", xmm"tostr(i5)"");\
   asm ("punpckhqdq xmm"tostr(t1)", xmm"tostr(i5)"");\
   asm ("movdqa xmm"tostr(t2)", xmm"tostr(i6)"");\
-  asm ("movaps xmm"tostr(o0)", [rip+TRANSP_MASK]");\
+  asm ("movaps xmm"tostr(o0)", [TRANSP_MASK]");\
   asm ("punpcklqdq xmm"tostr(i6)", xmm"tostr(i7)"");\
   asm ("punpckhqdq xmm"tostr(t2)", xmm"tostr(i7)"");\
   /* load transpose mask into a register, because it will be used 8 times */\
@@ -901,14 +901,14 @@ void TF1024(u64* h, u64* m)
   Matrix_Transpose(8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7);
 
   /* store message M (Q input) for later */
-  asm ("movaps [rip+QTEMP+0*16], xmm8");
-  asm ("movaps [rip+QTEMP+1*16], xmm9");
-  asm ("movaps [rip+QTEMP+2*16], xmm10");
-  asm ("movaps [rip+QTEMP+3*16], xmm11");
-  asm ("movaps [rip+QTEMP+4*16], xmm12");
-  asm ("movaps [rip+QTEMP+5*16], xmm13");
-  asm ("movaps [rip+QTEMP+6*16], xmm14");
-  asm ("movaps [rip+QTEMP+7*16], xmm15");
+  asm ("movaps [QTEMP+0*16], xmm8");
+  asm ("movaps [QTEMP+1*16], xmm9");
+  asm ("movaps [QTEMP+2*16], xmm10");
+  asm ("movaps [QTEMP+3*16], xmm11");
+  asm ("movaps [QTEMP+4*16], xmm12");
+  asm ("movaps [QTEMP+5*16], xmm13");
+  asm ("movaps [QTEMP+6*16], xmm14");
+  asm ("movaps [QTEMP+7*16], xmm15");
 
   /* xor CV to message to get P input */
   /* result: CV+M in xmm8...xmm15 */
@@ -947,14 +947,14 @@ void TF1024(u64* h, u64* m)
   asm ("movaps [rdi+7*16], xmm15");
 
   /* load message M (Q input) into xmm8-15 */
-  asm ("movaps xmm8,  [rip+QTEMP+0*16]");
-  asm ("movaps xmm9,  [rip+QTEMP+1*16]");
-  asm ("movaps xmm10, [rip+QTEMP+2*16]");
-  asm ("movaps xmm11, [rip+QTEMP+3*16]");
-  asm ("movaps xmm12, [rip+QTEMP+4*16]");
-  asm ("movaps xmm13, [rip+QTEMP+5*16]");
-  asm ("movaps xmm14, [rip+QTEMP+6*16]");
-  asm ("movaps xmm15, [rip+QTEMP+7*16]");
+  asm ("movaps xmm8,  [QTEMP+0*16]");
+  asm ("movaps xmm9,  [QTEMP+1*16]");
+  asm ("movaps xmm10, [QTEMP+2*16]");
+  asm ("movaps xmm11, [QTEMP+3*16]");
+  asm ("movaps xmm12, [QTEMP+4*16]");
+  asm ("movaps xmm13, [QTEMP+5*16]");
+  asm ("movaps xmm14, [QTEMP+6*16]");
+  asm ("movaps xmm15, [QTEMP+7*16]");
 
   /* compute permutation Q */
   /* result: Q(M) in xmm8...xmm15 */

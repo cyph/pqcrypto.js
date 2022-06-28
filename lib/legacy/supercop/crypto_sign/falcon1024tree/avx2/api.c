@@ -25,7 +25,7 @@ crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
 	int8_t f[1024], g[1024], F[1024], G[1024];
 	uint16_t h[1024];
 	unsigned char seed[SEEDLEN];
-	inner_shake256_context rng;
+	shake256_context rng;
 	union {
 		fpr f[(10 + 5) * 1024];
 		uint64_t u[(10 + 5) * 1024];
@@ -39,9 +39,9 @@ crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
 	 * Generate key pair.
 	 */
 	randombytes(seed, sizeof seed);
-	inner_shake256_init(&rng);
-	inner_shake256_inject(&rng, seed, sizeof seed);
-	inner_shake256_flip(&rng);
+	shake256_init(&rng);
+	shake256_inject(&rng, seed, sizeof seed);
+	shake256_flip(&rng);
 	falcon1024tree_avx2_keygen(
 		&rng, f, g, F, G, h, 10, tmp.b);
 
@@ -114,7 +114,7 @@ crypto_sign(unsigned char *sm, unsigned long long *smlen,
 	} r;
 	unsigned char seed[SEEDLEN], nonce[NONCELEN];
 	unsigned char esig[CRYPTO_BYTES - 2 - sizeof nonce];
-	inner_shake256_context sc;
+	shake256_context sc;
 	size_t u, sig_len;
 	union {
 		fpr f[(10 + 5) * 1024];
@@ -155,20 +155,20 @@ crypto_sign(unsigned char *sm, unsigned long long *smlen,
 	/*
 	 * Hash message nonce + message into a vector.
 	 */
-	inner_shake256_init(&sc);
-	inner_shake256_inject(&sc, nonce, sizeof nonce);
-	inner_shake256_inject(&sc, m, mlen);
-	inner_shake256_flip(&sc);
-	falcon1024tree_avx2_hash_to_point_vartime(
-		&sc, r.hm, 10);
+	shake256_init(&sc);
+	shake256_inject(&sc, nonce, sizeof nonce);
+	shake256_inject(&sc, m, mlen);
+	shake256_flip(&sc);
+	falcon1024tree_avx2_hash_to_point(
+		&sc, r.hm, 10, tmp.b);
 
 	/*
 	 * Initialize a RNG.
 	 */
 	randombytes(seed, sizeof seed);
-	inner_shake256_init(&sc);
-	inner_shake256_inject(&sc, seed, sizeof seed);
-	inner_shake256_flip(&sc);
+	shake256_init(&sc);
+	shake256_inject(&sc, seed, sizeof seed);
+	shake256_flip(&sc);
 
 	/*
 	 * Compute the signature.
@@ -214,7 +214,7 @@ crypto_sign_open(unsigned char *m, unsigned long long *mlen,
 	const unsigned char *esig;
 	uint16_t h[1024], hm[1024];
 	int16_t sig[1024];
-	inner_shake256_context sc;
+	shake256_context sc;
 	size_t sig_len, msg_len;
 
 	/*
@@ -258,11 +258,11 @@ crypto_sign_open(unsigned char *m, unsigned long long *mlen,
 	/*
 	 * Hash nonce + message into a vector.
 	 */
-	inner_shake256_init(&sc);
-	inner_shake256_inject(&sc, sm + 2, NONCELEN + msg_len);
-	inner_shake256_flip(&sc);
-	falcon1024tree_avx2_hash_to_point_vartime(
-		&sc, hm, 10);
+	shake256_init(&sc);
+	shake256_inject(&sc, sm + 2, NONCELEN + msg_len);
+	shake256_flip(&sc);
+	falcon1024tree_avx2_hash_to_point(
+		&sc, hm, 10, tmp.b);
 
 	/*
 	 * Verify signature.

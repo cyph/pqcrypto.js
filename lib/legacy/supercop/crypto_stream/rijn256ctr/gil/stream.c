@@ -79,7 +79,7 @@ static inline void _partial_xor(const void* ks,
   }
 }
 
-int CRYPTO_NAMESPACE(xor)(uint8_t* out,
+int crypto_stream_rijn256ctr_gil_xor(uint8_t* out,
                                      const uint8_t* in,
                                      size_t oplen,
                                      const void* _n,
@@ -138,7 +138,7 @@ static inline void _partial_stream(const void* ks, void* out, v16u8* nc, size_t 
   }
 }
 
-int CRYPTO_NAMESPACETOP(uint8_t* out, uint64_t oplen, const void* _n, const void* k) {
+int crypto_stream_rijn256ctr_gil(uint8_t* out, uint64_t oplen, const void* _n, const void* k) {
   if (oplen == 0) {
     return 0;
   } 

@@ -33,9 +33,6 @@
 #include "otr.h"
 #include "doubling.h"
 
-#define pxor_unaligned(x,y) _mm_xor_si128(x,_mm_loadu_si128(&(y)))
-#define pstore(x,y) _mm_storeu_si128(x,y)
-
 /*
 ** defines
 */
@@ -117,7 +114,7 @@ __inline__ static void AES_encrypt(
 	block *out,
 	const block *key)
 {
-	block tmp = _mm_loadu_si128(&in);
+	block tmp = _mm_load_si128(&in);
 	tmp = _mm_xor_si128(tmp, key[0]);
 	tmp = _mm_aesenc_si128(tmp, key[1]);
 	tmp = _mm_aesenc_si128(tmp, key[2]);
@@ -413,7 +410,7 @@ __inline__ static  void ozp(uint32 length, const uint8 *in, block *out){
 	ALIGN(16)uint8 tmp[BLOCK + 1] = { 0 };
 	memcpy(tmp, in, length);
 	tmp[length] = 0x80;
-	*out = _mm_loadu_si128((block*)tmp);
+	*out = _mm_load_si128((block*)tmp);
 }
 /*
 Format function : Format(tau,N)=number2string(tau mod n,7)||0^{n-8-|N|}||1||N
@@ -423,7 +420,7 @@ __inline__ static block fmt(const uint8 *nonce){
 	memcpy(&fn[BLOCK - CRYPTO_NPUBBYTES], nonce, CRYPTO_NPUBBYTES);
 	fn[0] = (uint8)(((CRYPTO_ABYTES * 8) % (BLOCK * 8)) << 1);
 	fn[BLOCK - CRYPTO_NPUBBYTES - 1] |= 0x01;
-	return _mm_loadu_si128((block*)fn);
+	return _mm_load_si128((block*)fn);
 }
 /*
 ** XOR of full and partial blocks 
@@ -460,21 +457,21 @@ block EFunc(
 	while (rest_len > (DBLOCK*PIPE)){
 		/* first round*/
 		mul2_PIPE(Ln);
-		txt[0] = pxor_unaligned(Ln[0], ptp[0]); 
-		txt[1] = pxor_unaligned(Ln[1], ptp[2]);
-		txt[2] = pxor_unaligned(Ln[2], ptp[4]);
-		txt[3] = pxor_unaligned(Ln[3], ptp[6]);
+		txt[0] = _mm_xor_si128(Ln[0], ptp[0]); 
+		txt[1] = _mm_xor_si128(Ln[1], ptp[2]);
+		txt[2] = _mm_xor_si128(Ln[2], ptp[4]);
+		txt[3] = _mm_xor_si128(Ln[3], ptp[6]);
 #if (PIPE>=5)
-		txt[4] = pxor_unaligned(Ln[4], ptp[8]);
+		txt[4] = _mm_xor_si128(Ln[4], ptp[8]);
 #endif
 #if (PIPE>=6)
-		txt[5] = pxor_unaligned(Ln[5], ptp[10]);
+		txt[5] = _mm_xor_si128(Ln[5], ptp[10]);
 #endif
 #if (PIPE>=7)
-		txt[6] = pxor_unaligned(Ln[6], ptp[12]);
+		txt[6] = _mm_xor_si128(Ln[6], ptp[12]);
 #endif
 #if (PIPE==8)
-		txt[7] = pxor_unaligned(Ln[7], ptp[14]);
+		txt[7] = _mm_xor_si128(Ln[7], ptp[14]);
 #endif
 		AES_ecb_encrypt_PIPE(txt, encrypt_key);
 		/* second round*/
@@ -482,60 +479,60 @@ block EFunc(
 		Ln[1] = _mm_xor_si128(Ln[1], Ln[2]);
 		Ln[2] = _mm_xor_si128(Ln[2], Ln[3]);
 		Ln[3] = _mm_xor_si128(Ln[3], Ln[4]);
-		pstore(&ctp[0],pxor_unaligned(txt[0], ptp[1]));
-		txt[0] = pxor_unaligned(Ln[0], ctp[0]);
-		pstore(&ctp[2],pxor_unaligned(txt[1], ptp[3]));
-		txt[1] = pxor_unaligned(Ln[1], ctp[2]);
-		pstore(&ctp[4],pxor_unaligned(txt[2], ptp[5]));
-		txt[2] = pxor_unaligned(Ln[2], ctp[4]);
-		pstore(&ctp[6],pxor_unaligned(txt[3], ptp[7]));
-		txt[3] = pxor_unaligned(Ln[3], ctp[6]);
+		ctp[0] = _mm_xor_si128(txt[0], ptp[1]);
+		txt[0] = _mm_xor_si128(Ln[0], ctp[0]);
+		ctp[2] = _mm_xor_si128(txt[1], ptp[3]);
+		txt[1] = _mm_xor_si128(Ln[1], ctp[2]);
+		ctp[4] = _mm_xor_si128(txt[2], ptp[5]);
+		txt[2] = _mm_xor_si128(Ln[2], ctp[4]);
+		ctp[6] = _mm_xor_si128(txt[3], ptp[7]);
+		txt[3] = _mm_xor_si128(Ln[3], ctp[6]);
 #if (PIPE>=5)
 		Ln[4] = _mm_xor_si128(Ln[4], Ln[5]);
-		pstore(&ctp[8],pxor_unaligned(txt[4], ptp[9]));
-		txt[4] = pxor_unaligned(Ln[4], ctp[8]);
+		ctp[8] = _mm_xor_si128(txt[4], ptp[9]);
+		txt[4] = _mm_xor_si128(Ln[4], ctp[8]);
 #endif
 #if (PIPE>=6)
 		Ln[5] = _mm_xor_si128(Ln[5], Ln[6]);
-		pstore(&ctp[10],pxor_unaligned(txt[5], ptp[11]));
-		txt[5] = pxor_unaligned(Ln[5], ctp[10]);
+		ctp[10] = _mm_xor_si128(txt[5], ptp[11]);
+		txt[5] = _mm_xor_si128(Ln[5], ctp[10]);
 #endif
 #if (PIPE>=7)
 		Ln[6] = _mm_xor_si128(Ln[6], Ln[7]);
-		pstore(&ctp[12],pxor_unaligned(txt[6], ptp[13]));
-		txt[6] = pxor_unaligned(Ln[6], ctp[12]);
+		ctp[12] = _mm_xor_si128(txt[6], ptp[13]);
+		txt[6] = _mm_xor_si128(Ln[6], ctp[12]);
 #endif
 #if (PIPE==8)
 		Ln[7] = _mm_xor_si128(Ln[7], Ln[8]);
-		pstore(&ctp[14],pxor_unaligned(txt[7], ptp[15]));
-		txt[7] = pxor_unaligned(Ln[7], ctp[14]);
+		ctp[14] = _mm_xor_si128(txt[7], ptp[15]);
+		txt[7] = _mm_xor_si128(Ln[7], ctp[14]);
 #endif
 		AES_ecb_encrypt_PIPE(txt, encrypt_key);
-		pstore(&ctp[1],pxor_unaligned(txt[0], ptp[0]));
-		Sum = pxor_unaligned(Sum, ptp[1]);
-		pstore(&ctp[3],pxor_unaligned(txt[1], ptp[2]));
-		Sum = pxor_unaligned(Sum, ptp[3]);
-		pstore(&ctp[5],pxor_unaligned(txt[2], ptp[4]));
-		Sum = pxor_unaligned(Sum, ptp[5]);
-		pstore(&ctp[7],pxor_unaligned(txt[3], ptp[6]));
-		Sum = pxor_unaligned(Sum, ptp[7]);
+		ctp[1] = _mm_xor_si128(txt[0], ptp[0]);
+		Sum = _mm_xor_si128(Sum, ptp[1]);
+		ctp[3] = _mm_xor_si128(txt[1], ptp[2]);
+		Sum = _mm_xor_si128(Sum, ptp[3]);
+		ctp[5] = _mm_xor_si128(txt[2], ptp[4]);
+		Sum = _mm_xor_si128(Sum, ptp[5]);
+		ctp[7] = _mm_xor_si128(txt[3], ptp[6]);
+		Sum = _mm_xor_si128(Sum, ptp[7]);
 #if (PIPE>=5)
-		pstore(&ctp[9],pxor_unaligned(txt[4], ptp[8]));
-		Sum = pxor_unaligned(Sum, ptp[9]);
+		ctp[9] = _mm_xor_si128(txt[4], ptp[8]);
+		Sum = _mm_xor_si128(Sum, ptp[9]);
 #endif
 #if (PIPE>=6)
-		pstore(&ctp[11],pxor_unaligned(txt[5], ptp[10]));
-		Sum = pxor_unaligned(Sum, ptp[11]);
+		ctp[11] = _mm_xor_si128(txt[5], ptp[10]);
+		Sum = _mm_xor_si128(Sum, ptp[11]);
 #endif
 #if (PIPE>=7)
-		pstore(&ctp[13],pxor_unaligned(txt[6], ptp[12]));
-		Sum = pxor_unaligned(Sum, ptp[13]);
+		ctp[13] = _mm_xor_si128(txt[6], ptp[12]);
+		Sum = _mm_xor_si128(Sum, ptp[13]);
 #endif
 #if (PIPE==8)
-		pstore(&ctp[15],pxor_unaligned(txt[7], ptp[14]));
-		Sum = pxor_unaligned(Sum, ptp[15]);
+		ctp[15] = _mm_xor_si128(txt[7], ptp[14]);
+		Sum = _mm_xor_si128(Sum, ptp[15]);
 #endif
-		Ln[0] = _mm_loadu_si128(&Ln[PIPE]);
+		Ln[0] = _mm_load_si128(&Ln[PIPE]);
 		ptp += (2 * PIPE);
 		ctp += (2 * PIPE);
 		rest_len -= (DBLOCK*PIPE);
@@ -553,48 +550,48 @@ block EFunc(
 		mul2(Ln[1], &Ln[2]);
 		mul2(Ln[2], &Ln[3]);
 		mul2(Ln[3], &Ln[4]);
-		txt[0] = pxor_unaligned(Ln[0], ptp[0]);
-		txt[1] = pxor_unaligned(Ln[1], ptp[2]);
-		txt[2] = pxor_unaligned(Ln[2], ptp[4]);
-		txt[3] = pxor_unaligned(Ln[3], ptp[6]);
+		txt[0] = _mm_xor_si128(Ln[0], ptp[0]);
+		txt[1] = _mm_xor_si128(Ln[1], ptp[2]);
+		txt[2] = _mm_xor_si128(Ln[2], ptp[4]);
+		txt[3] = _mm_xor_si128(Ln[3], ptp[6]);
 		AES_ecb_encrypt_4(txt, encrypt_key);
 		/* second round*/
 		Ln[0] = _mm_xor_si128(Ln[0], Ln[1]);
 		Ln[1] = _mm_xor_si128(Ln[1], Ln[2]);
 		Ln[2] = _mm_xor_si128(Ln[2], Ln[3]);
 		Ln[3] = _mm_xor_si128(Ln[3], Ln[4]);
-		pstore(&ctp[0],pxor_unaligned(txt[0], ptp[1]));
-		txt[0] = pxor_unaligned(Ln[0], ctp[0]);
-		pstore(&ctp[2],pxor_unaligned(txt[1], ptp[3]));
-		txt[1] = pxor_unaligned(Ln[1], ctp[2]);
-		pstore(&ctp[4],pxor_unaligned(txt[2], ptp[5]));
-		txt[2] = pxor_unaligned(Ln[2], ctp[4]);
-		pstore(&ctp[6],pxor_unaligned(txt[3], ptp[7]));
-		txt[3] = pxor_unaligned(Ln[3], ctp[6]);
+		ctp[0] = _mm_xor_si128(txt[0], ptp[1]);
+		txt[0] = _mm_xor_si128(Ln[0], ctp[0]);
+		ctp[2] = _mm_xor_si128(txt[1], ptp[3]);
+		txt[1] = _mm_xor_si128(Ln[1], ctp[2]);
+		ctp[4] = _mm_xor_si128(txt[2], ptp[5]);
+		txt[2] = _mm_xor_si128(Ln[2], ctp[4]);
+		ctp[6] = _mm_xor_si128(txt[3], ptp[7]);
+		txt[3] = _mm_xor_si128(Ln[3], ctp[6]);
 		AES_ecb_encrypt_4(txt, encrypt_key);
-		pstore(&ctp[1],pxor_unaligned(txt[0], ptp[0]));
-		Sum = pxor_unaligned(Sum, ptp[1]);
-		pstore(&ctp[3],pxor_unaligned(txt[1], ptp[2]));
-		Sum = pxor_unaligned(Sum, ptp[3]);
-		pstore(&ctp[5],pxor_unaligned(txt[2], ptp[4]));
-		Sum = pxor_unaligned(Sum, ptp[5]);
-		pstore(&ctp[7],pxor_unaligned(txt[3], ptp[6]));
-		Sum = pxor_unaligned(Sum, ptp[7]);
+		ctp[1] = _mm_xor_si128(txt[0], ptp[0]);
+		Sum = _mm_xor_si128(Sum, ptp[1]);
+		ctp[3] = _mm_xor_si128(txt[1], ptp[2]);
+		Sum = _mm_xor_si128(Sum, ptp[3]);
+		ctp[5] = _mm_xor_si128(txt[2], ptp[4]);
+		Sum = _mm_xor_si128(Sum, ptp[5]);
+		ctp[7] = _mm_xor_si128(txt[3], ptp[6]);
+		Sum = _mm_xor_si128(Sum, ptp[7]);
 
-		Ln[0] = _mm_loadu_si128(&Ln[4]);
+		Ln[0] = _mm_load_si128(&Ln[4]);
 		ell -= 4;
 		ptp += 8;
 		ctp += 8;
 	}
 	mul3(Ln[0], &Ln[1]);
 	for (i = 0; i < (2 * ell); i += 2){
-		txt[0] = pxor_unaligned(Ln[0], ptp[i]);
+		txt[0] = _mm_xor_si128(Ln[0], ptp[i]);
 		AES_encrypt(txt[0], &txt[0], encrypt_key);
-		pstore(&ctp[i],pxor_unaligned(txt[0], ptp[i + 1]));
-		txt[0] = pxor_unaligned(Ln[1], ctp[i]);
+		ctp[i] = _mm_xor_si128(txt[0], ptp[i + 1]);
+		txt[0] = _mm_xor_si128(Ln[1], ctp[i]);
 		AES_encrypt(txt[0], &txt[0], encrypt_key);
-		pstore(&ctp[i + 1],pxor_unaligned(txt[0], ptp[i]));
-		Sum = pxor_unaligned(Sum, ptp[i + 1]);
+		ctp[i + 1] = _mm_xor_si128(txt[0], ptp[i]);
+		Sum = _mm_xor_si128(Sum, ptp[i + 1]);
 		Ln[0] = _mm_xor_si128(Ln[0], Ln[1]);
 		mul2(Ln[1], &Ln[1]);
 	}
@@ -609,7 +606,7 @@ block EFunc(
 		La = &Ln[0];
 	}
 	else{//even blocks, last > BLOCK always holds. 2-round Feistel with last swap
-		txt[0] = pxor_unaligned(Ln[0], ptp[0]);
+		txt[0] = _mm_xor_si128(Ln[0], ptp[0]);
 		AES_encrypt(txt[0], &txt[1], encrypt_key); 
 		xorp(last - BLOCK, &txt[1], (uint8*)&ptp[1], (uint8*)&ctp[1]);
 		ozp(last - BLOCK, (uint8*)&ctp[1], &txt[0]); 
@@ -617,7 +614,7 @@ block EFunc(
 		Sum = _mm_xor_si128(Sum, txt[1]);
 		txt[0] = _mm_xor_si128(Ln[1], txt[0]); 
 		AES_encrypt(txt[0], &txt[0], encrypt_key);
-		pstore(&ctp[0],pxor_unaligned(txt[0], ptp[0]));
+		ctp[0] = _mm_xor_si128(txt[0], ptp[0]);
 		La = &Ln[1];
 	}
 	/* TE generation */
@@ -663,82 +660,82 @@ block DFunc(
 	while (rest_len > (DBLOCK*PIPE)){
 		/* first round*/
 		mul2_PIPE(Ln);
-		txt[0] = pxor_unaligned(Ln[0], ctp[0]);
+		txt[0] = _mm_xor_si128(Ln[0], ctp[0]);
 		txt[0] = _mm_xor_si128(Ln[1], txt[0]); 
-		txt[1] = pxor_unaligned(Ln[1], ctp[2]);
+		txt[1] = _mm_xor_si128(Ln[1], ctp[2]);
 		txt[1] = _mm_xor_si128(Ln[2], txt[1]); 
-		txt[2] = pxor_unaligned(Ln[2], ctp[4]);
+		txt[2] = _mm_xor_si128(Ln[2], ctp[4]);
 		txt[2] = _mm_xor_si128(Ln[3], txt[2]); 
-		txt[3] = pxor_unaligned(Ln[3], ctp[6]);
+		txt[3] = _mm_xor_si128(Ln[3], ctp[6]);
 		txt[3] = _mm_xor_si128(Ln[4], txt[3]); 
 #if (PIPE>=5)
-		txt[4] = pxor_unaligned(Ln[4], ctp[8]);
+		txt[4] = _mm_xor_si128(Ln[4], ctp[8]);
 		txt[4] = _mm_xor_si128(Ln[5], txt[4]); 
 #endif
 #if (PIPE>=6)
-		txt[5] = pxor_unaligned(Ln[5], ctp[10]);
+		txt[5] = _mm_xor_si128(Ln[5], ctp[10]);
 		txt[5] = _mm_xor_si128(Ln[6], txt[5]); 
 #endif
 #if (PIPE>=7)
-		txt[6] = pxor_unaligned(Ln[6], ctp[12]);
+		txt[6] = _mm_xor_si128(Ln[6], ctp[12]);
 		txt[6] = _mm_xor_si128(Ln[7], txt[6]); 
 #endif
 #if (PIPE==8)
-		txt[7] = pxor_unaligned(Ln[7], ctp[14]);
+		txt[7] = _mm_xor_si128(Ln[7], ctp[14]);
 		txt[7] = _mm_xor_si128(Ln[8], txt[7]); 
 #endif
 		AES_ecb_encrypt_PIPE(txt, encrypt_key);
 		/* second round*/
-		pstore(&ptp[0],pxor_unaligned(txt[0], ctp[1]));
-		txt[0] = pxor_unaligned(Ln[0], ptp[0]);
-		pstore(&ptp[2],pxor_unaligned(txt[1], ctp[3]));
-		txt[1] = pxor_unaligned(Ln[1], ptp[2]);
-		pstore(&ptp[4],pxor_unaligned(txt[2], ctp[5]));
-		txt[2] = pxor_unaligned(Ln[2], ptp[4]);
-		pstore(&ptp[6],pxor_unaligned(txt[3], ctp[7]));
-		txt[3] = pxor_unaligned(Ln[3], ptp[6]);
+		ptp[0] = _mm_xor_si128(txt[0], ctp[1]);
+		txt[0] = _mm_xor_si128(Ln[0], ptp[0]);
+		ptp[2] = _mm_xor_si128(txt[1], ctp[3]);
+		txt[1] = _mm_xor_si128(Ln[1], ptp[2]);
+		ptp[4] = _mm_xor_si128(txt[2], ctp[5]);
+		txt[2] = _mm_xor_si128(Ln[2], ptp[4]);
+		ptp[6] = _mm_xor_si128(txt[3], ctp[7]);
+		txt[3] = _mm_xor_si128(Ln[3], ptp[6]);
 #if (PIPE>=5)
-		pstore(&ptp[8],pxor_unaligned(txt[4], ctp[9]));
-		txt[4] = pxor_unaligned(Ln[4], ptp[8]);
+		ptp[8] = _mm_xor_si128(txt[4], ctp[9]);
+		txt[4] = _mm_xor_si128(Ln[4], ptp[8]);
 #endif
 #if (PIPE>=6)
-		pstore(&ptp[10],pxor_unaligned(txt[5], ctp[11]));
-		txt[5] = pxor_unaligned(Ln[5], ptp[10]);
+		ptp[10] = _mm_xor_si128(txt[5], ctp[11]);
+		txt[5] = _mm_xor_si128(Ln[5], ptp[10]);
 #endif
 #if (PIPE>=7)
-		pstore(&ptp[12],pxor_unaligned(txt[6], ctp[13]));
-		txt[6] = pxor_unaligned(Ln[6], ptp[12]);
+		ptp[12] = _mm_xor_si128(txt[6], ctp[13]);
+		txt[6] = _mm_xor_si128(Ln[6], ptp[12]);
 #endif
 #if (PIPE==8)
-		pstore(&ptp[14],pxor_unaligned(txt[7], ctp[15]));
-		txt[7] = pxor_unaligned(Ln[7], ptp[14]);
+		ptp[14] = _mm_xor_si128(txt[7], ctp[15]);
+		txt[7] = _mm_xor_si128(Ln[7], ptp[14]);
 #endif
 		AES_ecb_encrypt_PIPE(txt, encrypt_key);
-		pstore(&ptp[1],pxor_unaligned(txt[0], ctp[0]));
-		Sum = pxor_unaligned(Sum, ptp[1]);
-		pstore(&ptp[3],pxor_unaligned(txt[1], ctp[2]));
-		Sum = pxor_unaligned(Sum, ptp[3]);
-		pstore(&ptp[5],pxor_unaligned(txt[2], ctp[4]));
-		Sum = pxor_unaligned(Sum, ptp[5]);
-		pstore(&ptp[7],pxor_unaligned(txt[3], ctp[6]));
-		Sum = pxor_unaligned(Sum, ptp[7]);
+		ptp[1] = _mm_xor_si128(txt[0], ctp[0]);
+		Sum = _mm_xor_si128(Sum, ptp[1]);
+		ptp[3] = _mm_xor_si128(txt[1], ctp[2]);
+		Sum = _mm_xor_si128(Sum, ptp[3]);
+		ptp[5] = _mm_xor_si128(txt[2], ctp[4]);
+		Sum = _mm_xor_si128(Sum, ptp[5]);
+		ptp[7] = _mm_xor_si128(txt[3], ctp[6]);
+		Sum = _mm_xor_si128(Sum, ptp[7]);
 #if (PIPE>=5)
-		pstore(&ptp[9],pxor_unaligned(txt[4], ctp[8]));
-		Sum = pxor_unaligned(Sum, ptp[9]);
+		ptp[9] = _mm_xor_si128(txt[4], ctp[8]);
+		Sum = _mm_xor_si128(Sum, ptp[9]);
 #endif
 #if (PIPE>=6)
-		pstore(&ptp[11],pxor_unaligned(txt[5], ctp[10]));
-		Sum = pxor_unaligned(Sum, ptp[11]);
+		ptp[11] = _mm_xor_si128(txt[5], ctp[10]);
+		Sum = _mm_xor_si128(Sum, ptp[11]);
 #endif
 #if (PIPE>=7)
-		pstore(&ptp[13],pxor_unaligned(txt[6], ctp[12]));
-		Sum = pxor_unaligned(Sum, ptp[13]);
+		ptp[13] = _mm_xor_si128(txt[6], ctp[12]);
+		Sum = _mm_xor_si128(Sum, ptp[13]);
 #endif
 #if (PIPE==8)
-		pstore(&ptp[15],pxor_unaligned(txt[7], ctp[14]));
-		Sum = pxor_unaligned(Sum, ptp[15]);
+		ptp[15] = _mm_xor_si128(txt[7], ctp[14]);
+		Sum = _mm_xor_si128(Sum, ptp[15]);
 #endif
-		Ln[0] = _mm_loadu_si128(&Ln[PIPE]);
+		Ln[0] = _mm_load_si128(&Ln[PIPE]);
 		ptp += dd;// (2 * PIPE) or 0;
 		ctp += (2 * PIPE);
 		rest_len -= (DBLOCK*PIPE);
@@ -755,48 +752,48 @@ block DFunc(
 		mul2(Ln[1], &Ln[2]);
 		mul2(Ln[2], &Ln[3]);
 		mul2(Ln[3], &Ln[4]);
-		txt[0] = pxor_unaligned(Ln[0], ctp[0]);
+		txt[0] = _mm_xor_si128(Ln[0], ctp[0]);
 		txt[0] = _mm_xor_si128(Ln[1], txt[0]);
-		txt[1] = pxor_unaligned(Ln[1], ctp[2]);
+		txt[1] = _mm_xor_si128(Ln[1], ctp[2]);
 		txt[1] = _mm_xor_si128(Ln[2], txt[1]);
-		txt[2] = pxor_unaligned(Ln[2], ctp[4]);
+		txt[2] = _mm_xor_si128(Ln[2], ctp[4]);
 		txt[2] = _mm_xor_si128(Ln[3], txt[2]);
-		txt[3] = pxor_unaligned(Ln[3], ctp[6]);
+		txt[3] = _mm_xor_si128(Ln[3], ctp[6]);
 		txt[3] = _mm_xor_si128(Ln[4], txt[3]); 
 		AES_ecb_encrypt_4(txt, encrypt_key);
 		/* second round*/
-		pstore(&ptp[0],pxor_unaligned(txt[0], ctp[1]));
-		txt[0] = pxor_unaligned(Ln[0], ptp[0]);
-		pstore(&ptp[2],pxor_unaligned(txt[1], ctp[3]));
-		txt[1] = pxor_unaligned(Ln[1], ptp[2]);
-		pstore(&ptp[4],pxor_unaligned(txt[2], ctp[5]));
-		txt[2] = pxor_unaligned(Ln[2], ptp[4]);
-		pstore(&ptp[6],pxor_unaligned(txt[3], ctp[7]));
-		txt[3] = pxor_unaligned(Ln[3], ptp[6]);
+		ptp[0] = _mm_xor_si128(txt[0], ctp[1]);
+		txt[0] = _mm_xor_si128(Ln[0], ptp[0]);
+		ptp[2] = _mm_xor_si128(txt[1], ctp[3]);
+		txt[1] = _mm_xor_si128(Ln[1], ptp[2]);
+		ptp[4] = _mm_xor_si128(txt[2], ctp[5]);
+		txt[2] = _mm_xor_si128(Ln[2], ptp[4]);
+		ptp[6] = _mm_xor_si128(txt[3], ctp[7]);
+		txt[3] = _mm_xor_si128(Ln[3], ptp[6]);
 		AES_ecb_encrypt_4(txt, encrypt_key);
-		pstore(&ptp[1],pxor_unaligned(txt[0], ctp[0]));
-		Sum = pxor_unaligned(Sum, ptp[1]);
-		pstore(&ptp[3],pxor_unaligned(txt[1], ctp[2]));
-		Sum = pxor_unaligned(Sum, ptp[3]);
-		pstore(&ptp[5],pxor_unaligned(txt[2], ctp[4]));
-		Sum = pxor_unaligned(Sum, ptp[5]);
-		pstore(&ptp[7],pxor_unaligned(txt[3], ctp[6]));
-		Sum = pxor_unaligned(Sum, ptp[7]);
+		ptp[1] = _mm_xor_si128(txt[0], ctp[0]);
+		Sum = _mm_xor_si128(Sum, ptp[1]);
+		ptp[3] = _mm_xor_si128(txt[1], ctp[2]);
+		Sum = _mm_xor_si128(Sum, ptp[3]);
+		ptp[5] = _mm_xor_si128(txt[2], ctp[4]);
+		Sum = _mm_xor_si128(Sum, ptp[5]);
+		ptp[7] = _mm_xor_si128(txt[3], ctp[6]);
+		Sum = _mm_xor_si128(Sum, ptp[7]);
 
-		Ln[0] = _mm_loadu_si128(&Ln[4]);
+		Ln[0] = _mm_load_si128(&Ln[4]);
 		ell -= 4;
 		ptp += dd2;// 8 or 0;
 		ctp += 8;
 	}
 	mul3(Ln[0], &Ln[1]);
 	for (i = 0; i < (2 * ell); i += 2){
-		txt[0] = pxor_unaligned(Ln[1], ctp[i]);
+		txt[0] = _mm_xor_si128(Ln[1], ctp[i]);
 		AES_encrypt(txt[0], &txt[0], encrypt_key);
-		pstore(&ptp[i],pxor_unaligned(txt[0], ctp[i + 1]));
-		txt[0] = pxor_unaligned(Ln[0], ptp[i]);
+		ptp[i] = _mm_xor_si128(txt[0], ctp[i + 1]);
+		txt[0] = _mm_xor_si128(Ln[0], ptp[i]);
 		AES_encrypt(txt[0], &txt[0], encrypt_key);
-		pstore(&ptp[i + 1],pxor_unaligned(txt[0], ctp[i]));
-		Sum = pxor_unaligned(Sum, ptp[i + 1]);
+		ptp[i + 1] = _mm_xor_si128(txt[0], ctp[i]);
+		Sum = _mm_xor_si128(Sum, ptp[i + 1]);
 		Ln[0] = _mm_xor_si128(Ln[0], Ln[1]);
 		mul2(Ln[1], &Ln[1]);
 	}
@@ -815,8 +812,8 @@ block DFunc(
 		Sum = _mm_xor_si128(Sum, txt[0]);
 		txt[0] = _mm_xor_si128(Ln[1], txt[0]);
 		AES_encrypt(txt[0], &txt[0], encrypt_key);
-		pstore(&ptp[0],pxor_unaligned(txt[0], ctp[0]));
-		txt[0] = pxor_unaligned(Ln[0], ptp[0]);
+		ptp[0] = _mm_xor_si128(txt[0], ctp[0]);
+		txt[0] = _mm_xor_si128(Ln[0], ptp[0]);
 		AES_encrypt(txt[0], &txt[1], encrypt_key); 
 		xorp(last - BLOCK, &txt[1], (uint8*)&ctp[1], (uint8*)&ptp[1]);
 		Sum = _mm_xor_si128(Sum, txt[1]);

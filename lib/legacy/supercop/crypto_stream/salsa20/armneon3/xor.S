@@ -193,14 +193,14 @@ sigma:
 
 # qhasm: int32 mi
 
-# qhasm: enter CRYPTO_NAMESPACE(xor)
+# qhasm: enter crypto_stream_salsa20_armneon3_xor
 .align 2
-.global _CRYPTO_NAMESPACE(xor)
-.global CRYPTO_NAMESPACE(xor)
-.type _CRYPTO_NAMESPACE(xor) STT_FUNC
-.type CRYPTO_NAMESPACE(xor) STT_FUNC
-_CRYPTO_NAMESPACE(xor):
-CRYPTO_NAMESPACE(xor):
+.global _crypto_stream_salsa20_armneon3_xor
+.global crypto_stream_salsa20_armneon3_xor
+.type _crypto_stream_salsa20_armneon3_xor STT_FUNC
+.type crypto_stream_salsa20_armneon3_xor STT_FUNC
+_crypto_stream_salsa20_armneon3_xor:
+crypto_stream_salsa20_armneon3_xor:
 sub sp,sp,#256
 
 # qhasm: new stack_q4

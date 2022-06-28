@@ -1,8 +1,8 @@
 #include "crypto_onetimeauth.h"
 #include "crypto_uint32.h"
 
-#define addmulmod CRYPTO_NAMESPACE(addmulmod)
-#define blocks CRYPTO_NAMESPACE(blocks)
+#define addmulmod crypto_onetimeauth_poly1305_neon2_addmulmod
+#define blocks crypto_onetimeauth_poly1305_neon2_blocks
 
 typedef struct {
   crypto_uint32 v[12]; /* for alignment; only using 10 */

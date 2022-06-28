@@ -186,13 +186,13 @@
 
 # stack32 ctarget
 
-# enter CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
+# enter crypto_stream_salsa2012_e_x86_pm_ECRYPT_keystream_bytes
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_keystream_bytes):
-CRYPTO_NAMESPACE(ECRYPT_keystream_bytes):
+.globl _crypto_stream_salsa2012_e_x86_pm_ECRYPT_keystream_bytes
+.globl crypto_stream_salsa2012_e_x86_pm_ECRYPT_keystream_bytes
+_crypto_stream_salsa2012_e_x86_pm_ECRYPT_keystream_bytes:
+crypto_stream_salsa2012_e_x86_pm_ECRYPT_keystream_bytes:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -272,13 +272,13 @@ sub  %ebx,%edi
 # goto start
 jmp ._start
 
-# enter CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
+# enter crypto_stream_salsa2012_e_x86_pm_ECRYPT_decrypt_bytes
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes):
-CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes):
+.globl _crypto_stream_salsa2012_e_x86_pm_ECRYPT_decrypt_bytes
+.globl crypto_stream_salsa2012_e_x86_pm_ECRYPT_decrypt_bytes
+_crypto_stream_salsa2012_e_x86_pm_ECRYPT_decrypt_bytes:
+crypto_stream_salsa2012_e_x86_pm_ECRYPT_decrypt_bytes:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -340,13 +340,13 @@ jbe ._done
 # goto start
 jmp ._start
 
-# enter CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
+# enter crypto_stream_salsa2012_e_x86_pm_ECRYPT_encrypt_bytes
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes):
-CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes):
+.globl _crypto_stream_salsa2012_e_x86_pm_ECRYPT_encrypt_bytes
+.globl crypto_stream_salsa2012_e_x86_pm_ECRYPT_encrypt_bytes
+_crypto_stream_salsa2012_e_x86_pm_ECRYPT_encrypt_bytes:
+crypto_stream_salsa2012_e_x86_pm_ECRYPT_encrypt_bytes:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -2641,13 +2641,13 @@ add  $64,%esi
 # goto bytesatleast1
 jmp ._bytesatleast1
 
-# enter CRYPTO_NAMESPACE(ECRYPT_init)
+# enter crypto_stream_salsa2012_e_x86_pm_ECRYPT_init
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_init)
-.globl CRYPTO_NAMESPACE(ECRYPT_init)
-_CRYPTO_NAMESPACE(ECRYPT_init):
-CRYPTO_NAMESPACE(ECRYPT_init):
+.globl _crypto_stream_salsa2012_e_x86_pm_ECRYPT_init
+.globl crypto_stream_salsa2012_e_x86_pm_ECRYPT_init
+_crypto_stream_salsa2012_e_x86_pm_ECRYPT_init:
+crypto_stream_salsa2012_e_x86_pm_ECRYPT_init:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -2657,13 +2657,13 @@ sub %eax,%esp
 add %eax,%esp
 ret
 
-# enter CRYPTO_NAMESPACE(ECRYPT_keysetup)
+# enter crypto_stream_salsa2012_e_x86_pm_ECRYPT_keysetup
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_keysetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_keysetup)
-_CRYPTO_NAMESPACE(ECRYPT_keysetup):
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+.globl _crypto_stream_salsa2012_e_x86_pm_ECRYPT_keysetup
+.globl crypto_stream_salsa2012_e_x86_pm_ECRYPT_keysetup
+_crypto_stream_salsa2012_e_x86_pm_ECRYPT_keysetup:
+crypto_stream_salsa2012_e_x86_pm_ECRYPT_keysetup:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -2958,13 +2958,13 @@ movl 80(%esp),%ebp
 add %eax,%esp
 ret
 
-# enter CRYPTO_NAMESPACE(ECRYPT_ivsetup)
+# enter crypto_stream_salsa2012_e_x86_pm_ECRYPT_ivsetup
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-_CRYPTO_NAMESPACE(ECRYPT_ivsetup):
-CRYPTO_NAMESPACE(ECRYPT_ivsetup):
+.globl _crypto_stream_salsa2012_e_x86_pm_ECRYPT_ivsetup
+.globl crypto_stream_salsa2012_e_x86_pm_ECRYPT_ivsetup
+_crypto_stream_salsa2012_e_x86_pm_ECRYPT_ivsetup:
+crypto_stream_salsa2012_e_x86_pm_ECRYPT_ivsetup:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax

@@ -2,8 +2,8 @@
 
 #include <stdlib.h>
 #include "ae.h"
-#include "crypto_aead.h"
 #include "api.h"
+#include "crypto_aead.h"
 
 int crypto_aead_encrypt(
 unsigned char *c,unsigned long long *clen,

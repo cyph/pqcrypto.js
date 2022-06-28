@@ -1,1 +1,1 @@
-../../kyber90s512/ref/sha2.h
+../../kyber90s768/ref/sha2.h

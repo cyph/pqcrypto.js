@@ -12,7 +12,7 @@ typedef int8 small;
 typedef int16 Fq;
 /* always represented as -(q-1)/2...(q-1)/2 */
 
-/* works for -7000000 < x < 7000000 if q in 4591, 4621, 5167, 6343, 7177, 7879 */
+/* works for -14000000 < x < 14000000 if q in 4591, 4621, 5167 */
 static Fq Fq_freeze(int32 x)
 {
   x -= q*((q18*x)>>18);

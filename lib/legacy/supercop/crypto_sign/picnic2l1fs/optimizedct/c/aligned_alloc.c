@@ -15,7 +15,7 @@
 #endif
 
 #if !defined(HAVE_MEMALIGN) && defined(__linux__)
-/* always available on Linux */
+/* always availalbe on Linux */
 #define HAVE_MEMALIGN
 #endif
 

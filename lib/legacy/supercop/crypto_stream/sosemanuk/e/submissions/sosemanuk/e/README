@@ -24,7 +24,7 @@ ecrypt-sync.h
 sosemanuk.h
 sosemanuk.c 
 
-The first five files come from the API published by the ECRYPT NoE
+The first five files come from the API published by the crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT NoE
 for their call for stream cipher candidates. Only ecrypt-sync.h has
 been slightly modified to match the SOSEMANUK implementation, as is
 prescribed by that API.
@@ -32,14 +32,14 @@ prescribed by that API.
 
 The sosemanuk.h file contains a definition of a macro:
 
-#define SOSEMANUK_ECRYPT
+#define SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 
 By removing this line, the implementation is made independant of the
-ECRYPT API. The API implemented is then the one described in the
+crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT API. The API implemented is then the one described in the
 comments in the sosemanuk.h file. Only sosemanuk.c and sosemanuk.h files
-are used when SOSEMANUK_ECRYPT is not defined.
+are used when SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT is not defined.
 
-Moreover, when SOSEMANUK_ECRYPT is not defined, the code can be compiled
+Moreover, when SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT is not defined, the code can be compiled
 with either the SOSEMANUK_VECTOR or the SOSEMANUK_SPEED macros defined.
 If the SOSEMANUK_VECTOR macro is defined, the code compiles to a
 stand-alone program which, when run, outputs two test vectors (with
@@ -50,5 +50,5 @@ nor SOSEMANUK_SPEED is defined, then this code compiles to library code
 implementing the interface described in sosemanuk.h.
 
 
-Portability has been actively sought. By default, the ECRYPT header
+Portability has been actively sought. By default, the crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT header
 files are used to achieve that portability.

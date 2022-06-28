@@ -1,1 +1,0 @@
-../../sikep434/ref/sike.c

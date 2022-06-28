@@ -14,25 +14,8 @@
 #include <string.h>
 
 #include "gf.h"
-#include "crypto_declassify.h"
-#include "crypto_uint16.h"
-#include "crypto_uint32.h"
 
-static inline crypto_uint16 uint16_is_smaller_declassify(uint16_t t,uint16_t u)
-{
-  crypto_uint16 mask = crypto_uint16_smaller_mask(t,u);
-  crypto_declassify(&mask,sizeof mask);
-  return mask;
-}
-
-static inline crypto_uint32 uint32_is_equal_declassify(uint32_t t,uint32_t u)
-{
-  crypto_uint32 mask = crypto_uint32_equal_mask(t,u);
-  crypto_declassify(&mask,sizeof mask);
-  return mask;
-}
-
-static inline unsigned char same_mask(uint16_t x, uint16_t y)
+static inline uint32_t same_mask(uint16_t x, uint16_t y)
 {
 	uint32_t mask;
 
@@ -41,7 +24,7 @@ static inline unsigned char same_mask(uint16_t x, uint16_t y)
 	mask >>= 31;
 	mask = -mask;
 
-	return mask & 0xFF;
+	return mask;
 }
 
 /* output: e, an error vector of weight t */
@@ -49,29 +32,24 @@ static void gen_e(unsigned char *e)
 {
 	int i, j, eq, count;
 
-	union 
-	{
-		uint16_t nums[ SYS_T*2 ];
-		unsigned char bytes[ SYS_T*2 * sizeof(uint16_t) ];
-	} buf;
-
-	uint16_t ind[ SYS_T ];
+	uint16_t ind_[ SYS_T*2 ];
+	uint16_t ind[ SYS_T*2 ];
 	unsigned char mask;	
 	unsigned char val[ SYS_T ];	
 
 	while (1)
 	{
-		randombytes(buf.bytes, sizeof(buf));
+		randombytes((unsigned char *) ind_, sizeof(ind_));
 
 		for (i = 0; i < SYS_T*2; i++)
-			buf.nums[i] = load_gf(buf.bytes + i*2);
+			ind_[i] &= GFMASK;
 
 		// moving and counting indices in the correct range
 
 		count = 0;
-		for (i = 0; i < SYS_T*2 && count < SYS_T; i++)
-			if (uint16_is_smaller_declassify(buf.nums[i],SYS_N))
-				ind[ count++ ] = buf.nums[i];
+		for (i = 0; i < SYS_T*2; i++)
+			if (ind_[i] < SYS_N)
+				ind[ count++ ] = ind_[i];
 		
 		if (count < SYS_T) continue;
 
@@ -79,10 +57,9 @@ static void gen_e(unsigned char *e)
 
 		eq = 0;
 
-		for (i = 1; i < SYS_T; i++) 
-			for (j = 0; j < i; j++)
-			        if (uint32_is_equal_declassify(ind[i],ind[j]))
-					eq = 1;
+		for (i = 1; i < SYS_T; i++) for (j = 0; j < i; j++)
+			if (ind[i] == ind[j]) 
+				eq = 1;
 
 		if (eq == 0)
 			break;
@@ -106,7 +83,7 @@ static void gen_e(unsigned char *e)
 
 /* input: public key pk, error vector e */
 /* output: syndrome s */
-static void syndrome(unsigned char *s, const unsigned char *pk, unsigned char *e)
+void syndrome(unsigned char *s, const unsigned char *pk, unsigned char *e)
 {
 	unsigned char b, row[SYS_N/8];
 	const unsigned char *pk_ptr = pk;

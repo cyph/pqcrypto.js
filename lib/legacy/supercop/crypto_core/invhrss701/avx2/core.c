@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "crypto_core.h"
 
-extern void CRYPTO_NAMESPACE(internal)(void *,const void *);
+extern void crypto_core_invhrss701_avx2_internal(void *,const void *);
 
 int crypto_core(unsigned char *rbytes,const unsigned char *abytes,const unsigned char *kbytes,const unsigned char *cbytes)
 {
@@ -17,7 +17,7 @@ int crypto_core(unsigned char *rbytes,const unsigned char *abytes,const unsigned
   }
   for (i = 701;i < 704;++i) aclamp[i] = 0;
 
-  CRYPTO_NAMESPACE(internal)(rbytes,aclamp);
+  crypto_core_invhrss701_avx2_internal(rbytes,aclamp);
 
   for (i = 701;i < 704;++i) r[i] = 0;
   return 0;

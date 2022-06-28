@@ -29,7 +29,7 @@ static void DRYSPONGE_print_state(
     unsigned int remaining = DRYSPONGE_CAPACITYSIZE;
     const uint8_t*const c = (const uint8_t*const)ctx->c;
     for(unsigned int i=0;i<DRYSPONGE_DIVUP(DRYSPONGE_CAPACITYSIZE,linesize);i++){
-        bytes_utiles_printf(     "   C[%2u] = ",i);
+        printf(     "   C[%2u] = ",i);
         unsigned int len = linesize < remaining ? linesize : remaining;
         print_bytes_sep("",c+i*linesize,len,"\n","");
         remaining -= len;
@@ -37,7 +37,7 @@ static void DRYSPONGE_print_state(
     remaining = DRYSPONGE_XSIZE;
     const uint8_t*const x = (const uint8_t*const)ctx->x;
     for(unsigned int i=0;i<DRYSPONGE_DIVUP(DRYSPONGE_XSIZE,linesize);i++){
-        bytes_utiles_printf(     "   X[%2u] = ",i);
+        printf(     "   X[%2u] = ",i);
         unsigned int len = linesize < remaining ? linesize : remaining;
         print_bytes_sep("",x+i*linesize,len,"\n","");
         remaining -= len;

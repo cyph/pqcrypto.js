@@ -10,8 +10,10 @@
 
 #include "io.h"
 #include "lowmc.h"
+#include "lowmc_pars.h"
 #include "mzd_additional.h"
 #include "picnic2_impl.h"
+
 #include "simd.h"
 
 #if !defined(_MSC_VER)
@@ -42,9 +44,9 @@ static void sbox_layer_10_uint64(uint64_t* d) {
   *d = sbox_layer_10_bitsliced_uint64(*d);
 }
 
+
 #include "lowmc_128_128_20.h"
 
-#if !defined(NO_UINT64_FALLBACK)
 // uint64 based implementation
 #include "lowmc_fns_uint64_L1.h"
 #define LOWMC lowmc_uint64_128
@@ -59,7 +61,6 @@ static void sbox_layer_10_uint64(uint64_t* d) {
 #undef LOWMC
 #define LOWMC lowmc_uint64_256
 #include "lowmc.c.i"
-#endif
 
 #define FN_ATTR ATTR_TARGET_SSE2
 
@@ -127,7 +128,6 @@ lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc) {
     }
   }
 
-#if !defined(NO_UINT64_FALLBACK)
   if (lowmc->m == 10) {
     switch (lowmc->n) {
     case 128:
@@ -135,11 +135,41 @@ lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc) {
     }
   }
 
-#endif
 
   return NULL;
 }
 
+lowmc_store_implementation_f lowmc_store_get_implementation(const lowmc_t* lowmc) {
+  ASSUME(lowmc->m == 10);
+  ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
+
+  if (CPU_SUPPORTS_AVX2) {
+    if (lowmc->m == 10) {
+      switch (lowmc->n) {
+      case 128:
+        return lowmc_s256_128_store_10;
+      }
+    }
+  }
+  if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
+    if (lowmc->m == 10) {
+      switch (lowmc->n) {
+      case 128:
+        return lowmc_s128_128_store_10;
+      }
+    }
+  }
+
+  if (lowmc->m == 10) {
+    switch (lowmc->n) {
+    case 128:
+      return lowmc_uint64_128_store_10;
+    }
+  }
+
+
+  return NULL;
+}
 
 lowmc_compute_aux_implementation_f lowmc_compute_aux_get_implementation(const lowmc_t* lowmc) {
   ASSUME(lowmc->m == 10);
@@ -162,14 +192,12 @@ lowmc_compute_aux_implementation_f lowmc_compute_aux_get_implementation(const lo
     }
   }
 
-#if !defined(NO_UINT64_FALLBACK)
   if (lowmc->m == 10) {
     switch (lowmc->n) {
     case 128:
       return lowmc_uint64_128_compute_aux_10;
     }
   }
-#endif
 
   return NULL;
 }

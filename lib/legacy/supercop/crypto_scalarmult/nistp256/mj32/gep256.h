@@ -3,12 +3,6 @@
 
 #include "fe.h"
 
-#define gep256_scalarmult CRYPTO_NAMESPACE(gep256_scalarmult)
-#define gep256_scalarmult_base CRYPTO_NAMESPACE(scalarmult_base)
-#define gep256_tobytes CRYPTO_NAMESPACE(gep256_tobytes)
-#define gep256_frombytes CRYPTO_NAMESPACE(gep256_frombytes)
-#define gep256_add CRYPTO_NAMESPACE(gep256_add)
-
 typedef fe gep256[3];           /* X, Y, Z */
 typedef fe gep256_precomp[2];   /* X, Y    */
 

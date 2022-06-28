@@ -461,7 +461,7 @@ fpr_lt(fpr x, fpr y)
  * bits or so.
  */
 #define fpr_expm_p63   falcon1024tree_ref_fpr_expm_p63
-uint64_t fpr_expm_p63(fpr x, fpr ccs);
+uint64_t fpr_expm_p63(fpr x);
 
 #define fpr_gm_tab   falcon1024tree_ref_fpr_gm_tab
 extern const fpr fpr_gm_tab[];

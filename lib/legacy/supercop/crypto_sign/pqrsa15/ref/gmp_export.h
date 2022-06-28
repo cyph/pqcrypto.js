@@ -3,7 +3,7 @@
 
 #include <gmp.h>
 
-#define gmp_export CRYPTO_NAMESPACE(gmp_export)
+#define gmp_export crypto_sign_pqrsa15_gmp_export
 
 extern int gmp_export(unsigned char *,unsigned long long,mpz_t);
 

@@ -1,4 +1,3 @@
-#include "crypto_kem.h" /* for namespacing */
 #include <immintrin.h>
 #include "params.h"
 #include "crypto_uint32.h"
@@ -114,10 +113,8 @@ void rq_roundencode(unsigned char *c,const modq *f)
     f2 *= 9;
     f0 += f1 << 9;
     f0 += f2 << 18;
-    *c++ = f0; f0 >>= 8;
-    *c++ = f0; f0 >>= 8;
-    *c++ = f0; f0 >>= 8;
-    *c++ = f0;
+    *(crypto_int32 *) c = f0;
+    c += 4;
   }
   {
     crypto_int32 f0, f1;

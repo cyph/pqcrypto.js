@@ -7,7 +7,11 @@
  *  SPDX-License-Identifier: MIT
  */
 
+
+#include "cpu.h"
+
 /* If cmake checks were not run, define some known values. */
+
 #if !defined(HAVE_SYS_AUXV_H) && defined(__linux__)
 #define HAVE_SYS_AUXV_H
 #endif
@@ -16,9 +20,6 @@
 #define HAVE_ASM_HWCAP_H
 #endif
 
-#include "cpu.h"
-
-#if !defined(BUILTIN_CPU_SUPPORTED) || defined(BUILTIN_CPU_SUPPORTED_BROKEN_BMI2)
 #if defined(__arm__) && defined(HAVE_SYS_AUXV_H) && defined(HAVE_ASM_HWCAP_H)
 #include <asm/hwcap.h>
 #include <sys/auxv.h>
@@ -61,18 +62,39 @@ static unsigned init_caps(void) {
 
   if (max >= 7) {
     __cpuidex(regs.data, 7, 0);
-    if (regs.ebx & (1 << 5)) {
+    if (regs.ebx & ((1 << 5) | (1 << 8))) {
       caps |= CPU_CAP_AVX2;
-    }
-    if (regs.ebx & (1 << 8)) {
-      caps |= CPU_CAP_BMI2;
     }
   }
 
   return caps;
 }
 #else
+#if defined(SUPERCOP)
+// SUPERCOP places a cpuid.h on the include search path before the system
+// provided cpuid.h. We hack around that by assuming that cpuid always exists
+// and defining __get_cpuid on our own.
+
+static int __get_cpuid(unsigned int leaf, unsigned int* reax, unsigned int* rebx,
+                       unsigned int* recx, unsigned int* redx) {
+
+  unsigned int eax, ebx, ecx, edx;
+  __asm__("cpuid\n" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "0"(leaf & 0x80000000));
+  if (eax == 0 || eax < leaf) {
+    return 0;
+  }
+
+  __asm__("cpuid\n" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "0"(leaf));
+  *reax = eax;
+  *rebx = ebx;
+  *recx = ecx;
+  *redx = edx;
+
+  return 1;
+}
+#else
 #include <cpuid.h>
+#endif
 
 static unsigned init_caps(void) {
   unsigned int caps = 0;
@@ -88,11 +110,8 @@ static unsigned init_caps(void) {
   }
 
   if (__get_cpuid(7, &eax, &ebx, &ecx, &edx)) {
-    if (ebx & (1 << 5)) {
+    if (ebx & ((1 << 5) | (1 << 8))) {
       caps |= CPU_CAP_AVX2;
-    }
-    if (ebx & (1 << 8)) {
-      caps |= CPU_CAP_BMI2;
     }
   }
 
@@ -117,6 +136,5 @@ bool cpu_supports(unsigned int caps) {
     cpu_caps = init_caps();
   }
 
-  return (cpu_caps & caps) == caps;
+  return cpu_caps & caps;
 }
-#endif

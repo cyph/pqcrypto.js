@@ -5,10 +5,9 @@
 
 #ifdef _MSC_VER
 #define  inline __inline
-#endif
-
 #define _mm_store_si128 _mm_storeu_si128
 #define _mm_load_si128 _mm_loadu_si128
+#endif
 
 #define n1 13 
 #define n2 46

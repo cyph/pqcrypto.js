@@ -145,17 +145,17 @@ __attribute__ ((aligned (32))) unsigned char TEMP[6*32];
   asm("vpxor xmm"tostr(a1)", xmm"tostr(a1)", xmm"tostr(b5)"");\
   \
   /* spill values t0,t1,t2 to memory */\
-  asm("vmovdqa [rip+TEMP+0*16], xmm"tostr(b0)"");\
-  asm("vmovdqa [rip+TEMP+1*16], xmm"tostr(b1)"");\
-  asm("vmovdqa [rip+TEMP+2*16], xmm"tostr(b2)"");\
+  asm("vmovdqa [TEMP+0*16], xmm"tostr(b0)"");\
+  asm("vmovdqa [TEMP+1*16], xmm"tostr(b1)"");\
+  asm("vmovdqa [TEMP+2*16], xmm"tostr(b2)"");\
   \
   /* spill values y2,y3,y4 to memory */\
-  asm("vmovdqa [rip+TEMP+3*16], xmm"tostr(a0)"");\
-  asm("vmovdqa [rip+TEMP+4*16], xmm"tostr(a1)"");\
-  asm("vmovdqa [rip+TEMP+5*16], xmm"tostr(a2)"");\
+  asm("vmovdqa [TEMP+3*16], xmm"tostr(a0)"");\
+  asm("vmovdqa [TEMP+4*16], xmm"tostr(a1)"");\
+  asm("vmovdqa [TEMP+5*16], xmm"tostr(a2)"");\
   \
   /* prepare registers for VMUL2 */\
-  asm("vmovdqa xmm"tostr(a1)", [rip+ALL_1B]");\
+  asm("vmovdqa xmm"tostr(a1)", [ALL_1B]");\
   asm("vpxor xmm"tostr(a2)", xmm"tostr(a2)", xmm"tostr(a2)"");\
   \
   /* x_i = t_i + t_{i+3} */\
@@ -164,9 +164,9 @@ __attribute__ ((aligned (32))) unsigned char TEMP[6*32];
   asm("vpxor xmm"tostr(b2)", xmm"tostr(b2)", xmm"tostr(b5)"");\
   asm("vpxor xmm"tostr(b3)", xmm"tostr(b3)", xmm"tostr(b6)"");\
   asm("vpxor xmm"tostr(b4)", xmm"tostr(b4)", xmm"tostr(b7)"");\
-  asm("vpxor xmm"tostr(b5)", xmm"tostr(b5)", [rip+TEMP+0*16]");\
-  asm("vpxor xmm"tostr(b6)", xmm"tostr(b6)", [rip+TEMP+1*16]");\
-  asm("vpxor xmm"tostr(b7)", xmm"tostr(b7)", [rip+TEMP+2*16]");\
+  asm("vpxor xmm"tostr(b5)", xmm"tostr(b5)", [TEMP+0*16]");\
+  asm("vpxor xmm"tostr(b6)", xmm"tostr(b6)", [TEMP+1*16]");\
+  asm("vpxor xmm"tostr(b7)", xmm"tostr(b7)", [TEMP+2*16]");\
   \
   /* z_i = 02 * x_i using temp a0, 0x1B in a1, and 0x00 in a2 */\
   VMUL2(b0, a0, a1, a2);\
@@ -179,14 +179,14 @@ __attribute__ ((aligned (32))) unsigned char TEMP[6*32];
   VMUL2(b7, a0, a1, a2);\
   \
   /* w_i = z_i + y_{i+4} */\
-  asm("vpxor xmm"tostr(b0)", xmm"tostr(b0)", [rip+TEMP+5*16]");\
+  asm("vpxor xmm"tostr(b0)", xmm"tostr(b0)", [TEMP+5*16]");\
   asm("vpxor xmm"tostr(b1)", xmm"tostr(b1)", xmm"tostr(a3)"");\
   asm("vpxor xmm"tostr(b2)", xmm"tostr(b2)", xmm"tostr(a4)"");\
   asm("vpxor xmm"tostr(b3)", xmm"tostr(b3)", xmm"tostr(a5)"");\
   asm("vpxor xmm"tostr(b4)", xmm"tostr(b4)", xmm"tostr(a6)"");\
   asm("vpxor xmm"tostr(b5)", xmm"tostr(b5)", xmm"tostr(a7)"");\
-  asm("vpxor xmm"tostr(b6)", xmm"tostr(b6)", [rip+TEMP+3*16]");\
-  asm("vpxor xmm"tostr(b7)", xmm"tostr(b7)", [rip+TEMP+4*16]");\
+  asm("vpxor xmm"tostr(b6)", xmm"tostr(b6)", [TEMP+3*16]");\
+  asm("vpxor xmm"tostr(b7)", xmm"tostr(b7)", [TEMP+4*16]");\
   \
   /* v_i = 02 * w_i using temp a0, 0x1B in a1, and 0x00 in a2 */\
   VMUL2(b0, a0, a1, a2);\
@@ -199,14 +199,14 @@ __attribute__ ((aligned (32))) unsigned char TEMP[6*32];
   VMUL2(b7, a0, a1, a2);\
   \
   /* b_i = v_{i+3} + y_{i+4} */\
-  asm("vpxor xmm"tostr(a0)", xmm"tostr(b3)", [rip+TEMP+5*16]");\
+  asm("vpxor xmm"tostr(a0)", xmm"tostr(b3)", [TEMP+5*16]");\
   asm("vpxor xmm"tostr(a1)", xmm"tostr(b4)", xmm"tostr(a3)"");\
   asm("vpxor xmm"tostr(a2)", xmm"tostr(b5)", xmm"tostr(a4)"");\
   asm("vpxor xmm"tostr(a3)", xmm"tostr(b6)", xmm"tostr(a5)"");\
   asm("vpxor xmm"tostr(a4)", xmm"tostr(b7)", xmm"tostr(a6)"");\
   asm("vpxor xmm"tostr(a5)", xmm"tostr(b0)", xmm"tostr(a7)"");\
-  asm("vpxor xmm"tostr(a6)", xmm"tostr(b1)", [rip+TEMP+3*16]");\
-  asm("vpxor xmm"tostr(a7)", xmm"tostr(b2)", [rip+TEMP+4*16]");\
+  asm("vpxor xmm"tostr(a6)", xmm"tostr(b1)", [TEMP+3*16]");\
+  asm("vpxor xmm"tostr(a7)", xmm"tostr(b2)", [TEMP+4*16]");\
 }/*MixBytes*/
 
 /* one round
@@ -216,32 +216,32 @@ __attribute__ ((aligned (32))) unsigned char TEMP[6*32];
  */
 #define ROUND(i, a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7){\
   /* AddRoundConstant */\
-  asm ("vmovdqa xmm"tostr(b3)", [rip+ROUND_CONST_Lx]");\
-  asm ("vpxor   xmm"tostr(a0)", xmm"tostr(a0)", [rip+ROUND_CONST_L0+"tostr(i)"*16]");\
+  asm ("vmovdqa xmm"tostr(b3)", [ROUND_CONST_Lx]");\
+  asm ("vpxor   xmm"tostr(a0)", xmm"tostr(a0)", [ROUND_CONST_L0+"tostr(i)"*16]");\
   asm ("vpxor   xmm"tostr(a1)", xmm"tostr(a1)", xmm"tostr(b3)"");\
   asm ("vpxor   xmm"tostr(a2)", xmm"tostr(a2)", xmm"tostr(b3)"");\
   asm ("vpxor   xmm"tostr(a3)", xmm"tostr(a3)", xmm"tostr(b3)"");\
   asm ("vpxor   xmm"tostr(a4)", xmm"tostr(a4)", xmm"tostr(b3)"");\
   asm ("vpxor   xmm"tostr(a5)", xmm"tostr(a5)", xmm"tostr(b3)"");\
   asm ("vpxor   xmm"tostr(a6)", xmm"tostr(a6)", xmm"tostr(b3)"");\
-  asm ("vpxor   xmm"tostr(a7)", xmm"tostr(a7)", [rip+ROUND_CONST_L7+"tostr(i)"*16]");\
+  asm ("vpxor   xmm"tostr(a7)", xmm"tostr(a7)", [ROUND_CONST_L7+"tostr(i)"*16]");\
   /* ShiftBytes + SubBytes (interleaved) */\
   asm ("vpxor xmm"tostr(b7)",  xmm"tostr(b7)",  xmm"tostr(b7)"");\
-  asm ("vpshufb     xmm"tostr(a0)", xmm"tostr(a0)", [rip+SUBSH_MASK+0*16]");\
+  asm ("vpshufb     xmm"tostr(a0)", xmm"tostr(a0)", [SUBSH_MASK+0*16]");\
   asm ("vaesenclast xmm"tostr(a0)", xmm"tostr(a0)", xmm"tostr(b7)"");\
-  asm ("vpshufb     xmm"tostr(a1)", xmm"tostr(a1)", [rip+SUBSH_MASK+1*16]");\
+  asm ("vpshufb     xmm"tostr(a1)", xmm"tostr(a1)", [SUBSH_MASK+1*16]");\
   asm ("vaesenclast xmm"tostr(a1)", xmm"tostr(a1)", xmm"tostr(b7)"");\
-  asm ("vpshufb     xmm"tostr(a2)", xmm"tostr(a2)", [rip+SUBSH_MASK+2*16]");\
+  asm ("vpshufb     xmm"tostr(a2)", xmm"tostr(a2)", [SUBSH_MASK+2*16]");\
   asm ("vaesenclast xmm"tostr(a2)", xmm"tostr(a2)", xmm"tostr(b7)"");\
-  asm ("vpshufb     xmm"tostr(a3)", xmm"tostr(a3)", [rip+SUBSH_MASK+3*16]");\
+  asm ("vpshufb     xmm"tostr(a3)", xmm"tostr(a3)", [SUBSH_MASK+3*16]");\
   asm ("vaesenclast xmm"tostr(a3)", xmm"tostr(a3)", xmm"tostr(b7)"");\
-  asm ("vpshufb     xmm"tostr(a4)", xmm"tostr(a4)", [rip+SUBSH_MASK+4*16]");\
+  asm ("vpshufb     xmm"tostr(a4)", xmm"tostr(a4)", [SUBSH_MASK+4*16]");\
   asm ("vaesenclast xmm"tostr(a4)", xmm"tostr(a4)", xmm"tostr(b7)"");\
-  asm ("vpshufb     xmm"tostr(a5)", xmm"tostr(a5)", [rip+SUBSH_MASK+5*16]");\
+  asm ("vpshufb     xmm"tostr(a5)", xmm"tostr(a5)", [SUBSH_MASK+5*16]");\
   asm ("vaesenclast xmm"tostr(a5)", xmm"tostr(a5)", xmm"tostr(b7)"");\
-  asm ("vpshufb     xmm"tostr(a6)", xmm"tostr(a6)", [rip+SUBSH_MASK+6*16]");\
+  asm ("vpshufb     xmm"tostr(a6)", xmm"tostr(a6)", [SUBSH_MASK+6*16]");\
   asm ("vaesenclast xmm"tostr(a6)", xmm"tostr(a6)", xmm"tostr(b7)"");\
-  asm ("vpshufb     xmm"tostr(a7)", xmm"tostr(a7)", [rip+SUBSH_MASK+7*16]");\
+  asm ("vpshufb     xmm"tostr(a7)", xmm"tostr(a7)", [SUBSH_MASK+7*16]");\
   asm ("vaesenclast xmm"tostr(a7)", xmm"tostr(a7)", xmm"tostr(b7)"");\
   /* MixBytes */\
   MixBytes(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7);\
@@ -270,7 +270,7 @@ __attribute__ ((aligned (32))) unsigned char TEMP[6*32];
  * clobbers: t0
  */
 #define Matrix_Transpose_A(i0, i1, i2, i3, o1, o2, o3, t0){\
-  asm ("vmovdqa xmm"tostr(t0)", [rip+TRANSP_MASK]");\
+  asm ("vmovdqa xmm"tostr(t0)", [TRANSP_MASK]");\
 \
   asm ("vpshufb xmm"tostr(i0)", xmm"tostr(i0)", xmm"tostr(t0)"");\
   asm ("vpshufb xmm"tostr(i1)", xmm"tostr(i1)", xmm"tostr(t0)"");\
@@ -661,16 +661,16 @@ void OF512(u64* h)
   asm("vxorpd ymm"tostr(b7)", ymm"tostr(b7)", ymm"tostr(a5)"");\
   \
   /* spill values y_4, y_5 to memory */\
-  asm("vmovdqa [rip+TEMP+0*32], ymm"tostr(b0)"");\
-  asm("vmovdqa [rip+TEMP+1*32], ymm"tostr(b1)"");\
-  asm("vmovdqa [rip+TEMP+2*32], ymm"tostr(b2)"");\
-  asm("vmovdqa [rip+TEMP+3*32], ymm"tostr(b3)"");\
-  asm("vmovdqa [rip+TEMP+4*32], ymm"tostr(b4)"");\
+  asm("vmovdqa [TEMP+0*32], ymm"tostr(b0)"");\
+  asm("vmovdqa [TEMP+1*32], ymm"tostr(b1)"");\
+  asm("vmovdqa [TEMP+2*32], ymm"tostr(b2)"");\
+  asm("vmovdqa [TEMP+3*32], ymm"tostr(b3)"");\
+  asm("vmovdqa [TEMP+4*32], ymm"tostr(b4)"");\
   \
   /* save values t0, t1, t2 to ymm8, ymm9 and memory */\
   asm("vmovdqa ymm"tostr(b0)", ymm"tostr(a0)"");\
   asm("vmovdqa ymm"tostr(b1)", ymm"tostr(a1)"");\
-  asm("vmovdqa [rip+TEMP+5*32], ymm"tostr(a2)"");\
+  asm("vmovdqa [TEMP+5*32], ymm"tostr(a2)"");\
   \
   /* compute x_i = t_i + t_{i+3} */\
   asm("vxorpd ymm"tostr(a0)", ymm"tostr(a0)", ymm"tostr(a3)"");\
@@ -680,10 +680,10 @@ void OF512(u64* h)
   asm("vxorpd ymm"tostr(a4)", ymm"tostr(a4)", ymm"tostr(a7)"");\
   asm("vxorpd ymm"tostr(a5)", ymm"tostr(a5)", ymm"tostr(b0)"");\
   asm("vxorpd ymm"tostr(a6)", ymm"tostr(a6)", ymm"tostr(b1)"");\
-  asm("vxorpd ymm"tostr(a7)", ymm"tostr(a7)", [rip+TEMP+5*32]");\
+  asm("vxorpd ymm"tostr(a7)", ymm"tostr(a7)", [TEMP+5*32]");\
   \
   /*compute z_i : double x_i using temp ymm8 and 1B ymm9 */\
-  asm("vmovdqa ymm"tostr(b1)", [rip+ALL_1B]");\
+  asm("vmovdqa ymm"tostr(b1)", [ALL_1B]");\
   asm("vxorpd ymm"tostr(b2)", ymm"tostr(b2)", ymm"tostr(b2)"");\
   VMUL2(a7, b0, b1, b2, b3, b4);\
   VMUL2(a6, b0, b1, b2, b3, b4);\
@@ -695,11 +695,11 @@ void OF512(u64* h)
   VMUL2(a0, b0, b1, b2, b3, b4);\
   \
   /* compute w_i :  add y_{i+4} */\
-  asm("vxorpd ymm"tostr(a0)", ymm"tostr(a0)", [rip+TEMP+0*32]");\
-  asm("vxorpd ymm"tostr(a1)", ymm"tostr(a1)", [rip+TEMP+1*32]");\
-  asm("vxorpd ymm"tostr(a2)", ymm"tostr(a2)", [rip+TEMP+2*32]");\
-  asm("vxorpd ymm"tostr(a3)", ymm"tostr(a3)", [rip+TEMP+3*32]");\
-  asm("vxorpd ymm"tostr(a4)", ymm"tostr(a4)", [rip+TEMP+4*32]");\
+  asm("vxorpd ymm"tostr(a0)", ymm"tostr(a0)", [TEMP+0*32]");\
+  asm("vxorpd ymm"tostr(a1)", ymm"tostr(a1)", [TEMP+1*32]");\
+  asm("vxorpd ymm"tostr(a2)", ymm"tostr(a2)", [TEMP+2*32]");\
+  asm("vxorpd ymm"tostr(a3)", ymm"tostr(a3)", [TEMP+3*32]");\
+  asm("vxorpd ymm"tostr(a4)", ymm"tostr(a4)", [TEMP+4*32]");\
   asm("vxorpd ymm"tostr(a5)", ymm"tostr(a5)", ymm"tostr(b5)"");\
   asm("vxorpd ymm"tostr(a6)", ymm"tostr(a6)", ymm"tostr(b6)"");\
   asm("vxorpd ymm"tostr(a7)", ymm"tostr(a7)", ymm"tostr(b7)"");\
@@ -715,11 +715,11 @@ void OF512(u64* h)
   VMUL2(a7, b0, b1, b2, b3, b4);\
   \
   /* add to y_4 y_5 .. v3, v4, ... */\
-  asm("vxorpd ymm"tostr(b0)", ymm"tostr(a3)", [rip+TEMP+0*32]");\
-  asm("vxorpd ymm"tostr(b1)", ymm"tostr(a4)", [rip+TEMP+1*32]");\
-  asm("vxorpd ymm"tostr(b2)", ymm"tostr(a5)", [rip+TEMP+2*32]");\
-  asm("vxorpd ymm"tostr(b3)", ymm"tostr(a6)", [rip+TEMP+3*32]");\
-  asm("vxorpd ymm"tostr(b4)", ymm"tostr(a7)", [rip+TEMP+4*32]");\
+  asm("vxorpd ymm"tostr(b0)", ymm"tostr(a3)", [TEMP+0*32]");\
+  asm("vxorpd ymm"tostr(b1)", ymm"tostr(a4)", [TEMP+1*32]");\
+  asm("vxorpd ymm"tostr(b2)", ymm"tostr(a5)", [TEMP+2*32]");\
+  asm("vxorpd ymm"tostr(b3)", ymm"tostr(a6)", [TEMP+3*32]");\
+  asm("vxorpd ymm"tostr(b4)", ymm"tostr(a7)", [TEMP+4*32]");\
   asm("vxorpd ymm"tostr(b5)", ymm"tostr(a0)", ymm"tostr(b5)"");\
   asm("vxorpd ymm"tostr(b6)", ymm"tostr(a1)", ymm"tostr(b6)"");\
   asm("vxorpd ymm"tostr(b7)", ymm"tostr(a2)", ymm"tostr(b7)"");\
@@ -736,8 +736,8 @@ void OF512(u64* h)
  * */
 #define SubShift(i, t0, c0, ShiftP, ShiftQ){\
     asm("vextractf128 xmm"tostr(t0)", ymm"tostr(i)", 1");\
-    asm("vpshufb xmm"tostr(i)",  xmm"tostr(i)",  [rip+SUBSH_MASK+"tostr(ShiftP)"*16]");\
-    asm("vpshufb xmm"tostr(t0)", xmm"tostr(t0)", [rip+SUBSH_MASK+"tostr(ShiftQ)"*16]");\
+    asm("vpshufb xmm"tostr(i)",  xmm"tostr(i)",  [SUBSH_MASK+"tostr(ShiftP)"*16]");\
+    asm("vpshufb xmm"tostr(t0)", xmm"tostr(t0)", [SUBSH_MASK+"tostr(ShiftQ)"*16]");\
     asm("vaesenclast xmm"tostr(i)",  xmm"tostr(i)",  xmm"tostr(c0)"");\
     asm("vaesenclast xmm"tostr(t0)", xmm"tostr(t0)", xmm"tostr(c0)"");\
     asm("vinsertf128 ymm"tostr(i)",  ymm"tostr(i)",  xmm"tostr(t0)", 1");\
@@ -767,9 +767,9 @@ void OF512(u64* h)
   asm ("1:");\
   /* AddRoundConstant */\
   asm ("vxorpd ymm6, ymm6, ymm6");\
-  asm ("vinsertf128 ymm7, ymm6, [rip+ROUND_CONST_Q+eax*8], 1");\
-  asm ("vinsertf128 ymm6, ymm6, [rip+ALL_FF], 1");\
-  asm ("vinsertf128 ymm0, ymm6, [rip+ROUND_CONST_P+eax*8], 0");\
+  asm ("vinsertf128 ymm7, ymm6, [ROUND_CONST_Q+eax*8], 1");\
+  asm ("vinsertf128 ymm6, ymm6, [ALL_FF], 1");\
+  asm ("vinsertf128 ymm0, ymm6, [ROUND_CONST_P+eax*8], 0");\
   asm ("vxorpd ymm0, ymm8,  ymm0");\
   asm ("vxorpd ymm1, ymm9,  ymm6");\
   asm ("vxorpd ymm2, ymm10, ymm6");\

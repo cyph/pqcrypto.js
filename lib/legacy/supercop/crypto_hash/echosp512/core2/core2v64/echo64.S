@@ -10224,9 +10224,9 @@ T.38:
 .LFE545:
 	.size	T.38, .-T.38
 	.p2align 4,,15
-.globl CRYPTO_NAMESPACETOP
-	.type	CRYPTO_NAMESPACETOP, @function
-CRYPTO_NAMESPACETOP:
+.globl crypto_hash_echosp512_core2_core2v64
+	.type	crypto_hash_echosp512_core2_core2v64, @function
+crypto_hash_echosp512_core2_core2v64:
 .LFB544:
 	.cfi_startproc
 	movq	%rdi, %rax
@@ -10243,7 +10243,7 @@ CRYPTO_NAMESPACETOP:
 	ret
 	.cfi_endproc
 .LFE544:
-	.size	CRYPTO_NAMESPACETOP, .-CRYPTO_NAMESPACETOP
+	.size	crypto_hash_echosp512_core2_core2v64, .-crypto_hash_echosp512_core2_core2v64
 	.p2align 4,,15
 .globl Hash
 	.type	Hash, @function

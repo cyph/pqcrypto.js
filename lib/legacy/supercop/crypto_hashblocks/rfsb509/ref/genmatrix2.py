@@ -18,7 +18,7 @@ def reduce(s):
 def c(m,i):
   return reduce(chr(0) * (16 * (112 - i)) + prec(m))
 
-print "const unsigned char CRYPTO_NAMESPACE(matrix)[16384] = {"
+print "const unsigned char crypto_hashblocks_rfsb509_ref_matrix[16384] = {"
 for j in range(256):
   print ''.join(["0x"+hexlify(i)+", " for i in c(j,112)])
 print "};"

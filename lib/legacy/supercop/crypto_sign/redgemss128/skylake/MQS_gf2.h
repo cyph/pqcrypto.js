@@ -1,1 +1,0 @@
-../../gemss128/opt/MQS_gf2.h

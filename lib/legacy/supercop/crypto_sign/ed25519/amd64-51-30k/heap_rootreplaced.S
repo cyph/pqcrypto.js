@@ -93,13 +93,13 @@
 
 # qhasm:   stack64 caller7_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(batch_heap_rootreplaced)
+# qhasm: enter crypto_sign_ed25519_amd64_51_30k_batch_heap_rootreplaced
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(batch_heap_rootreplaced)
-.globl CRYPTO_NAMESPACE(batch_heap_rootreplaced)
-_CRYPTO_NAMESPACE(batch_heap_rootreplaced):
-CRYPTO_NAMESPACE(batch_heap_rootreplaced):
+.globl _crypto_sign_ed25519_amd64_51_30k_batch_heap_rootreplaced
+.globl crypto_sign_ed25519_amd64_51_30k_batch_heap_rootreplaced
+_crypto_sign_ed25519_amd64_51_30k_batch_heap_rootreplaced:
+crypto_sign_ed25519_amd64_51_30k_batch_heap_rootreplaced:
 mov %rsp,%r11
 and $31,%r11
 add $64,%r11

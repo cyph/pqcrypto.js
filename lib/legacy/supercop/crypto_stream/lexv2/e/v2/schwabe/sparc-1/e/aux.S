@@ -1,10 +1,10 @@
 	.file	"aux.c"
-	.global CRYPTO_NAMESPACE(aes_big_constants)
+	.global aes_big_constants
 	.section	".rodata"
 	.align 4
-	.type	CRYPTO_NAMESPACE(aes_big_constants), #object
-	.size	CRYPTO_NAMESPACE(aes_big_constants), 4136
-CRYPTO_NAMESPACE(aes_big_constants):
+	.type	aes_big_constants, #object
+	.size	aes_big_constants, 4136
+aes_big_constants:
 	.long	16777216
 	.long	33554432
 	.long	67108864
@@ -1041,34 +1041,34 @@ CRYPTO_NAMESPACE(aes_big_constants):
 	.long	370555436
 	.section	".text"
 	.align 4
-	.global CRYPTO_NAMESPACE(ECRYPT_init)
-	.type	CRYPTO_NAMESPACE(ECRYPT_init), #function
+	.global crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_init
+	.type	crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_init, #function
 	.proc	020
-CRYPTO_NAMESPACE(ECRYPT_init):
+crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_init:
 	!#PROLOGUE# 0
 	!#PROLOGUE# 1
 	retl
 	nop
-	.size	CRYPTO_NAMESPACE(ECRYPT_init), .-CRYPTO_NAMESPACE(ECRYPT_init)
+	.size	crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_init, .-crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_init
 	.align 4
-	.global CRYPTO_NAMESPACE(ECRYPT_keysetup)
-	.type	CRYPTO_NAMESPACE(ECRYPT_keysetup), #function
+	.global crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_keysetup
+	.type	crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_keysetup, #function
 	.proc	020
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_keysetup:
 	!#PROLOGUE# 0
 	save	%sp, -192, %sp
 	!#PROLOGUE# 1
-	sethi	%hh(CRYPTO_NAMESPACE(aes_big_constants)), %g4
+	sethi	%hh(aes_big_constants), %g4
 	mov	%i0, %o5
-	or	%g4, %hm(CRYPTO_NAMESPACE(aes_big_constants)), %g4
-	sethi	%lm(CRYPTO_NAMESPACE(aes_big_constants)), %g1
+	or	%g4, %hm(aes_big_constants), %g4
+	sethi	%lm(aes_big_constants), %g1
 	sllx	%g4, 32, %g4
 	lduw	[%i1+12], %i2
 	lduw	[%i1], %i3
 	lduw	[%i1+4], %i0
 	add	%g4, %g1, %g4
 	lduw	[%i1+8], %i1
-	or	%g4, %lo(CRYPTO_NAMESPACE(aes_big_constants)), %g4
+	or	%g4, %lo(aes_big_constants), %g4
 	sethi	%hi(64512), %g1
 	st	%i3, [%o5]
 	st	%i0, [%o5+4]
@@ -1119,5 +1119,5 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	add	%o4, 4, %o4
 	return	%i7+8
 	nop
-	.size	CRYPTO_NAMESPACE(ECRYPT_keysetup), .-CRYPTO_NAMESPACE(ECRYPT_keysetup)
+	.size	crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_keysetup, .-crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_keysetup
 	.ident	"GCC: (GNU) 3.4.5"

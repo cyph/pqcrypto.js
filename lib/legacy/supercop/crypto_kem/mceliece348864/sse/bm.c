@@ -1,13 +1,6 @@
-#define update_asm CRYPTO_NAMESPACE(update_asm)
-#define _update_asm _CRYPTO_NAMESPACE(update_asm)
-#define vec_reduce_asm CRYPTO_NAMESPACE(vec_reduce_asm)
-#define _vec_reduce_asm _CRYPTO_NAMESPACE(vec_reduce_asm)
 /*
-  This file is for implementating the inversion-free Berlekamp-Massey algorithm
+  This file is for the inversion-free Berlekamp-Massey algorithm
   see https://ieeexplore.ieee.org/document/87857
-
-  For the implementation strategy, see
-  https://eprint.iacr.org/2017/793.pdf
 */
 
 #include "bm.h"
@@ -46,12 +39,38 @@ static inline uint64_t mask_leq(uint16_t a, uint16_t b)
 	return ret;
 }
 
-static void vec_cmov(uint64_t out[][2], uint64_t mask)
+void vec_cmov(uint64_t out[][2], uint64_t mask)
 {
 	int i;
 
 	for (i = 0; i < GFBITS; i++)
 		out[i][0] = (out[i][0] & ~mask) | (out[i][1] & mask);
+}
+
+void vec_mul_sp(uint64_t *h, uint64_t *f, const uint64_t g[][2])
+{
+	int i, j;
+	uint64_t result[2*GFBITS - 1];
+
+	//
+
+	for (i = 0; i < 2*GFBITS-1; i++)
+		result[i] = 0;
+
+	for (i = 0; i < GFBITS; i++)
+	for (j = 0; j < GFBITS; j++)
+		result[i+j] ^= f[i] & g[j][1]; 
+
+	for (i = 2*GFBITS-2; i >= GFBITS; i--)
+	{
+		result[i - GFBITS + 3] ^= result[i]; 
+		result[i - GFBITS + 0] ^= result[i]; 
+	}
+
+	//
+
+	for (i = 0; i < GFBITS; i++)
+		h[i] = result[i];
 }
 
 static inline void interleave(vec128 *in, int idx0, int idx1, vec128 *mask, int b)
@@ -74,7 +93,7 @@ static inline void interleave(vec128 *in, int idx0, int idx1, vec128 *mask, int 
 /* output: out, field elements in non-bitsliced form */
 static inline void get_coefs(gf *out, vec128 *in)
 {
-	int i, k;
+	int i, j, k;
 
 	vec128 mask[4][2];
 	vec128 buf[16];
@@ -128,10 +147,9 @@ static inline void get_coefs(gf *out, vec128 *in)
 	interleave(buf, 14, 15, mask[0], 0);
 
 	for (i = 0; i < 16; i++)
-	for (k = 0; k <  4; k++) {
-		out[ (4*0 + k)*16 + i ] = (vec128_extract(buf[i], 0) >> (k*16)) & GFMASK;
-		out[ (4*1 + k)*16 + i ] = (vec128_extract(buf[i], 1) >> (k*16)) & GFMASK;
-	}
+	for (j = 0; j <  2; j++)
+	for (k = 0; k <  4; k++)
+		out[ (4*j + k)*16 + i ] = (vec128_extract(buf[i], j) >> (k*16)) & GFMASK;
 }
 
 /* input: in, sequence of field elements */

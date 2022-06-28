@@ -4,8 +4,6 @@
 
 #ifndef ROOT_H
 #define ROOT_H
-#define eval CRYPTO_NAMESPACE(eval)
-#define root CRYPTO_NAMESPACE(root)
 
 #include "gf.h"
 

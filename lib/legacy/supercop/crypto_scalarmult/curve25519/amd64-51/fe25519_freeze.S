@@ -63,13 +63,13 @@
 
 # qhasm:   stack64 caller7_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(fe25519_freeze)
+# qhasm: enter crypto_scalarmult_curve25519_amd64_51_fe25519_freeze
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(fe25519_freeze)
-.globl CRYPTO_NAMESPACE(fe25519_freeze)
-_CRYPTO_NAMESPACE(fe25519_freeze):
-CRYPTO_NAMESPACE(fe25519_freeze):
+.globl _crypto_scalarmult_curve25519_amd64_51_fe25519_freeze
+.globl crypto_scalarmult_curve25519_amd64_51_fe25519_freeze
+_crypto_scalarmult_curve25519_amd64_51_fe25519_freeze:
+crypto_scalarmult_curve25519_amd64_51_fe25519_freeze:
 mov %rsp,%r11
 and $31,%r11
 add $64,%r11
@@ -135,10 +135,10 @@ movq   24(%rdi),%r8
 # asm 2: movq   32(<rp=%rdi),>r4=%r9
 movq   32(%rdi),%r9
 
-# qhasm: two51minus1 = *(uint64 *) &CRYPTO_NAMESPACE(REDMASK51)
-# asm 1: movq CRYPTO_NAMESPACE(REDMASK51),>two51minus1=int64#7
-# asm 2: movq CRYPTO_NAMESPACE(REDMASK51),>two51minus1=%rax
-movq CRYPTO_NAMESPACE(REDMASK51)(%rip),%rax
+# qhasm: two51minus1 = *(uint64 *) &crypto_scalarmult_curve25519_amd64_51_REDMASK51
+# asm 1: movq crypto_scalarmult_curve25519_amd64_51_REDMASK51,>two51minus1=int64#7
+# asm 2: movq crypto_scalarmult_curve25519_amd64_51_REDMASK51,>two51minus1=%rax
+movq crypto_scalarmult_curve25519_amd64_51_REDMASK51(%rip),%rax
 
 # qhasm: two51minus19 = two51minus1
 # asm 1: mov  <two51minus1=int64#7,>two51minus19=int64#8

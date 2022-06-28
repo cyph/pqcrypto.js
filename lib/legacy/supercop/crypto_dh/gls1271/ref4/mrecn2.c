@@ -490,7 +490,7 @@ void ecn2_getz(_MIPD_ ecn2 *e,zzn2 *z)
     else                              zzn2_from_zzn(mr_mip->one,z);
 }
 
-static inline void zzn2_conj_i(zzn2 *x,zzn2 *w)
+inline void zzn2_conj_i(zzn2 *x,zzn2 *w)
 {
     zzn2_copy_i(x,w);
 	modneg(w->b->w);

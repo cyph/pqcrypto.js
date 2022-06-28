@@ -89,13 +89,13 @@
 
 # qhasm: int64 muli38
 
-# qhasm: enter CRYPTO_NAMESPACE(fe25519_mul)
+# qhasm: enter crypto_scalarmult_curve25519_amd64_64_fe25519_mul
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(fe25519_mul)
-.globl CRYPTO_NAMESPACE(fe25519_mul)
-_CRYPTO_NAMESPACE(fe25519_mul):
-CRYPTO_NAMESPACE(fe25519_mul):
+.globl _crypto_scalarmult_curve25519_amd64_64_fe25519_mul
+.globl crypto_scalarmult_curve25519_amd64_64_fe25519_mul
+_crypto_scalarmult_curve25519_amd64_64_fe25519_mul:
+crypto_scalarmult_curve25519_amd64_64_fe25519_mul:
 mov %rsp,%r11
 and $31,%r11
 add $64,%r11
@@ -651,8 +651,8 @@ adc %rdx,%r11
 # asm 2: mov  <mulr4=%r8,>mulrax=%rax
 mov  %r8,%rax
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq  CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_scalarmult_curve25519_amd64_64_38
+mulq  crypto_scalarmult_curve25519_amd64_64_38(%rip)
 
 # qhasm:   mulr4 = mulrax
 # asm 1: mov  <mulrax=int64#7,>mulr4=int64#2
@@ -669,8 +669,8 @@ mov  %r9,%rax
 # asm 2: mov  <mulrdx=%rdx,>mulr5=%rcx
 mov  %rdx,%rcx
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq  CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_scalarmult_curve25519_amd64_64_38
+mulq  crypto_scalarmult_curve25519_amd64_64_38(%rip)
 
 # qhasm:   carry? mulr5 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr5=int64#4
@@ -692,8 +692,8 @@ mov  $0,%r8
 # asm 2: adc <mulrdx=%rdx,<mulr6=%r8
 adc %rdx,%r8
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq  CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_scalarmult_curve25519_amd64_64_38
+mulq  crypto_scalarmult_curve25519_amd64_64_38(%rip)
 
 # qhasm:   carry? mulr6 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr6=int64#5
@@ -715,8 +715,8 @@ mov  $0,%r9
 # asm 2: adc <mulrdx=%rdx,<mulr7=%r9
 adc %rdx,%r9
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq  CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_scalarmult_curve25519_amd64_64_38
+mulq  crypto_scalarmult_curve25519_amd64_64_38(%rip)
 
 # qhasm:   carry? mulr7 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr7=int64#6

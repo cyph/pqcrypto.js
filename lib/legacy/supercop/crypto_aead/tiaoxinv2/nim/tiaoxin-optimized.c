@@ -28,7 +28,7 @@
 #define xor(a,b) 	_mm_xor_si128(a,b) 
 #define and(a,b) 	_mm_and_si128(a,b)
 #define enc(a,b) 	_mm_aesenc_si128(a,b) 
-#define load(p)       	_mm_loadu_si128((__m128i *)(p))
+#define load(p)       	_mm_load_si128((__m128i *)(p))
 #define store(p,x)    	_mm_storeu_si128((__m128i *)(p), (x))
 #define constant8(b15,b14,b13,b12,b11,b10,b9,b8,b7,b6,b5,b4,b3,b2,b1,b0)   _mm_set_epi8 ((b0),(b1),(b2),(b3),(b4),(b5),(b6),(b7),(b8),(b9),(b10),(b11),(b12),(b13),(b14),(b15))
 

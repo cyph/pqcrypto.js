@@ -1,18 +1,4 @@
-Reverse-chronological changelog for ntrulpr*/factored:
-
-Added abort if crypto_stream_aes256ctr() fails. (There are some AES
-implementations that never fail, but OpenSSL can fail if it runs out of
-memory.)
-
-Used crypto_stream_aes256ctr_publicinputs() for the public generator.
-
-Used CRYPTO_NAMESPACE.
-
-Used crypto_verify_clen.
-
-Rearranged variables for better stack usage.
-
-Introduced ppadsort.
+Reverse-chronological changelog for ntrulpr{653,761,857}/factored:
 
 Factored out crypto_core_multsntrup761. (Same for other sizes.)
 

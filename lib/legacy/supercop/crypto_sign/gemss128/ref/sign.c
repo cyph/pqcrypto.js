@@ -1,12 +1,9 @@
 #include "api.h"
+#include "crypto_sign.h"
 #include <string.h>
-#include "sign_keypairHFE.hpp"
+#include "encrypt_keypairHFE.hpp"
 #include "signHFE.hpp"
 #include "sign_openHFE.h"
-
-#if SUPERCOP
-    #include "crypto_sign.h"
-#endif
 
 
 int crypto_sign_keypair(unsigned char *pk,unsigned char *sk)
@@ -19,9 +16,9 @@ int crypto_sign(
   const unsigned char *m,unsigned long long mlen,
   const unsigned char *sk)
 {
-    *smlen=mlen+CRYPTO_BYTES;
-    memcpy(sm+CRYPTO_BYTES,m,(size_t)mlen);
-    return signHFE(sm,m,(size_t)mlen,(UINT*)sk);
+    *smlen=mlen+SIZE_SIGNATURE_BYTES;
+    memmove(sm+SIZE_SIGNATURE_BYTES,m,(size_t)mlen);
+    return signHFE((UINT*)sm,m,(size_t)mlen,(UINT*)sk);
 }
 
 int crypto_sign_open(
@@ -30,9 +27,8 @@ int crypto_sign_open(
   const unsigned char *pk)
 {
     int result;
-    *mlen=smlen-CRYPTO_BYTES;
-    result=sign_openHFE(sm+CRYPTO_BYTES,(size_t)(*mlen),sm,(UINT*)pk);
-    /* For compatibily with SUPERCOP, the memcpy is done only after sign_open */
-    memcpy(m,sm+CRYPTO_BYTES,(size_t)(*mlen));
+    *mlen=smlen-SIZE_SIGNATURE_BYTES;
+    result = sign_openHFE(sm+SIZE_SIGNATURE_BYTES,(size_t)(*mlen),(UINT*)sm,(UINT*)pk);
+    memmove(m,sm+SIZE_SIGNATURE_BYTES,(size_t)(*mlen));
     return result;
 }

@@ -1,5 +1,5 @@
 # 
-#  lex_ultrasparc/ECRYPT_ivsetup.q version 20080315
+#  lex_ultrasparc/crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_ivsetup.q version 20080315
 #  Peter Schwabe
 #  Public domain
 # 
@@ -98,7 +98,7 @@ stack64 x42
 stack64 x43
 
 # Enter the function
-enter ECRYPT_ivsetup
+enter crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_ivsetup
 
 # Make global aes-constants reachable from within qhasm:
 constants = (aes_big_constants & 0xfffffc0000000000) >> 32

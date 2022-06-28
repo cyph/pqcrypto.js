@@ -9,7 +9,7 @@
 
 #define MAXBATCH 64
 
-int CRYPTO_NAMESPACE(open_batch)(
+int crypto_sign_open_batch(
     unsigned char* const m[],unsigned long long mlen[],
     unsigned char* const sm[],const unsigned long long smlen[],
     unsigned char* const pk[], 

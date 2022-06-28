@@ -1,1 +1,0 @@
-../../gemss128/opt/evalMQS_gf2.h

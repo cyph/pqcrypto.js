@@ -127,7 +127,7 @@ int64 m13
 int64 m14
 int64 m15
 
-enter ECRYPT_keystream_bytes
+enter crypto_stream_chacha20_e_sparc_ECRYPT_keystream_bytes
 
 bytes = arg3
 m = arg2
@@ -147,7 +147,7 @@ goto done if !unsigned>
 
 goto bytesatleast1
 
-enter ECRYPT_decrypt_bytes
+enter crypto_stream_chacha20_e_sparc_ECRYPT_decrypt_bytes
 
 bytes = arg4
 m = arg2
@@ -157,7 +157,7 @@ out = arg3
 goto done if !unsigned>
 goto bytesatleast1
 
-enter ECRYPT_encrypt_bytes
+enter crypto_stream_chacha20_e_sparc_ECRYPT_encrypt_bytes
 
 bytes = arg4
 m = arg2
@@ -518,11 +518,11 @@ done:
 leave
 
 
-enter ECRYPT_init
+enter crypto_stream_chacha20_e_sparc_ECRYPT_init
 leave
 
 
-enter ECRYPT_ivsetup
+enter crypto_stream_chacha20_e_sparc_ECRYPT_ivsetup
   x14 = *(uint32 *) (arg2 + 0)
   x12 = 0
   x15 = *(uint32 *) (arg2 + 4)
@@ -538,7 +538,7 @@ enter ECRYPT_ivsetup
 leave
 
 
-enter ECRYPT_keysetup
+enter crypto_stream_chacha20_e_sparc_ECRYPT_keysetup
 
                  unsigned>? arg3 - 128
 goto kbits256 if unsigned>

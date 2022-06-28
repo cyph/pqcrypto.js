@@ -189,13 +189,13 @@
 
 # qhasm: stack32 ctarget
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
+# qhasm: enter crypto_stream_salsa20_e_x86_1_ECRYPT_keystream_bytes
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_keystream_bytes):
-CRYPTO_NAMESPACE(ECRYPT_keystream_bytes):
+.globl _crypto_stream_salsa20_e_x86_1_ECRYPT_keystream_bytes
+.globl crypto_stream_salsa20_e_x86_1_ECRYPT_keystream_bytes
+_crypto_stream_salsa20_e_x86_1_ECRYPT_keystream_bytes:
+crypto_stream_salsa20_e_x86_1_ECRYPT_keystream_bytes:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -277,13 +277,13 @@ subl %ebx,%edi
 # qhasm: goto start
 jmp ._start
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
+# qhasm: enter crypto_stream_salsa20_e_x86_1_ECRYPT_decrypt_bytes
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes):
-CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes):
+.globl _crypto_stream_salsa20_e_x86_1_ECRYPT_decrypt_bytes
+.globl crypto_stream_salsa20_e_x86_1_ECRYPT_decrypt_bytes
+_crypto_stream_salsa20_e_x86_1_ECRYPT_decrypt_bytes:
+crypto_stream_salsa20_e_x86_1_ECRYPT_decrypt_bytes:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -347,13 +347,13 @@ jbe ._done
 # qhasm: goto start
 jmp ._start
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
+# qhasm: enter crypto_stream_salsa20_e_x86_1_ECRYPT_encrypt_bytes
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes):
-CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes):
+.globl _crypto_stream_salsa20_e_x86_1_ECRYPT_encrypt_bytes
+.globl crypto_stream_salsa20_e_x86_1_ECRYPT_encrypt_bytes
+_crypto_stream_salsa20_e_x86_1_ECRYPT_encrypt_bytes:
+crypto_stream_salsa20_e_x86_1_ECRYPT_encrypt_bytes:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -2883,13 +2883,13 @@ add  $64,%esi
 # qhasm: goto bytesatleast1
 jmp ._bytesatleast1
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_init)
+# qhasm: enter crypto_stream_salsa20_e_x86_1_ECRYPT_init
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_init)
-.globl CRYPTO_NAMESPACE(ECRYPT_init)
-_CRYPTO_NAMESPACE(ECRYPT_init):
-CRYPTO_NAMESPACE(ECRYPT_init):
+.globl _crypto_stream_salsa20_e_x86_1_ECRYPT_init
+.globl crypto_stream_salsa20_e_x86_1_ECRYPT_init
+_crypto_stream_salsa20_e_x86_1_ECRYPT_init:
+crypto_stream_salsa20_e_x86_1_ECRYPT_init:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -2899,13 +2899,13 @@ sub %eax,%esp
 add %eax,%esp
 ret
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_keysetup)
+# qhasm: enter crypto_stream_salsa20_e_x86_1_ECRYPT_keysetup
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_keysetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_keysetup)
-_CRYPTO_NAMESPACE(ECRYPT_keysetup):
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+.globl _crypto_stream_salsa20_e_x86_1_ECRYPT_keysetup
+.globl crypto_stream_salsa20_e_x86_1_ECRYPT_keysetup
+_crypto_stream_salsa20_e_x86_1_ECRYPT_keysetup:
+crypto_stream_salsa20_e_x86_1_ECRYPT_keysetup:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax
@@ -3202,13 +3202,13 @@ movl 16(%esp),%ebp
 add %eax,%esp
 ret
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_ivsetup)
+# qhasm: enter crypto_stream_salsa20_e_x86_1_ECRYPT_ivsetup
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-_CRYPTO_NAMESPACE(ECRYPT_ivsetup):
-CRYPTO_NAMESPACE(ECRYPT_ivsetup):
+.globl _crypto_stream_salsa20_e_x86_1_ECRYPT_ivsetup
+.globl crypto_stream_salsa20_e_x86_1_ECRYPT_ivsetup
+_crypto_stream_salsa20_e_x86_1_ECRYPT_ivsetup:
+crypto_stream_salsa20_e_x86_1_ECRYPT_ivsetup:
 mov %esp,%eax
 and $31,%eax
 add $256,%eax

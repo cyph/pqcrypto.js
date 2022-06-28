@@ -1,1 +1,0 @@
-../../asconhashav12/bi32_armv7m/config.h

@@ -12,6 +12,7 @@
 #define PK_NCOLS (SYS_N - PK_NROWS)
 #define PK_ROW_BYTES ((PK_NCOLS + 7)/8)
 
+#define SK_BYTES (SYS_N/8 + IRR_BYTES + COND_BYTES)
 #define SYND_BYTES ((PK_NROWS + 7)/8)
 
 #define GFMASK ((1 << GFBITS) - 1)

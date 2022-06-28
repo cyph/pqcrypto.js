@@ -4,10 +4,9 @@
 #include "config_HFE.h"
 #include <stddef.h>
 
-/* Sign a message: sm8 is the signed message, m is the original message,
+/* Sign a message: sm is the signed message, m is the original message,
  *                 and sk is the secret key. */
-int signHFE(unsigned char* sm8, const unsigned char* m, size_t len, \
-            const UINT* sk);
+int signHFE(UINT* sm, const unsigned char* m, size_t len, const UINT* sk);
 
 
 #endif

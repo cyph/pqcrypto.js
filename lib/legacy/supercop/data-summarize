@@ -23,43 +23,34 @@
         | sort \
         | while read doth
         do
-          implementationdir=`dirname $doth`
+	  implementationdir=`dirname $doth`
 
-          cfiles=`ls "$implementationdir" | grep '\.c$' || :`
-          sfiles=`ls "$implementationdir" | grep '\.[sS]$' || :`
-          ccfiles=`ls "$implementationdir" | grep '\.cc$' || :`
-          cppfiles=`ls "$implementationdir" | grep '\.cpp$' || :`
+	  cfiles=`ls "$implementationdir" | grep '\.c$' || :`
+	  sfiles=`ls "$implementationdir" | grep '\.[sS]$' || :`
+	  ccfiles=`ls "$implementationdir" | grep '\.cc$' || :`
+	  cppfiles=`ls "$implementationdir" | grep '\.cpp$' || :`
   
-          language=c
-          [ "x$cppfiles" = x ] || language=cpp
-          [ "x$ccfiles" = x ] || language=cpp
+	  language=c
+	  [ "x$cppfiles" = x ] || language=cpp
+	  [ "x$ccfiles" = x ] || language=cpp
 
-          ok${language}-$abi \
-          | while read compiler
-          do
-            (
-              if [ -f "$implementationdir/goal-constbranch" ] && [ -f "$implementationdir/goal-constindex" ]
-              then
-                echo constbranchindex
-              fi
-              echo timingleaks
-            ) | while read security
-            do
-              compilerword=`echo "$compiler" | tr ' ' '_'`
-              if [ -f "$top/$abi/try/$language/$compilerword/$security/$implementationdir/data" ]
-              then
-                grep . < "$top/$abi/try/$language/$compilerword/$security/$implementationdir/data"
-              fi
-            done
-          done
-        done
+	  ok${language}-$abi \
+	  | while read compiler
+	  do
+	    compilerword=`echo "$compiler" | tr ' ' '_'`
+            if [ -f "$top/$abi/try/$language/$compilerword/$implementationdir/data" ]
+	    then
+              grep . < "$top/$abi/try/$language/$compilerword/$implementationdir/data"
+	    fi
+	  done
+	done
 
         for m in 1 2 3
         do
-          if [ -f "$top/$abi/measure$m/$o/$p/data" ]
-          then
-            grep . < "$top/$abi/measure$m/$o/$p/data"
-          fi
+	  if [ -f "$top/$abi/measure$m/$o/$p/data" ]
+	  then
+	    grep . < "$top/$abi/measure$m/$o/$p/data"
+	  fi
         done
       done
     done

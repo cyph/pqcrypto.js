@@ -1,1 +1,0 @@
-../../isapa128v20/opt_32/asconp.h

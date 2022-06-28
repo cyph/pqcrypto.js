@@ -55,7 +55,7 @@ void poly_encode(unsigned char *b, const uint32_t *p, uint32_t len)
 void poly_decode(uint32_t *p, const unsigned char *b, uint32_t len)
 {
 	uint32_t i;
-	const unsigned char *bb;
+	unsigned char *bb;
 	
 	/* unpack 17 bytes to 8 17-bit coordinates */
 	for (i = 0; i < len; i += 8)

@@ -1,1 +1,0 @@
-../../sikep434comp/arm/sidh_compressed.inc

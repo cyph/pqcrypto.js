@@ -2,8 +2,8 @@
  * SOSEMANUK reference API.
  *
  * This file documents the reference implementation API. If the
- * macro SOSEMANUK_ECRYPT is defined, the API follows the ECRYPT
- * conventions (types, function names...) and uses the ECRYPT files;
+ * macro SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT is defined, the API follows the crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
+ * conventions (types, function names...) and uses the crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT files;
  * otherwise, a simpler API is used.
  *
  * (c) 2005 X-CRYPT project. This software is provided 'as-is', without
@@ -22,12 +22,12 @@
 #define SOSEMANUK_H__
 
 /*
- * This macro enables the ECRYPT API, and disables the local API.
- * It is defined by default, for ECRYPT processing.
+ * This macro enables the crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT API, and disables the local API.
+ * It is defined by default, for crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT processing.
  */
-#define SOSEMANUK_ECRYPT
+#define SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 
 #include "ecrypt-sync.h"
 

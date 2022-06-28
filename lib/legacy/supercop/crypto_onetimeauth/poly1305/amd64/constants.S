@@ -6,80 +6,80 @@
 .section .rodata
 .p2align 5
 
-.globl _CRYPTO_NAMESPACE(constants)
-.globl CRYPTO_NAMESPACE(constants)
-.globl CRYPTO_NAMESPACE(scale)
-.globl CRYPTO_NAMESPACE(two32)
-.globl CRYPTO_NAMESPACE(two64)
-.globl CRYPTO_NAMESPACE(two96)
-.globl CRYPTO_NAMESPACE(alpha32)
-.globl CRYPTO_NAMESPACE(alpha64)
-.globl CRYPTO_NAMESPACE(alpha96)
-.globl CRYPTO_NAMESPACE(alpha130)
-.globl CRYPTO_NAMESPACE(doffset0)
-.globl CRYPTO_NAMESPACE(doffset1)
-.globl CRYPTO_NAMESPACE(doffset2)
-.globl CRYPTO_NAMESPACE(doffset3)
-.globl CRYPTO_NAMESPACE(doffset3minustwo128)
-.globl CRYPTO_NAMESPACE(hoffset0)
-.globl CRYPTO_NAMESPACE(hoffset1)
-.globl CRYPTO_NAMESPACE(hoffset2)
-.globl CRYPTO_NAMESPACE(hoffset3)
-.globl CRYPTO_NAMESPACE(rounding)
+.globl _crypto_onetimeauth_poly1305_amd64_constants
+.globl crypto_onetimeauth_poly1305_amd64_constants
+.globl crypto_onetimeauth_poly1305_amd64_scale
+.globl crypto_onetimeauth_poly1305_amd64_two32
+.globl crypto_onetimeauth_poly1305_amd64_two64
+.globl crypto_onetimeauth_poly1305_amd64_two96
+.globl crypto_onetimeauth_poly1305_amd64_alpha32
+.globl crypto_onetimeauth_poly1305_amd64_alpha64
+.globl crypto_onetimeauth_poly1305_amd64_alpha96
+.globl crypto_onetimeauth_poly1305_amd64_alpha130
+.globl crypto_onetimeauth_poly1305_amd64_doffset0
+.globl crypto_onetimeauth_poly1305_amd64_doffset1
+.globl crypto_onetimeauth_poly1305_amd64_doffset2
+.globl crypto_onetimeauth_poly1305_amd64_doffset3
+.globl crypto_onetimeauth_poly1305_amd64_doffset3minustwo128
+.globl crypto_onetimeauth_poly1305_amd64_hoffset0
+.globl crypto_onetimeauth_poly1305_amd64_hoffset1
+.globl crypto_onetimeauth_poly1305_amd64_hoffset2
+.globl crypto_onetimeauth_poly1305_amd64_hoffset3
+.globl crypto_onetimeauth_poly1305_amd64_rounding
 
-_CRYPTO_NAMESPACE(constants):
-CRYPTO_NAMESPACE(constants):
-CRYPTO_NAMESPACE(scale):
+_crypto_onetimeauth_poly1305_amd64_constants:
+crypto_onetimeauth_poly1305_amd64_constants:
+crypto_onetimeauth_poly1305_amd64_scale:
 .long 0x0,0x37f40000
 
-CRYPTO_NAMESPACE(two32):
+crypto_onetimeauth_poly1305_amd64_two32:
 .long 0x0,0x41f00000
 
-CRYPTO_NAMESPACE(two64):
+crypto_onetimeauth_poly1305_amd64_two64:
 .long 0x0,0x43f00000
 
-CRYPTO_NAMESPACE(two96):
+crypto_onetimeauth_poly1305_amd64_two96:
 .long 0x0,0x45f00000
 
-CRYPTO_NAMESPACE(alpha32):
+crypto_onetimeauth_poly1305_amd64_alpha32:
 .long 0x0,0x45e80000
 
-CRYPTO_NAMESPACE(alpha64):
+crypto_onetimeauth_poly1305_amd64_alpha64:
 .long 0x0,0x47e80000
 
-CRYPTO_NAMESPACE(alpha96):
+crypto_onetimeauth_poly1305_amd64_alpha96:
 .long 0x0,0x49e80000
 
-CRYPTO_NAMESPACE(alpha130):
+crypto_onetimeauth_poly1305_amd64_alpha130:
 .long 0x0,0x4c080000
 
-CRYPTO_NAMESPACE(doffset0):
+crypto_onetimeauth_poly1305_amd64_doffset0:
 .long 0x0,0x43300000
 
-CRYPTO_NAMESPACE(doffset1):
+crypto_onetimeauth_poly1305_amd64_doffset1:
 .long 0x0,0x45300000
 
-CRYPTO_NAMESPACE(doffset2):
+crypto_onetimeauth_poly1305_amd64_doffset2:
 .long 0x0,0x47300000
 
-CRYPTO_NAMESPACE(doffset3):
+crypto_onetimeauth_poly1305_amd64_doffset3:
 .long 0x0,0x49300000
 
-CRYPTO_NAMESPACE(doffset3minustwo128):
+crypto_onetimeauth_poly1305_amd64_doffset3minustwo128:
 .long 0x0,0x492ffffe
 
-CRYPTO_NAMESPACE(hoffset0):
+crypto_onetimeauth_poly1305_amd64_hoffset0:
 .long 0xfffffffb,0x43300001
 
-CRYPTO_NAMESPACE(hoffset1):
+crypto_onetimeauth_poly1305_amd64_hoffset1:
 .long 0xfffffffe,0x45300001
 
-CRYPTO_NAMESPACE(hoffset2):
+crypto_onetimeauth_poly1305_amd64_hoffset2:
 .long 0xfffffffe,0x47300001
 
-CRYPTO_NAMESPACE(hoffset3):
+crypto_onetimeauth_poly1305_amd64_hoffset3:
 .long 0xfffffffe,0x49300003
 
-CRYPTO_NAMESPACE(rounding):
+crypto_onetimeauth_poly1305_amd64_rounding:
 .byte 0x7f
 .byte 0x13

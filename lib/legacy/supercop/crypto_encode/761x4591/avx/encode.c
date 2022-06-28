@@ -1,6 +1,3 @@
-/* auto-generated; do not edit */
-
-#include <immintrin.h>
 #include "crypto_encode.h"
 #include "crypto_int16.h"
 #include "crypto_uint16.h"
@@ -8,43 +5,36 @@
 #define int16 crypto_int16
 #define uint16 crypto_uint16
 #define uint32 crypto_uint32
+#include <immintrin.h>
 
 void crypto_encode(unsigned char *out,const void *v)
 {
   const int16 *R0 = v;
-  /* XXX: caller could overlap R with input */
-  uint16 R[381];
-  long i;
-  const uint16 *reading;
-  uint16 *writing;
+  uint16 R1[381],R2[192],R3[96],R4[48],R5[24],R6[12],R7[6],R8[3],R9[2],R10[1];
+  long long i;
   uint16 r0,r1;
   uint32 r2;
-  
-  reading = (uint16 *) R0;
-  writing = R;
-  i = 24;
-  while (i > 0) {
-    __m256i x,x2,y,y2;
-    --i;
-    if (!i) {
-      reading -= 8;
-      writing -= 4;
-      out -= 8;
-    }
-    x = _mm256_loadu_si256((__m256i *) (reading+0));
-    x2 = _mm256_loadu_si256((__m256i *) (reading+16));
+  __m256i x,y,x2,y2;
+
+  for (i = 24;i < 48;i += 2) {
+    x = _mm256_loadu_si256((__m256i *) (R0+16*i-8));
+    x2 = _mm256_loadu_si256((__m256i *) (R0+16*i+16-8));
+
     x = _mm256_add_epi16(x,_mm256_set1_epi16(2295));
     x2 = _mm256_add_epi16(x2,_mm256_set1_epi16(2295));
-    x &= _mm256_set1_epi16(16383);
-    x2 &= _mm256_set1_epi16(16383);
+
     y = x & _mm256_set1_epi32(65535);
     y2 = x2 & _mm256_set1_epi32(65535);
+
     x = _mm256_srli_epi32(x,16);
     x2 = _mm256_srli_epi32(x2,16);
+
     x = _mm256_mullo_epi32(x,_mm256_set1_epi32(4591));
     x2 = _mm256_mullo_epi32(x2,_mm256_set1_epi32(4591));
+
     x = _mm256_add_epi32(y,x);
     x2 = _mm256_add_epi32(y2,x2);
+
     x = _mm256_shuffle_epi8(x,_mm256_set_epi8(
       15,14,11,10,7,6,3,2,13,12,9,8,5,4,1,0,
       15,14,11,10,7,6,3,2,13,12,9,8,5,4,1,0
@@ -53,28 +43,55 @@ void crypto_encode(unsigned char *out,const void *v)
       15,14,11,10,7,6,3,2,13,12,9,8,5,4,1,0,
       15,14,11,10,7,6,3,2,13,12,9,8,5,4,1,0
       ));
+
     x = _mm256_permute4x64_epi64(x,0xd8);
     x2 = _mm256_permute4x64_epi64(x2,0xd8);
-    _mm256_storeu_si256((__m256i *) writing,_mm256_permute2f128_si256(x,x2,0x31));
-    _mm256_storeu_si256((__m256i *) out,_mm256_permute2f128_si256(x,x2,0x20));
-    reading += 32;
-    writing += 16;
-    out += 32;
+
+    _mm256_storeu_si256((__m256i *) (R1+8*i-4),_mm256_permute2f128_si256(x,x2,0x31));
+    _mm256_storeu_si256((__m256i *) (out+16*i-8),_mm256_permute2f128_si256(x,x2,0x20));
   }
-  R[380] = ((R0[760]+2295)&16383);
+
+  for (i = 0;i < 24;i += 2) {
+    x = _mm256_loadu_si256((__m256i *) (R0+16*i));
+    x2 = _mm256_loadu_si256((__m256i *) (R0+16*i+16));
+
+    x = _mm256_add_epi16(x,_mm256_set1_epi16(2295));
+    x2 = _mm256_add_epi16(x2,_mm256_set1_epi16(2295));
+
+    y = x & _mm256_set1_epi32(65535);
+    y2 = x2 & _mm256_set1_epi32(65535);
+
+    x = _mm256_srli_epi32(x,16);
+    x2 = _mm256_srli_epi32(x2,16);
+
+    x = _mm256_mullo_epi32(x,_mm256_set1_epi32(4591));
+    x2 = _mm256_mullo_epi32(x2,_mm256_set1_epi32(4591));
+
+    x = _mm256_add_epi32(y,x);
+    x2 = _mm256_add_epi32(y2,x2);
+
+    x = _mm256_shuffle_epi8(x,_mm256_set_epi8(
+      15,14,11,10,7,6,3,2,13,12,9,8,5,4,1,0,
+      15,14,11,10,7,6,3,2,13,12,9,8,5,4,1,0
+      ));
+    x2 = _mm256_shuffle_epi8(x2,_mm256_set_epi8(
+      15,14,11,10,7,6,3,2,13,12,9,8,5,4,1,0,
+      15,14,11,10,7,6,3,2,13,12,9,8,5,4,1,0
+      ));
+
+    x = _mm256_permute4x64_epi64(x,0xd8);
+    x2 = _mm256_permute4x64_epi64(x2,0xd8);
+
+    _mm256_storeu_si256((__m256i *) (R1+8*i),_mm256_permute2f128_si256(x,x2,0x31));
+    _mm256_storeu_si256((__m256i *) (out+16*i),_mm256_permute2f128_si256(x,x2,0x20));
+  }
+
+  out += 380*2;
+  R1[380] = R0[760]+2295;
   
-  reading = (uint16 *) R;
-  writing = R;
-  i = 24;
-  while (i > 0) {
-    __m256i x,y;
-    --i;
-    if (!i) {
-      reading -= 4;
-      writing -= 2;
-      out -= 2;
-    }
-    x = _mm256_loadu_si256((__m256i *) reading);
+
+  for (i = 12;i < 24;++i) {
+    x = _mm256_loadu_si256((__m256i *) (R1-4+16*i));
     y = x & _mm256_set1_epi32(65535);
     x = _mm256_srli_epi32(x,16);
     x = _mm256_mullo_epi32(x,_mm256_set1_epi32(322));
@@ -84,27 +101,33 @@ void crypto_encode(unsigned char *out,const void *v)
       12,8,4,0,12,8,4,0,14,13,10,9,6,5,2,1
       ));
     x = _mm256_permute4x64_epi64(x,0xd8);
-    _mm_storeu_si128((__m128i *) writing,_mm256_extractf128_si256(x,0));
-    *((uint32 *) (out+0)) = _mm256_extract_epi32(x,4);
-    *((uint32 *) (out+4)) = _mm256_extract_epi32(x,6);
-    reading += 16;
-    writing += 8;
-    out += 8;
+    _mm_storeu_si128((__m128i *) (R2-2+8*i),_mm256_extractf128_si256(x,0));
+    *((uint32 *) (out-2+8*i)) = _mm256_extract_epi32(x,4);
+    *((uint32 *) (out-2+8*i+4)) = _mm256_extract_epi32(x,6);
   }
-  R[190] = R[380];
+
+  for (i = 0;i < 12;++i) {
+    x = _mm256_loadu_si256((__m256i *) (R1+16*i));
+    y = x & _mm256_set1_epi32(65535);
+    x = _mm256_srli_epi32(x,16);
+    x = _mm256_mullo_epi32(x,_mm256_set1_epi32(322));
+    x = _mm256_add_epi32(y,x);
+    x = _mm256_shuffle_epi8(x,_mm256_set_epi8(
+      12,8,4,0,12,8,4,0,14,13,10,9,6,5,2,1,
+      12,8,4,0,12,8,4,0,14,13,10,9,6,5,2,1
+      ));
+    x = _mm256_permute4x64_epi64(x,0xd8);
+    _mm_storeu_si128((__m128i *) (R2+8*i),_mm256_extractf128_si256(x,0));
+    *((uint32 *) (out+8*i)) = _mm256_extract_epi32(x,4);
+    *((uint32 *) (out+8*i+4)) = _mm256_extract_epi32(x,6);
+  }
+
+  out += 190;
+  R2[190] = R1[380];
   
-  reading = (uint16 *) R;
-  writing = R;
-  i = 12;
-  while (i > 0) {
-    __m256i x,y;
-    --i;
-    if (!i) {
-      reading -= 2;
-      writing -= 1;
-      out -= 1;
-    }
-    x = _mm256_loadu_si256((__m256i *) reading);
+
+  for (i = 0;i < 12;++i) {
+    x = _mm256_loadu_si256((__m256i *) (R2+16*i));
     y = x & _mm256_set1_epi32(65535);
     x = _mm256_srli_epi32(x,16);
     x = _mm256_mullo_epi32(x,_mm256_set1_epi32(406));
@@ -114,22 +137,17 @@ void crypto_encode(unsigned char *out,const void *v)
       12,8,4,0,12,8,4,0,14,13,10,9,6,5,2,1
       ));
     x = _mm256_permute4x64_epi64(x,0xd8);
-    _mm_storeu_si128((__m128i *) writing,_mm256_extractf128_si256(x,0));
-    *((uint32 *) (out+0)) = _mm256_extract_epi32(x,4);
-    *((uint32 *) (out+4)) = _mm256_extract_epi32(x,6);
-    reading += 16;
-    writing += 8;
-    out += 8;
+    _mm_storeu_si128((__m128i *) (R3+8*i),_mm256_extractf128_si256(x,0));
+    *((uint32 *) (out+8*i)) = _mm256_extract_epi32(x,4);
+    *((uint32 *) (out+8*i+4)) = _mm256_extract_epi32(x,6);
   }
-  R[95] = R[190];
+
+  out += 95;
+  R3[95] = R2[190];
   
-  reading = (uint16 *) R;
-  writing = R;
-  i = 6;
-  while (i > 0) {
-    __m256i x,y;
-    --i;
-    x = _mm256_loadu_si256((__m256i *) reading);
+
+  for (i = 0;i < 6;++i) {
+    x = _mm256_loadu_si256((__m256i *) (R3+16*i));
     y = x & _mm256_set1_epi32(65535);
     x = _mm256_srli_epi32(x,16);
     x = _mm256_mullo_epi32(x,_mm256_set1_epi32(644));
@@ -139,26 +157,15 @@ void crypto_encode(unsigned char *out,const void *v)
       12,8,4,0,12,8,4,0,14,13,10,9,6,5,2,1
       ));
     x = _mm256_permute4x64_epi64(x,0xd8);
-    _mm_storeu_si128((__m128i *) writing,_mm256_extractf128_si256(x,0));
-    *((uint32 *) (out+0)) = _mm256_extract_epi32(x,4);
-    *((uint32 *) (out+4)) = _mm256_extract_epi32(x,6);
-    reading += 16;
-    writing += 8;
+    _mm_storeu_si128((__m128i *) (R4+8*i),_mm256_extractf128_si256(x,0));
+    ((uint32 *) out)[0] = _mm256_extract_epi32(x,4);
+    ((uint32 *) out)[1] = _mm256_extract_epi32(x,6);
     out += 8;
   }
-  
-  reading = (uint16 *) R;
-  writing = R;
-  i = 3;
-  while (i > 0) {
-    __m256i x,y;
-    --i;
-    if (!i) {
-      reading -= 2;
-      writing -= 1;
-      out -= 1;
-    }
-    x = _mm256_loadu_si256((__m256i *) reading);
+
+
+  for (i = 0;i < 3;++i) {
+    x = _mm256_loadu_si256((__m256i *) (R4+16*i));
     y = x & _mm256_set1_epi32(65535);
     x = _mm256_srli_epi32(x,16);
     x = _mm256_mullo_epi32(x,_mm256_set1_epi32(1621));
@@ -168,77 +175,78 @@ void crypto_encode(unsigned char *out,const void *v)
       12,8,4,0,12,8,4,0,14,13,10,9,6,5,2,1
       ));
     x = _mm256_permute4x64_epi64(x,0xd8);
-    _mm_storeu_si128((__m128i *) writing,_mm256_extractf128_si256(x,0));
-    *((uint32 *) (out+0)) = _mm256_extract_epi32(x,4);
-    *((uint32 *) (out+4)) = _mm256_extract_epi32(x,6);
-    reading += 16;
-    writing += 8;
-    out += 8;
+    _mm_storeu_si128((__m128i *) (R5+8*i),_mm256_extractf128_si256(x,0));
+    *((uint32 *) (out+8*i)) = _mm256_extract_epi32(x,4);
+    *((uint32 *) (out+8*i+4)) = _mm256_extract_epi32(x,6);
   }
-  r0 = R[46];
-  r1 = R[47];
+
+  out += 23;
+
+
+  r0 = R4[46];
+  r1 = R4[47];
   r2 = r0+r1*(uint32)1621;
   *out++ = r2; r2 >>= 8;
   *out++ = r2; r2 >>= 8;
-  R[23] = r2;
+  R5[23] = r2;
   
   for (i = 0;i < 11;++i) {
-    r0 = R[2*i];
-    r1 = R[2*i+1];
+    r0 = R5[2*i];
+    r1 = R5[2*i+1];
     r2 = r0+r1*(uint32)10265;
     *out++ = r2; r2 >>= 8;
     *out++ = r2; r2 >>= 8;
-    R[i] = r2;
+    R6[i] = r2;
   }
-  r0 = R[22];
-  r1 = R[23];
+  r0 = R5[22];
+  r1 = R5[23];
   r2 = r0+r1*(uint32)10265;
   *out++ = r2; r2 >>= 8;
-  R[11] = r2;
+  R6[11] = r2;
   
   for (i = 0;i < 5;++i) {
-    r0 = R[2*i];
-    r1 = R[2*i+1];
+    r0 = R6[2*i];
+    r1 = R6[2*i+1];
     r2 = r0+r1*(uint32)1608;
     *out++ = r2; r2 >>= 8;
-    R[i] = r2;
+    R7[i] = r2;
   }
-  r0 = R[10];
-  r1 = R[11];
+  r0 = R6[10];
+  r1 = R6[11];
   r2 = r0+r1*(uint32)1608;
   *out++ = r2; r2 >>= 8;
   *out++ = r2; r2 >>= 8;
-  R[5] = r2;
+  R7[5] = r2;
   
   for (i = 0;i < 2;++i) {
-    r0 = R[2*i];
-    r1 = R[2*i+1];
+    r0 = R7[2*i];
+    r1 = R7[2*i+1];
     r2 = r0+r1*(uint32)10101;
     *out++ = r2; r2 >>= 8;
     *out++ = r2; r2 >>= 8;
-    R[i] = r2;
+    R8[i] = r2;
   }
-  r0 = R[4];
-  r1 = R[5];
+  r0 = R7[4];
+  r1 = R7[5];
   r2 = r0+r1*(uint32)10101;
   *out++ = r2; r2 >>= 8;
-  R[2] = r2;
+  R8[2] = r2;
   
-  r0 = R[0];
-  r1 = R[1];
+  r0 = R8[0];
+  r1 = R8[1];
   r2 = r0+r1*(uint32)1557;
   *out++ = r2; r2 >>= 8;
-  R[0] = r2;
-  R[1] = R[2];
+  R9[0] = r2;
+  R9[1] = R8[2];
   
-  r0 = R[0];
-  r1 = R[1];
+  r0 = R9[0];
+  r1 = R9[1];
   r2 = r0+r1*(uint32)9470;
   *out++ = r2; r2 >>= 8;
   *out++ = r2; r2 >>= 8;
-  R[0] = r2;
+  R10[0] = r2;
   
-  r0 = R[0];
+  r0 = R10[0];
   *out++ = r0; r0 >>= 8;
   *out++ = r0; r0 >>= 8;
 }

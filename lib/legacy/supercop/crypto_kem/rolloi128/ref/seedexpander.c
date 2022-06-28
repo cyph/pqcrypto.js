@@ -1,1 +1,0 @@
-../avx/seedexpander.c

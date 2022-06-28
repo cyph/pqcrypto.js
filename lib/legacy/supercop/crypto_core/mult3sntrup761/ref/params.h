@@ -1,1 +1,6 @@
-../../inv3sntrup761/ref/params.h
+#ifndef params_H
+#define params_H
+
+#define p 761
+
+#endif

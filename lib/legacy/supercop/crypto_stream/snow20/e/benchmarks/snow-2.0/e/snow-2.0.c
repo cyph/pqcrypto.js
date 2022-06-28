@@ -3,7 +3,7 @@
 /* 
  * SNOW 2.0.  
  *
- * ECRYPT wrapper around SNOW 2.0 code written by Patrik Ekdahl &
+ * crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT wrapper around SNOW 2.0 code written by Patrik Ekdahl &
  * Thomas Johansson.
  * see http://www.it.lth.se/cryptology/snow/
  *
@@ -17,13 +17,13 @@
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_init(void)
+void crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_init(void)
 { }
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_keysetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_keysetup(
+  crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_ctx* ctx, 
   const u8* key, 
   u32 keysize,
   u32 ivsize)
@@ -38,8 +38,8 @@ void ECRYPT_keysetup(
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_ivsetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_ivsetup(
+  crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_ctx* ctx, 
   const u8* iv)
 { 
   snow_loadkey_fast(ctx, 
@@ -51,9 +51,9 @@ void ECRYPT_ivsetup(
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_process_bytes(
+void crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_process_bytes(
   int action,
-  ECRYPT_ctx* ctx, 
+  crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_ctx* ctx, 
   const u8* input, 
   u8* output, 
   u32 msglen)

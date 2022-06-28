@@ -3,9 +3,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
-#include <string.h>
-#include <stdio.h>
-#include <errno.h>
 
 pid_t f;
 
@@ -35,7 +32,6 @@ int main(int argc,char **argv)
   if (f == 0) {
     setpgid(0,0);
     execvp(*argv,argv);
-    fprintf(stderr,"killafter: unable to run %s: %s\n",*argv,strerror(errno));
     return 111;
   }
 

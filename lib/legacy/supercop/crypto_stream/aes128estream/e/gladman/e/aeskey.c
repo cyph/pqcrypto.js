@@ -214,7 +214,7 @@ aes_rval aes_encrypt_key(const unsigned char *key, int key_len, aes_encrypt_ctx 
 
 #endif
 
-#if defined(DECRYPTION_KEY_SCHEDULE)
+#if defined(Dcrypto_stream_aes128estream_e_gladman_ECRYPTION_KEY_SCHEDULE)
 
 #if DEC_ROUND == NO_TABLES
 #define ff(x)   (x)

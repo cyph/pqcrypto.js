@@ -15,22 +15,22 @@ typedef int16_t int16;
 #define mulhrs_x16 _mm256_mulhrs_epi16
 #define signmask_x16(x) _mm256_srai_epi16((x),15)
 
-static inline int16x16 squeeze_5167_x16(int16x16 x)
+static int16x16 squeeze_5167_x16(int16x16 x)
 {
   return sub_x16(x,mullo_x16(mulhrs_x16(x,const_x16(6)),const_x16(5167)));
 }
 
-static inline int16x16 squeeze_7681_x16(int16x16 x)
+static int16x16 squeeze_7681_x16(int16x16 x)
 {
   return sub_x16(x,mullo_x16(mulhrs_x16(x,const_x16(4)),const_x16(7681)));
 }
 
-static inline int16x16 squeeze_10753_x16(int16x16 x)
+static int16x16 squeeze_10753_x16(int16x16 x)
 {
   return sub_x16(x,mullo_x16(mulhrs_x16(x,const_x16(3)),const_x16(10753)));
 }
 
-static inline int16x16 mulmod_5167_x16(int16x16 x,int16x16 y)
+static int16x16 mulmod_5167_x16(int16x16 x,int16x16 y)
 {
   int16x16 yqinv = mullo_x16(y,const_x16(-19761)); /* XXX: precompute */
   int16x16 b = mulhi_x16(x,y);
@@ -39,7 +39,7 @@ static inline int16x16 mulmod_5167_x16(int16x16 x,int16x16 y)
   return sub_x16(b,e);
 }
 
-static inline int16x16 mulmod_7681_x16(int16x16 x,int16x16 y)
+static int16x16 mulmod_7681_x16(int16x16 x,int16x16 y)
 {
   int16x16 yqinv = mullo_x16(y,const_x16(-7679)); /* XXX: precompute */
   int16x16 b = mulhi_x16(x,y);
@@ -48,7 +48,7 @@ static inline int16x16 mulmod_7681_x16(int16x16 x,int16x16 y)
   return sub_x16(b,e);
 }
 
-static inline int16x16 mulmod_10753_x16(int16x16 x,int16x16 y)
+static int16x16 mulmod_10753_x16(int16x16 x,int16x16 y)
 {
   int16x16 yqinv = mullo_x16(y,const_x16(-10751)); /* XXX: precompute */
   int16x16 b = mulhi_x16(x,y);
@@ -129,41 +129,33 @@ static void unstride(int16 f[2048],const int16 fpad[4][512])
   }
 }
 
-#define ALIGNED __attribute((aligned(512)))
-
-static const ALIGNED int16 y_7681[512] = {
-#include "precomp7681.inc"
-} ;
-static const ALIGNED int16 y_10753[512] = {
-#include "precomp10753.inc"
-} ;
-/*
-  can also compute these on the fly, and share storage,
-  at expense of 2 NTTs on top of the 24 NTTs below:
-  ...
-  for (i = 0;i < 512;++i) y_7681[i] = 0;
-  y_7681[1] = -3593;
-  ntt512_7681(y_7681,1);
-  ...
-  for (i = 0;i < 512;++i) y_10753[i] = 0;
-  y_10753[1] = 1018;
-  ntt512_10753(y_10753,1);
-*/
+#define ALIGNED __attribute((aligned(32)))
 
 static void mult1024(int16 h[2048],const int16 f[1024],const int16 g[1024])
 {
-  ALIGNED int16 fgpad[8][512];
-#define fpad fgpad
-#define gpad (fgpad+4)
-#define hpad fpad
+  ALIGNED int16 fpad[4][512];
+  ALIGNED int16 gpad[4][512];
   ALIGNED int16 h_7681[2048];
   ALIGNED int16 h_10753[2048];
+  ALIGNED int16 y_7681[512];
+#define y_10753 y_7681
+#define hpad fpad
   int i;
 
-  stride(fpad,f);
-  stride(gpad,g);
+  for (i = 0;i < 512;++i) y_7681[i] = 0;
+  y_7681[1] = -3593; /* 65536 */
+  ntt512_7681(y_7681,1);
+  /* XXX: could precompute this ntt */
+  /* and similarly precompute y_10753 below */
+  /* but this would save only 2 of 26 NTTs */
+  /* and would cost 1KB for y_7681 */
+  /* plus separate 1KB for y_10753 */
 
-  ntt512_7681(fgpad[0],8);
+  stride(fpad,f);
+  ntt512_7681(fpad[0],4);
+
+  stride(gpad,g);
+  ntt512_7681(gpad[0],4);
 
   for (i = 0;i < 512;i += 16) {
     int16x16 f0 = squeeze_7681_x16(load_x16(&fpad[0][i]));
@@ -213,9 +205,14 @@ static void mult1024(int16 h[2048],const int16 f[1024],const int16 g[1024])
   unstride(h_7681,hpad);
 
   stride(fpad,f);
-  stride(gpad,g);
+  ntt512_10753(fpad[0],4);
 
-  ntt512_10753(fgpad[0],8);
+  stride(gpad,g);
+  ntt512_10753(gpad[0],4);
+
+  for (i = 0;i < 512;++i) y_10753[i] = 0;
+  y_10753[1] = 1018; /* 65536 */
+  ntt512_10753(y_10753,1);
 
   for (i = 0;i < 512;i += 16) {
     int16x16 f0 = squeeze_10753_x16(load_x16(&fpad[0][i]));

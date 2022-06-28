@@ -1,5 +1,6 @@
 .data
-.p2align 5
+.section .rodata
+.align 32
 mask1100:
 .word 0
 .word 0
@@ -101,12 +102,11 @@ low165:
 .word 0
 .word 0
 .word 0
-.word 0
 .text
-.global crypto_kem_ntruhps2048677_avx2_constbranchindex_poly_R2_mul
-.global _crypto_kem_ntruhps2048677_avx2_constbranchindex_poly_R2_mul
-crypto_kem_ntruhps2048677_avx2_constbranchindex_poly_R2_mul:
-_crypto_kem_ntruhps2048677_avx2_constbranchindex_poly_R2_mul:
+.hidden poly_R2_mul
+.global poly_R2_mul
+.att_syntax prefix
+poly_R2_mul:
 vmovdqa 0(%rsi), %ymm0
 vmovdqa 32(%rsi), %ymm1
 vmovdqa 0(%rdx), %ymm3

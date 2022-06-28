@@ -198,10 +198,9 @@ void GF_mul(gf *out, gf *in0, gf *in1)
  
 	for (i = 254; i >= 128; i--)
 	{
-		prod[i - 121] ^= prod[i];
-		prod[i - 126] ^= prod[i];
-		prod[i - 127] ^= prod[i];
-		prod[i - 128] ^= prod[i];
+		prod[i - 123] ^= gf_mul(prod[i], (gf) 7682);
+		prod[i - 125] ^= gf_mul(prod[i], (gf) 2159);
+		prod[i - 128] ^= gf_mul(prod[i], (gf) 3597);
 	}
 
 	for (i = 0; i < 128; i++)

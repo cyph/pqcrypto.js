@@ -1,1 +1,1 @@
-../spec/nist.h
+#include "cubehash.h"

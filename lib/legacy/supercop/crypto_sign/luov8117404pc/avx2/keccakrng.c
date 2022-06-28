@@ -61,7 +61,7 @@ void squeezeCols(Sponge *sponge, bitcontainer *arr, int size) {
 	Keccak_HashSqueeze(sponge,(void *) buffer,8*COL_PRG_BYTES*size);
 	int i;
 	for(i=0 ; i<size ; i++){
-		_mm_storeu_si128(&arr[i],_mm_loadu_si128((__m128i *)(buffer + i*COL_PRG_BYTES)));
+		arr[i] = _mm_loadu_si128((__m128i *)(buffer + i*COL_PRG_BYTES));
 	}
 	free(buffer);
 }

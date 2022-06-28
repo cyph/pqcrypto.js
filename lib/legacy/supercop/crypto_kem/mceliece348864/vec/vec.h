@@ -1,8 +1,5 @@
 #ifndef VEC_H
 #define VEC_H
-#define vec_inv CRYPTO_NAMESPACE(vec_inv)
-#define vec_mul CRYPTO_NAMESPACE(vec_mul)
-#define vec_sq CRYPTO_NAMESPACE(vec_sq)
 
 #include "params.h"
 

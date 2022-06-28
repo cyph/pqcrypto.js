@@ -1,2 +1,2 @@
-#define CRYPTO_KEYBYTES 32
-#define CRYPTO_NONCEBYTES 8
+#define crypto_stream_salsa2012_e_x86_xmm2_KEYBYTES 32
+#define crypto_stream_salsa2012_e_x86_xmm2_NONCEBYTES 8

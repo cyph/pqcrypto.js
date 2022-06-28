@@ -1,13 +1,6 @@
-#define update_asm CRYPTO_NAMESPACE(update_asm)
-#define _update_asm _CRYPTO_NAMESPACE(update_asm)
-#define vec_reduce_asm CRYPTO_NAMESPACE(vec_reduce_asm)
-#define _vec_reduce_asm _CRYPTO_NAMESPACE(vec_reduce_asm)
 /*
   This file is for the inversion-free Berlekamp-Massey algorithm
   see https://ieeexplore.ieee.org/document/87857
-
-  For the implementation strategy, see
-  https://eprint.iacr.org/2017/793.pdf
 */
 
 #include "bm.h"
@@ -81,7 +74,7 @@ static inline void interleave(vec256 *in, int idx0, int idx1, vec256 *mask, int 
 /* output: out, field elements in non-bitsliced form */
 static inline void get_coefs(gf *out, vec256 *in)
 {
-	int i, k;
+	int i, j, k;
 
 	vec256 mask[4][2];
 	vec256 buf[16];
@@ -134,13 +127,10 @@ static inline void get_coefs(gf *out, vec256 *in)
 	interleave(buf, 12, 13, mask[0], 0);
 	interleave(buf, 14, 15, mask[0], 0);
 
-        for (i = 0; i < 16; i++)
-        for (k = 0; k <  4; k++) {
-                out[ (4*0 + k)*16 + i ] = (vec256_extract(buf[i], 0) >> (k*16)) & GFMASK;
-                out[ (4*1 + k)*16 + i ] = (vec256_extract(buf[i], 1) >> (k*16)) & GFMASK;
-                out[ (4*2 + k)*16 + i ] = (vec256_extract(buf[i], 2) >> (k*16)) & GFMASK;
-                out[ (4*3 + k)*16 + i ] = (vec256_extract(buf[i], 3) >> (k*16)) & GFMASK;
-        }
+	for (i = 0; i < 16; i++)
+	for (j = 0; j <  4; j++)
+	for (k = 0; k <  4; k++)
+		out[ (4*j + k)*16 + i ] = (vec256_extract(buf[i], j) >> (k*16)) & GFMASK;
 }
 
 /* input: in, sequence of field elements */

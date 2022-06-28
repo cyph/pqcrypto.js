@@ -133,7 +133,7 @@ int64 b2
 int64 b3
 
 
-enter ECRYPT_ivsetup
+enter crypto_stream_lexv2_e_v2_schwabe_amd64_2_ECRYPT_ivsetup
 
 r11_stack = r11_caller
 r12_stack = r12_caller

@@ -1,4 +1,4 @@
-#define poly1305_auth_fn CRYPTO_NAMESPACE(poly1305_auth_sse2)
+#define poly1305_auth_fn poly1305_auth_sse2
 
 #include <stddef.h>
 #include "crypto_onetimeauth.h"

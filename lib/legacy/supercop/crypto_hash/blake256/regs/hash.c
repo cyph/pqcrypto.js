@@ -34,7 +34,7 @@ static const u8 padding[] =
 
 #define ROT(x,n) (((x)<<(32-n))|( (x)>>(n)))
 
-static void blake256_compress( state *S, const u8 *block )
+void blake256_compress( state *S, const u8 *block )
 {
   u32 m0;
   u32 m1;
@@ -266,7 +266,7 @@ static void blake256_compress( state *S, const u8 *block )
 }
 
 
-static void blake256_init( state *S ) {
+void blake256_init( state *S ) {
 
   S->h[0]=0x6A09E667;
   S->h[1]=0xBB67AE85;
@@ -281,7 +281,7 @@ static void blake256_init( state *S ) {
 }
 
 
-static void blake256_update( state *S, const u8 *data, u64 datalen ) {
+void blake256_update( state *S, const u8 *data, u64 datalen ) {
 
   int left=S->buflen >> 3; 
   int fill=64 - left;
@@ -312,7 +312,7 @@ static void blake256_update( state *S, const u8 *data, u64 datalen ) {
 }
 
 
-static void blake256_final( state *S, u8 *digest ) {
+void blake256_final( state *S, u8 *digest ) {
   
   u8 msglen[8], zo=0x01, oo=0x81;
   u32 lo=S->t[0] + S->buflen, hi=S->t[1];

@@ -3,17 +3,6 @@
 
 #include "fe.h"
 
-#define fep256_mul CRYPTO_NAMESPACE(fep256_mul)
-#define fep256_sq CRYPTO_NAMESPACE(fep256_sq)
-#define fep256_mul2 CRYPTO_NAMESPACE(fep256_mul2)
-#define fep256_mulx_ CRYPTO_NAMESPACE(fep256_mulx_)
-#define fep256_inv CRYPTO_NAMESPACE(fep256_inv)
-#define fep256_add CRYPTO_NAMESPACE(fep256_add)
-#define fep256_sub CRYPTO_NAMESPACE(fep256_sub)
-#define fep256_tobytes CRYPTO_NAMESPACE(fep256_tobytes)
-#define fep256_frombytes CRYPTO_NAMESPACE(fep256_frombytes)
-#define fep256_isnonzero CRYPTO_NAMESPACE(fep256_isnonzero)
-
 extern void fep256_mul(fe, const fe, const fe);
 extern void fep256_sq(fe, const fe);
 extern void fep256_mul2(fe, const fe);

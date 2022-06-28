@@ -30,9 +30,6 @@ void convUINTlowerToNTLmatn_GF2(mat_GF2& res,cst_Tn_gf2 S);
 void convUINTlowerToNTLmatnv_GF2(mat_GF2& res,cst_Tnv_gf2 S);
 
 void convUINT_pk_ToNTLmat_GF2E(mat_GF2E& res,cst_mqsnv_gf2m MQS);
-#if HFEmq
-    void convUINT_pk_hybrid_ToNTLmat_GF2E(mat_GF2E& res,cst_mqsnv_gf2m MQS);
-#endif
 void convUINTToNTLmat_GF2E(mat_GF2E& res,cst_mqsv_gf2n MQS);
 
 #endif

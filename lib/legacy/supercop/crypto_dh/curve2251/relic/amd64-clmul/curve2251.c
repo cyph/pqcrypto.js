@@ -7,9 +7,9 @@
 #include "randombytes.h"
 #endif
 
-#define SK_BYTES	CRYPTO_NAMESPACE(SECRETKEYBYTES)
-#define PK_BYTES	CRYPTO_NAMESPACE(PUBLICKEYBYTES)
-#define S_BYTES		CRYPTO_NAMESPACE(BYTES)
+#define SK_BYTES	crypto_dh_curve2251_relic_amd64_clmul_SECRETKEYBYTES
+#define PK_BYTES	crypto_dh_curve2251_relic_amd64_clmul_PUBLICKEYBYTES
+#define S_BYTES		crypto_dh_curve2251_relic_amd64_clmul_BYTES
 
 extern eb_st gen_tab[];
 extern fb_st inv_tab[10][FB_TABLE];

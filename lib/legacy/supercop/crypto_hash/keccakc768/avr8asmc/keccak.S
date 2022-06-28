@@ -38,8 +38,8 @@ http://creativecommons.org/publicdomain/zero/1.0/
  * argument in    is passed in r22:r23
  * argument inlen is passed in r14:r21, only lowest 16-bits (r14-r15) are used
  */
-.global CRYPTO_NAMESPACETOP		
-CRYPTO_NAMESPACETOP:			
+.global crypto_hash_keccakc768_avr8asmc		
+crypto_hash_keccakc768_avr8asmc:			
 
 	//	crypto_hash only registers
 	#define	rT1				16

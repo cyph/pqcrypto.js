@@ -1,2 +1,2 @@
-#define CRYPTO_KEYBYTES 32
-#define CRYPTO_NONCEBYTES 16
+#define crypto_stream_cryptmtv3_e_v3_KEYBYTES 32
+#define crypto_stream_cryptmtv3_e_v3_NONCEBYTES 16

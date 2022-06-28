@@ -1210,13 +1210,13 @@ iv256:
 	.long   0xBC968828, 0xE6E00BF7, 0xBA839E55, 0x9B491C60
 	.long   0x00000001, 0x00000000
 
-# CRYPTO_NAMESPACETOP(out, in, len)
+# crypto_hash_shabal256_amd64(out, in, len)
 #    out   output buffer
 #    in    input data
 #    len   input data length (in bytes, 64-bit value)
-	.globl  CRYPTO_NAMESPACETOP
-	.type   CRYPTO_NAMESPACETOP, @function
-CRYPTO_NAMESPACETOP:
+	.globl  crypto_hash_shabal256_amd64
+	.type   crypto_hash_shabal256_amd64, @function
+crypto_hash_shabal256_amd64:
 	pushq   %rbp
 	pushq   %rbx
 
@@ -1306,4 +1306,4 @@ Lz3:
 	popq    %rbx
 	popq    %rbp
 	ret
-	.size   CRYPTO_NAMESPACETOP, .-CRYPTO_NAMESPACETOP
+	.size   crypto_hash_shabal256_amd64, .-crypto_hash_shabal256_amd64

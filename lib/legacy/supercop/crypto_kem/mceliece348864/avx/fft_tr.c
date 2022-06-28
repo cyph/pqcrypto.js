@@ -1,9 +1,6 @@
 /*
   This file is for transpose of the Gao-Mateer FFT
   Functions with names ending with _tr are (roughly) the transpose of the corresponding functions in fft.c
-
-  For the implementation strategy, see
-  https://eprint.iacr.org/2017/793.pdf
 */
 
 #include "fft_tr.h"
@@ -13,7 +10,7 @@
 
 #include <stdint.h>
 
-static void radix_conversions_tr(vec128 in[ GFBITS ])
+void radix_conversions_tr(vec128 in[ GFBITS ])
 {
 	int i, j, k;
 
@@ -65,7 +62,7 @@ static void radix_conversions_tr(vec128 in[ GFBITS ])
 	}
 }
 
-static void butterflies_tr(vec128 out[ GFBITS ], vec256 in[][ GFBITS ])
+void butterflies_tr(vec128 out[ GFBITS ], vec256 in[][ GFBITS ])
 {
 	int i, j, k, s, b;
 

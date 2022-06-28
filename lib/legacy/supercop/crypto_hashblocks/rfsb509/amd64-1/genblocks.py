@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-print str(0)+" enter CRYPTO_NAMESPACETOP"
+print str(0)+" enter crypto_hashblocks_rfsb509_amd64_1"
 
 print str(1)+" int64 rp"
 print str(2)+" int64 bp"
@@ -23,7 +23,7 @@ print str(203)+" stack128 state3"
 print str(204)+" int6464 v"
 
 print str(210)+" int64 matrix"
-print str(211)+" matrix = CRYPTO_NAMESPACE(matrix)"
+print str(211)+" matrix = crypto_hashblocks_rfsb509_amd64_1_matrix"
 print str(212)+" assign 4 to matrix"
 
 print str(215)+" stack64 rp_stack"
@@ -168,4 +168,4 @@ print str(111*1000+12100)+" v = f"+str(111)
 print str(111*1000+12110)+" uint6464 v >>= 61"
 print str(111*1000+12120)+" v >>= 64"
 print str(111*1000+12130)+" f"+str(114)+" ^= v"
-print str(111*1000+12140)+" f"+str(111)+" &= CRYPTO_NAMESPACE(MASK125)"
+print str(111*1000+12140)+" f"+str(111)+" &= crypto_hashblocks_rfsb509_amd64_1_MASK125"

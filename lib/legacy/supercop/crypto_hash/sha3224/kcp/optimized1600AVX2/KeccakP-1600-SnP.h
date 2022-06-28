@@ -19,8 +19,6 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #include <stddef.h>
 
-#include "namespace.h"
-
 void KeccakP1600_StaticInitialize( void );
 void KeccakP1600_Initialize(void *state);
 void KeccakP1600_AddByte(void *state, unsigned char data, unsigned int offset);

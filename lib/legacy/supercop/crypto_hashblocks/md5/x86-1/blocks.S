@@ -67,13 +67,13 @@
 
 # qhasm: stack32 inlen_stack
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hashblocks_md5_x86_1
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_hashblocks_md5_x86_1
+.globl crypto_hashblocks_md5_x86_1
+_crypto_hashblocks_md5_x86_1:
+crypto_hashblocks_md5_x86_1:
 mov %esp,%ecx
 and $31,%ecx
 add $64,%ecx

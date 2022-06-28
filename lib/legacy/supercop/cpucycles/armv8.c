@@ -1,5 +1,5 @@
 /*
-cpucycles/armv8.c version 20211110
+cpucycles/armv8.c version 20190803
 D. J. Bernstein
 Public domain.
 */
@@ -7,6 +7,7 @@ Public domain.
 #include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <sys/sysctl.h>
 
 long long cpucycles_armv8(void)
 {

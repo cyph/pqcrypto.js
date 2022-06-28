@@ -52,51 +52,6 @@
 #define tau3 324
 #endif
 
-#elif defined(SIZE953)
-#define p 953
-#define q 6343
-#define Rounded_bytes 1317
-#ifndef LPR
-#define Rq_bytes 1505
-#define w 396
-#else
-#define w 345
-#define tau0 2997
-#define tau1 82
-#define tau2 2798
-#define tau3 400
-#endif
-
-#elif defined(SIZE1013)
-#define p 1013
-#define q 7177
-#define Rounded_bytes 1423
-#ifndef LPR
-#define Rq_bytes 1623
-#define w 448
-#else
-#define w 392
-#define tau0 3367
-#define tau1 73
-#define tau2 3143
-#define tau3 449
-#endif
-
-#elif defined(SIZE1277)
-#define p 1277
-#define q 7879
-#define Rounded_bytes 1815
-#ifndef LPR
-#define Rq_bytes 2067
-#define w 492
-#else
-#define w 429
-#define tau0 3724
-#define tau1 66
-#define tau2 3469
-#define tau3 496
-#endif
-
 #else
 #error "no parameter set defined"
 #endif

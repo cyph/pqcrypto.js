@@ -39,7 +39,7 @@ and r2, r2, r8
 and r3, r3, r9
 and r4, r4, r10
 and r5, r5, r11
-bic r6, r6, #0xfc000000
+and r6, r6, 0x3ffffff
 stmia r0!, {r2-r6}
 eor r8, r8, r8
 str r8, [sp, #24]
@@ -85,39 +85,39 @@ str r8, [sp, #4]
 umull r7, r8, r6, r6
 umlal r7, r8, r3, r12
 umlal r7, r8, r5, r11
-bic r6, r7, #0xfc000000
+and r6, r7, 0x3ffffff
 mov r11, r7, lsr #26
 orr r11, r11, r8, lsl #6
 ldr r7, [sp, #0]
 ldr r8, [sp, #4]
 adds r9, r9, r11
 adc r10, r10, #0
-bic r2, r9, #0xfc000000
+and r2, r9, 0x3ffffff
 mov r11, r9, lsr #26
 orr r11, r11, r10, lsl #6
 ldr r9, [sp, #8]
 ldr r10, [sp, #12]
 adds r7, r7, r11
 adc r8, r8, #0
-bic r3, r7, #0xfc000000
+and r3, r7, 0x3ffffff
 mov r11, r7, lsr #26
 orr r11, r11, r8, lsl #6
 ldr r7, [sp, #16]
 ldr r8, [sp, #20]
 adds r9, r9, r11
 adc r10, r10, #0
-bic r4, r9, #0xfc000000
+and r4, r9, 0x3ffffff
 mov r11, r9, lsr #26
 orr r11, r11, r10, lsl #6
 adds r7, r7, r11
 adc r8, r8, #0
-bic r5, r7, #0xfc000000
+and r5, r7, 0x3ffffff
 mov r11, r7, lsr #26
 orr r11, r11, r8, lsl #6
 add r11, r11, r11, lsl #2
 add r6, r6, r11
 mov r11, r6, lsr #26
-bic r6, r6, #0xfc000000
+and r6, r6, 0x3ffffff
 add r2, r2, r11
 stmia r0!, {r2-r6}
 b poly1305_init_ext_neon_squareloop
@@ -152,7 +152,7 @@ vsubw.u32 q0, q0, d4
 vstmdb sp!, {q4,q5,q6,q7}
 stmfd sp!, {r4-r11, lr}
 mov r8, sp
-bic sp, sp, #63
+and sp, sp, #~63
 sub sp, sp, #192
 str r0, [sp, #108]
 str r1, [sp, #112]
@@ -186,9 +186,9 @@ vext.8 d1, d1, d3, #4
 vshr.u64 q1, q1, #32
 vshrn.i64 d23, q0, #20
 vshrn.u64 d25, q1, #8
-vbic.i32 d21, #0xfc000000
-vbic.i32 q11, #0xfc000000
-vbic.i32 q12, #0xfc000000
+vand.i32 d21, #0x03ffffff
+vand.i32 q11, #0x03ffffff
+vand.i32 q12, #0x03ffffff
 orr r8, r8, #1
 sub r1, r1, #32
 str r8, [r2, #116]
@@ -277,26 +277,26 @@ vmlal.u32 q2, d23, d14[0]
 orr r10, r14, r10, lsl #18
 vmlal.u32 q2, d22, d10[0]
 mov r12, r3
-bic r2, r2, #0xfc000000
+and r2, r2, #0x3ffffff
 vmlal.u32 q2, d21, d10[1]
 mov r14, r5
 vmull.u32 q3, d25, d13[1]
-bic r3, r7, #0xfc000000
+and r3, r7, #0x3ffffff
 vmlal.u32 q3, d24, d14[0]
-bic r5, r8, #0xfc000000
+and r5, r8, #0x3ffffff
 vmlal.u32 q3, d23, d10[0]
-bic r7, r9, #0xfc000000
+and r7, r9, #0x3ffffff
 vmlal.u32 q3, d22, d10[1]
-bic r8, r14, #0xfc000000
+and r8, r14, #0x3ffffff
 vmlal.u32 q3, d21, d11[0]
-bic r9, r10, #0xfc000000
+and r9, r10, #0x3ffffff
 add r14, sp, #128
 vmull.u32 q4, d25, d14[0]
 mov r10, r6
 vmlal.u32 q4, d24, d10[0]
-bic r6, r4, #0xfc000000
+and r6, r4, #0x3ffffff
 vmlal.u32 q4, d23, d10[1]
-bic r4, r12, #0xfc000000
+and r4, r12, #0x3ffffff
 vmlal.u32 q4, d22, d11[0]
 stm r14, {r2-r11}
 vmlal.u32 q4, d21, d11[1]
@@ -332,29 +332,29 @@ orr r8, r1, r8, lsl #6
 orr r9, r12, r9, lsl #12
 vmlal.u32 q2, d24, d29
 orr r10, r14, r10, lsl #18
-bic r2, r2, #0xfc000000
+and r2, r2, #0x3ffffff
 mov r12, r3
 vmlal.u32 q2, d23, d20
 mov r14, r5
 vmlal.u32 q2, d22, d16
-bic r3, r7, #0xfc000000
+and r3, r7, #0x3ffffff
 vmlal.u32 q2, d21, d17
-bic r5, r8, #0xfc000000
+and r5, r8, #0x3ffffff
 vmlal.u32 q3, d25, d29
-bic r7, r9, #0xfc000000
+and r7, r9, #0x3ffffff
 vmlal.u32 q3, d24, d20
-bic r8, r14, #0xfc000000
+and r8, r14, #0x3ffffff
 vmlal.u32 q3, d23, d16
-bic r9, r10, #0xfc000000
+and r9, r10, #0x3ffffff
 vmlal.u32 q3, d22, d17
 add r14, sp, #128
 vmlal.u32 q3, d21, d18
 mov r10, r6
 vmlal.u32 q4, d25, d20
 vmlal.u32 q4, d24, d16
-bic r6, r4, #0xfc000000
+and r6, r4, #0x3ffffff
 vmlal.u32 q4, d23, d17
-bic r4, r12, #0xfc000000
+and r4, r12, #0x3ffffff
 vmlal.u32 q4, d22, d18
 stm r14, {r2-r11}
 vmlal.u32 q4, d21, d19
@@ -494,53 +494,53 @@ vtrn.32 d11, d14
 vst1.64 {d10-d12}, [sp]
 ldm sp, {r0-r4}
 mov r12, r0, lsr #26
-bic r0, r0, #0xfc000000
+and r0, r0, #0x3ffffff
 add r1, r1, r12
 mov r12, r1, lsr #26
-bic r1, r1, #0xfc000000
+and r1, r1, #0x3ffffff
 add r2, r2, r12
 mov r12, r2, lsr #26
-bic r2, r2, #0xfc000000
+and r2, r2, #0x3ffffff
 add r3, r3, r12
 mov r12, r3, lsr #26
-bic r3, r3, #0xfc000000
+and r3, r3, #0x3ffffff
 add r4, r4, r12
 mov r12, r4, lsr #26
-bic r4, r4, #0xfc000000
+and r4, r4, #0x3ffffff
 add r12, r12, r12, lsl #2
 add r0, r0, r12
 mov r12, r0, lsr #26
-bic r0, r0, #0xfc000000
+and r0, r0, #0x3ffffff
 add r1, r1, r12
 mov r12, r1, lsr #26
-bic r1, r1, #0xfc000000
+and r1, r1, #0x3ffffff
 add r2, r2, r12
 mov r12, r2, lsr #26
-bic r2, r2, #0xfc000000
+and r2, r2, #0x3ffffff
 add r3, r3, r12
 mov r12, r3, lsr #26
-bic r3, r3, #0xfc000000
+and r3, r3, #0x3ffffff
 add r4, r4, r12
 mov r12, r4, lsr #26
-bic r4, r4, #0xfc000000
+and r4, r4, #0x3ffffff
 add r12, r12, r12, lsl #2
 add r0, r0, r12
 mov r12, r0, lsr #26
-bic r0, r0, #0xfc000000
+and r0, r0, #0x3ffffff
 add r1, r1, r12
 add r6, r0, #5
 mov r12, r6, lsr #26
-bic r6, r6, #0xfc000000
+and r6, r6, #0x3ffffff
 add r7, r1, r12
 mov r12, r7, lsr #26
-bic r7, r7, #0xfc000000
+and r7, r7, #0x3ffffff
 add r10, r2, r12
 mov r12, r10, lsr #26
-bic r10, r10, #0xfc000000
+and r10, r10, #0x3ffffff
 add r11, r3, r12
 mov r12, #-(1 << 26)
 add r12, r12, r11, lsr #26
-bic r11, r11, #0xfc000000
+and r11, r11, #0x3ffffff
 add r14, r4, r12
 mov r12, r14, lsr #31
 sub r12, #1
@@ -671,7 +671,7 @@ FN_END poly1305_finish_ext_neon
 GLOBAL_HIDDEN_FN poly1305_auth_neon
 stmfd sp!, {r4-r8, lr}
 mov r8, sp
-bic sp, sp, #63
+and sp, sp, #(~63)
 sub sp, sp, #128
 mov r4, r0
 mov r5, r1

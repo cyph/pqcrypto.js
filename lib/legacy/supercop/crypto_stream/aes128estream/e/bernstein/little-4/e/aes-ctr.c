@@ -5,12 +5,12 @@
 #error this code manipulates unaligned words
 #endif
 
-void ECRYPT_init(void)
+void crypto_stream_aes128estream_e_bernstein_little_4_ECRYPT_init(void)
 { 
   ;
 }
 
-void ECRYPT_keysetup(ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
+void crypto_stream_aes128estream_e_bernstein_little_4_ECRYPT_keysetup(crypto_stream_aes128estream_e_bernstein_little_4_ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
 { 
   register u32 x0;
   register u32 x1;
@@ -63,7 +63,7 @@ void ECRYPT_keysetup(ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
   EXPANDLOOP(9)
 }
 
-void ECRYPT_ivsetup(ECRYPT_ctx *c,const u8 *iv)
+void crypto_stream_aes128estream_e_bernstein_little_4_ECRYPT_ivsetup(crypto_stream_aes128estream_e_bernstein_little_4_ECRYPT_ctx *c,const u8 *iv)
 {
   c->ctr[0] = *(u32 *) (iv);
   c->ctr[1] = *(u32 *) (iv + 4);
@@ -71,7 +71,7 @@ void ECRYPT_ivsetup(ECRYPT_ctx *c,const u8 *iv)
   c->ctr[3] = *(u32 *) (iv + 12);
 }
 
-void ECRYPT_process_bytes(int action,ECRYPT_ctx *c,const u8 *input,u8 *output,u32 len)
+void crypto_stream_aes128estream_e_bernstein_little_4_ECRYPT_process_bytes(int action,crypto_stream_aes128estream_e_bernstein_little_4_ECRYPT_ctx *c,const u8 *input,u8 *output,u32 len)
 {
   u32 x[44];
   u32 n[4];

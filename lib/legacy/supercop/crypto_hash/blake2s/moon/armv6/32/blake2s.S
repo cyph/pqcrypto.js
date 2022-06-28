@@ -8,7 +8,7 @@ GLOBAL_HIDDEN_FN blake2s_blocks_armv6
 stmfd sp!, {r4-r12, r14}
 mov r12, sp
 sub sp, sp, #256
-bic sp, sp, #63
+and sp, sp, #0xffffffe0
 str r12, [sp, #148]
 mov r4, #64
 cmp r2, #64

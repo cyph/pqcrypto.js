@@ -135,7 +135,7 @@
 */
 
 
-void aes256_enc_block(u32* x,u8* output, ECRYPT_ctx* ctx) {
+void aes256_enc_block(u32* x,u8* output, crypto_stream_aes256estream_e_hongjun_v0_ECRYPT_ctx* ctx) {
 	u32 y0,y1,y2,y3;
 	u32 z0,z1,z2,z3;
 	u32 a0,a1,a2,a3;
@@ -158,7 +158,7 @@ void aes256_enc_block(u32* x,u8* output, ECRYPT_ctx* ctx) {
 
 
 /*compute the intermediate values for the first two rounds*/
-void partial_precompute_tworounds(ECRYPT_ctx* ctx)
+void partial_precompute_tworounds(crypto_stream_aes256estream_e_hongjun_v0_ECRYPT_ctx* ctx)
 {
   u32 x0,x1,x2,x3,y0,y1,y2,y3;
 

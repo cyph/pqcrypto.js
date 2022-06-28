@@ -4088,7 +4088,7 @@ poly_small_mkgauss(RNG_CONTEXT *rng, int8_t *f, unsigned logn)
 
 /* see falcon.h */
 void
-falcon1024dyn_avx2_keygen(inner_shake256_context *rng,
+falcon1024dyn_avx2_keygen(shake256_context *rng,
 	int8_t *f, int8_t *g, int8_t *F, int8_t *G, uint16_t *h,
 	unsigned logn, uint8_t *tmp)
 {
@@ -4112,7 +4112,7 @@ falcon1024dyn_avx2_keygen(inner_shake256_context *rng,
 	 *    and Res(g,phi) are not prime to each other.
 	 */
 	size_t n, u;
-	uint16_t *h2, *tmp2;
+	uint16_t *tmp2;
 	RNG_CONTEXT *rc;
 	prng p;
 
@@ -4224,13 +4224,12 @@ falcon1024dyn_avx2_keygen(inner_shake256_context *rng,
 		 * fails, we must restart.
 		 */
 		if (h == NULL) {
-			h2 = (uint16_t *)tmp;
-			tmp2 = h2 + n;
+			h = (uint16_t *)tmp;
+			tmp2 = h + n;
 		} else {
-			h2 = h;
 			tmp2 = (uint16_t *)tmp;
 		}
-		if (!falcon1024dyn_avx2_compute_public(h2, f, g, logn, (uint8_t *)tmp2)) {
+		if (!falcon1024dyn_avx2_compute_public(h, f, g, logn, (uint8_t *)tmp2)) {
 			continue;
 		}
 

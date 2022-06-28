@@ -370,7 +370,7 @@ void low_msq_015(__m128i *re_0, __m128i op00) {
     ac1 = 0;
 
     /* from SSE to regular registers */
-    _mm_storeu_si128((__m128i *) &ba[0], op00);
+    _mm_store_si128((__m128i *) &ba[0], op00);
 
     /* multi-squaring computation */
     low_msq_stp(ba,t00,t01,ac0,ac1,0,idx,mtx_msq_015_000);
@@ -411,7 +411,7 @@ void low_msq_030(__m128i *re_0, __m128i op00) {
     ac1 = 0;
 
     /* from SSE to regular registers */
-    _mm_storeu_si128((__m128i *) &ba[0], op00);
+    _mm_store_si128((__m128i *) &ba[0], op00);
 
     /* multi-squaring computation */
     low_msq_stp(ba,t00,t01,ac0,ac1,0,idx,mtx_msq_030_000);
@@ -452,7 +452,7 @@ void low_msq_063(__m128i *re_0, __m128i op00) {
     ac1 = 0;
 
     /* from SSE to regular registers */
-    _mm_storeu_si128((__m128i *) &ba[0], op00);
+    _mm_store_si128((__m128i *) &ba[0], op00);
 
     /* multi-squaring computation */
     low_msq_stp(ba,t00,t01,ac0,ac1,0,idx,mtx_msq_063_000);

@@ -42,8 +42,8 @@ const MIE_ALIGN(128) unsigned char FBY[32] = {0xF0,0xF0,0xF0,0xF0, 0xF0,0xF0,0xF
 /*==== display function ====*/
 static void disp(__m128i HI, __m128i LO){
   MIE_ALIGN(128) unsigned char tmp[32] = {0};
-  _mm_storeu_si128( (__m128i *)(tmp), HI);
-  _mm_storeu_si128( (__m128i *)(tmp+16), LO);
+  _mm_store_si128( (__m128i *)(tmp), HI);
+  _mm_store_si128( (__m128i *)(tmp+16), LO);
   
   //Output
   printf("O \t");
@@ -57,7 +57,7 @@ static void disp(__m128i HI, __m128i LO){
 }
 static void disp(__m256i DATA){
   MIE_ALIGN(128) unsigned char tmp[32] = { 0 };
-  _mm256_storeu_si256((__m256i *)(tmp), DATA);
+  _mm256_store_si256((__m256i *)(tmp), DATA);
 
   //Output
   printf("O \t");
@@ -100,7 +100,7 @@ static inline void tweak_update( __m128i& LO, __m128i& HI, __m128i& xHI, int& cn
 {
   if( (cnt%16) == 0 )
   {
-    __m128i xmmFB = _mm_loadu_si128( (__m128i*)FB );
+    __m128i xmmFB = _mm_load_si128( (__m128i*)FB );
     __m128i zero = _mm_setzero_si128();
 
     xHI = _mm_and_si128( _mm_cmpgt_epi8(zero, HI) , xmmFB );
@@ -113,14 +113,14 @@ static inline void tweak_update( __m128i& LO, __m128i& HI, __m128i& xHI, int& cn
   xHI = _mm_alignr_epi8(  HI, xHI, 1);
   HI  = _mm_alignr_epi8( tmp,  HI, 1);
   
-  __m128i xmmFBY = _mm_loadu_si128( (__m128i*)FBY );
+  __m128i xmmFBY = _mm_load_si128( (__m128i*)FBY );
   LO = _mm_xor_si128( LO, _mm_shuffle_epi8( xHI, xmmFBY ));
 }
 static inline void tweak_update(__m256i& TWEAK, __m256i& xTWEAK, int& cnt)
 {
   if ((cnt % 16) == 0)
   {
-    __m256i ymmFB = _mm256_loadu_si256((__m256i*)FB);
+    __m256i ymmFB = _mm256_load_si256((__m256i*)FB);
     __m256i zero = _mm256_setzero_si256();
 
     xTWEAK = _mm256_and_si256(_mm256_cmpgt_epi8(zero, TWEAK), ymmFB);
@@ -132,7 +132,7 @@ static inline void tweak_update(__m256i& TWEAK, __m256i& xTWEAK, int& cnt)
   xTWEAK = _mm256_alignr_epi8(TWEAK, xTWEAK, 1);
   TWEAK  = _mm256_alignr_epi8(tmp, TWEAK, 1);
 
-  __m256i ymmFBY = _mm256_loadu_si256((__m256i*)FBY);
+  __m256i ymmFBY = _mm256_load_si256((__m256i*)FBY);
   ymmFBY = _mm256_shuffle_epi8(xTWEAK, ymmFBY);
   ymmFBY = _mm256_permute2x128_si256(ymmFBY, ymmFBY, 0x0F);
   TWEAK  = _mm256_xor_si256(TWEAK, ymmFBY);
@@ -149,9 +149,9 @@ static inline void create_l(__m256i& ymmL, const unsigned char *_K, const unsign
   tmp[16] = 0x40;
   memcpy(tmp + 19, _N, 13);
 
-  ymmL = _mm256_loadu_si256((const __m256i*)(tmp));
+  ymmL = _mm256_load_si256((const __m256i*)(tmp));
   minalpher_core_single_block(ymmL);
-  ymmL = _mm256_xor_si256(ymmL, _mm256_loadu_si256((const __m256i*)(tmp)));
+  ymmL = _mm256_xor_si256(ymmL, _mm256_load_si256((const __m256i*)(tmp)));
 }
 /********************************************************************
  *  Name:       create_lprime                                       *
@@ -161,9 +161,9 @@ static inline void create_l(__m256i& ymmL, const unsigned char *_K, const unsign
 static inline void create_lprime(__m256i& ymmLp, const unsigned char *_K){
   MIE_ALIGN(128) unsigned char tmp[32] = { 0 };
   memcpy(tmp, _K, 16);
-  ymmLp = _mm256_loadu_si256((const __m256i*)(tmp));
+  ymmLp = _mm256_load_si256((const __m256i*)(tmp));
   minalpher_core_single_block(ymmLp);
-  ymmLp = _mm256_xor_si256(ymmLp, _mm256_loadu_si256((const __m256i*)(tmp)));
+  ymmLp = _mm256_xor_si256(ymmLp, _mm256_load_si256((const __m256i*)(tmp)));
 }
 
 
@@ -209,10 +209,10 @@ void minalpher_mode_encrypt(
     int p = 0;
     for (p = 0; p<((long long)_alen - 128); p += 128){
 
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_A + p));
-      DATA2 = _mm256_loadu_si256((const __m256i*)(_A + p + 32));
-      DATA3 = _mm256_loadu_si256((const __m256i*)(_A + p + 64));
-      DATA4 = _mm256_loadu_si256((const __m256i*)(_A + p + 96));
+      DATA1 = _mm256_load_si256((const __m256i*)(_A + p));
+      DATA2 = _mm256_load_si256((const __m256i*)(_A + p + 32));
+      DATA3 = _mm256_load_si256((const __m256i*)(_A + p + 64));
+      DATA4 = _mm256_load_si256((const __m256i*)(_A + p + 96));
 
       __m256i tweak1, tweak2, tweak3, tweak4;
       tweak_update(ymmLp, ymmLp_H, cnt);
@@ -242,9 +242,9 @@ void minalpher_mode_encrypt(
 
     //For odd block
     if ((p + 96) < _alen){
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_A + p));
-      DATA2 = _mm256_loadu_si256((const __m256i*)(_A + p + 32));
-      DATA3 = _mm256_loadu_si256((const __m256i*)(_A + p + 64));
+      DATA1 = _mm256_load_si256((const __m256i*)(_A + p));
+      DATA2 = _mm256_load_si256((const __m256i*)(_A + p + 32));
+      DATA3 = _mm256_load_si256((const __m256i*)(_A + p + 64));
 
       __m256i tweak1, tweak2, tweak3;
       tweak_update(ymmLp, ymmLp_H, cnt);
@@ -267,8 +267,8 @@ void minalpher_mode_encrypt(
       ymmTweakSum = _mm256_xor_si256(DATA3, ymmTweakSum);
       p += 96;
     }else if ((p + 64) < _alen){
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_A + p));
-      DATA2 = _mm256_loadu_si256((const __m256i*)(_A + p + 32));
+      DATA1 = _mm256_load_si256((const __m256i*)(_A + p));
+      DATA2 = _mm256_load_si256((const __m256i*)(_A + p + 32));
 
       __m256i tweak1, tweak2;
       tweak_update(ymmLp, ymmLp_H, cnt);
@@ -286,7 +286,7 @@ void minalpher_mode_encrypt(
       ymmTweakSum = _mm256_xor_si256(DATA2, ymmTweakSum);
       p += 64;
     }else if ((p + 32) < _alen){
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_A + p));
+      DATA1 = _mm256_load_si256((const __m256i*)(_A + p));
 
       tweak_update(ymmLp, ymmLp_H, cnt);
       DATA1 = _mm256_xor_si256(DATA1, ymmLp);
@@ -300,7 +300,7 @@ void minalpher_mode_encrypt(
     //Final block (Associated data)
     if ((_alen % 32) == 0){
       //LOAD
-      DATA = _mm256_loadu_si256((const __m256i*)(_A + p));
+      DATA = _mm256_load_si256((const __m256i*)(_A + p));
 
       //Tweak update
       __m256i tmpLp = ymmLp;
@@ -316,7 +316,7 @@ void minalpher_mode_encrypt(
         tmp[q] = _A[q + p];
       }
       tmp[(_alen - p)] = 0x80;
-      DATA = _mm256_loadu_si256((const __m256i*)(tmp));
+      DATA = _mm256_load_si256((const __m256i*)(tmp));
 
       //Tweak update
       __m256i tmpLp = ymmLp;
@@ -348,10 +348,10 @@ void minalpher_mode_encrypt(
   for (p = 0; p <= ((long long)(_mlen)-128); p += 128)
   {
     //Encryption
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_M + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_M + p + 32));
-    DATA3 = _mm256_loadu_si256((const __m256i*)(_M + p + 64));
-    DATA4 = _mm256_loadu_si256((const __m256i*)(_M + p + 96));
+    DATA1 = _mm256_load_si256((const __m256i*)(_M + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_M + p + 32));
+    DATA3 = _mm256_load_si256((const __m256i*)(_M + p + 64));
+    DATA4 = _mm256_load_si256((const __m256i*)(_M + p + 96));
 
     __m256i tweak1, tweak2, tweak3, tweak4, tweak5, tweak6, tweak7, tweak8;
     tweak_update(ymmL, ymmL_H, cnt);
@@ -380,10 +380,10 @@ void minalpher_mode_encrypt(
     DATA2 = _mm256_xor_si256(DATA2, tweak2);
     DATA3 = _mm256_xor_si256(DATA3, tweak3);
     DATA4 = _mm256_xor_si256(DATA4, tweak4);
-    _mm256_storeu_si256((__m256i *)(C_ + p), DATA1);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 32), DATA2);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 64), DATA3);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 96), DATA4);
+    _mm256_store_si256((__m256i *)(C_ + p), DATA1);
+    _mm256_store_si256((__m256i *)(C_ + p + 32), DATA2);
+    _mm256_store_si256((__m256i *)(C_ + p + 64), DATA3);
+    _mm256_store_si256((__m256i *)(C_ + p + 96), DATA4);
 
     DATA1 = _mm256_xor_si256(DATA1, tweak5);
     DATA2 = _mm256_xor_si256(DATA2, tweak6);
@@ -408,16 +408,16 @@ void minalpher_mode_encrypt(
 
   if ((mblock % 4) == 0){
     //padding
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_M + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_M + p + 32));
-    DATA3 = _mm256_loadu_si256((const __m256i*)(_M + p + 64));
+    DATA1 = _mm256_load_si256((const __m256i*)(_M + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_M + p + 32));
+    DATA3 = _mm256_load_si256((const __m256i*)(_M + p + 64));
     MIE_ALIGN(128) unsigned char tmp[32] = { 0 };
     int q = 0;
     for (q = 0; q<(_mlen - 96 - p); q++){
       tmp[q] = _M[p + 96 + q];
     }
     tmp[(_mlen - 96 - p)] = 0x80;
-    DATA4 = _mm256_loadu_si256((const __m256i*)(tmp));
+    DATA4 = _mm256_load_si256((const __m256i*)(tmp));
 
     //tweak update
     __m256i tweak1, tweak2, tweak3, tweak4, tweak5, tweak6, tweak7, tweak8;
@@ -448,10 +448,10 @@ void minalpher_mode_encrypt(
     DATA3 = _mm256_xor_si256(DATA3, tweak3);
     DATA4 = _mm256_xor_si256(DATA4, tweak4);
 
-    _mm256_storeu_si256((__m256i *)(C_ + p), DATA1);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 32), DATA2);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 64), DATA3);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 96), DATA4);
+    _mm256_store_si256((__m256i *)(C_ + p), DATA1);
+    _mm256_store_si256((__m256i *)(C_ + p + 32), DATA2);
+    _mm256_store_si256((__m256i *)(C_ + p + 64), DATA3);
+    _mm256_store_si256((__m256i *)(C_ + p + 96), DATA4);
     ymmTweakSum = _mm256_xor_si256(ymmTweakSum, DATA4);
 
     if (_alen == 0){
@@ -495,19 +495,19 @@ void minalpher_mode_encrypt(
     DATA = _mm256_xor_si256(DATA, ymmL);
     minalpher_core_single_block(DATA);
     DATA = _mm256_xor_si256(DATA, ymmL);
-    _mm_storeu_si128((__m128i *)(C_ + p + 128), _mm256_extracti128_si256(DATA, 0));
+    _mm_store_si128((__m128i *)(C_ + p + 128), _mm256_extracti128_si256(DATA, 0));
 
   }else if ((mblock % 4) == 3){
     //padding
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_M + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_M + p + 32));
+    DATA1 = _mm256_load_si256((const __m256i*)(_M + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_M + p + 32));
     MIE_ALIGN(128) unsigned char tmp[32] = { 0 };
     int q = 0;
     for (q = 0; q<(_mlen - 64 - p); q++){
       tmp[q] = _M[p + 64 + q];
     }
     tmp[(_mlen - 64 - p)] = 0x80;
-    DATA3 = _mm256_loadu_si256((const __m256i*)(tmp));
+    DATA3 = _mm256_load_si256((const __m256i*)(tmp));
 
     //tweak update
     __m256i tweak1, tweak2, tweak3, tweak4, tweak5, tweak6;
@@ -532,9 +532,9 @@ void minalpher_mode_encrypt(
     DATA2 = _mm256_xor_si256(DATA2, tweak2);
     DATA3 = _mm256_xor_si256(DATA3, tweak3);
 
-    _mm256_storeu_si256((__m256i *)(C_ + p), DATA1);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 32), DATA2);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 64), DATA3);
+    _mm256_store_si256((__m256i *)(C_ + p), DATA1);
+    _mm256_store_si256((__m256i *)(C_ + p + 32), DATA2);
+    _mm256_store_si256((__m256i *)(C_ + p + 64), DATA3);
     ymmTweakSum = _mm256_xor_si256(ymmTweakSum, DATA3);
 
     if (_alen == 0){
@@ -572,18 +572,18 @@ void minalpher_mode_encrypt(
     DATA = _mm256_xor_si256(DATA, ymmL);
     minalpher_core_single_block(DATA);
     DATA = _mm256_xor_si256(DATA, ymmL);
-    _mm_storeu_si128((__m128i *)(C_ + p + 96), _mm256_extracti128_si256(DATA, 0));
+    _mm_store_si128((__m128i *)(C_ + p + 96), _mm256_extracti128_si256(DATA, 0));
 
   }else if ((mblock % 4) == 2){
     //padding
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_M + p));
+    DATA1 = _mm256_load_si256((const __m256i*)(_M + p));
     MIE_ALIGN(128) unsigned char tmp[32] = { 0 };
     int q = 0;
     for (q = 0; q<(_mlen - 32 - p); q++){
       tmp[q] = _M[p + 32 + q];
     }
     tmp[(_mlen - 32 - p)] = 0x80;
-    DATA2 = _mm256_loadu_si256((const __m256i*)(tmp));
+    DATA2 = _mm256_load_si256((const __m256i*)(tmp));
 
     //tweak update
     __m256i tweak1, tweak2, tweak3, tweak4;
@@ -602,8 +602,8 @@ void minalpher_mode_encrypt(
     DATA1 = _mm256_xor_si256(DATA1, tweak1);
     DATA2 = _mm256_xor_si256(DATA2, tweak2);
 
-    _mm256_storeu_si256((__m256i *)(C_ + p), DATA1);
-    _mm256_storeu_si256((__m256i *)(C_ + p + 32), DATA2);
+    _mm256_store_si256((__m256i *)(C_ + p), DATA1);
+    _mm256_store_si256((__m256i *)(C_ + p + 32), DATA2);
     ymmTweakSum = _mm256_xor_si256(ymmTweakSum, DATA2);
 
     if (_alen == 0){
@@ -634,7 +634,7 @@ void minalpher_mode_encrypt(
     DATA = _mm256_xor_si256(DATA, ymmL);
     minalpher_core_single_block(DATA);
     DATA = _mm256_xor_si256(DATA, ymmL);
-    _mm_storeu_si128((__m128i *)(C_ + p + 64), _mm256_extracti128_si256(DATA, 0));
+    _mm_store_si128((__m128i *)(C_ + p + 64), _mm256_extracti128_si256(DATA, 0));
 
   }else{
     //padding
@@ -644,7 +644,7 @@ void minalpher_mode_encrypt(
       tmp[q] = _M[p + q];
     }
     tmp[(_mlen - p)] = 0x80;
-    DATA1 = _mm256_loadu_si256((const __m256i*)(tmp));
+    DATA1 = _mm256_load_si256((const __m256i*)(tmp));
 
     if (_alen == 0){
       //Encryption
@@ -652,14 +652,14 @@ void minalpher_mode_encrypt(
       DATA1 = _mm256_xor_si256(DATA1, ymmL);
       minalpher_core_single_block(DATA1);
       DATA = _mm256_xor_si256(DATA1, ymmL);
-      _mm256_storeu_si256((__m256i *)(C_ + p), DATA);
+      _mm256_store_si256((__m256i *)(C_ + p), DATA);
     }else{
       //Encryption
       tweak_update(ymmL, ymmL_H, cnt);
       DATA1 = _mm256_xor_si256(DATA1, ymmL);
       minalpher_core_double_block(DATA, DATA1);
       DATA1 = _mm256_xor_si256(DATA1, ymmL);
-      _mm256_storeu_si256((__m256i *)(C_ + p), DATA1);
+      _mm256_store_si256((__m256i *)(C_ + p), DATA1);
       DATA = _mm256_xor_si256(DATA, DATA1);
     }
 
@@ -681,7 +681,7 @@ void minalpher_mode_encrypt(
     DATA = _mm256_xor_si256(DATA, ymmL);
     minalpher_core_single_block(DATA);
     DATA = _mm256_xor_si256(DATA, ymmL);
-    _mm_storeu_si128((__m128i *)(C_ + p + 32), _mm256_extracti128_si256(DATA, 0));
+    _mm_store_si128((__m128i *)(C_ + p + 32), _mm256_extracti128_si256(DATA, 0));
   }
 
   //update *clen
@@ -727,10 +727,10 @@ int minalpher_mode_tag_generation(
     int p = 0;
     for (p = 0; p<((long long)_alen - 128); p += 128){
 
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_A + p));
-      DATA2 = _mm256_loadu_si256((const __m256i*)(_A + p + 32));
-      DATA3 = _mm256_loadu_si256((const __m256i*)(_A + p + 64));
-      DATA4 = _mm256_loadu_si256((const __m256i*)(_A + p + 96));
+      DATA1 = _mm256_load_si256((const __m256i*)(_A + p));
+      DATA2 = _mm256_load_si256((const __m256i*)(_A + p + 32));
+      DATA3 = _mm256_load_si256((const __m256i*)(_A + p + 64));
+      DATA4 = _mm256_load_si256((const __m256i*)(_A + p + 96));
 
       __m256i tweak1, tweak2, tweak3, tweak4;
       tweak_update(ymmLp, ymmLp_H, cnt);
@@ -760,9 +760,9 @@ int minalpher_mode_tag_generation(
 
     //For odd block
     if ((p + 96) < _alen){
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_A + p));
-      DATA2 = _mm256_loadu_si256((const __m256i*)(_A + p + 32));
-      DATA3 = _mm256_loadu_si256((const __m256i*)(_A + p + 64));
+      DATA1 = _mm256_load_si256((const __m256i*)(_A + p));
+      DATA2 = _mm256_load_si256((const __m256i*)(_A + p + 32));
+      DATA3 = _mm256_load_si256((const __m256i*)(_A + p + 64));
 
       __m256i tweak1, tweak2, tweak3;
       tweak_update(ymmLp, ymmLp_H, cnt);
@@ -786,8 +786,8 @@ int minalpher_mode_tag_generation(
       p += 96;
     }
     else if ((p + 64) < _alen){
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_A + p));
-      DATA2 = _mm256_loadu_si256((const __m256i*)(_A + p + 32));
+      DATA1 = _mm256_load_si256((const __m256i*)(_A + p));
+      DATA2 = _mm256_load_si256((const __m256i*)(_A + p + 32));
 
       __m256i tweak1, tweak2;
       tweak_update(ymmLp, ymmLp_H, cnt);
@@ -806,7 +806,7 @@ int minalpher_mode_tag_generation(
       p += 64;
     }
     else if ((p + 32) < _alen){
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_A + p));
+      DATA1 = _mm256_load_si256((const __m256i*)(_A + p));
 
       tweak_update(ymmLp, ymmLp_H, cnt);
       DATA1 = _mm256_xor_si256(DATA1, ymmLp);
@@ -820,7 +820,7 @@ int minalpher_mode_tag_generation(
     //Final block (Associated data)
     if ((_alen % 32) == 0){
       //LOAD
-      DATA = _mm256_loadu_si256((const __m256i*)(_A + p));
+      DATA = _mm256_load_si256((const __m256i*)(_A + p));
 
       //Tweak update
       __m256i tmpLp = ymmLp;
@@ -837,7 +837,7 @@ int minalpher_mode_tag_generation(
         tmp[q] = _A[q + p];
       }
       tmp[(_alen - p)] = 0x80;
-      DATA = _mm256_loadu_si256((const __m256i*)(tmp));
+      DATA = _mm256_load_si256((const __m256i*)(tmp));
 
       //Tweak update
       __m256i tmpLp = ymmLp;
@@ -887,10 +887,10 @@ int minalpher_mode_tag_generation(
     tweak8 = ymmL;
 
     //Tag Generation
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_C + p + 32));
-    DATA3 = _mm256_loadu_si256((const __m256i*)(_C + p + 64));
-    DATA4 = _mm256_loadu_si256((const __m256i*)(_C + p + 96));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_C + p + 32));
+    DATA3 = _mm256_load_si256((const __m256i*)(_C + p + 64));
+    DATA4 = _mm256_load_si256((const __m256i*)(_C + p + 96));
 
     DATA1 = _mm256_xor_si256(DATA1, tweak5);
     DATA2 = _mm256_xor_si256(DATA2, tweak6);
@@ -935,10 +935,10 @@ int minalpher_mode_tag_generation(
     tweak8 = ymmL;
 
     //Tag generation
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_C + p + 32));
-    DATA3 = _mm256_loadu_si256((const __m256i*)(_C + p + 64));
-    DATA4 = _mm256_loadu_si256((const __m256i*)(_C + p + 96));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_C + p + 32));
+    DATA3 = _mm256_load_si256((const __m256i*)(_C + p + 64));
+    DATA4 = _mm256_load_si256((const __m256i*)(_C + p + 96));
     ymmTweakSum = _mm256_xor_si256(ymmTweakSum, DATA4);
 
     if (_alen == 0){
@@ -983,7 +983,7 @@ int minalpher_mode_tag_generation(
     DATA = _mm256_xor_si256(DATA, ymmL);
     minalpher_core_single_block(DATA);
     DATA = _mm256_xor_si256(DATA, ymmL);
-    _mm_storeu_si128((__m128i *)(tag_), _mm256_extracti128_si256(DATA, 0));
+    _mm_store_si128((__m128i *)(tag_), _mm256_extracti128_si256(DATA, 0));
 
   }
   else if ((cblock % 4) == 3){
@@ -1004,9 +1004,9 @@ int minalpher_mode_tag_generation(
     tweak6 = ymmL;
 
     //Tag generation
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_C + p + 32));
-    DATA3 = _mm256_loadu_si256((const __m256i*)(_C + p + 64));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_C + p + 32));
+    DATA3 = _mm256_load_si256((const __m256i*)(_C + p + 64));
     ymmTweakSum = _mm256_xor_si256(ymmTweakSum, DATA3);
 
     if (_alen == 0){
@@ -1045,7 +1045,7 @@ int minalpher_mode_tag_generation(
     DATA = _mm256_xor_si256(DATA, ymmL);
     minalpher_core_single_block(DATA);
     DATA = _mm256_xor_si256(DATA, ymmL);
-    _mm_storeu_si128((__m128i *)(tag_), _mm256_extracti128_si256(DATA, 0));
+    _mm_store_si128((__m128i *)(tag_), _mm256_extracti128_si256(DATA, 0));
 
   }
   else if ((cblock % 4) == 2){
@@ -1062,8 +1062,8 @@ int minalpher_mode_tag_generation(
     tweak4 = ymmL;
 
     //Tag generation
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_C + p + 32));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_C + p + 32));
     ymmTweakSum = _mm256_xor_si256(ymmTweakSum, DATA2);
 
     if (_alen == 0){
@@ -1095,7 +1095,7 @@ int minalpher_mode_tag_generation(
     DATA = _mm256_xor_si256(DATA, ymmL);
     minalpher_core_single_block(DATA);
     DATA = _mm256_xor_si256(DATA, ymmL);
-    _mm_storeu_si128((__m128i *)(tag_), _mm256_extracti128_si256(DATA, 0));
+    _mm_store_si128((__m128i *)(tag_), _mm256_extracti128_si256(DATA, 0));
 
   }
   else{
@@ -1103,13 +1103,13 @@ int minalpher_mode_tag_generation(
     if (_alen == 0){
       //Encryption
       tweak_update(ymmL, ymmL_H, cnt);
-      DATA = _mm256_loadu_si256((const __m256i*)(_C + p));
+      DATA = _mm256_load_si256((const __m256i*)(_C + p));
     }
     else{
       //Encryption
       tweak_update(ymmL, ymmL_H, cnt);
       minalpher_core_single_block(DATA);
-      DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
+      DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
       DATA = _mm256_xor_si256(DATA, DATA1);
     }
 
@@ -1132,7 +1132,7 @@ int minalpher_mode_tag_generation(
     minalpher_core_single_block(DATA);
     DATA = _mm256_xor_si256(DATA, ymmL);
 
-    _mm_storeu_si128((__m128i *)(tag_), _mm256_extracti128_si256(DATA, 0));
+    _mm_store_si128((__m128i *)(tag_), _mm256_extracti128_si256(DATA, 0));
   }
   return 0;
 }
@@ -1175,10 +1175,10 @@ int minalpher_mode_decryption(
   for (p = 0; p < ((long long)(_clen)-128); p += 128)
   {
     //Encryption
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_C + p + 32));
-    DATA3 = _mm256_loadu_si256((const __m256i*)(_C + p + 64));
-    DATA4 = _mm256_loadu_si256((const __m256i*)(_C + p + 96));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_C + p + 32));
+    DATA3 = _mm256_load_si256((const __m256i*)(_C + p + 64));
+    DATA4 = _mm256_load_si256((const __m256i*)(_C + p + 96));
 
     __m256i tweak1, tweak2, tweak3, tweak4, tweak5, tweak6, tweak7, tweak8;
     tweak_update(ymmL, ymmL_H, cnt);
@@ -1207,10 +1207,10 @@ int minalpher_mode_decryption(
     DATA2 = _mm256_xor_si256(DATA2, tweak2);
     DATA3 = _mm256_xor_si256(DATA3, tweak3);
     DATA4 = _mm256_xor_si256(DATA4, tweak4);
-    _mm256_storeu_si256((__m256i *)(M_ + p), DATA1);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 32), DATA2);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 64), DATA3);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 96), DATA4);
+    _mm256_store_si256((__m256i *)(M_ + p), DATA1);
+    _mm256_store_si256((__m256i *)(M_ + p + 32), DATA2);
+    _mm256_store_si256((__m256i *)(M_ + p + 64), DATA3);
+    _mm256_store_si256((__m256i *)(M_ + p + 96), DATA4);
   }
 
   //length update
@@ -1218,10 +1218,10 @@ int minalpher_mode_decryption(
 
   if ((mblock % 4) == 0){
     //padding
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_C + p + 32));
-    DATA3 = _mm256_loadu_si256((const __m256i*)(_C + p + 64));
-    DATA4 = _mm256_loadu_si256((const __m256i*)(_C + p + 96));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_C + p + 32));
+    DATA3 = _mm256_load_si256((const __m256i*)(_C + p + 64));
+    DATA4 = _mm256_load_si256((const __m256i*)(_C + p + 96));
 
     //tweak update
     __m256i tweak1, tweak2, tweak3, tweak4, tweak5, tweak6, tweak7, tweak8;
@@ -1252,10 +1252,10 @@ int minalpher_mode_decryption(
     DATA3 = _mm256_xor_si256(DATA3, tweak3);
     DATA4 = _mm256_xor_si256(DATA4, tweak4);
 
-    _mm256_storeu_si256((__m256i *)(M_ + p), DATA1);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 32), DATA2);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 64), DATA3);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 96), DATA4);
+    _mm256_store_si256((__m256i *)(M_ + p), DATA1);
+    _mm256_store_si256((__m256i *)(M_ + p + 32), DATA2);
+    _mm256_store_si256((__m256i *)(M_ + p + 64), DATA3);
+    _mm256_store_si256((__m256i *)(M_ + p + 96), DATA4);
 
     //Format Verification
     for (int d = BLOCK_SIZE - 1; d >= 0; d--){
@@ -1270,9 +1270,9 @@ int minalpher_mode_decryption(
   }
   else if ((mblock % 4) == 3){
     //padding
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_C + p + 32));
-    DATA3 = _mm256_loadu_si256((const __m256i*)(_C + p + 64));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_C + p + 32));
+    DATA3 = _mm256_load_si256((const __m256i*)(_C + p + 64));
 
     //tweak update
     __m256i tweak1, tweak2, tweak3, tweak4, tweak5, tweak6;
@@ -1297,9 +1297,9 @@ int minalpher_mode_decryption(
     DATA2 = _mm256_xor_si256(DATA2, tweak2);
     DATA3 = _mm256_xor_si256(DATA3, tweak3);
 
-    _mm256_storeu_si256((__m256i *)(M_ + p), DATA1);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 32), DATA2);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 64), DATA3);
+    _mm256_store_si256((__m256i *)(M_ + p), DATA1);
+    _mm256_store_si256((__m256i *)(M_ + p + 32), DATA2);
+    _mm256_store_si256((__m256i *)(M_ + p + 64), DATA3);
 
     //Format Verification
     for (int d = BLOCK_SIZE - 1; d >= 0; d--){
@@ -1314,8 +1314,8 @@ int minalpher_mode_decryption(
   }
   else if ((mblock % 4) == 2){
     //padding
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
-    DATA2 = _mm256_loadu_si256((const __m256i*)(_C + p + 32));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
+    DATA2 = _mm256_load_si256((const __m256i*)(_C + p + 32));
 
     //tweak update
     __m256i tweak1, tweak2, tweak3, tweak4;
@@ -1334,8 +1334,8 @@ int minalpher_mode_decryption(
     DATA1 = _mm256_xor_si256(DATA1, tweak1);
     DATA2 = _mm256_xor_si256(DATA2, tweak2);
 
-    _mm256_storeu_si256((__m256i *)(M_ + p), DATA1);
-    _mm256_storeu_si256((__m256i *)(M_ + p + 32), DATA2);
+    _mm256_store_si256((__m256i *)(M_ + p), DATA1);
+    _mm256_store_si256((__m256i *)(M_ + p + 32), DATA2);
 
     //Format Verification
     for (int d = BLOCK_SIZE - 1; d >= 0; d--){
@@ -1350,14 +1350,14 @@ int minalpher_mode_decryption(
   }
   else{
     //padding
-    DATA1 = _mm256_loadu_si256((const __m256i*)(_C + p));
+    DATA1 = _mm256_load_si256((const __m256i*)(_C + p));
 
     //Encryption
     tweak_update(ymmL, ymmL_H, cnt);
     DATA1 = _mm256_xor_si256(DATA1, ymmL);
     minalpher_core_single_block_inverse(DATA1);
     DATA = _mm256_xor_si256(DATA1, ymmL);
-    _mm256_storeu_si256((__m256i *)(M_ + p), DATA);
+    _mm256_store_si256((__m256i *)(M_ + p), DATA);
 
     //Format Verification
     for (int d = BLOCK_SIZE - 1; d >= 0; d--){

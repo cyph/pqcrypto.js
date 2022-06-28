@@ -147,13 +147,13 @@
 
 # qhasm: stack64 sr3
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_onetimeauth_poly1305_amd64
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_onetimeauth_poly1305_amd64
+.globl crypto_onetimeauth_poly1305_amd64
+_crypto_onetimeauth_poly1305_amd64:
+crypto_onetimeauth_poly1305_amd64:
 mov %rsp,%r11
 and $31,%r11
 add $192,%r11
@@ -202,8 +202,8 @@ movq %rbx,72(%rsp)
 # asm 2: movq <rbp_caller=%rbp,>rbp_stack=80(%rsp)
 movq %rbp,80(%rsp)
 
-# qhasm:   round *(uint16 *) &CRYPTO_NAMESPACE(rounding)
-fldcw CRYPTO_NAMESPACE(rounding)(%rip)
+# qhasm:   round *(uint16 *) &crypto_onetimeauth_poly1305_amd64_rounding
+fldcw crypto_onetimeauth_poly1305_amd64_rounding(%rip)
 
 # qhasm:   m0 = *(uint32 *) (k + 0)
 # asm 1: movl   0(<k=int64#4),>m0=int64#5d
@@ -301,8 +301,8 @@ movl %r10d,128(%rsp)
 fldl 104(%rsp)
 # comment:fpstackfrombottom:<a0#28:
 
-# qhasm:   a0 -= *(float64 *) &CRYPTO_NAMESPACE(doffset0)
-fsubl CRYPTO_NAMESPACE(doffset0)(%rip)
+# qhasm:   a0 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset0
+fsubl crypto_onetimeauth_poly1305_amd64_doffset0(%rip)
 # comment:fpstackfrombottom:<a0#28:
 
 # qhasm:   a1 = *(float64 *) &d1
@@ -311,8 +311,8 @@ fsubl CRYPTO_NAMESPACE(doffset0)(%rip)
 fldl 112(%rsp)
 # comment:fpstackfrombottom:<a0#28:<a1#29:
 
-# qhasm:   a1 -= *(float64 *) &CRYPTO_NAMESPACE(doffset1)
-fsubl CRYPTO_NAMESPACE(doffset1)(%rip)
+# qhasm:   a1 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset1
+fsubl crypto_onetimeauth_poly1305_amd64_doffset1(%rip)
 # comment:fpstackfrombottom:<a0#28:<a1#29:
 
 # qhasm:   a2 = *(float64 *) &d2
@@ -321,8 +321,8 @@ fsubl CRYPTO_NAMESPACE(doffset1)(%rip)
 fldl 120(%rsp)
 # comment:fpstackfrombottom:<a0#28:<a1#29:<a2#30:
 
-# qhasm:   a2 -= *(float64 *) &CRYPTO_NAMESPACE(doffset2)
-fsubl CRYPTO_NAMESPACE(doffset2)(%rip)
+# qhasm:   a2 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset2
+fsubl crypto_onetimeauth_poly1305_amd64_doffset2(%rip)
 # comment:fpstackfrombottom:<a0#28:<a1#29:<a2#30:
 
 # qhasm:   a3 = *(float64 *) &d3
@@ -331,8 +331,8 @@ fsubl CRYPTO_NAMESPACE(doffset2)(%rip)
 fldl 128(%rsp)
 # comment:fpstackfrombottom:<a0#28:<a1#29:<a2#30:<a3#31:
 
-# qhasm:   a3 -= *(float64 *) &CRYPTO_NAMESPACE(doffset3)
-fsubl CRYPTO_NAMESPACE(doffset3)(%rip)
+# qhasm:   a3 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset3
+fsubl crypto_onetimeauth_poly1305_amd64_doffset3(%rip)
 # comment:fpstackfrombottom:<a0#28:<a1#29:<a2#30:<a3#31:
 
 # qhasm: internal stacktop a0
@@ -357,8 +357,8 @@ fxch %st(1)
 fstl 144(%rsp)
 # comment:fpstackfrombottom:<a3#31:<a2#30:<a1#29:
 
-# qhasm:   a1 *= *(float64 *) &CRYPTO_NAMESPACE(scale)
-fmull CRYPTO_NAMESPACE(scale)(%rip)
+# qhasm:   a1 *= *(float64 *) &crypto_onetimeauth_poly1305_amd64_scale
+fmull crypto_onetimeauth_poly1305_amd64_scale(%rip)
 # comment:fpstackfrombottom:<a3#31:<a2#30:<a1#29:
 
 # qhasm:   *(float64 *) &sr1 = a1
@@ -373,8 +373,8 @@ fstpl 152(%rsp)
 fstl 160(%rsp)
 # comment:fpstackfrombottom:<a3#31:<a2#30:
 
-# qhasm:   a2 *= *(float64 *) &CRYPTO_NAMESPACE(scale)
-fmull CRYPTO_NAMESPACE(scale)(%rip)
+# qhasm:   a2 *= *(float64 *) &crypto_onetimeauth_poly1305_amd64_scale
+fmull crypto_onetimeauth_poly1305_amd64_scale(%rip)
 # comment:fpstackfrombottom:<a3#31:<a2#30:
 
 # qhasm:   *(float64 *) &sr2 = a2
@@ -389,8 +389,8 @@ fstpl 168(%rsp)
 fstl 176(%rsp)
 # comment:fpstackfrombottom:<a3#31:
 
-# qhasm:   a3 *= *(float64 *) &CRYPTO_NAMESPACE(scale)
-fmull CRYPTO_NAMESPACE(scale)(%rip)
+# qhasm:   a3 *= *(float64 *) &crypto_onetimeauth_poly1305_amd64_scale
+fmull crypto_onetimeauth_poly1305_amd64_scale(%rip)
 # comment:fpstackfrombottom:<a3#31:
 
 # qhasm:   *(float64 *) &sr3 = a3
@@ -503,8 +503,8 @@ fxch %st(3)
 faddl 128(%rsp)
 # comment:fpstackfrombottom:<h0#42:<h2#40:<h1#41:<h3#39:
 
-# qhasm:   h3 -= *(float64 *) &CRYPTO_NAMESPACE(doffset3minustwo128)
-fsubl CRYPTO_NAMESPACE(doffset3minustwo128)(%rip)
+# qhasm:   h3 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset3minustwo128
+fsubl crypto_onetimeauth_poly1305_amd64_doffset3minustwo128(%rip)
 # comment:fpstackfrombottom:<h0#42:<h2#40:<h1#41:<h3#39:
 
 # qhasm: internal stacktop h1
@@ -518,8 +518,8 @@ fxch %st(1)
 faddl 112(%rsp)
 # comment:fpstackfrombottom:<h0#42:<h2#40:<h3#39:<h1#41:
 
-# qhasm:   h1 -= *(float64 *) &CRYPTO_NAMESPACE(doffset1)
-fsubl CRYPTO_NAMESPACE(doffset1)(%rip)
+# qhasm:   h1 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset1
+fsubl crypto_onetimeauth_poly1305_amd64_doffset1(%rip)
 # comment:fpstackfrombottom:<h0#42:<h2#40:<h3#39:<h1#41:
 
 # qhasm: internal stacktop h2
@@ -533,8 +533,8 @@ fxch %st(2)
 faddl 120(%rsp)
 # comment:fpstackfrombottom:<h0#42:<h1#41:<h3#39:<h2#40:
 
-# qhasm:   h2 -= *(float64 *) &CRYPTO_NAMESPACE(doffset2)
-fsubl CRYPTO_NAMESPACE(doffset2)(%rip)
+# qhasm:   h2 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset2
+fsubl crypto_onetimeauth_poly1305_amd64_doffset2(%rip)
 # comment:fpstackfrombottom:<h0#42:<h1#41:<h3#39:<h2#40:
 
 # qhasm: internal stacktop h0
@@ -548,8 +548,8 @@ fxch %st(3)
 faddl 104(%rsp)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:
 
-# qhasm:   h0 -= *(float64 *) &CRYPTO_NAMESPACE(doffset0)
-fsubl CRYPTO_NAMESPACE(doffset0)(%rip)
+# qhasm:   h0 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset0
+fsubl crypto_onetimeauth_poly1305_amd64_doffset0(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:
 
 # qhasm:                                  unsigned<? l - 16
@@ -629,8 +629,8 @@ add  $16,%rsi
 sub  $16,%rdx
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:
 
-# qhasm:   x0 = *(float64 *) &CRYPTO_NAMESPACE(alpha130)
-fldl CRYPTO_NAMESPACE(alpha130)(%rip)
+# qhasm:   x0 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha130
+fldl crypto_onetimeauth_poly1305_amd64_alpha130(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#53:
 
 # qhasm:   x0 += h3
@@ -639,8 +639,8 @@ fldl CRYPTO_NAMESPACE(alpha130)(%rip)
 fadd %st(2),%st(0)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#53:
 
-# qhasm:   x0 -= *(float64 *) &CRYPTO_NAMESPACE(alpha130)
-fsubl CRYPTO_NAMESPACE(alpha130)(%rip)
+# qhasm:   x0 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha130
+fsubl crypto_onetimeauth_poly1305_amd64_alpha130(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#53:
 
 # qhasm:   h3 -= x0
@@ -649,12 +649,12 @@ fsubl CRYPTO_NAMESPACE(alpha130)(%rip)
 fsubr %st(0),%st(2)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#53:
 
-# qhasm:   x0 *= *(float64 *) &CRYPTO_NAMESPACE(scale)
-fmull CRYPTO_NAMESPACE(scale)(%rip)
+# qhasm:   x0 *= *(float64 *) &crypto_onetimeauth_poly1305_amd64_scale
+fmull crypto_onetimeauth_poly1305_amd64_scale(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#53:
 
-# qhasm:   x1 = *(float64 *) &CRYPTO_NAMESPACE(alpha32)
-fldl CRYPTO_NAMESPACE(alpha32)(%rip)
+# qhasm:   x1 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha32
+fldl crypto_onetimeauth_poly1305_amd64_alpha32(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#53:<x1#54:
 
 # qhasm:   x1 += h0
@@ -663,8 +663,8 @@ fldl CRYPTO_NAMESPACE(alpha32)(%rip)
 fadd %st(2),%st(0)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#53:<x1#54:
 
-# qhasm:   x1 -= *(float64 *) &CRYPTO_NAMESPACE(alpha32)
-fsubl CRYPTO_NAMESPACE(alpha32)(%rip)
+# qhasm:   x1 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha32
+fsubl crypto_onetimeauth_poly1305_amd64_alpha32(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#53:<x1#54:
 
 # qhasm:   h0 -= x1
@@ -684,8 +684,8 @@ fxch %st(2)
 faddp %st(0),%st(1)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<x1#54:<x0#53:
 
-# qhasm:   x2 = *(float64 *) &CRYPTO_NAMESPACE(alpha64)
-fldl CRYPTO_NAMESPACE(alpha64)(%rip)
+# qhasm:   x2 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha64
+fldl crypto_onetimeauth_poly1305_amd64_alpha64(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<x1#54:<x0#53:<x2#55:
 
 # qhasm:   x2 += h1
@@ -694,8 +694,8 @@ fldl CRYPTO_NAMESPACE(alpha64)(%rip)
 fadd %st(4),%st(0)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<x1#54:<x0#53:<x2#55:
 
-# qhasm:   x2 -= *(float64 *) &CRYPTO_NAMESPACE(alpha64)
-fsubl CRYPTO_NAMESPACE(alpha64)(%rip)
+# qhasm:   x2 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha64
+fsubl crypto_onetimeauth_poly1305_amd64_alpha64(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<x1#54:<x0#53:<x2#55:
 
 # qhasm:   h1 -= x2
@@ -704,8 +704,8 @@ fsubl CRYPTO_NAMESPACE(alpha64)(%rip)
 fsubr %st(0),%st(4)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<x1#54:<x0#53:<x2#55:
 
-# qhasm:   x3 = *(float64 *) &CRYPTO_NAMESPACE(alpha96)
-fldl CRYPTO_NAMESPACE(alpha96)(%rip)
+# qhasm:   x3 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha96
+fldl crypto_onetimeauth_poly1305_amd64_alpha96(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<x1#54:<x0#53:<x2#55:<x3#56:
 
 # qhasm:   x3 += h2
@@ -714,8 +714,8 @@ fldl CRYPTO_NAMESPACE(alpha96)(%rip)
 fadd %st(6),%st(0)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<x1#54:<x0#53:<x2#55:<x3#56:
 
-# qhasm:   x3 -= *(float64 *) &CRYPTO_NAMESPACE(alpha96)
-fsubl CRYPTO_NAMESPACE(alpha96)(%rip)
+# qhasm:   x3 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha96
+fsubl crypto_onetimeauth_poly1305_amd64_alpha96(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<x1#54:<x0#53:<x2#55:<x3#56:
 
 # qhasm:   h2 -= x3
@@ -1066,8 +1066,8 @@ fxch %st(2)
 fldl 128(%rsp)
 # comment:fpstackfrombottom:<h1#41:<h0#42:<h2#40:<h3#39:<y3#70:
 
-# qhasm:   y3 -= *(float64 *) &CRYPTO_NAMESPACE(doffset3minustwo128)
-fsubl CRYPTO_NAMESPACE(doffset3minustwo128)(%rip)
+# qhasm:   y3 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset3minustwo128
+fsubl crypto_onetimeauth_poly1305_amd64_doffset3minustwo128(%rip)
 # comment:fpstackfrombottom:<h1#41:<h0#42:<h2#40:<h3#39:<y3#70:
 
 # qhasm:   h3 += y3
@@ -1088,8 +1088,8 @@ fxch %st(1)
 fldl 120(%rsp)
 # comment:fpstackfrombottom:<h1#41:<h0#42:<h3#39:<h2#40:<y2#71:
 
-# qhasm:   y2 -= *(float64 *) &CRYPTO_NAMESPACE(doffset2)
-fsubl CRYPTO_NAMESPACE(doffset2)(%rip)
+# qhasm:   y2 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset2
+fsubl crypto_onetimeauth_poly1305_amd64_doffset2(%rip)
 # comment:fpstackfrombottom:<h1#41:<h0#42:<h3#39:<h2#40:<y2#71:
 
 # qhasm:   h2 += y2
@@ -1110,8 +1110,8 @@ fxch %st(3)
 fldl 112(%rsp)
 # comment:fpstackfrombottom:<h2#40:<h0#42:<h3#39:<h1#41:<y1#72:
 
-# qhasm:   y1 -= *(float64 *) &CRYPTO_NAMESPACE(doffset1)
-fsubl CRYPTO_NAMESPACE(doffset1)(%rip)
+# qhasm:   y1 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset1
+fsubl crypto_onetimeauth_poly1305_amd64_doffset1(%rip)
 # comment:fpstackfrombottom:<h2#40:<h0#42:<h3#39:<h1#41:<y1#72:
 
 # qhasm:   h1 += y1
@@ -1132,8 +1132,8 @@ fxch %st(2)
 fldl 104(%rsp)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<y0#73:
 
-# qhasm:   y0 -= *(float64 *) &CRYPTO_NAMESPACE(doffset0)
-fsubl CRYPTO_NAMESPACE(doffset0)(%rip)
+# qhasm:   y0 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset0
+fsubl crypto_onetimeauth_poly1305_amd64_doffset0(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<y0#73:
 
 # qhasm:   h0 += y0
@@ -1154,8 +1154,8 @@ jae ._multiplyaddatleast16bytes
 ._multiplyaddatmost15bytes:
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:
 
-# qhasm:   x0 = *(float64 *) &CRYPTO_NAMESPACE(alpha130)
-fldl CRYPTO_NAMESPACE(alpha130)(%rip)
+# qhasm:   x0 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha130
+fldl crypto_onetimeauth_poly1305_amd64_alpha130(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:
 
 # qhasm:   x0 += h3
@@ -1164,8 +1164,8 @@ fldl CRYPTO_NAMESPACE(alpha130)(%rip)
 fadd %st(2),%st(0)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:
 
-# qhasm:   x0 -= *(float64 *) &CRYPTO_NAMESPACE(alpha130)
-fsubl CRYPTO_NAMESPACE(alpha130)(%rip)
+# qhasm:   x0 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha130
+fsubl crypto_onetimeauth_poly1305_amd64_alpha130(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:
 
 # qhasm:   h3 -= x0
@@ -1174,12 +1174,12 @@ fsubl CRYPTO_NAMESPACE(alpha130)(%rip)
 fsubr %st(0),%st(2)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:
 
-# qhasm:   x0 *= *(float64 *) &CRYPTO_NAMESPACE(scale)
-fmull CRYPTO_NAMESPACE(scale)(%rip)
+# qhasm:   x0 *= *(float64 *) &crypto_onetimeauth_poly1305_amd64_scale
+fmull crypto_onetimeauth_poly1305_amd64_scale(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:
 
-# qhasm:   x1 = *(float64 *) &CRYPTO_NAMESPACE(alpha32)
-fldl CRYPTO_NAMESPACE(alpha32)(%rip)
+# qhasm:   x1 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha32
+fldl crypto_onetimeauth_poly1305_amd64_alpha32(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:
 
 # qhasm:   x1 += h0
@@ -1188,8 +1188,8 @@ fldl CRYPTO_NAMESPACE(alpha32)(%rip)
 fadd %st(2),%st(0)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:
 
-# qhasm:   x1 -= *(float64 *) &CRYPTO_NAMESPACE(alpha32)
-fsubl CRYPTO_NAMESPACE(alpha32)(%rip)
+# qhasm:   x1 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha32
+fsubl crypto_onetimeauth_poly1305_amd64_alpha32(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:
 
 # qhasm:   h0 -= x1
@@ -1198,8 +1198,8 @@ fsubl CRYPTO_NAMESPACE(alpha32)(%rip)
 fsubr %st(0),%st(2)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:
 
-# qhasm:   x2 = *(float64 *) &CRYPTO_NAMESPACE(alpha64)
-fldl CRYPTO_NAMESPACE(alpha64)(%rip)
+# qhasm:   x2 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha64
+fldl crypto_onetimeauth_poly1305_amd64_alpha64(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:<x2#76:
 
 # qhasm:   x2 += h1
@@ -1208,8 +1208,8 @@ fldl CRYPTO_NAMESPACE(alpha64)(%rip)
 fadd %st(5),%st(0)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:<x2#76:
 
-# qhasm:   x2 -= *(float64 *) &CRYPTO_NAMESPACE(alpha64)
-fsubl CRYPTO_NAMESPACE(alpha64)(%rip)
+# qhasm:   x2 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha64
+fsubl crypto_onetimeauth_poly1305_amd64_alpha64(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:<x2#76:
 
 # qhasm:   h1 -= x2
@@ -1218,8 +1218,8 @@ fsubl CRYPTO_NAMESPACE(alpha64)(%rip)
 fsubr %st(0),%st(5)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:<x2#76:
 
-# qhasm:   x3 = *(float64 *) &CRYPTO_NAMESPACE(alpha96)
-fldl CRYPTO_NAMESPACE(alpha96)(%rip)
+# qhasm:   x3 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha96
+fldl crypto_onetimeauth_poly1305_amd64_alpha96(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:<x2#76:<x3#77:
 
 # qhasm:   x3 += h2
@@ -1228,8 +1228,8 @@ fldl CRYPTO_NAMESPACE(alpha96)(%rip)
 fadd %st(7),%st(0)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:<x2#76:<x3#77:
 
-# qhasm:   x3 -= *(float64 *) &CRYPTO_NAMESPACE(alpha96)
-fsubl CRYPTO_NAMESPACE(alpha96)(%rip)
+# qhasm:   x3 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha96
+fsubl crypto_onetimeauth_poly1305_amd64_alpha96(%rip)
 # comment:fpstackfrombottom:<h2#40:<h1#41:<h3#39:<h0#42:<x0#74:<x1#75:<x2#76:<x3#77:
 
 # qhasm:   h2 -= x3
@@ -1694,8 +1694,8 @@ fxch %st(3)
 faddl 128(%rsp)
 # comment:fpstackfrombottom:<h0#42:<h2#40:<h1#41:<h3#39:
 
-# qhasm:   h3 -= *(float64 *) &CRYPTO_NAMESPACE(doffset3)
-fsubl CRYPTO_NAMESPACE(doffset3)(%rip)
+# qhasm:   h3 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset3
+fsubl crypto_onetimeauth_poly1305_amd64_doffset3(%rip)
 # comment:fpstackfrombottom:<h0#42:<h2#40:<h1#41:<h3#39:
 
 # qhasm: internal stacktop h2
@@ -1709,8 +1709,8 @@ fxch %st(2)
 faddl 120(%rsp)
 # comment:fpstackfrombottom:<h0#42:<h3#39:<h1#41:<h2#40:
 
-# qhasm:   h2 -= *(float64 *) &CRYPTO_NAMESPACE(doffset2)
-fsubl CRYPTO_NAMESPACE(doffset2)(%rip)
+# qhasm:   h2 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset2
+fsubl crypto_onetimeauth_poly1305_amd64_doffset2(%rip)
 # comment:fpstackfrombottom:<h0#42:<h3#39:<h1#41:<h2#40:
 
 # qhasm: internal stacktop h1
@@ -1724,8 +1724,8 @@ fxch %st(1)
 faddl 112(%rsp)
 # comment:fpstackfrombottom:<h0#42:<h3#39:<h2#40:<h1#41:
 
-# qhasm:   h1 -= *(float64 *) &CRYPTO_NAMESPACE(doffset1)
-fsubl CRYPTO_NAMESPACE(doffset1)(%rip)
+# qhasm:   h1 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset1
+fsubl crypto_onetimeauth_poly1305_amd64_doffset1(%rip)
 # comment:fpstackfrombottom:<h0#42:<h3#39:<h2#40:<h1#41:
 
 # qhasm: internal stacktop h0
@@ -1739,12 +1739,12 @@ fxch %st(3)
 faddl 104(%rsp)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:
 
-# qhasm:   h0 -= *(float64 *) &CRYPTO_NAMESPACE(doffset0)
-fsubl CRYPTO_NAMESPACE(doffset0)(%rip)
+# qhasm:   h0 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_doffset0
+fsubl crypto_onetimeauth_poly1305_amd64_doffset0(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:
 
-# qhasm:   x0 = *(float64 *) &CRYPTO_NAMESPACE(alpha130)
-fldl CRYPTO_NAMESPACE(alpha130)(%rip)
+# qhasm:   x0 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha130
+fldl crypto_onetimeauth_poly1305_amd64_alpha130(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:
 
 # qhasm:   x0 += h3
@@ -1753,8 +1753,8 @@ fldl CRYPTO_NAMESPACE(alpha130)(%rip)
 fadd %st(3),%st(0)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:
 
-# qhasm:   x0 -= *(float64 *) &CRYPTO_NAMESPACE(alpha130)
-fsubl CRYPTO_NAMESPACE(alpha130)(%rip)
+# qhasm:   x0 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha130
+fsubl crypto_onetimeauth_poly1305_amd64_alpha130(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:
 
 # qhasm:   h3 -= x0
@@ -1763,12 +1763,12 @@ fsubl CRYPTO_NAMESPACE(alpha130)(%rip)
 fsubr %st(0),%st(3)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:
 
-# qhasm:   x0 *= *(float64 *) &CRYPTO_NAMESPACE(scale)
-fmull CRYPTO_NAMESPACE(scale)(%rip)
+# qhasm:   x0 *= *(float64 *) &crypto_onetimeauth_poly1305_amd64_scale
+fmull crypto_onetimeauth_poly1305_amd64_scale(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:
 
-# qhasm:   x1 = *(float64 *) &CRYPTO_NAMESPACE(alpha32)
-fldl CRYPTO_NAMESPACE(alpha32)(%rip)
+# qhasm:   x1 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha32
+fldl crypto_onetimeauth_poly1305_amd64_alpha32(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:
 
 # qhasm:   x1 += h0
@@ -1777,8 +1777,8 @@ fldl CRYPTO_NAMESPACE(alpha32)(%rip)
 fadd %st(2),%st(0)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:
 
-# qhasm:   x1 -= *(float64 *) &CRYPTO_NAMESPACE(alpha32)
-fsubl CRYPTO_NAMESPACE(alpha32)(%rip)
+# qhasm:   x1 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha32
+fsubl crypto_onetimeauth_poly1305_amd64_alpha32(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:
 
 # qhasm:   h0 -= x1
@@ -1787,8 +1787,8 @@ fsubl CRYPTO_NAMESPACE(alpha32)(%rip)
 fsubr %st(0),%st(2)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:
 
-# qhasm:   x2 = *(float64 *) &CRYPTO_NAMESPACE(alpha64)
-fldl CRYPTO_NAMESPACE(alpha64)(%rip)
+# qhasm:   x2 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha64
+fldl crypto_onetimeauth_poly1305_amd64_alpha64(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:<x2#100:
 
 # qhasm:   x2 += h1
@@ -1797,8 +1797,8 @@ fldl CRYPTO_NAMESPACE(alpha64)(%rip)
 fadd %st(6),%st(0)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:<x2#100:
 
-# qhasm:   x2 -= *(float64 *) &CRYPTO_NAMESPACE(alpha64)
-fsubl CRYPTO_NAMESPACE(alpha64)(%rip)
+# qhasm:   x2 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha64
+fsubl crypto_onetimeauth_poly1305_amd64_alpha64(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:<x2#100:
 
 # qhasm:   h1 -= x2
@@ -1807,8 +1807,8 @@ fsubl CRYPTO_NAMESPACE(alpha64)(%rip)
 fsubr %st(0),%st(6)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:<x2#100:
 
-# qhasm:   x3 = *(float64 *) &CRYPTO_NAMESPACE(alpha96)
-fldl CRYPTO_NAMESPACE(alpha96)(%rip)
+# qhasm:   x3 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha96
+fldl crypto_onetimeauth_poly1305_amd64_alpha96(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:<x2#100:<x3#101:
 
 # qhasm:   x3 += h2
@@ -1817,8 +1817,8 @@ fldl CRYPTO_NAMESPACE(alpha96)(%rip)
 fadd %st(5),%st(0)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:<x2#100:<x3#101:
 
-# qhasm:   x3 -= *(float64 *) &CRYPTO_NAMESPACE(alpha96)
-fsubl CRYPTO_NAMESPACE(alpha96)(%rip)
+# qhasm:   x3 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha96
+fsubl crypto_onetimeauth_poly1305_amd64_alpha96(%rip)
 # comment:fpstackfrombottom:<h1#41:<h3#39:<h2#40:<h0#42:<x0#98:<x1#99:<x2#100:<x3#101:
 
 # qhasm:   h2 -= x3
@@ -2168,8 +2168,8 @@ fxch %st(2)
 ._nomorebytes:
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:
 
-# qhasm:   x0 = *(float64 *) &CRYPTO_NAMESPACE(alpha130)
-fldl CRYPTO_NAMESPACE(alpha130)(%rip)
+# qhasm:   x0 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha130
+fldl crypto_onetimeauth_poly1305_amd64_alpha130(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:
 
 # qhasm:   x0 += h3
@@ -2178,8 +2178,8 @@ fldl CRYPTO_NAMESPACE(alpha130)(%rip)
 fadd %st(4),%st(0)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:
 
-# qhasm:   x0 -= *(float64 *) &CRYPTO_NAMESPACE(alpha130)
-fsubl CRYPTO_NAMESPACE(alpha130)(%rip)
+# qhasm:   x0 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha130
+fsubl crypto_onetimeauth_poly1305_amd64_alpha130(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:
 
 # qhasm:   h3 -= x0
@@ -2188,12 +2188,12 @@ fsubl CRYPTO_NAMESPACE(alpha130)(%rip)
 fsubr %st(0),%st(4)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:
 
-# qhasm:   x0 *= *(float64 *) &CRYPTO_NAMESPACE(scale)
-fmull CRYPTO_NAMESPACE(scale)(%rip)
+# qhasm:   x0 *= *(float64 *) &crypto_onetimeauth_poly1305_amd64_scale
+fmull crypto_onetimeauth_poly1305_amd64_scale(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:
 
-# qhasm:   x1 = *(float64 *) &CRYPTO_NAMESPACE(alpha32)
-fldl CRYPTO_NAMESPACE(alpha32)(%rip)
+# qhasm:   x1 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha32
+fldl crypto_onetimeauth_poly1305_amd64_alpha32(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:
 
 # qhasm:   x1 += h0
@@ -2202,8 +2202,8 @@ fldl CRYPTO_NAMESPACE(alpha32)(%rip)
 fadd %st(2),%st(0)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:
 
-# qhasm:   x1 -= *(float64 *) &CRYPTO_NAMESPACE(alpha32)
-fsubl CRYPTO_NAMESPACE(alpha32)(%rip)
+# qhasm:   x1 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha32
+fsubl crypto_onetimeauth_poly1305_amd64_alpha32(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:
 
 # qhasm:   h0 -= x1
@@ -2212,8 +2212,8 @@ fsubl CRYPTO_NAMESPACE(alpha32)(%rip)
 fsubr %st(0),%st(2)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:
 
-# qhasm:   x2 = *(float64 *) &CRYPTO_NAMESPACE(alpha64)
-fldl CRYPTO_NAMESPACE(alpha64)(%rip)
+# qhasm:   x2 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha64
+fldl crypto_onetimeauth_poly1305_amd64_alpha64(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:<x2#116:
 
 # qhasm:   x2 += h1
@@ -2222,8 +2222,8 @@ fldl CRYPTO_NAMESPACE(alpha64)(%rip)
 fadd %st(4),%st(0)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:<x2#116:
 
-# qhasm:   x2 -= *(float64 *) &CRYPTO_NAMESPACE(alpha64)
-fsubl CRYPTO_NAMESPACE(alpha64)(%rip)
+# qhasm:   x2 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha64
+fsubl crypto_onetimeauth_poly1305_amd64_alpha64(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:<x2#116:
 
 # qhasm:   h1 -= x2
@@ -2232,8 +2232,8 @@ fsubl CRYPTO_NAMESPACE(alpha64)(%rip)
 fsubr %st(0),%st(4)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:<x2#116:
 
-# qhasm:   x3 = *(float64 *) &CRYPTO_NAMESPACE(alpha96)
-fldl CRYPTO_NAMESPACE(alpha96)(%rip)
+# qhasm:   x3 = *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha96
+fldl crypto_onetimeauth_poly1305_amd64_alpha96(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:<x2#116:<x3#117:
 
 # qhasm:   x3 += h2
@@ -2242,8 +2242,8 @@ fldl CRYPTO_NAMESPACE(alpha96)(%rip)
 fadd %st(6),%st(0)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:<x2#116:<x3#117:
 
-# qhasm:   x3 -= *(float64 *) &CRYPTO_NAMESPACE(alpha96)
-fsubl CRYPTO_NAMESPACE(alpha96)(%rip)
+# qhasm:   x3 -= *(float64 *) &crypto_onetimeauth_poly1305_amd64_alpha96
+fsubl crypto_onetimeauth_poly1305_amd64_alpha96(%rip)
 # comment:fpstackfrombottom:<h3#39:<h2#40:<h1#41:<h0#42:<x0#114:<x1#115:<x2#116:<x3#117:
 
 # qhasm:   stacktop h2
@@ -2307,8 +2307,8 @@ faddp %st(0),%st(3)
 # asm 2: fxch <x0=%st(3)
 fxch %st(3)
 
-# qhasm:   x0 += *(float64 *) &CRYPTO_NAMESPACE(hoffset0)
-faddl CRYPTO_NAMESPACE(hoffset0)(%rip)
+# qhasm:   x0 += *(float64 *) &crypto_onetimeauth_poly1305_amd64_hoffset0
+faddl crypto_onetimeauth_poly1305_amd64_hoffset0(%rip)
 # comment:fpstackfrombottom:<x1#115:<x3#117:<x2#116:<x0#114:
 
 # qhasm: internal stacktop x1
@@ -2316,8 +2316,8 @@ faddl CRYPTO_NAMESPACE(hoffset0)(%rip)
 # asm 2: fxch <x1=%st(3)
 fxch %st(3)
 
-# qhasm:   x1 += *(float64 *) &CRYPTO_NAMESPACE(hoffset1)
-faddl CRYPTO_NAMESPACE(hoffset1)(%rip)
+# qhasm:   x1 += *(float64 *) &crypto_onetimeauth_poly1305_amd64_hoffset1
+faddl crypto_onetimeauth_poly1305_amd64_hoffset1(%rip)
 # comment:fpstackfrombottom:<x0#114:<x3#117:<x2#116:<x1#115:
 
 # qhasm: internal stacktop x2
@@ -2325,8 +2325,8 @@ faddl CRYPTO_NAMESPACE(hoffset1)(%rip)
 # asm 2: fxch <x2=%st(1)
 fxch %st(1)
 
-# qhasm:   x2 += *(float64 *) &CRYPTO_NAMESPACE(hoffset2)
-faddl CRYPTO_NAMESPACE(hoffset2)(%rip)
+# qhasm:   x2 += *(float64 *) &crypto_onetimeauth_poly1305_amd64_hoffset2
+faddl crypto_onetimeauth_poly1305_amd64_hoffset2(%rip)
 # comment:fpstackfrombottom:<x0#114:<x3#117:<x1#115:<x2#116:
 
 # qhasm: internal stacktop x3
@@ -2334,8 +2334,8 @@ faddl CRYPTO_NAMESPACE(hoffset2)(%rip)
 # asm 2: fxch <x3=%st(2)
 fxch %st(2)
 
-# qhasm:   x3 += *(float64 *) &CRYPTO_NAMESPACE(hoffset3)
-faddl CRYPTO_NAMESPACE(hoffset3)(%rip)
+# qhasm:   x3 += *(float64 *) &crypto_onetimeauth_poly1305_amd64_hoffset3
+faddl crypto_onetimeauth_poly1305_amd64_hoffset3(%rip)
 # comment:fpstackfrombottom:<x0#114:<x2#116:<x1#115:<x3#117:
 
 # qhasm: internal stacktop x0

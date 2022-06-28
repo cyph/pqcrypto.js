@@ -4,10 +4,6 @@
 unsigned char x[65536];
 unsigned long long freq[256];
 
-void randombytes_callback(unsigned char *x,unsigned long long xlen)
-{
-}
-
 int main()
 {
   int i;

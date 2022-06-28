@@ -1,2 +1,2 @@
-#define CRYPTO_KEYBYTES 16
-#define CRYPTO_NONCEBYTES 16
+#define crypto_stream_aes128estream_e_schwabe_athlon64_2_KEYBYTES 16
+#define crypto_stream_aes128estream_e_schwabe_athlon64_2_NONCEBYTES 16

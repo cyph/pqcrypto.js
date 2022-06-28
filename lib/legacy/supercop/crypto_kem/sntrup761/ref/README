@@ -4,15 +4,9 @@ paramsmenu.h):
    sntrup653
    sntrup761
    sntrup857
-   sntrup953
-   sntrup1013
-   sntrup1277
    ntrulpr653
    ntrulpr761
    ntrulpr857
-   ntrulpr953
-   ntrulpr1013
-   ntrulpr1277
 
 This implementation is designed primarily for clarity, subject to the
 following constraints:
@@ -28,18 +22,13 @@ following constraints:
    * The implementation avoids other C operations that often take
      variable time. For example, divisions by 3 are computed via
      multiplications and shifts.
+     
+This implementation does _not_ sacrifice clarity for speed. On the
+contrary, this implementation has been rewritten to be even easier to
+understand, with function structure matching the Sage implementation.
 
-Like the Sage implementation, this implementation does _not_ sacrifice
-clarity for speed. There is a close match of function structure between
-this implementation and the Sage implementation.
-
-This implementation has been reviewed for constant-time behavior, and
-has passed TIMECOP with several compiler options. However, it is
-possible for other compilers and compiler options to break constant-time
-behavior. Also, there are at least some platforms where multiplications
-take variable time. Fixing this requires platform-specific effort; see
+This rewrite has not yet been reviewed for correctness or for
+constant-time behavior. It does pass various tests and has no known
+bugs, but there are at least some platforms where multiplications take
+variable time, and fixing this requires platform-specific effort; see
 https://www.bearssl.org/ctmul.html and http://repository.tue.nl/800603.
-
-This implementation passes various tests, including SUPERCOP checksums
-recomputed from pure Sage code. However, this does not rule out the
-possibility of bugs.

@@ -12,7 +12,7 @@
 #include "smu.h"
 
 /* key pair generation */
-int CRYPTO_NAMESPACE(keypair)(unsigned char *pk, unsigned char *sk) {
+int crypto_dh_gls254_opt_keypair(unsigned char *pk, unsigned char *sk) {
     /* var */
     __m128i px0, px1, pl0, pl1;
     __m128i qx0, qx1, ql0, ql1, qz0, qz1;
@@ -35,16 +35,16 @@ int CRYPTO_NAMESPACE(keypair)(unsigned char *pk, unsigned char *sk) {
                     (uint64_t *) &sk[0], (uint64_t *) &sk[16]);
 
     /* end */
-    _mm_storeu_si128((__m128i *) &pk[0], qx0);
-    _mm_storeu_si128((__m128i *) &pk[16], qx1);
-    _mm_storeu_si128((__m128i *) &pk[32], ql0);
-    _mm_storeu_si128((__m128i *) &pk[48], ql1);
+    _mm_store_si128((__m128i *) &pk[0], qx0);
+    _mm_store_si128((__m128i *) &pk[16], qx1);
+    _mm_store_si128((__m128i *) &pk[32], ql0);
+    _mm_store_si128((__m128i *) &pk[48], ql1);
 
     return 0; 
 }
 
 /* shared secret establishment */
-int CRYPTO_NAMESPACETOP(unsigned char *out, const unsigned char *pk, const unsigned char *sk) {
+int crypto_dh_gls254_opt(unsigned char *out, const unsigned char *pk, const unsigned char *sk) {
     /* var */
     __m128i px0, px1, pl0, pl1;
     __m128i qx0, qx1, ql0, ql1, qz0, qz1;
@@ -61,8 +61,8 @@ int CRYPTO_NAMESPACETOP(unsigned char *out, const unsigned char *pk, const unsig
                     (uint64_t *) &sk[0], (uint64_t *) &sk[16]); 
 
     /* end */
-    _mm_storeu_si128((__m128i *) &out[0], qx0);
-    _mm_storeu_si128((__m128i *) &out[16], qx1);
+    _mm_store_si128((__m128i *) &out[0], qx0);
+    _mm_store_si128((__m128i *) &out[16], qx1);
 
     return 0;
 }

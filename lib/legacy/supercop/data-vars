@@ -7,6 +7,7 @@
 version=`cat version`
 
 project=supercop
+shorthostname=`hostname | sed 's/\..*//' | tr -cd '[a-z][A-Z][0-9]' | tr '[A-Z]' '[a-z]'`
 
 top="`pwd`/supercop-data/$shorthostname"
 
@@ -15,7 +16,6 @@ PATH="/usr/sfw/bin:$PATH"
 PATH="$top/scripts:$PATH"
 PATH="$top/okcompilers/bin:$PATH"
 PATH="$top/killafter/bin:$PATH"
-PATH="$top/compiledinfo/bin:$PATH"
 PATH="$top/sinceepoch/bin:$PATH"
 PATH="$top/checksum/bin:$PATH"
 export PATH

@@ -1,1 +1,1 @@
-../../kyber512/ref/symmetric.h
+../../kyber768/ref/symmetric.h

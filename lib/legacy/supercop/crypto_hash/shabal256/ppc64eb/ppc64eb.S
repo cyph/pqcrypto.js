@@ -1399,20 +1399,20 @@ iv256:
 	.long   0x00000001, 0x00000000
 	.size   iv256, .-iv256
 
-# CRYPTO_NAMESPACETOP(out, in, len)
+# crypto_hash_shabal256_ppc64eb(out, in, len)
 #    out   output buffer
 #    in    input data
 #    len   input data length (in bytes)
 #
-	.globl  CRYPTO_NAMESPACETOP
+	.globl  crypto_hash_shabal256_ppc64eb
 	.section   ".opd","aw"
 	.align  3
-CRYPTO_NAMESPACETOP:
-	.quad   .L.CRYPTO_NAMESPACETOP,.TOC.@tocbase,0
+crypto_hash_shabal256_ppc64eb:
+	.quad   .L.crypto_hash_shabal256_ppc64eb,.TOC.@tocbase,0
 	.previous
 	.align  2
-	.type   CRYPTO_NAMESPACETOP, @function
-.L.CRYPTO_NAMESPACETOP:
+	.type   crypto_hash_shabal256_ppc64eb, @function
+.L.crypto_hash_shabal256_ppc64eb:
 	stdu    1, -352(1)
 	mflr    0
 	std     28, 48(1)
@@ -1496,4 +1496,4 @@ CRYPTO_NAMESPACETOP:
 	addi    1, 1, 352
 	mtlr    0
 	blr
-	.size   CRYPTO_NAMESPACETOP, .-CRYPTO_NAMESPACETOP
+	.size   crypto_hash_shabal256_ppc64eb, .-crypto_hash_shabal256_ppc64eb

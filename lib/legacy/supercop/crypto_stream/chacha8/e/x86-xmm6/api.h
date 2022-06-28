@@ -1,2 +1,2 @@
-#define CRYPTO_KEYBYTES 32
-#define CRYPTO_NONCEBYTES 8
+#define crypto_stream_chacha8_e_x86_xmm6_KEYBYTES 32
+#define crypto_stream_chacha8_e_x86_xmm6_NONCEBYTES 8

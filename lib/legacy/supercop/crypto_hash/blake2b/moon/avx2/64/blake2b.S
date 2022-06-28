@@ -6,8 +6,6 @@ GLOBAL_HIDDEN_FN_EXT blake2b_blocks_avx2, 4, 16
 pushq %rbp
 movl $128, %r10d
 movq %rsp, %rbp
-pushq %r14
-leaq blake2b_sigma+192(%rip), %r14
 pushq %r13
 pushq %r12
 pushq %rbx
@@ -97,7 +95,7 @@ vmovdqa %ymm0, %ymm2
 vmovdqa %ymm1, %ymm3
 vmovq %r8, %xmm5
 adcq $0, %r9
-leaq blake2b_sigma(%rip), %rax
+movl $blake2b_sigma, %eax
 vpinsrq $1, %r9, %xmm5, %xmm4
 vmovdqa %ymm9, %ymm5
 vinserti128 $0x1, %xmm11, %ymm4, %ymm4
@@ -157,7 +155,7 @@ movzbl -1(%rax), %r12d
 vinserti128 $0x1, %xmm2, %ymm12, %ymm12
 movzbl -5(%rax), %r11d
 vpaddq %ymm12, %ymm13, %ymm12
-cmp %r14, %rax
+cmpq $blake2b_sigma+192, %rax
 vmovq (%rsi,%r13), %xmm2
 vpaddq %ymm6, %ymm12, %ymm12
 vmovq (%rsi,%rbx), %xmm3
@@ -196,17 +194,14 @@ vmovdqu %ymm1, (%rdi)
 vmovdqu %ymm0, 32(%rdi)
 movq %r8, 64(%rdi)
 movq %r9, 72(%rdi)
-leaq -32(%rbp), %rsp
+leaq -24(%rbp), %rsp
 popq %rbx
 popq %r12
 popq %r13
-popq %r14
 popq %rbp
 ret
 FN_END blake2b_blocks_avx2
 
-
-.section .rodata
 
 .p2align 6
 blake2b_constants:

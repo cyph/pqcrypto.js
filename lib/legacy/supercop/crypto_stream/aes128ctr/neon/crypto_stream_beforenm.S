@@ -117,18 +117,18 @@
 
 # qhasm: reg128 u7
 
-# qhasm: qpushenter CRYPTO_NAMESPACE(beforenm)
+# qhasm: qpushenter crypto_stream_aes128ctr_neon_beforenm
 .align 2
-.global _CRYPTO_NAMESPACE(beforenm)
-.global CRYPTO_NAMESPACE(beforenm)
-.type _CRYPTO_NAMESPACE(beforenm) STT_FUNC
-.type CRYPTO_NAMESPACE(beforenm) STT_FUNC
-_CRYPTO_NAMESPACE(beforenm):
-CRYPTO_NAMESPACE(beforenm):
+.global _crypto_stream_aes128ctr_neon_beforenm
+.global crypto_stream_aes128ctr_neon_beforenm
+.type _crypto_stream_aes128ctr_neon_beforenm STT_FUNC
+.type crypto_stream_aes128ctr_neon_beforenm STT_FUNC
+_crypto_stream_aes128ctr_neon_beforenm:
+crypto_stream_aes128ctr_neon_beforenm:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#0
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm:   xmm0 = mem128[input_1]
 # asm 1: vld1.8 {>xmm0=reg128#1%bot->xmm0=reg128#1%top},[<input_1=int32#2]

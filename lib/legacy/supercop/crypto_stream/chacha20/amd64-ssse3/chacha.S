@@ -3,7 +3,10 @@
 # Derived from the 'amd64-xmm6' implementation by Daniel Bernstein
 # Requires SSSE3 extensions (i.e. Core 2, Core i7, Atom)
 
-.section .rodata
+.data
+
+.globl R16
+.globl R08
 
 .p2align 6
 
@@ -12,10 +15,10 @@ R08: .byte 3, 0 ,1, 2, 7, 4, 5, 6, 11, 8, 9, 10, 15, 12, 13, 14
 
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_keystream_bytes):
-CRYPTO_NAMESPACE(ECRYPT_keystream_bytes):
+.globl _crypto_stream_chacha20_amd64_ssse3_ECRYPT_keystream_bytes
+.globl crypto_stream_chacha20_amd64_ssse3_ECRYPT_keystream_bytes
+_crypto_stream_chacha20_amd64_ssse3_ECRYPT_keystream_bytes:
+crypto_stream_chacha20_amd64_ssse3_ECRYPT_keystream_bytes:
 mov %rsp,%r11
 and $31,%r11
 add $384,%r11
@@ -40,10 +43,10 @@ jmp ._start
 
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes):
-CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes):
+.globl _crypto_stream_chacha20_amd64_ssse3_ECRYPT_decrypt_bytes
+.globl crypto_stream_chacha20_amd64_ssse3_ECRYPT_decrypt_bytes
+_crypto_stream_chacha20_amd64_ssse3_ECRYPT_decrypt_bytes:
+crypto_stream_chacha20_amd64_ssse3_ECRYPT_decrypt_bytes:
 mov %rsp,%r11
 and $31,%r11
 add $384,%r11
@@ -65,10 +68,10 @@ jmp ._start
 
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes):
-CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes):
+.globl _crypto_stream_chacha20_amd64_ssse3_ECRYPT_encrypt_bytes
+.globl crypto_stream_chacha20_amd64_ssse3_ECRYPT_encrypt_bytes
+_crypto_stream_chacha20_amd64_ssse3_ECRYPT_encrypt_bytes:
+crypto_stream_chacha20_amd64_ssse3_ECRYPT_encrypt_bytes:
 mov %rsp,%r11
 and $31,%r11
 add $384,%r11
@@ -92,7 +95,7 @@ cmp  $256,%rdx
 
 jb ._bytesbetween1and255
 
-movdqu 0(%r8),%xmm0
+movdqa 0(%r8),%xmm0
 
 pshufd $0x55,%xmm0,%xmm1
 
@@ -110,7 +113,7 @@ movdqa %xmm2,32(%rsp)
 
 movdqa %xmm3,48(%rsp)
 
-movdqu 16(%r8),%xmm0
+movdqa 16(%r8),%xmm0
 
 pshufd $0x55,%xmm0,%xmm1
 
@@ -128,7 +131,7 @@ movdqa %xmm2,96(%rsp)
 
 movdqa %xmm3,112(%rsp)
 
-movdqu 32(%r8),%xmm0
+movdqa 32(%r8),%xmm0
 
 pshufd $0x55,%xmm0,%xmm1
 
@@ -146,7 +149,7 @@ movdqa %xmm2,160(%rsp)
 
 movdqa %xmm3,176(%rsp)
 
-movdqu 48(%r8),%xmm0
+movdqa 48(%r8),%xmm0
 
 pshufd $0xaa,%xmm0,%xmm1
 
@@ -234,7 +237,7 @@ movdqa %xmm6,256(%rsp)
 
 ._mainloop1:
 
-movdqa R16(%rip), %xmm6 # load
+movdqa R16, %xmm6 # load
 
 paddd %xmm9,%xmm8
 
@@ -280,7 +283,7 @@ pslld $12,%xmm6
 
 pxor  %xmm6,%xmm13
 
-movdqa R08(%rip), %xmm6 # load
+movdqa R08, %xmm6 # load
 
 paddd %xmm9,%xmm8
 
@@ -330,7 +333,7 @@ movdqa %xmm14,272(%rsp)
 
 movdqa 256(%rsp),%xmm6
 
-movdqa R16(%rip), %xmm14  # load
+movdqa R16, %xmm14  # load
 
 paddd %xmm1,%xmm0
 
@@ -376,7 +379,7 @@ pslld $12,%xmm14
 
 pxor  %xmm14,%xmm5
 
-movdqa R08(%rip), %xmm14 # load 
+movdqa R08, %xmm14 # load 
 
 paddd %xmm1,%xmm0
 
@@ -422,7 +425,7 @@ pslld $7,%xmm14
 
 pxor  %xmm14,%xmm5
 
-movdqa R16(%rip), %xmm14 # load
+movdqa R16, %xmm14 # load
 
 paddd %xmm13,%xmm8
 
@@ -468,7 +471,7 @@ pslld $12,%xmm14
 
 pxor  %xmm14,%xmm1
 
-movdqa R08(%rip), %xmm14 # load
+movdqa R08, %xmm14 # load
 
 paddd %xmm13,%xmm8
 
@@ -518,7 +521,7 @@ movdqa %xmm6,256(%rsp)
 
 movdqa 272(%rsp),%xmm14
 
-movdqa R16(%rip), %xmm6 # load
+movdqa R16, %xmm6 # load
 
 paddd %xmm5,%xmm0
 
@@ -566,7 +569,7 @@ pslld $12,%xmm6
 
 pxor  %xmm6,%xmm9
 
-movdqa R08(%rip), %xmm6 # load
+movdqa R08, %xmm6 # load
 
 paddd %xmm5,%xmm0
 
@@ -1166,13 +1169,13 @@ leaq 320(%rsp),%rsi
 
 movq %rdx,288(%rsp)
 
-movdqu 0(%r8),%xmm0
+movdqa 0(%r8),%xmm0
 
-movdqu 16(%r8),%xmm1
+movdqa 16(%r8),%xmm1
 
-movdqu 32(%r8),%xmm2
+movdqa 32(%r8),%xmm2
 
-movdqu 48(%r8),%xmm3
+movdqa 48(%r8),%xmm3
 
 mov  $20,%rdx
 
@@ -1186,7 +1189,7 @@ pxor  %xmm0,%xmm3
 #pslld $16,%xmm3
 #psrld $16,%xmm4
 #pxor  %xmm4,%xmm3
-pshufb R16(%rip), %xmm3
+pshufb (R16), %xmm3
 
 paddd %xmm3,%xmm2
 
@@ -1211,7 +1214,7 @@ pxor  %xmm0,%xmm3
 pshufd $0x93,%xmm0,%xmm0
 
 #pxor  %xmm4,%xmm3
-pshufb R08(%rip), %xmm3
+pshufb (R08), %xmm3
 
 paddd %xmm3,%xmm2
 
@@ -1239,7 +1242,7 @@ pxor  %xmm0,%xmm3
 #pslld $16,%xmm3
 #psrld $16,%xmm4
 #pxor  %xmm4,%xmm3
-pshufb R16(%rip), %xmm3
+pshufb (R16), %xmm3
 
 paddd %xmm3,%xmm2
 
@@ -1264,7 +1267,7 @@ pxor  %xmm0,%xmm3
 pshufd $0x39,%xmm0,%xmm0
 
 #pxor  %xmm4,%xmm3
-pshufb R08(%rip), %xmm3
+pshufb (R08), %xmm3
 
 paddd %xmm3,%xmm2
 
@@ -1292,25 +1295,21 @@ paddd 32(%r8),%xmm2
 
 paddd 48(%r8),%xmm3
 
-movdqu 0(%rsi),%xmm4
-pxor %xmm4,%xmm0
+pxor 0(%rsi),%xmm0
 
-movdqu 16(%rsi),%xmm4
-pxor %xmm4,%xmm1
+pxor 16(%rsi),%xmm1
 
-movdqu 32(%rsi),%xmm4
-pxor %xmm4,%xmm2
+pxor 32(%rsi),%xmm2
 
-movdqu 48(%rsi),%xmm4
-pxor %xmm4,%xmm3
+pxor 48(%rsi),%xmm3
 
-movdqu %xmm0,0(%rdi)
+movdqa %xmm0,0(%rdi)
 
-movdqu %xmm1,16(%rdi)
+movdqa %xmm1,16(%rdi)
 
-movdqu %xmm2,32(%rdi)
+movdqa %xmm2,32(%rdi)
 
-movdqu %xmm3,48(%rdi)
+movdqa %xmm3,48(%rdi)
 
 movq 288(%rsp),%rdx
 
@@ -1367,10 +1366,10 @@ jmp ._bytesbetween1and255
 
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_init)
-.globl CRYPTO_NAMESPACE(ECRYPT_init)
-_CRYPTO_NAMESPACE(ECRYPT_init):
-CRYPTO_NAMESPACE(ECRYPT_init):
+.globl _crypto_stream_chacha20_amd64_ssse3_ECRYPT_init
+.globl crypto_stream_chacha20_amd64_ssse3_ECRYPT_init
+_crypto_stream_chacha20_amd64_ssse3_ECRYPT_init:
+crypto_stream_chacha20_amd64_ssse3_ECRYPT_init:
 mov %rsp,%r11
 and $31,%r11
 add $384,%r11
@@ -1383,10 +1382,10 @@ ret
 
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_keysetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_keysetup)
-_CRYPTO_NAMESPACE(ECRYPT_keysetup):
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+.globl _crypto_stream_chacha20_amd64_ssse3_ECRYPT_keysetup
+.globl crypto_stream_chacha20_amd64_ssse3_ECRYPT_keysetup
+_crypto_stream_chacha20_amd64_ssse3_ECRYPT_keysetup:
+crypto_stream_chacha20_amd64_ssse3_ECRYPT_keysetup:
 mov %rsp,%r11
 and $31,%r11
 add $384,%r11
@@ -1497,10 +1496,10 @@ ret
 
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-_CRYPTO_NAMESPACE(ECRYPT_ivsetup):
-CRYPTO_NAMESPACE(ECRYPT_ivsetup):
+.globl _crypto_stream_chacha20_amd64_ssse3_ECRYPT_ivsetup
+.globl crypto_stream_chacha20_amd64_ssse3_ECRYPT_ivsetup
+_crypto_stream_chacha20_amd64_ssse3_ECRYPT_ivsetup:
+crypto_stream_chacha20_amd64_ssse3_ECRYPT_ivsetup:
 mov %rsp,%r11
 and $31,%r11
 add $384,%r11

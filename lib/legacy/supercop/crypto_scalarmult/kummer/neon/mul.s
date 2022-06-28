@@ -126,7 +126,7 @@ mul:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#32
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm: ptr25 = &mask25_stack
 # asm 1: lea >ptr25=int32#4,<mask25_stack=stack128#1

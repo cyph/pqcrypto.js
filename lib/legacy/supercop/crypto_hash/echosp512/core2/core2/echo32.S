@@ -16207,9 +16207,9 @@ T.43:
 	ret
 	.size	T.43, .-T.43
 	.p2align 4,,15
-.globl CRYPTO_NAMESPACETOP
-	.type	CRYPTO_NAMESPACETOP, @function
-CRYPTO_NAMESPACETOP:
+.globl crypto_hash_echosp512_core2_core2
+	.type	crypto_hash_echosp512_core2_core2, @function
+crypto_hash_echosp512_core2_core2:
 	pushl	%ebp
 	movl	%esp, %ebp
 	subl	$24, %esp
@@ -16226,7 +16226,7 @@ CRYPTO_NAMESPACETOP:
 	sbbl	%eax, %eax
 	notl	%eax
 	ret
-	.size	CRYPTO_NAMESPACETOP, .-CRYPTO_NAMESPACETOP
+	.size	crypto_hash_echosp512_core2_core2, .-crypto_hash_echosp512_core2_core2
 	.p2align 4,,15
 .globl Hash
 	.type	Hash, @function

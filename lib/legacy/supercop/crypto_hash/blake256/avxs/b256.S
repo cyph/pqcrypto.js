@@ -1,19 +1,19 @@
 .intel_syntax noprefix
 
-.globl _CRYPTO_NAMESPACE(blake256_compress)
-.globl CRYPTO_NAMESPACE(blake256_compress)
+.globl _blake256_compress
+.globl blake256_compress
 
 .text
 .align 64
 
-CRYPTO_NAMESPACE(blake256_compress):
-_CRYPTO_NAMESPACE(blake256_compress):
+blake256_compress:
+_blake256_compress:
  push rbp
  mov rbp, rsp
  sub rsp, 64
  and rsp, -16
  xor eax, eax
- vmovdqa xmm0, [rip + u8to32]
+ vmovdqa xmm0, [u8to32]
  vmovdqu xmm10, [rsi + 00]
  vmovdqu xmm11, [rsi + 16]
  vmovdqu xmm12, [rsi + 32]
@@ -28,8 +28,8 @@ _CRYPTO_NAMESPACE(blake256_compress):
  vmovdqa [rsp + 48], xmm13
  vmovdqa xmm0, [rdi + 00]
  vmovdqa xmm1, [rdi + 16]
- vmovdqa xmm2, [rip + const_c + 00]
- vmovdqa xmm3, [rip + const_c + 16]
+ vmovdqa xmm2, [const_c + 00]
+ vmovdqa xmm3, [const_c + 16]
  cmp eax, [rdi+60]
  jnz _skip_counter
  vmovd xmm8, [rdi + 48]
@@ -37,8 +37,8 @@ _CRYPTO_NAMESPACE(blake256_compress):
  vshufps xmm8, xmm8, xmm9, 0
  vxorps xmm3, xmm3, xmm8
 _skip_counter:
- vmovdqa xmm14, [rip + rot8]
- vmovdqa xmm15, [rip + rot16]
+ vmovdqa xmm14, [rot8]
+ vmovdqa xmm15, [rot16]
 vpunpckldq xmm8, xmm10, xmm11
 vpunpckhdq xmm9, xmm10, xmm11
 vpunpckldq xmm4, xmm8, xmm9
@@ -47,10 +47,10 @@ vpunpckldq xmm8, xmm12, xmm13
 vpunpckhdq xmm9, xmm12, xmm13
 vpunpckldq xmm6, xmm8, xmm9
 vpunpckhdq xmm7, xmm8, xmm9
-vpxor xmm4, xmm4, [rip + const_z + 0*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 0*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 0*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 0*64 + 48]
+vpxor xmm4, xmm4, [const_z + 0*64 + 00]
+vpxor xmm5, xmm5, [const_z + 0*64 + 16]
+vpxor xmm6, xmm6, [const_z + 0*64 + 32]
+vpxor xmm7, xmm7, [const_z + 0*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -104,10 +104,10 @@ vpinsrd xmm6, xmm6, [rsp + 11*4], 0
 vpshufd xmm6, xmm6, 0b01001011
 vpunpckhdq xmm7, xmm11, xmm10
 vpblendw xmm7, xmm7, xmm13, 0b00000011
-vpxor xmm4, xmm4, [rip + const_z + 1*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 1*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 1*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 1*64 + 48]
+vpxor xmm4, xmm4, [const_z + 1*64 + 00]
+vpxor xmm5, xmm5, [const_z + 1*64 + 16]
+vpxor xmm6, xmm6, [const_z + 1*64 + 32]
+vpxor xmm7, xmm7, [const_z + 1*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -162,10 +162,10 @@ vpshufd xmm6, xmm6, 0b01110010
 vpblendw xmm7, xmm11, xmm10, 0b00001100
 vpinsrd xmm7, xmm7, [rsp + 14*4], 3
 vpshufd xmm7, xmm7, 0b00011011
-vpxor xmm4, xmm4, [rip + const_z + 2*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 2*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 2*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 2*64 + 48]
+vpxor xmm4, xmm4, [const_z + 2*64 + 00]
+vpxor xmm5, xmm5, [const_z + 2*64 + 16]
+vpxor xmm6, xmm6, [const_z + 2*64 + 32]
+vpxor xmm7, xmm7, [const_z + 2*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -221,10 +221,10 @@ vpshufd xmm6, xmm6, 0b11000110
 vpunpckldq xmm8, xmm10, xmm12
 vpunpckhdq xmm7, xmm11, xmm12
 vpunpcklqdq xmm7, xmm7, xmm8
-vpxor xmm4, xmm4, [rip + const_z + 3*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 3*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 3*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 3*64 + 48]
+vpxor xmm4, xmm4, [const_z + 3*64 + 00]
+vpxor xmm5, xmm5, [const_z + 3*64 + 16]
+vpxor xmm6, xmm6, [const_z + 3*64 + 32]
+vpxor xmm7, xmm7, [const_z + 3*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -279,10 +279,10 @@ vpunpckhqdq xmm6, xmm6, xmm8
 vpunpckldq xmm7, xmm10, xmm13
 vpblendw xmm7, xmm7, xmm12, 0b00000011
 vpshufd xmm7, xmm7, 0b11000110
-vpxor xmm4, xmm4, [rip + const_z + 4*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 4*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 4*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 4*64 + 48]
+vpxor xmm4, xmm4, [const_z + 4*64 + 00]
+vpxor xmm5, xmm5, [const_z + 4*64 + 16]
+vpxor xmm6, xmm6, [const_z + 4*64 + 32]
+vpxor xmm7, xmm7, [const_z + 4*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -337,10 +337,10 @@ vpshufd xmm6, xmm6, 0b01101100
 vpshufd xmm7, xmm13, 0b00100001
 vpunpcklqdq xmm9, xmm11, xmm12
 vpblendw xmm7, xmm7, xmm9, 0b11001100
-vpxor xmm4, xmm4, [rip + const_z + 5*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 5*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 5*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 5*64 + 48]
+vpxor xmm4, xmm4, [const_z + 5*64 + 00]
+vpxor xmm5, xmm5, [const_z + 5*64 + 16]
+vpxor xmm6, xmm6, [const_z + 5*64 + 32]
+vpxor xmm7, xmm7, [const_z + 5*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -394,10 +394,10 @@ vpshufd xmm6, xmm6, 0b01111000
 vpunpckhdq xmm7, xmm11, xmm12
 vpunpckhqdq xmm7, xmm7, xmm10
 vpshufd xmm7, xmm7, 0b01101100
-vpxor xmm4, xmm4, [rip + const_z + 6*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 6*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 6*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 6*64 + 48]
+vpxor xmm4, xmm4, [const_z + 6*64 + 00]
+vpxor xmm5, xmm5, [const_z + 6*64 + 16]
+vpxor xmm6, xmm6, [const_z + 6*64 + 32]
+vpxor xmm7, xmm7, [const_z + 6*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -453,10 +453,10 @@ vpblendw xmm6, xmm6, xmm8, 0b00111100
 vpunpckldq xmm7, xmm10, xmm11
 vpunpckhdq xmm8, xmm11, xmm12
 vpunpcklqdq xmm7, xmm7, xmm8
-vpxor xmm4, xmm4, [rip + const_z + 7*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 7*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 7*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 7*64 + 48]
+vpxor xmm4, xmm4, [const_z + 7*64 + 00]
+vpxor xmm5, xmm5, [const_z + 7*64 + 16]
+vpxor xmm6, xmm6, [const_z + 7*64 + 32]
+vpxor xmm7, xmm7, [const_z + 7*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -510,10 +510,10 @@ vpblendw xmm6, xmm6, xmm12, 0b00110000
 vpshufd xmm6, xmm6, 0b10110100
 vpblendw xmm7, xmm11, xmm10, 0b00110000
 vpshufd xmm7, xmm7, 0b01001110
-vpxor xmm4, xmm4, [rip + const_z + 8*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 8*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 8*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 8*64 + 48]
+vpxor xmm4, xmm4, [const_z + 8*64 + 00]
+vpxor xmm5, xmm5, [const_z + 8*64 + 16]
+vpxor xmm6, xmm6, [const_z + 8*64 + 32]
+vpxor xmm7, xmm7, [const_z + 8*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -567,10 +567,10 @@ vpinsrd xmm6, xmm6, [rsp + 3*4], 2
 vpblendw xmm9, xmm13, xmm12, 0b11000000
 vpshufd xmm9, xmm9, 0b00101101
 vpalignr xmm7, xmm10, xmm9, 4
-vpxor xmm4, xmm4, [rip + const_z + 9*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 9*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 9*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 9*64 + 48]
+vpxor xmm4, xmm4, [const_z + 9*64 + 00]
+vpxor xmm5, xmm5, [const_z + 9*64 + 16]
+vpxor xmm6, xmm6, [const_z + 9*64 + 32]
+vpxor xmm7, xmm7, [const_z + 9*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -621,10 +621,10 @@ vpunpckldq xmm8, xmm12, xmm13
 vpunpckhdq xmm9, xmm12, xmm13
 vpunpckldq xmm6, xmm8, xmm9
 vpunpckhdq xmm7, xmm8, xmm9
-vpxor xmm4, xmm4, [rip + const_z + 0*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 0*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 0*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 0*64 + 48]
+vpxor xmm4, xmm4, [const_z + 0*64 + 00]
+vpxor xmm5, xmm5, [const_z + 0*64 + 16]
+vpxor xmm6, xmm6, [const_z + 0*64 + 32]
+vpxor xmm7, xmm7, [const_z + 0*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -678,10 +678,10 @@ vpinsrd xmm6, xmm6, [rsp + 11*4], 0
 vpshufd xmm6, xmm6, 0b01001011
 vpunpckhdq xmm7, xmm11, xmm10
 vpblendw xmm7, xmm7, xmm13, 0b00000011
-vpxor xmm4, xmm4, [rip + const_z + 1*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 1*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 1*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 1*64 + 48]
+vpxor xmm4, xmm4, [const_z + 1*64 + 00]
+vpxor xmm5, xmm5, [const_z + 1*64 + 16]
+vpxor xmm6, xmm6, [const_z + 1*64 + 32]
+vpxor xmm7, xmm7, [const_z + 1*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -736,10 +736,10 @@ vpshufd xmm6, xmm6, 0b01110010
 vpblendw xmm7, xmm11, xmm10, 0b00001100
 vpinsrd xmm7, xmm7, [rsp + 14*4], 3
 vpshufd xmm7, xmm7, 0b00011011
-vpxor xmm4, xmm4, [rip + const_z + 2*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 2*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 2*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 2*64 + 48]
+vpxor xmm4, xmm4, [const_z + 2*64 + 00]
+vpxor xmm5, xmm5, [const_z + 2*64 + 16]
+vpxor xmm6, xmm6, [const_z + 2*64 + 32]
+vpxor xmm7, xmm7, [const_z + 2*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0
@@ -795,10 +795,10 @@ vpshufd xmm6, xmm6, 0b11000110
 vpunpckldq xmm8, xmm10, xmm12
 vpunpckhdq xmm7, xmm11, xmm12
 vpunpcklqdq xmm7, xmm7, xmm8
-vpxor xmm4, xmm4, [rip + const_z + 3*64 + 00]
-vpxor xmm5, xmm5, [rip + const_z + 3*64 + 16]
-vpxor xmm6, xmm6, [rip + const_z + 3*64 + 32]
-vpxor xmm7, xmm7, [rip + const_z + 3*64 + 48]
+vpxor xmm4, xmm4, [const_z + 3*64 + 00]
+vpxor xmm5, xmm5, [const_z + 3*64 + 16]
+vpxor xmm6, xmm6, [const_z + 3*64 + 32]
+vpxor xmm7, xmm7, [const_z + 3*64 + 48]
  vpaddd xmm0, xmm0, xmm4
  vpaddd xmm0, xmm0, xmm1
  vpxor xmm3, xmm3, xmm0

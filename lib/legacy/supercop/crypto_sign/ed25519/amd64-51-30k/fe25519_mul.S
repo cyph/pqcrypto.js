@@ -97,13 +97,13 @@
 
 # qhasm: stack64 mulx419_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(batch_fe25519_mul)
+# qhasm: enter crypto_sign_ed25519_amd64_51_30k_batch_fe25519_mul
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(batch_fe25519_mul)
-.globl CRYPTO_NAMESPACE(batch_fe25519_mul)
-_CRYPTO_NAMESPACE(batch_fe25519_mul):
-CRYPTO_NAMESPACE(batch_fe25519_mul):
+.globl _crypto_sign_ed25519_amd64_51_30k_batch_fe25519_mul
+.globl crypto_sign_ed25519_amd64_51_30k_batch_fe25519_mul
+_crypto_sign_ed25519_amd64_51_30k_batch_fe25519_mul:
+crypto_sign_ed25519_amd64_51_30k_batch_fe25519_mul:
 mov %rsp,%r11
 and $31,%r11
 add $96,%r11
@@ -689,10 +689,10 @@ add  %rax,%r14
 # asm 2: adc <mulrdx=%rdx,<mulr31=%r15
 adc %rdx,%r15
 
-# qhasm:   mulredmask = *(uint64 *) &CRYPTO_NAMESPACE(batch_REDMASK51)
-# asm 1: movq CRYPTO_NAMESPACE(batch_REDMASK51),>mulredmask=int64#2
-# asm 2: movq CRYPTO_NAMESPACE(batch_REDMASK51),>mulredmask=%rsi
-movq CRYPTO_NAMESPACE(batch_REDMASK51)(%rip),%rsi
+# qhasm:   mulredmask = *(uint64 *) &crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>mulredmask=int64#2
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>mulredmask=%rsi
+movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,%rsi
 
 # qhasm:   mulr01 = (mulr01.r0) << 13
 # asm 1: shld $13,<r0=int64#5,<mulr01=int64#6

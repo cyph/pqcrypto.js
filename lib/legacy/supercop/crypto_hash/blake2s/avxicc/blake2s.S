@@ -4,10 +4,10 @@
 	.text
 ..TXTST0:
        .align    16,0x90
-	.globl CRYPTO_NAMESPACETOP
-    .globl _CRYPTO_NAMESPACETOP
-CRYPTO_NAMESPACETOP:
-_CRYPTO_NAMESPACETOP:
+	.globl crypto_hash_blake2s_avxicc
+    .globl _crypto_hash_blake2s_avxicc
+crypto_hash_blake2s_avxicc:
+_crypto_hash_blake2s_avxicc:
 ..B1.1:                         
 ..___tag_value_crypto_hash.1:                                   
         xorl      %r11d, %r11d                                  
@@ -1256,8 +1256,8 @@ _CRYPTO_NAMESPACETOP:
         ret                                                     
         .align    16,0x90
 ..___tag_value_crypto_hash.5:                                   
-	.type	CRYPTO_NAMESPACETOP,@function
-	.size	CRYPTO_NAMESPACETOP,.-CRYPTO_NAMESPACETOP
+	.type	crypto_hash_blake2s_avxicc,@function
+	.size	crypto_hash_blake2s_avxicc,.-crypto_hash_blake2s_avxicc
 	.data
 
 	.section .rodata, "a"

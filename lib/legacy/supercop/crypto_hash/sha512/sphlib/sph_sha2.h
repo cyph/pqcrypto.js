@@ -40,26 +40,6 @@
 #ifndef SPH_SHA2_H__
 #define SPH_SHA2_H__
 
-#define sph_sha224_init CRYPTO_NAMESPACE(sphlib_sha224_init)
-#define sph_sha224 CRYPTO_NAMESPACE(sphlib_sha224)
-#define sph_sha224_close CRYPTO_NAMESPACE(sphlib_sha224_close)
-#define sph_sha224_addbits_and_close CRYPTO_NAMESPACE(sphlib_sha224_addbits_and_close)
-#define sph_sha224_comp CRYPTO_NAMESPACE(sphlib_sha224_comp)
-
-#define sph_sha256_init CRYPTO_NAMESPACE(sphlib_sha256_init)
-#define sph_sha256_close CRYPTO_NAMESPACE(sphlib_sha256_close)
-#define sph_sha256_addbits_and_close CRYPTO_NAMESPACE(sphlib_sha256_addbits_and_close)
-
-#define sph_sha384_init CRYPTO_NAMESPACE(sphlib_sha384_init)
-#define sph_sha384 CRYPTO_NAMESPACE(sphlib_sha384)
-#define sph_sha384_close CRYPTO_NAMESPACE(sphlib_sha384_close)
-#define sph_sha384_addbits_and_close CRYPTO_NAMESPACE(sphlib_sha384_addbits_and_close)
-#define sph_sha384_comp CRYPTO_NAMESPACE(sphlib_sha384_comp)
-
-#define sph_sha512_init CRYPTO_NAMESPACE(sphlib_sha512_init)
-#define sph_sha512_close CRYPTO_NAMESPACE(sphlib_sha512_close)
-#define sph_sha512_addbits_and_close CRYPTO_NAMESPACE(sphlib_sha512_addbits_and_close)
-
 #include <stddef.h>
 #include "sph_types.h"
 

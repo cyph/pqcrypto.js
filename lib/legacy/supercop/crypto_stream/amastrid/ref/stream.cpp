@@ -9,7 +9,7 @@ int crypto_stream(
 	const unsigned char *k
 )
 {
-   CounterMode prng(k, CRYPTO_NAMESPACE(KEYBYTES), Amastrid::BlockSize32, 3);
+   CounterMode prng(k, crypto_stream_amastrid_ref_KEYBYTES, Amastrid::BlockSize32, 3);
 	unsigned char *p=out;
 	for (unsigned long long l=0; l<outlen; l++,p++)
 	{
@@ -26,7 +26,7 @@ int crypto_stream_xor(
 	const unsigned char *k
 )
 {
-   CounterMode prng(k, CRYPTO_NAMESPACE(KEYBYTES), Amastrid::BlockSize32, 3);
+   CounterMode prng(k, crypto_stream_amastrid_ref_KEYBYTES, Amastrid::BlockSize32, 3);
    unsigned char rnd;
 	const unsigned char *p1=in;
 	unsigned char *p2=out;

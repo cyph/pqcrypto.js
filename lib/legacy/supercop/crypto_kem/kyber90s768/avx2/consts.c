@@ -1,1 +1,1 @@
-../../kyber512/avx2/consts.c
+../../kyber768/avx2/consts.c

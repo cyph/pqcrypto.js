@@ -1,1 +1,1 @@
-../../dilithium2/ref/sign.c
+../../dilithium3/ref/sign.c

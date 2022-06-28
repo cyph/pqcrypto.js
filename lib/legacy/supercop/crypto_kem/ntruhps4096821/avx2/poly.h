@@ -1,1 +1,0 @@
-../../ntruhrss701/avx2/poly.h

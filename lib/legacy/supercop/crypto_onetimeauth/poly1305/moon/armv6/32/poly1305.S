@@ -313,7 +313,7 @@ GLOBAL_HIDDEN_FN poly1305_auth_armv6
 poly1305_auth_armv6_local:
 stmfd sp!, {r4-r8, lr}
 mov r8, sp
-bic sp, sp, #63
+and sp, sp, #(~63)
 sub sp, sp, #64
 mov r4, r0
 mov r5, r1

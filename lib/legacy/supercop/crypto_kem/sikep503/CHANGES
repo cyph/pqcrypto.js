@@ -1,0 +1,7 @@
+All files in top directory.
+Use randombytes.h, not rng.h or random.h.
+Rename included .c files as .inc.
+Remove COMPILER definitions from config.h.
+Define _AMD64_ and __LINUX__ in config.h.
+Include crypto_kem.h in api.c and sike.inc.
+Remove conflicting crypto_kem* macros.

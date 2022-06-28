@@ -18,7 +18,7 @@ typedef struct  {
   u8  buf[128];
 } state;
 
-static const u64 cst[16] = {
+const u64 cst[16] = {
   0x243F6A8885A308D3ULL,0x13198A2E03707344ULL,0xA4093822299F31D0ULL,0x082EFA98EC4E6C89ULL,
   0x452821E638D01377ULL,0xBE5466CF34E90C6CULL,0xC0AC29B7C97C50DDULL,0x3F84D5B5B5470917ULL,
   0x9216D5D98979FB1BULL,0xD1310BA698DFB5ACULL,0x2FFD72DBD01ADFB7ULL,0xB8E1AFED6A267E96ULL,
@@ -33,7 +33,7 @@ static const u8 padding[129] =
 
 #define ROT(x,n) (((x)<<(64-n))|((x)>>(n)))
 
-static void blake512_compress( state *S, const u8 *block )
+void blake512_compress( state *S, const u8 *block )
 {
   u64 m0;
   u64 m1;
@@ -268,7 +268,7 @@ static void blake512_compress( state *S, const u8 *block )
 }
 
 
-static void blake512_init( state *S ) {
+void blake512_init( state *S ) {
   S->h[0]=0x6A09E667F3BCC908ULL;
   S->h[1]=0xBB67AE8584CAA73BULL;
   S->h[2]=0x3C6EF372FE94F82BULL;
@@ -282,7 +282,7 @@ static void blake512_init( state *S ) {
 }
 
 
-static void blake512_update( state * S, const u8 * data, u64 datalen ) {
+void blake512_update( state * S, const u8 * data, u64 datalen ) {
 
   int left = (S->buflen >> 3); 
   int fill = 128 - left;
@@ -311,7 +311,7 @@ static void blake512_update( state * S, const u8 * data, u64 datalen ) {
 }
 
 
-static void blake512_final( state * S, u8 * digest ) {
+void blake512_final( state * S, u8 * digest ) {
 
   u8 msglen[16], zo=0x01,oo=0x81;
   u64 lo=S->t[0] + S->buflen, hi = S->t[1];

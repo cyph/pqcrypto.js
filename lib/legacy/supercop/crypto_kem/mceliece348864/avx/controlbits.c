@@ -1,220 +1,237 @@
-/* This file is for implementing the Nassimi-Sahni algorithm */
-/* See David Nassimi, Sartaj Sahni "Parallel algorithms to set up the Benes permutationnetwork" */
-/* See also https://cr.yp.to/papers/controlbits-20200923.pdf */
+/* 
+  This file is for functions required for generating the control bits of the Benes network w.r.t. a random permutation
+  see the Lev-Pippenger-Valiant paper https://www.computer.org/csdl/trans/tc/1981/02/06312171.pdf
+*/
 
-#include <string.h>
-#include "crypto_declassify.h"
 #include "controlbits.h"
-#include "int32_sort.h"
-typedef int16_t int16;
-typedef int32_t int32;
-#include "crypto_int32.h"
-#define int32_min crypto_int32_min
-#include "crypto_int16.h"
 
-/* parameters: 1 <= w <= 14; n = 2^w */
-/* input: permutation pi of {0,1,...,n-1} */
-/* output: (2m-1)n/2 control bits at positions pos,pos+step,... */
-/* output position pos is by definition 1&(out[pos/8]>>(pos&7)) */
-/* caller must 0-initialize positions first */
-/* temp must have space for int32[2*n] */
-static void cbrecursion(unsigned char *out,long long pos,long long step,const int16 *pi,long long w,long long n,int32 *temp)
+#include "randombytes.h"
+#include "uint32_sort.h"
+#include "params.h"
+
+#include <stdint.h>
+
+typedef char bit;
+
+static bit is_smaller(uint32_t a, uint32_t b)
 {
-#define A temp
-#define B (temp+n)
-#define q ((int16 *) (temp+n+n/4))
-/* q can start anywhere between temp+n and temp+n/2 */
+  uint32_t ret = 0;
 
-  long long x,i,j,k;
+  ret = a - b;
+  ret >>= 31;
 
-  if (w == 1) {
-    out[pos>>3] ^= pi[0]<<(pos&7);
-    return;
-  }
-
-  for (x = 0;x < n;++x) A[x] = ((pi[x]^1)<<16)|pi[x^1];
-  int32_sort(A,n); /* A = (id<<16)+pibar */
-
-  for (x = 0;x < n;++x) {
-    int32 Ax = A[x];
-    int32 px = Ax&0xffff;
-    int32 cx = int32_min(px,x);
-    B[x] = (px<<16)|cx;
-  }
-  /* B = (p<<16)+c */
-
-  for (x = 0;x < n;++x) A[x] = (A[x]<<16)|x; /* A = (pibar<<16)+id */
-  int32_sort(A,n); /* A = (id<<16)+pibar^-1 */
-
-  for (x = 0;x < n;++x) A[x] = (A[x]<<16)+(B[x]>>16); /* A = (pibar^(-1)<<16)+pibar */
-  int32_sort(A,n); /* A = (id<<16)+pibar^2 */
-
-  if (w <= 10) {
-    for (x = 0;x < n;++x) B[x] = ((A[x]&0xffff)<<10)|(B[x]&0x3ff);
-
-    for (i = 1;i < w-1;++i) {
-      /* B = (p<<10)+c */
-
-      for (x = 0;x < n;++x) A[x] = ((B[x]&~0x3ff)<<6)|x; /* A = (p<<16)+id */
-      int32_sort(A,n); /* A = (id<<16)+p^{-1} */
-
-      for (x = 0;x < n;++x) A[x] = (A[x]<<20)|B[x]; /* A = (p^{-1}<<20)+(p<<10)+c */
-      int32_sort(A,n); /* A = (id<<20)+(pp<<10)+cp */
-
-      for (x = 0;x < n;++x) {
-        int32 ppcpx = A[x]&0xfffff;
-        int32 ppcx = (A[x]&0xffc00)|(B[x]&0x3ff);
-        B[x] = int32_min(ppcx,ppcpx);
-      }
-    }
-    for (x = 0;x < n;++x) B[x] &= 0x3ff;
-  } else {
-    for (x = 0;x < n;++x) B[x] = (A[x]<<16)|(B[x]&0xffff);
-
-    for (i = 1;i < w-1;++i) {
-      /* B = (p<<16)+c */
-
-      for (x = 0;x < n;++x) A[x] = (B[x]&~0xffff)|x;
-      int32_sort(A,n); /* A = (id<<16)+p^(-1) */
-
-      for (x = 0;x < n;++x) A[x] = (A[x]<<16)|(B[x]&0xffff);
-      /* A = p^(-1)<<16+c */
-
-      if (i < w-2) {
-        for (x = 0;x < n;++x) B[x] = (A[x]&~0xffff)|(B[x]>>16);
-        /* B = (p^(-1)<<16)+p */
-        int32_sort(B,n); /* B = (id<<16)+p^(-2) */
-        for (x = 0;x < n;++x) B[x] = (B[x]<<16)|(A[x]&0xffff);
-        /* B = (p^(-2)<<16)+c */
-      }
-  
-      int32_sort(A,n);
-      /* A = id<<16+cp */
-      for (x = 0;x < n;++x) {
-        int32 cpx = (B[x]&~0xffff)|(A[x]&0xffff);
-        B[x] = int32_min(B[x],cpx);
-      }
-    }
-    for (x = 0;x < n;++x) B[x] &= 0xffff;
-  }
-
-  for (x = 0;x < n;++x) A[x] = (((int32)pi[x])<<16)+x;
-  int32_sort(A,n); /* A = (id<<16)+pi^(-1) */
-
-  for (j = 0;j < n/2;++j) {
-    long long x = 2*j;
-    int32 fj = B[x]&1; /* f[j] */
-    int32 Fx = x+fj; /* F[x] */
-    int32 Fx1 = Fx^1; /* F[x+1] */
-
-    out[pos>>3] ^= fj<<(pos&7);
-    pos += step;
-
-    B[x] = (A[x]<<16)|Fx;
-    B[x+1] = (A[x+1]<<16)|Fx1;
-  }
-  /* B = (pi^(-1)<<16)+F */
-
-  int32_sort(B,n); /* B = (id<<16)+F(pi) */
-
-  pos += (2*w-3)*step*(n/2);
-
-  for (k = 0;k < n/2;++k) {
-    long long y = 2*k;
-    int32 lk = B[y]&1; /* l[k] */
-    int32 Ly = y+lk; /* L[y] */
-    int32 Ly1 = Ly^1; /* L[y+1] */
-
-    out[pos>>3] ^= lk<<(pos&7);
-    pos += step;
-
-    A[y] = (Ly<<16)|(B[y]&0xffff);
-    A[y+1] = (Ly1<<16)|(B[y+1]&0xffff);
-  }
-  /* A = (L<<16)+F(pi) */
-
-  int32_sort(A,n); /* A = (id<<16)+F(pi(L)) = (id<<16)+M */
-
-  pos -= (2*w-2)*step*(n/2);
-
-  for (j = 0;j < n/2;++j) {
-    q[j] = (A[2*j]&0xffff)>>1;
-    q[j+n/2] = (A[2*j+1]&0xffff)>>1;
-  }
-
-  cbrecursion(out,pos,step*2,q,w-1,n/2,temp);
-  cbrecursion(out,pos+step,step*2,q+n/2,w-1,n/2,temp);
+  return ret;
 }
 
-/* input: p, an array of int16 */
-/* input: n, length of p */
-/* input: s, meaning that stride-2^s cswaps are performed */
-/* input: cb, the control bits */
-/* output: the result of apply the control bits to p */
-static void layer(int16_t *p, const unsigned char *cb, int s, int n)
+static bit is_smaller_63b(uint64_t a, uint64_t b)
 {
-  int i, j;
-  int stride = 1 << s;
-  int index = 0;
-  int16_t d, m;
+  uint64_t ret = 0;
 
-  for (i = 0; i < n; i += stride*2)
-  {
-    for (j = 0; j < stride; j++)
-    {
-      d = p[ i+j ] ^ p[ i+j+stride ];
-      m = (cb[ index >> 3 ] >> (index & 7)) & 1;
-      m = -m;
-      d &= m;
-      p[ i+j ] ^= d;
-      p[ i+j+stride ] ^= d;
-      index++;
-    }
-  }
+  ret = a - b;
+  ret >>= 63;
+
+  return ret;
 }
 
-/* parameters: 1 <= w <= 14; n = 2^w */
-/* input: permutation pi of {0,1,...,n-1} */
-/* output: (2m-1)n/2 control bits at positions 0,1,... */
-/* output position pos is by definition 1&(out[pos/8]>>(pos&7)) */
-void controlbitsfrompermutation(unsigned char *out,const int16 *pi,long long w,long long n)
+static void cswap(uint32_t *x,uint32_t *y,bit swap)
 {
-  int32 temp[2*n];
-  int16 pi_test[n], diff;
+  uint32_t m;
+  uint32_t d;
+
+  m = swap; 
+  m = 0 - m;
+
+  d = (*x ^ *y);
+  d &= m;
+  *x ^= d;
+  *y ^= d;
+}
+
+static void cswap_63b(uint64_t *x,uint64_t *y,bit swap)
+{
+  uint64_t m;
+  uint64_t d;
+
+  m = swap; 
+  m = 0 - m;
+
+  d = (*x ^ *y);
+  d &= m;
+  *x ^= d;
+  *y ^= d;
+}
+
+/* output x = min(input x,input y) */
+/* output y = max(input x,input y) */
+
+static void minmax_63b(uint64_t *x, uint64_t *y)
+{
+  bit m;
+
+  m = is_smaller_63b(*y, *x);
+  cswap_63b(x, y, m);
+}
+
+/* merge first half of x[0],x[step],...,x[(2*n-1)*step] with second half */
+/* requires n to be a power of 2 */
+
+static void merge_63b(int n,uint64_t x[n],int step)
+{
   int i;
-  unsigned char *ptr;
-
-  while (1)
-  {
-    memset(out,0,(((2*w-1)*n/2)+7)/8);
-    cbrecursion(out,0,1,pi,w,n,temp);
-
-    // check for correctness
-
-    for (i = 0; i < n; i++)
-      pi_test[i] = i;
-
-    ptr = out;
-    for (i = 0; i < w; i++)
-    {
-      layer(pi_test, ptr, i, n);
-      ptr += n >> 4;
-    }
-
-    for (i = w-2; i >= 0; i--)
-    {
-      layer(pi_test, ptr, i, n);
-      ptr += n >> 4;
-    }
-
-    diff = 0;
-    for (i = 0; i < n; i++)
-      diff |= pi[i] ^ pi_test[i];
-
-    diff = crypto_int16_nonzero_mask(diff);
-    crypto_declassify(&diff,sizeof diff);
-    if (diff == 0)
-      break;
+  if (n == 1)
+    minmax_63b(&x[0],&x[step]);
+  else {
+    merge_63b(n / 2,x,step * 2);
+    merge_63b(n / 2,x + step,step * 2);
+    for (i = 1;i < 2*n-1;i += 2)
+      minmax_63b(&x[i * step],&x[(i + 1) * step]);
   }
+}
+
+/* sort x[0],x[1],...,x[n-1] in place */
+/* requires n to be a power of 2 */
+
+static void sort(int n, uint32_t x[n])
+{
+  uint32_sort(x, n);
+}
+
+void sort_63b(int n, uint64_t x[n])
+{
+  if (n <= 1) return;
+  sort_63b(n/2,x);
+  sort_63b(n/2,x + n/2);
+  merge_63b(n/2,x,1);
+}
+
+/* y[pi[i]] = x[i] */
+/* requires n = 2^w */
+/* requires pi to be a permutation */
+static void composeinv(int n,uint32_t y[n],uint32_t x[n],uint32_t pi[n]) // NC
+{
+  int i;
+  uint32_t t[n];
+
+  for (i = 0;i < n;++i) 
+    t[i] = x[i] | (pi[i] << 16);
+
+  sort(n,t);
+
+  for (i = 0;i < n;++i)
+    y[i] = t[i] & 0xFFFF;
+}
+
+/* ip[i] = j iff pi[i] = j */
+/* requires n = 2^w */
+/* requires pi to be a permutation */
+static void invert(int n,uint32_t ip[n],uint32_t pi[n])
+{
+  int i;
+
+  for (i = 0;i < n;i++)
+    ip[i] = i;
+
+  composeinv(n,ip,ip,pi);
+}
+
+
+static void flow(int w, uint32_t *x, uint32_t *y, const int t)
+{
+  bit m0;
+  bit m1;
+
+  uint32_t b;
+  uint32_t y_copy = *y;
+
+  m0 = is_smaller(*y & ((1<<w)-1), *x & ((1<<w)-1));
+  m1 = is_smaller(0, t);
+
+  cswap(x, &y_copy, m0);
+  b = m0 & m1;
+  *x ^= b << w;
+}
+
+/* input: permutation pi */
+/* output: (2w-1)n/2 (or 0 if n==1) control bits c[0],c[step],c[2*step],... */
+/* requires n = 2^w */
+static void controlbitsfrompermutation(int w, int n, int step, int off, unsigned char *c, uint32_t pi[n])
+{
+  int i;
+  int j;
+  int k;
+  int t;
+  uint32_t ip[n];
+  uint32_t I[2 * n];
+  uint32_t P[2 * n];
+  uint32_t PI[2 * n];
+  uint32_t T[2 * n];
+  uint32_t piflip[n];
+  uint32_t subpi[2][n / 2];
+
+  if (w == 1) c[ off/8 ] |= (pi[0] & 1) << (off%8);
+  if (w <= 1) return;
+
+  invert(n,ip,pi);
+
+  for (i = 0;i < n;++i) 
+  {
+    I[i] = ip[i] | (1 << w);
+    I[n + i] = pi[i];
+  }
+
+  for (i = 0;i < 2 * n;++i)
+      P[i] = (i >> w) + (i & ((1<<w)-2)) + ((i & 1) << w);
+
+  for (t = 0;t < w;++t) 
+  {
+    composeinv(2 * n,PI,P,I);
+
+    for (i = 0;i < 2 * n;++i)
+      flow(w,&P[i],&PI[i],t);
+
+    for (i = 0;i < 2 * n;++i)
+	T[i] = I[i ^ 1];
+
+    composeinv(2 * n,I,I,T);
+
+    for (i = 0;i < 2 * n;++i)
+	T[i] = P[i ^ 1];
+
+    for (i = 0;i < 2 * n;++i)
+      flow(w,&P[i],&T[i],1);
+  }
+
+  for (i = 0;i < n;++i)
+    for (j = 0;j < w;++j)
+      piflip[i] = pi[i];
+
+  for (i = 0;i < n / 2;++i) c[ (off + i * step)/8 ] |= ((P[i * 2] >> w) & 1) << ((off + i * step)%8);
+  for (i = 0;i < n / 2;++i) c[ (off + ((w-1)*n + i) * step)/8 ] |= ((P[n + i * 2] >> w) & 1) << ((off + ((w-1)*n + i) * step)%8);
+
+  for (i = 0;i < n / 2;++i)
+    cswap(&piflip[i * 2], &piflip[i * 2 + 1], (P[n + i * 2] >> w) & 1);
+
+  for (k = 0;k < 2;++k)
+    for (i = 0;i < n / 2;++i)
+        subpi[k][i] = piflip[i * 2 + k] >> 1;
+
+  for (k = 0;k < 2;++k)
+    controlbitsfrompermutation(w - 1, n / 2, step * 2, off + step * (n/2 + k), c, subpi[k]);
+}
+
+/* input: pi, a permutation*/
+/* output: out, control bits w.r.t. pi */
+void controlbits(unsigned char * out, uint32_t * pi)
+{
+	unsigned int i;
+	unsigned char c[ (2*GFBITS - 1) * (1 << GFBITS) / 16 ];
+
+	for (i = 0; i < sizeof(c); i++)
+		c[i] = 0;
+
+	controlbitsfrompermutation(GFBITS, (1 << GFBITS), 1, 0, c, pi);
+
+	for (i = 0; i < sizeof(c); i++)
+		out[i] = c[i];
 }
 

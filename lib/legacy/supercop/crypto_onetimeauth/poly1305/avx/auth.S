@@ -29,7 +29,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-.section .rodata
+.data
 .p2align 5
 SCALE:		.quad 0x37f4000000000000, 0x37f4000000000000, 0x37f4000000000000, 0x37f4000000000000
 ALPHA22:	.quad 0x4498000000000000, 0x4498000000000000, 0x4498000000000000, 0x4498000000000000
@@ -57,7 +57,7 @@ POW2109I:	.quad 0x3920000000000000, 0x3920000000000000, 0x3920000000000000, 0x39
 PMASK:		.quad 0x0FFFFFFC0FFFFFFF, 0x0FFFFFFC0FFFFFFC, 0x0FFFFFFC0FFFFFFF, 0x0FFFFFFC0FFFFFFC
 
 .macro MSTEP z0, z1, z2, z3, z4, z5, x0, x1, x2, x3, x4, x5, y0, t0, t1, t2
-        vmulpd SCALE(%rip), \z5, \z5
+        vmulpd SCALE, \z5, \z5
         vmulpd \y0, \x5, \t2
         vmulpd \y0, \x4, \t1
         vmulpd \y0, \x3, \t0
@@ -81,26 +81,26 @@ PMASK:		.quad 0x0FFFFFFC0FFFFFFF, 0x0FFFFFFC0FFFFFFC, 0x0FFFFFFC0FFFFFFF, 0x0FFF
 .endm
 
 .macro CARRY z0, z1, z2, z3, z4, z5, t0, t1
-        CSTEP \z0, \z1, ALPHA22(%rip), \t0, \t1
-        CSTEP \z1, \z2, ALPHA44(%rip), \t0, \t1
-        CSTEP \z2, \z3, ALPHA65(%rip), \t0, \t1
-        CSTEP \z3, \z4, ALPHA87(%rip), \t0, \t1
-        CSTEP \z4, \z5, ALPHA109(%rip), \t0, \t1
+        CSTEP \z0, \z1, ALPHA22, \t0, \t1
+        CSTEP \z1, \z2, ALPHA44, \t0, \t1
+        CSTEP \z2, \z3, ALPHA65, \t0, \t1
+        CSTEP \z3, \z4, ALPHA87, \t0, \t1
+        CSTEP \z4, \z5, ALPHA109, \t0, \t1
 .endm
 
 .macro CARRYR z0, z1, z2, z3, z4, z5, t0, t1
-        CSTEP \z1, \z2, ALPHA44(%rip), \t0, \t1
-        CSTEP \z2, \z3, ALPHA65(%rip), \t0, \t1
-        CSTEP \z3, \z4, ALPHA87(%rip), \t0, \t1
-        CSTEP \z4, \z5, ALPHA109(%rip), \t0, \t1
-        vmovapd ALPHA130(%rip), \t0
+        CSTEP \z1, \z2, ALPHA44, \t0, \t1
+        CSTEP \z2, \z3, ALPHA65, \t0, \t1
+        CSTEP \z3, \z4, ALPHA87, \t0, \t1
+        CSTEP \z4, \z5, ALPHA109, \t0, \t1
+        vmovapd ALPHA130, \t0
         vaddpd \t0, \z5, \t1
         vsubpd \t0, \t1, \t1
         vsubpd \t1, \z5, \z5
-	vmulpd SCALE(%rip), \t1, \t1
+	vmulpd SCALE, \t1, \t1
         vaddpd \t1, \z0, \z0
-        CSTEP \z0, \z1, ALPHA22(%rip), \t0, \t1
-        CSTEP \z1, \z2, ALPHA44(%rip), \t0, \t1
+        CSTEP \z0, \z1, ALPHA22, \t0, \t1
+        CSTEP \z1, \z2, ALPHA44, \t0, \t1
 .endm
 
 .macro MULI c0, c1, c2, c3, c4, a0, a1, a2, b0, b1
@@ -156,10 +156,10 @@ PMASK:		.quad 0x0FFFFFFC0FFFFFFF, 0x0FFFFFFC0FFFFFFC, 0x0FFFFFFC0FFFFFFF, 0x0FFF
 /*                                             rdi                       rsi                       rdx       rcx   */
 /* int crypto_onetimeauth(unsigned char *out,const unsigned char *in,unsigned long long inlen,const unsigned char *k); */
 /*                                       rdi                      rsi                   rdx                        rcx */
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_onetimeauth_poly1305_avx
+.globl crypto_onetimeauth_poly1305_avx
+_crypto_onetimeauth_poly1305_avx:
+crypto_onetimeauth_poly1305_avx:
 	/* retrofit API: (rsi, rdx, rcx) := (rcx, rsi, rdx) */
 	xchgq %rsi, %rdx
 	xchgq %rsi, %rcx
@@ -201,14 +201,14 @@ Lstart:
 
 	/* load point */
 	movdqu (%rsi), %xmm4
-	pand PMASK(%rip), %xmm4
+	pand PMASK, %xmm4
 
         /* *signed* convert, then fix sign */
         vcvtdq2pd %xmm4, %ymm5
         vxorpd %ymm6, %ymm6, %ymm6
-        vblendvpd %ymm5, POW232(%rip), %ymm6, %ymm0
+        vblendvpd %ymm5, POW232, %ymm6, %ymm0
         vaddpd %ymm0, %ymm5, %ymm5
-	vmulpd POWMIX(%rip), %ymm5, %ymm5
+	vmulpd POWMIX, %ymm5, %ymm5
 
         /* ymm0..5 := (a, a, a, a) */
 	vunpcklpd %ymm5, %ymm5, %ymm6
@@ -341,7 +341,7 @@ Laccumulate:
 	vcvtdq2pd %xmm14, %ymm9		# 37bf
 
 	/* fix sign */
-	vmovapd POW232(%rip), %ymm14
+	vmovapd POW232, %ymm14
 	vxorpd %ymm15, %ymm15, %ymm15
 	vblendvpd %ymm6, %ymm14, %ymm15, %ymm10
 	vblendvpd %ymm7, %ymm14, %ymm15, %ymm11
@@ -354,20 +354,20 @@ Laccumulate:
 
 	/* adjust exponent */
 	vmulpd %ymm14, %ymm7, %ymm7
-	vmulpd POW264(%rip), %ymm8, %ymm8
-	vmulpd POW296(%rip), %ymm10, %ymm10
+	vmulpd POW264, %ymm8, %ymm8
+	vmulpd POW296, %ymm10, %ymm10
 
 	/* accumulate, add in message data, padding */
 	vaddpd %ymm6, %ymm0, %ymm0
 	vaddpd %ymm7, %ymm1, %ymm1
 	vaddpd %ymm8, %ymm2, %ymm2
 	vaddpd %ymm10, %ymm4, %ymm4
-	vaddpd POW2128(%rip), %ymm5, %ymm5
+	vaddpd POW2128, %ymm5, %ymm5
 
 	/* balance bits across polynomial */
 	/* this 2-way parallel chain wins over generic */
-	vmovapd ALPHA44(%rip), %ymm12
-	vmovapd ALPHA109(%rip), %ymm14
+	vmovapd ALPHA44, %ymm12
+	vmovapd ALPHA109, %ymm14
 	vaddpd %ymm12, %ymm1, %ymm13
 	vaddpd %ymm14, %ymm4, %ymm15
 	vsubpd %ymm12, %ymm13, %ymm13
@@ -376,19 +376,19 @@ Laccumulate:
 	vsubpd %ymm15, %ymm4, %ymm4
 	vaddpd %ymm13, %ymm2, %ymm2
 	vaddpd %ymm15, %ymm5, %ymm5
-	vmovapd ALPHA65(%rip), %ymm12
-	vmovapd ALPHA130(%rip), %ymm14
+	vmovapd ALPHA65, %ymm12
+	vmovapd ALPHA130, %ymm14
 	vaddpd %ymm12, %ymm2, %ymm13
 	vaddpd %ymm14, %ymm5, %ymm15
 	vsubpd %ymm12, %ymm13, %ymm13
 	vsubpd %ymm14, %ymm15, %ymm15
 	vsubpd %ymm13, %ymm2, %ymm2
 	vsubpd %ymm15, %ymm5, %ymm5
-	vmulpd SCALE(%rip), %ymm15, %ymm15
+	vmulpd SCALE, %ymm15, %ymm15
 	vaddpd %ymm13, %ymm3, %ymm3
 	vaddpd %ymm15, %ymm0, %ymm0
-	vmovapd ALPHA22(%rip), %ymm12
-	vmovapd ALPHA87(%rip), %ymm14
+	vmovapd ALPHA22, %ymm12
+	vmovapd ALPHA87, %ymm14
 	vaddpd %ymm12, %ymm0, %ymm13
 	vaddpd %ymm14, %ymm3, %ymm15
 	vsubpd %ymm12, %ymm13, %ymm13
@@ -397,8 +397,8 @@ Laccumulate:
 	vsubpd %ymm15, %ymm3, %ymm9	# ymm9 := ymm3
 	vaddpd %ymm13, %ymm1, %ymm1
 	vaddpd %ymm15, %ymm4, %ymm4
-	vmovapd ALPHA44(%rip), %ymm12
-	vmovapd ALPHA109(%rip), %ymm14
+	vmovapd ALPHA44, %ymm12
+	vmovapd ALPHA109, %ymm14
 	vaddpd %ymm12, %ymm1, %ymm13
 	vaddpd %ymm14, %ymm4, %ymm15
 	vsubpd %ymm12, %ymm13, %ymm13
@@ -460,19 +460,19 @@ Lmultiply:
         CARRYR %ymm0, %ymm1, %ymm2, %ymm3, %ymm4, %ymm5, %ymm14, %ymm15
 
 	/* add in (p+p) to make coefficients positive. */
-	vaddpd P0(%rip), %ymm0, %ymm0
-	vaddpd P22(%rip), %ymm1, %ymm1
-	vaddpd P44(%rip), %ymm2, %ymm2
-	vaddpd P65(%rip), %ymm3, %ymm3
-	vaddpd P87(%rip), %ymm4, %ymm4
-	vaddpd P109(%rip), %ymm5, %ymm5
+	vaddpd P0, %ymm0, %ymm0
+	vaddpd P22, %ymm1, %ymm1
+	vaddpd P44, %ymm2, %ymm2
+	vaddpd P65, %ymm3, %ymm3
+	vaddpd P87, %ymm4, %ymm4
+	vaddpd P109, %ymm5, %ymm5
 
 	/* scale coefficients down */
-	vmulpd POW222I(%rip), %ymm1, %ymm1
-	vmulpd POW244I(%rip), %ymm2, %ymm2
-	vmulpd POW265I(%rip), %ymm3, %ymm3
-	vmulpd POW287I(%rip), %ymm4, %ymm4
-	vmulpd POW2109I(%rip), %ymm5, %ymm5
+	vmulpd POW222I, %ymm1, %ymm1
+	vmulpd POW244I, %ymm2, %ymm2
+	vmulpd POW265I, %ymm3, %ymm3
+	vmulpd POW287I, %ymm4, %ymm4
+	vmulpd POW2109I, %ymm5, %ymm5
 
 	/* convert to integers */
 	vcvttpd2dq %ymm0, %xmm0

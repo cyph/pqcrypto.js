@@ -165,11 +165,11 @@ int32 b3
 
 stack128 tmpin
 
-enter ECRYPT_init
+enter crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_init
 leave
 
 
-enter ECRYPT_ivsetup
+enter crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_ivsetup
 
 eax_stack = eax
 ebx_stack = ebx
@@ -198,7 +198,7 @@ ebp = ebp_stack
 leave
 
 
-enter ECRYPT_keysetup
+enter crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_keysetup
 
 eax_stack = eax
 ebx_stack = ebx
@@ -444,7 +444,7 @@ ebp = ebp_stack
 leave
 
 
-enter ECRYPT_process_bytes stackaligned4096 aes_constants
+enter crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_process_bytes stackaligned4096 aes_constants
 
 eax_stack = eax
 ebx_stack = ebx

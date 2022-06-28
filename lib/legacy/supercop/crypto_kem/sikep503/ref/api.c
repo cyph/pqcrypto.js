@@ -1,7 +1,7 @@
 //
 // Supersingular Isogeny Key Encapsulation Ref. Library
 //
-// InfoSec Global Inc., 2017-2019
+// InfoSec Global Inc., 2017
 // Basil Hess <basil.hess@infosecglobal.com>
 //
 
@@ -10,6 +10,10 @@
 #include <api_generic.h>
 #include "crypto_kem.h"
 
+// SIKE's key generation
+// It produces a private key sk and computes the public key pk.
+// Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = 442 bytes)
+//          public key pk (CRYPTO_PUBLICKEYBYTES = 378 bytes)
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
   int rc = 0;
   sike_params_t params = { 0 };

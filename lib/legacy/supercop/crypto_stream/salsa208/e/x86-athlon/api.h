@@ -1,2 +1,2 @@
-#define CRYPTO_KEYBYTES 32
-#define CRYPTO_NONCEBYTES 8
+#define crypto_stream_salsa208_e_x86_athlon_KEYBYTES 32
+#define crypto_stream_salsa208_e_x86_athlon_NONCEBYTES 8

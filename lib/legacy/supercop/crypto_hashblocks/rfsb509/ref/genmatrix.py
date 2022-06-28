@@ -14,7 +14,7 @@ def c(j):
   last = chr(ord(result[63]) & 31)
   return first + result[1:63] + last
 
-print "const unsigned char CRYPTO_NAMESPACE(matrix)[16384] = {"
+print "const unsigned char crypto_hashblocks_rfsb509_ref_matrix[16384] = {"
 for j in range(256):
   print ''.join(["0x"+hexlify(i)+", " for i in c(j)])
 print "};"

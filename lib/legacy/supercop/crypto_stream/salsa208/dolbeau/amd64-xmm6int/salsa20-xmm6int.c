@@ -1,3 +1,4 @@
+#include "namespace.h"
 /*
 salsa20-xmm6int.c version $Date: 2014/09/24 12:11:29 $
 D. J. Bernstein
@@ -70,7 +71,7 @@ static void salsa20_wordtobyte_tr(u8 output[64],const u32 input[16])
   for (i = 0;i < 16;++i) U32TO8_LITTLE(output + 4 * i,x[tr[i]]);
 }
 
-void ECRYPT_encrypt_bytes(ECRYPT_ctx *x_, const u8 *m_,u8 *c_,u32 bytes)
+void crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_encrypt_bytes(crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_ctx *x_, const u8 *m_,u8 *c_,u32 bytes)
 {
   int i;
   u32* x = (u32*)&x_->input;
@@ -114,7 +115,7 @@ void ECRYPT_encrypt_bytes(ECRYPT_ctx *x_, const u8 *m_,u8 *c_,u32 bytes)
 
 }
 
-void ECRYPT_init(void)
+void crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_init(void)
 {
   return;
 }
@@ -123,7 +124,7 @@ static const char sigma[16] = "expand 32-byte k";
 static const char tau[16] = "expand 16-byte k";
 
 /* This initializes in SIMD format */
-void ECRYPT_keysetup(ECRYPT_ctx *x,const u8 *k,u32 kbits,u32 ivbits)
+void crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_keysetup(crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_ctx *x,const u8 *k,u32 kbits,u32 ivbits)
 {
   const char *constants;
 
@@ -148,7 +149,7 @@ void ECRYPT_keysetup(ECRYPT_ctx *x,const u8 *k,u32 kbits,u32 ivbits)
 }
 
 /* This initializes in SIMD format */
-void ECRYPT_ivsetup(ECRYPT_ctx *x,const u8 *iv)
+void crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_ivsetup(crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_ctx *x,const u8 *iv)
 {
   x->input[tr[6]] = U8TO32_LITTLE(iv + 0);
   x->input[tr[7]] = U8TO32_LITTLE(iv + 4);
@@ -156,14 +157,14 @@ void ECRYPT_ivsetup(ECRYPT_ctx *x,const u8 *iv)
   x->input[tr[9]] = 0;
 }
 
-void ECRYPT_decrypt_bytes(ECRYPT_ctx *x,const u8 *c,u8 *m,u32 bytes)
+void crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_decrypt_bytes(crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_ctx *x,const u8 *c,u8 *m,u32 bytes)
 {
-  ECRYPT_encrypt_bytes(x,c,m,bytes);
+  crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_encrypt_bytes(x,c,m,bytes);
 }
 
-void ECRYPT_keystream_bytes(ECRYPT_ctx *x,u8 *stream,u32 bytes)
+void crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_keystream_bytes(crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_ctx *x,u8 *stream,u32 bytes)
 {
   u32 i;
   for (i = 0;i < bytes;++i) stream[i] = 0;
-  ECRYPT_encrypt_bytes(x,stream,stream,bytes);
+  crypto_stream_salsa208_dolbeau_amd64_xmm6int_ECRYPT_encrypt_bytes(x,stream,stream,bytes);
 }

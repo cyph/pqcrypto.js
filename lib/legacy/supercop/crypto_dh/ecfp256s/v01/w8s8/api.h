@@ -1,1 +1,3 @@
-../../../ecfp256e/v01/var/api.h
+#define crypto_dh_ecfp256s_v01_w8s8_SECRETKEYBYTES 32
+#define crypto_dh_ecfp256s_v01_w8s8_PUBLICKEYBYTES 64
+#define crypto_dh_ecfp256s_v01_w8s8_BYTES 32

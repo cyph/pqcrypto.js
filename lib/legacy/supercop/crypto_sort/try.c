@@ -1,5 +1,5 @@
 /*
- * crypto_sort/try.c version 20200809
+ * crypto_sort/try.c version 20180814
  * D. J. Bernstein
  * Public domain.
  */
@@ -16,15 +16,10 @@ const char *primitiveimplementation = crypto_sort_IMPLEMENTATION;
 #else
 #define MAXTEST 4096
 #endif
-
-#ifdef TIMECOP
-#define LOOPS TIMECOP_LOOPS
-#else
 #ifdef SMALL
 #define LOOPS 1024
 #else
 #define LOOPS 4096
-#endif
 #endif
 
 static unsigned char *x;
@@ -46,22 +41,6 @@ void allocate(void)
   y = alignedcalloc(crypto_sort_BYTES * alloclen);
   x2 = alignedcalloc(crypto_sort_BYTES * alloclen);
   y2 = alignedcalloc(crypto_sort_BYTES * alloclen);
-}
-
-void unalign(void)
-{
-  x += crypto_sort_BYTES;
-  y += crypto_sort_BYTES;
-  x2 += crypto_sort_BYTES;
-  y2 += crypto_sort_BYTES;
-}
-
-void realign(void)
-{
-  x -= crypto_sort_BYTES;
-  y -= crypto_sort_BYTES;
-  x2 -= crypto_sort_BYTES;
-  y2 -= crypto_sort_BYTES;
 }
 
 void predoit(void)
@@ -108,9 +87,7 @@ void test(void)
     output_prepare(y2,y,bytes);
     memcpy(y,x,bytes);
     endianness(y,len);
-    poison(y,bytes);
     crypto_sort(y,len);
-    unpoison(y,bytes);
     endianness(y,len);
     checksum(y,bytes);
     output_compare(y2,y,bytes,"crypto_sort");
@@ -119,17 +96,13 @@ void test(void)
     double_canary(y2,y,bytes);
     memcpy(y2,x,bytes);
     endianness(y2,len);
-    poison(y2,bytes);
     crypto_sort(y2,len);
-    unpoison(y2,bytes);
     endianness(y2,len);
     if (memcmp(y2,y,bytes) != 0) fail("crypto_sort is nondeterministic");
 
     double_canary(y2,y,bytes);
     endianness(y2,len);
-    poison(y2,bytes);
     crypto_sort(y2,len);
-    unpoison(y2,bytes);
     endianness(y2,len);
     if (memcmp(y2,y,bytes) != 0) fail("crypto_sort is not idempotent");
   }

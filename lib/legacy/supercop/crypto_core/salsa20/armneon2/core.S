@@ -45,14 +45,14 @@
 .fpu neon
 .text
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_core_salsa20_armneon2
 .align 2
-.global _CRYPTO_NAMESPACETOP
-.global CRYPTO_NAMESPACETOP
-.type _CRYPTO_NAMESPACETOP STT_FUNC
-.type CRYPTO_NAMESPACETOP STT_FUNC
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.global _crypto_core_salsa20_armneon2
+.global crypto_core_salsa20_armneon2
+.type _crypto_core_salsa20_armneon2 STT_FUNC
+.type crypto_core_salsa20_armneon2 STT_FUNC
+_crypto_core_salsa20_armneon2:
+crypto_core_salsa20_armneon2:
 sub sp,sp,#0
 
 # qhasm: int32 i

@@ -3,8 +3,6 @@
 #include <NTL/GF2XFactoring.h>
 #include <NTL/GF2E.h>
 
-#include "config_gf2n.h"
-
 
 #define SET_COEF_I(i) \
     GF2XFromBytes(monomX,F_cp,(long)NB_BYTES_GFqn);\
@@ -13,10 +11,10 @@
 
 
 /*  Input:
-        F a HFE polynomial
+        F a HFE polynom
 
     Output:
-        F_NTL a HFE polynomial with type GF2EX
+        F_NTL a HFE polynom with type GF2EX
 */
 void convHFEpolynomToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
 {
@@ -25,18 +23,13 @@ void convHFEpolynomToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
         unsigned int i,j,qi;
     #endif
 
-    /* Creation of GF2E == GF(2^n) */
-    GF2X f=GF2X(HFEn,1);
-    SetCoeff(f,0);
-    #ifdef __PENTANOMHFE__
-        SetCoeff(f,K1);
-        SetCoeff(f,K2);
-    #endif
-    SetCoeff(f,K3);
+    GF2X f;
+    GF2X monomX;
+    /* The quotient polynom of GF(2^n) must be the same that NTL here */
+    BuildSparseIrred(f,HFEn);
     GF2E::init(f);
     f.kill();
 
-    GF2X monomX;
     GF2E monom;
 
     /* Constant */
@@ -55,11 +48,7 @@ void convHFEpolynomToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
         for(i=0;i<HFEDegI;++i)
         {
             qi=(1U<<i);
-            #if ENABLED_REMOVE_ODD_DEGREE
-            for(j=((qi+1)<=HFE_odd_degree)?0:1;j<=i;++j)
-            #else
             for(j=0;j<=i;++j)
-            #endif
             {
                 /* X^(2^i + 2^j) */
                 F_cp+=(NB_WORD_GFqn<<3);
@@ -70,11 +59,7 @@ void convHFEpolynomToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
         /* Remainder */
         #if HFEDegJ
             qi=(1U<<i);
-            #if ENABLED_REMOVE_ODD_DEGREE
-            for(j=((qi+1)<=HFE_odd_degree)?0:1;j<HFEDegJ;++j)
-            #else
             for(j=0;j<HFEDegJ;++j)
-            #endif
             {
                 /* X^(2^i + 2^j) */
                 F_cp+=(NB_WORD_GFqn<<3);
@@ -94,10 +79,10 @@ void convHFEpolynomToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
 
 
 /*  Input:
-        F a HFE polynomial with vinegar variables
+        F a HFE polynom with vinegar variables
 
     Output:
-        F_NTL a HFE polynomial with type GF2EX, without to take vinegar variables
+        F_NTL a HFE polynom with type GF2EX, without to take vinegar variables
 */
 void convHFEpolynomVToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
 {
@@ -106,18 +91,13 @@ void convHFEpolynomVToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
         unsigned int i,j,qi;
     #endif
 
-    /* Creation of GF2E == GF(2^n) */
-    GF2X f=GF2X(HFEn,1);
-    SetCoeff(f,0);
-    #ifdef __PENTANOMHFE__
-        SetCoeff(f,K1);
-        SetCoeff(f,K2);
-    #endif
-    SetCoeff(f,K3);
+    GF2X f;
+    GF2X monomX;
+    /* The quotient polynom of GF(2^n) must be the same that NTL here */
+    BuildSparseIrred(f,HFEn);
     GF2E::init(f);
     f.kill();
 
-    GF2X monomX;
     GF2E monom;
 
     /* Constant */
@@ -139,11 +119,7 @@ void convHFEpolynomVToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
         for(i=0;i<HFEDegI;++i)
         {
             qi=(1U<<i);
-            #if ENABLED_REMOVE_ODD_DEGREE
-            for(j=((qi+1)<=HFE_odd_degree)?0:1;j<i;++j)
-            #else
             for(j=0;j<i;++j)
-            #endif
             {
                 /* X^(2^i + 2^j) */
                 SET_COEF_I(qi+(1U<<j));
@@ -158,11 +134,7 @@ void convHFEpolynomVToNTLGF2EX(GF2EX& F_NTL,cst_sparse_monic_gf2nx F)
         /* Remainder */
         #if HFEDegJ
             qi=(1U<<i);
-            #if ENABLED_REMOVE_ODD_DEGREE
-            for(j=((qi+1)<=HFE_odd_degree)?0:1;j<HFEDegJ;++j)
-            #else
             for(j=0;j<HFEDegJ;++j)
-            #endif
             {
                 /* X^(2^i + 2^j) */
                 SET_COEF_I(qi+(1U<<j));
@@ -326,9 +298,6 @@ void NAME(mat_GF2E& res,cst_mqsn_gf2m MQS) \
 }
 
 CONV_UINT_TO_MQS(convUINT_pk_ToNTLmat_GF2E,HFEnv,NB_WORD_GFqm,NB_BYTES_GFqm);
-#if HFEmq
-    CONV_UINT_TO_MQS(convUINT_pk_hybrid_ToNTLmat_GF2E,HFEnv,HFEmq,(HFEmq<<3));
-#endif
 CONV_UINT_TO_MQS(convUINTToNTLmat_GF2E,HFEv,NB_WORD_GFqn,NB_BYTES_GFqn);
 
 

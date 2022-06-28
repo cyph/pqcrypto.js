@@ -1,7 +1,7 @@
 /******************************************************************************/
 /* File name: rabbit.c                                                        */
 /*----------------------------------------------------------------------------*/
-/* Rabbit C source code in ECRYPT format                                      */
+/* Rabbit C source code in crypto_stream_rabbit_e_opt_1_3_ECRYPT format                                      */
 /*----------------------------------------------------------------------------*/
 /* Copyright (C) Cryptico A/S. All rights reserved.                           */
 /*                                                                            */
@@ -86,7 +86,7 @@
 /* -------------------------------------------------------------------------- */
 /* Macros used in next-state function */
 
-#if defined(_MSC_VER) && defined(_M_IX86) && (ECRYPT_VARIANT > 2)
+#if defined(_MSC_VER) && defined(_M_IX86) && (crypto_stream_rabbit_e_opt_1_3_ECRYPT_VARIANT > 2)
    /* COMPILER : MICROSOFT OR INTEL */
    /* PROCESSOR: x86 */
 
@@ -131,11 +131,11 @@
    #define RABBIT_NS_POST \
       _asm mov [esi]RABBIT_ctx.carry, ecx
 
-#elif defined(__GNUC__) && defined(__i386__) && (ECRYPT_VARIANT > 2)
+#elif defined(__GNUC__) && defined(__i386__) && (crypto_stream_rabbit_e_opt_1_3_ECRYPT_VARIANT > 2)
    /* COMPILER : GCC */
    /* PROCESSOR: x86 */
 
-   #if (ECRYPT_VARIANT > 3)
+   #if (crypto_stream_rabbit_e_opt_1_3_ECRYPT_VARIANT > 3)
       #define RABBIT_NS_VARS \
          u32 g0, g1, g2, g3, g4, g5, g6, g7, c_a, asm_dummy1;
    #else
@@ -160,7 +160,7 @@
       : "m" (p_instance->c##i), "m" (p_instance->x##i), "1" (c_a), "i" (a) \
       : "cc", "%eax");
 
-   #if (ECRYPT_VARIANT > 3)
+   #if (crypto_stream_rabbit_e_opt_1_3_ECRYPT_VARIANT > 3)
 
       #undef RABBIT_GEN_X_EVEN
       #undef RABBIT_GEN_X_ODD
@@ -188,7 +188,7 @@
    #define RABBIT_NS_POST \
       p_instance->carry = c_a;
 
-#elif (ECRYPT_VARIANT > 1) && defined(I64T)
+#elif (crypto_stream_rabbit_e_opt_1_3_ECRYPT_VARIANT > 1) && defined(I64T)
    /* Pure C with 64-bit G function */
 
    #define RABBIT_NS_VARS \
@@ -261,7 +261,7 @@ static void RABBIT_next_state(RABBIT_ctx *p_instance)
 /* ------------------------------------------------------------------------- */
 
 /* No initialization is needed for Rabbit */
-void ECRYPT_init(void)
+void crypto_stream_rabbit_e_opt_1_3_ECRYPT_init(void)
 {
    return;
 }
@@ -269,7 +269,7 @@ void ECRYPT_init(void)
 /* ------------------------------------------------------------------------- */
 
 /* Key setup */
-void ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
+void crypto_stream_rabbit_e_opt_1_3_ECRYPT_keysetup(crypto_stream_rabbit_e_opt_1_3_ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
 {
    /* Temporary variables */
    u32 k0, k1, k2, k3, i;
@@ -349,7 +349,7 @@ void ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
 /* ------------------------------------------------------------------------- */
 
 /* IV setup */
-void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
+void crypto_stream_rabbit_e_opt_1_3_ECRYPT_ivsetup(crypto_stream_rabbit_e_opt_1_3_ECRYPT_ctx* ctx, const u8* iv)
 {
    /* Temporary variables */
    u32 i0, i1, i2, i3, i;
@@ -415,7 +415,7 @@ void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
 /* ------------------------------------------------------------------------- */
 
 /* Encrypt/decrypt a message of any size */
-void ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, 
+void crypto_stream_rabbit_e_opt_1_3_ECRYPT_process_bytes(int action, crypto_stream_rabbit_e_opt_1_3_ECRYPT_ctx* ctx, const u8* input, 
           u8* output, u32 msglen)
 {
    /* Temporary variables */
@@ -469,7 +469,7 @@ void ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input,
 /* ------------------------------------------------------------------------- */
 
 /* Generate keystream */
-void ECRYPT_keystream_bytes(ECRYPT_ctx* ctx, u8* keystream, u32 length)
+void crypto_stream_rabbit_e_opt_1_3_ECRYPT_keystream_bytes(crypto_stream_rabbit_e_opt_1_3_ECRYPT_ctx* ctx, u8* keystream, u32 length)
 {
    /* Temporary variables */
    u32 i;
@@ -521,7 +521,7 @@ void ECRYPT_keystream_bytes(ECRYPT_ctx* ctx, u8* keystream, u32 length)
 /* ------------------------------------------------------------------------- */
 
 /* Encrypt/decrypt a number of full blocks */
-void ECRYPT_process_blocks(int action, ECRYPT_ctx* ctx, const u8* input, 
+void crypto_stream_rabbit_e_opt_1_3_ECRYPT_process_blocks(int action, crypto_stream_rabbit_e_opt_1_3_ECRYPT_ctx* ctx, const u8* input, 
           u8* output, u32 blocks)
 {
    /* Temporary variables */

@@ -48,7 +48,7 @@ void AESkeyExp(u8 *key, u8 *expKey) {
 	__m128i k, t, tmp;
 
 	k = _mm_loadu_si128((__m128i*) key);
-	_mm_storeu_si128((__m128i *) &expKey[0], k);
+	_mm_store_si128((__m128i *) &expKey[0], k);
 
 	STEP(k, t, tmp, 16*1, 0x01);
 	STEP(k, t, tmp, 16*2, 0x02);

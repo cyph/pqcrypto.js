@@ -1,1 +1,1 @@
-../../kyber512/avx2/cbd.h
+../../kyber768/ref/cbd.h

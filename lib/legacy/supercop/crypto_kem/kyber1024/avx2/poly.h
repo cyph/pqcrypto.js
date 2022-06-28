@@ -1,1 +1,1 @@
-../../kyber512/avx2/poly.h
+../../kyber768/avx2/poly.h

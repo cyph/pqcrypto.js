@@ -174,7 +174,7 @@ stack32 i28_stack
 stack32 i29_stack
 
 # Enter the function
-enter ECRYPT_ivsetup_qhasm
+enter crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_ivsetup_qhasm
 
 i12_stack = i12
 i13_stack = i13

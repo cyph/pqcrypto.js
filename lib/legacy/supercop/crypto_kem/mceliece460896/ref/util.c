@@ -6,13 +6,13 @@
 
 #include "params.h"
 
-void store_gf(unsigned char *dest, gf a)
+void store2(unsigned char *dest, gf a)
 {
 	dest[0] = a & 0xFF;
 	dest[1] = a >> 8;
 }
 
-uint16_t load_gf(const unsigned char *src)
+uint16_t load2(const unsigned char *src)
 {
 	uint16_t a;
 

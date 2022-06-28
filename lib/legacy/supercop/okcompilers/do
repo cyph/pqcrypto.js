@@ -3,11 +3,7 @@
 mkdir oldbin
 mkdir bin
 
-cat main.c lib.c > merged.c
-cat main.cpp lib.cpp > merged.cpp
-# merged.rs works differently
-
-for language in c rs cpp
+for language in c cpp
 do
   exec <$language
   exec 9>${language}-works
@@ -23,20 +19,14 @@ do
       echo "$c" "$options" '"$@"'
     ) > test-okc
     chmod 755 test-okc
-    cp merged.$language test.$language || continue
+    cat lib.c main.c > test.$language || continue
     ./test-okc -o test test.$language || continue
     ./test || continue
-    cp main.$language test1.$language || continue
-    cp lib.$language test2.$language || continue
-    if [ "$language" = "rs" ]
-    then
-      ./test-okc --emit=obj test2.$language || continue
-      ./test-okc -C link-args=test2.o test1.$language || continue
-    else
-      ./test-okc -c test1.$language || continue
-      ./test-okc -c test2.$language || continue
-      ./test-okc -o test1 test1.o test2.o || continue
-    fi
+    cp main.c test1.$language || continue
+    cp lib.c test2.$language || continue
+    ./test-okc -c test1.$language || continue
+    ./test-okc -c test2.$language || continue
+    ./test-okc -o test1 test1.o test2.o || continue
     ./test1 || continue
     echo "=== `date` === success: $c $options is ok"
     echo "$c $options" >&9
@@ -56,11 +46,11 @@ do
   exec <c
   read c options || break
 
-  for language in c rs cpp
+  for language in c cpp
   do
     exec 8>${language}-compatible
     exec 9>${language}-incompatible
-    echo "=== `date` === checking $language compatibility with $c $options" >&2
+    echo "=== `date` === checking compatibility with $c $options" >&2
     exec <$language
     while read c2 options2
     do
@@ -78,18 +68,15 @@ do
         echo "#!/bin/sh"
         echo 'PATH="'"$PATH"'"'
         echo 'export PATH'
-        if [ "$language" = "rs" ]
-        then
-          echo "$c2" "$options2" '"$1".'$language' -C link-args="$2"'
-        else
-          echo "$c2" "$options2" '-o "$1" "$1".'$language' "$2"'
-        fi
+        echo "$c2" "$options2" '"$@"'
       ) > test-okc2
       chmod 755 test-okc2
-      if cp main.$language test5.$language \
+      if cp main.c test5.c \
+      && cp main.cpp test5.cpp \
       && cp lib.c test6.c \
+      && ./test-okc2 -c test5.$language \
       && ./test-okc -c test6.c \
-      && ./test-okc2 test5 test6.o \
+      && ./test-okc2 -o test5 test5.o test6.o \
       && ./test5
       then
         echo "=== `date` === success: $c2 $options2 is compatible" >&2
@@ -159,7 +146,7 @@ do
     ;;
   esac
 
-  for language in c rs cpp
+  for language in c cpp
   do
     mv ${language}-incompatible ${language}
     exec <${language}-compatible
@@ -200,7 +187,6 @@ then
   do
     mv "oldbin/okc-$oldabi" "bin/okc-$newabi"
     mv "oldbin/okcpp-$oldabi" "bin/okcpp-$newabi"
-    mv "oldbin/okrs-$oldabi" "bin/okrs-$newabi"
     mv "oldbin/okar-$oldabi" "bin/okar-$newabi"
     mv "oldbin/oklibs-$oldabi" "bin/oklibs-$newabi"
     echo "echo $newabi" >&7

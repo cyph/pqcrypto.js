@@ -85,13 +85,13 @@
 
 # qhasm: int64 squareredmask
 
-# qhasm: enter CRYPTO_NAMESPACE(batch_fe25519_square)
+# qhasm: enter crypto_sign_ed25519_amd64_51_30k_batch_fe25519_square
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(batch_fe25519_square)
-.globl CRYPTO_NAMESPACE(batch_fe25519_square)
-_CRYPTO_NAMESPACE(batch_fe25519_square):
-CRYPTO_NAMESPACE(batch_fe25519_square):
+.globl _crypto_sign_ed25519_amd64_51_30k_batch_fe25519_square
+.globl crypto_sign_ed25519_amd64_51_30k_batch_fe25519_square
+_crypto_sign_ed25519_amd64_51_30k_batch_fe25519_square:
+crypto_sign_ed25519_amd64_51_30k_batch_fe25519_square:
 mov %rsp,%r11
 and $31,%r11
 add $64,%r11
@@ -492,10 +492,10 @@ add  %rax,%r13
 # asm 2: adc <squarerdx=%rdx,<squarer31=%r14
 adc %rdx,%r14
 
-# qhasm:   squareredmask = *(uint64 *) &CRYPTO_NAMESPACE(batch_REDMASK51)
-# asm 1: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=int64#2
-# asm 2: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=%rsi
-movq CRYPTO_NAMESPACE(batch_REDMASK51)(%rip),%rsi
+# qhasm:   squareredmask = *(uint64 *) &crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=int64#2
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=%rsi
+movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,%rsi
 
 # qhasm:   squarer01 = (squarer01.r0) << 13
 # asm 1: shld $13,<r0=int64#4,<squarer01=int64#5

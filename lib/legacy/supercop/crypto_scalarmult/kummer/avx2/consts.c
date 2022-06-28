@@ -1,5 +1,3 @@
-#include "consts.h"
-
 const double alpha22[4] __attribute__ ((aligned (32)))
                         = {28334198897217871282176.0,
 			   28334198897217871282176.0,
@@ -234,8 +232,8 @@ const double newABCD[4]__attribute__ ((aligned (32)))
                         = {833,-561,1617,-2499};
 
 
-const unsigned long long mask63 __attribute__ ((aligned (32)))
+unsigned long long mask63 __attribute__ ((aligned (32)))
                         = 0x7fffffffffffffff;
 
-const unsigned char _one[16]__attribute__ ((aligned (32)))
+unsigned char _one[16]__attribute__ ((aligned (32)))
                         = {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};

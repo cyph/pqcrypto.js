@@ -67,10 +67,10 @@ int crypto_hash(unsigned char *out,const unsigned char *in,unsigned long long in
 
 	#ifdef __SSE__
 	// Use SSE here, if it is available
-	_mm_storeu_si128((__m128i *) &hashState256_(state).DoublePipe[0], _mm_loadu_si128((__m128i *) &i256p2[0]));
-	_mm_storeu_si128((__m128i *) &hashState256_(state).DoublePipe[4], _mm_loadu_si128((__m128i *) &i256p2[4]));
-	_mm_storeu_si128((__m128i *) &hashState256_(state).DoublePipe[8], _mm_loadu_si128((__m128i *) &i256p2[8]));
-	_mm_storeu_si128((__m128i *) &hashState256_(state).DoublePipe[12], _mm_loadu_si128((__m128i *) &i256p2[12]));
+	_mm_store_si128((__m128i *) &hashState256_(state).DoublePipe[0], _mm_load_si128((__m128i *) &i256p2[0]));
+	_mm_store_si128((__m128i *) &hashState256_(state).DoublePipe[4], _mm_load_si128((__m128i *) &i256p2[4]));
+	_mm_store_si128((__m128i *) &hashState256_(state).DoublePipe[8], _mm_load_si128((__m128i *) &i256p2[8]));
+	_mm_store_si128((__m128i *) &hashState256_(state).DoublePipe[12], _mm_load_si128((__m128i *) &i256p2[12]));
 	#elif defined ( __x86_64__ )
 	// Or 64-bit writes if on 64 bit system (not really possible on x86)
 	hashState256_(state).DoublePipe[0] = i256p2[0];
@@ -99,10 +99,10 @@ int crypto_hash(unsigned char *out,const unsigned char *in,unsigned long long in
 		#ifdef __SSE__
 		// Use SSE here, if it is available
 		__m128i zero = _mm_setzero_si128();
-		_mm_storeu_si128((__m128i *) &data64[0], zero);
-		_mm_storeu_si128((__m128i *) &data64[2], zero);
-		_mm_storeu_si128((__m128i *) &data64[4], zero);
-		_mm_storeu_si128((__m128i *) &data64[6], zero);
+		_mm_store_si128((__m128i *) &data64[0], zero);
+		_mm_store_si128((__m128i *) &data64[2], zero);
+		_mm_store_si128((__m128i *) &data64[4], zero);
+		_mm_store_si128((__m128i *) &data64[6], zero);
 		#elif defined ( __x86_64__ )
 		// Or 64-bit writes if on 64 bit system (not really possible on x86)
 		data64[0] = 0;
@@ -124,11 +124,11 @@ int crypto_hash(unsigned char *out,const unsigned char *in,unsigned long long in
 		#ifdef __SSE__
 		// Use SSE here, if it is available
 		__m128i zero = _mm_setzero_si128();
-		_mm_storeu_si128((__m128i *) &data64[6], zero);
-		_mm_storeu_si128((__m128i *) &data64[8], zero);
-		_mm_storeu_si128((__m128i *) &data64[10], zero);
-		_mm_storeu_si128((__m128i *) &data64[12], zero);
-		_mm_storeu_si128((__m128i *) &data64[14], zero);
+		_mm_store_si128((__m128i *) &data64[6], zero);
+		_mm_store_si128((__m128i *) &data64[8], zero);
+		_mm_store_si128((__m128i *) &data64[10], zero);
+		_mm_store_si128((__m128i *) &data64[12], zero);
+		_mm_store_si128((__m128i *) &data64[14], zero);
 		#elif defined ( __x86_64__ )
 		// Or 64-bit writes if on 64 bit system (not really possible on x86)
 		data64[6] = 0;
@@ -158,7 +158,7 @@ int crypto_hash(unsigned char *out,const unsigned char *in,unsigned long long in
 		
 		while(counter & 0xff0){
 			// Move 16 bytes at a time
-			_mm_storeu_si128((__m128i *) &lastPartP[i], _mm_loadu_si128((__m128i *) &data8_end[i]));
+			_mm_store_si128((__m128i *) &lastPartP[i], _mm_load_si128((__m128i *) &data8_end[i]));
 			counter -= 16;
 			i += 16;
 		}
@@ -229,8 +229,8 @@ int crypto_hash(unsigned char *out,const unsigned char *in,unsigned long long in
 	#ifdef __SSE__
 	// Use SSE here, if it is available
 	// TODO: Need to check if out (hashval) is aligned
-	_mm_storeu_si128((__m128i *) &out[0], _mm_loadu_si128((__m128i *) &CONST32final[8]));
-	_mm_storeu_si128((__m128i *) &out[16], _mm_loadu_si128((__m128i *) &CONST32final[12]));
+	_mm_store_si128((__m128i *) &out[0], _mm_load_si128((__m128i *) &CONST32final[8]));
+	_mm_store_si128((__m128i *) &out[16], _mm_load_si128((__m128i *) &CONST32final[12]));
 	#else
 	// Fallback
 	memcpy(out, &CONST32final[8], BlueMidnightWish256_DIGEST_SIZE );

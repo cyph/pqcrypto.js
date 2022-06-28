@@ -1,1 +1,2 @@
-../sphlib/api.h
+#define CRYPTO_BYTES 64
+#define CRYPTO_VERSION "SPHLIB 3.0"

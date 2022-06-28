@@ -1,1 +1,0 @@
-../arm/P434_compressed_pair_tables.inc

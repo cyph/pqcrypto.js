@@ -1,18 +1,5 @@
 Reverse-chronological changelog for *ntru*/ref:
 
-Added crypto_declassify() for the rejection sampling in Streamlined NTRU
-Prime key generation to work with TIMECOP.
-
-Added support for extra sizes 953, 1013, 1277.
-
-Added abort if crypto_stream_aes256ctr() fails. (There are some AES
-implementations that never fail, but OpenSSL can fail if it runs out of
-memory.)
-
-Used CRYPTO_NAMESPACE.
-
-Ported the NTRU LPRime software to big-endian CPUs.
-
 Renamed Hash() as Hash_prefix().
 
 Removed KAT support.

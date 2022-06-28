@@ -4,7 +4,7 @@
  * @version 2.0 (February 2008) 
  * (Previous version 1.0 from April 2005)
  *
- * Optimised ANSI C code for the LEX stream cipher for ECRYPT
+ * Optimised ANSI C code for the LEX stream cipher for crypto_stream_lexv2_e_v2_ref_ECRYPT
  *
  * @author Alex dot Biryukov at uni dot lu
  *
@@ -477,7 +477,7 @@ int rijndaelKeySetupEnc(u32 rk[/*4*(Nr + 1)*/], const u8 cipherKey[], int keyBit
 /* Unmodified Rijndael Encrypt for the IV setup. Can be used for AES encrypt elsewhere in your code. */
 /* No leaks and the last round is without MixColumn, like in Rijndael */
 
-void LEX_ivsetup(ECRYPT_ctx* ctx, int Nr, const u32 pt[], u32 ct[]) {
+void LEX_ivsetup(crypto_stream_lexv2_e_v2_ref_ECRYPT_ctx* ctx, int Nr, const u32 pt[], u32 ct[]) {
 	u32 s0, s1, s2, s3, t0, t1, t2, t3;
 	u32 *rk;
 
@@ -602,7 +602,7 @@ void LEX_ivsetup(ECRYPT_ctx* ctx, int Nr, const u32 pt[], u32 ct[]) {
 /* (2) no XOR with the 1st subkey - makes the 1st round the same as all the others.	*/
 /* (3) leak extraction of 4 bytes after each round. Leaks differ in odd and even rounds (!) */ 
     
-void rijndaelEncrypt(ECRYPT_ctx* ctx,  int Nr, const u32 pt[], u32 ct[]) {
+void rijndaelEncrypt(crypto_stream_lexv2_e_v2_ref_ECRYPT_ctx* ctx,  int Nr, const u32 pt[], u32 ct[]) {
 
 	u32 s0, s1, s2, s3, t0, t1, t2, t3;
         u32 *rk;
@@ -713,22 +713,22 @@ void rijndaelEncrypt(ECRYPT_ctx* ctx,  int Nr, const u32 pt[], u32 ct[]) {
 
 
 
-/* ECRYPT calls */
+/* crypto_stream_lexv2_e_v2_ref_ECRYPT calls */
 /* No initialization is need */
-void ECRYPT_init(void)
+void crypto_stream_lexv2_e_v2_ref_ECRYPT_init(void)
 {
    return;
 }
 
 /* Key setup */
-void ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
+void crypto_stream_lexv2_e_v2_ref_ECRYPT_keysetup(crypto_stream_lexv2_e_v2_ref_ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
 {
 	rijndaelKeySetupEnc(ctx -> subkeys, key, keysize);	/* Unmodified Rijndael Keysetup*/
 								            /* Accepts keysizes 128,192,256 */
 }
 
 /* IV setup */
-void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv_plain)
+void crypto_stream_lexv2_e_v2_ref_ECRYPT_ivsetup(crypto_stream_lexv2_e_v2_ref_ECRYPT_ctx* ctx, const u8* iv_plain)
 {								/* Encrypt the IV */
   ctx->blockstate[0] = U8TO32_LITTLE(iv_plain);
   ctx->blockstate[1] = U8TO32_LITTLE(iv_plain + 4);
@@ -736,12 +736,12 @@ void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv_plain)
   ctx->blockstate[3] = U8TO32_LITTLE(iv_plain + 12);
 
         LEX_ivsetup(ctx, NUMBEROFROUNDS, ctx->blockstate, ctx->blockstate);
-        /* call format: LEX_ivsetup(ECRYPT_ctx* ctx, NUMBEROFROUNDS, u8* plaintext, u8* ciphertext); */
+        /* call format: LEX_ivsetup(crypto_stream_lexv2_e_v2_ref_ECRYPT_ctx* ctx, NUMBEROFROUNDS, u8* plaintext, u8* ciphertext); */
 }
 
 
 /* Encrypt or decrypt "msglen" number of message bytes */
-void ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, 
+void crypto_stream_lexv2_e_v2_ref_ECRYPT_process_bytes(int action, crypto_stream_lexv2_e_v2_ref_ECRYPT_ctx* ctx, const u8* input, 
           u8* output, u32 msglen)
 {
 int j;
@@ -766,7 +766,7 @@ if (msglen > 0){
 
 
 /* Key stream generation of "length" bytes*/
-void ECRYPT_keystream_bytes(ECRYPT_ctx* ctx, u8* keystream, u32 length)
+void crypto_stream_lexv2_e_v2_ref_ECRYPT_keystream_bytes(crypto_stream_lexv2_e_v2_ref_ECRYPT_ctx* ctx, u8* keystream, u32 length)
 {
 int j;
 
@@ -788,7 +788,7 @@ if (length > 0){
 
 
 /* Encrypt or decrypt a "blocks" number of blocks */
-void ECRYPT_process_blocks(int action, ECRYPT_ctx* ctx, const u8* input, 
+void crypto_stream_lexv2_e_v2_ref_ECRYPT_process_blocks(int action, crypto_stream_lexv2_e_v2_ref_ECRYPT_ctx* ctx, const u8* input, 
           u8* output, u32 blocks){
 int i,j;
 

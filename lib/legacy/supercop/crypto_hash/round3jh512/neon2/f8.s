@@ -102,7 +102,7 @@ F8:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#0
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm: x0 = mem128[input_0];input_0 += 16
 # asm 1: vld1.8 {>x0=reg128#1%bot->x0=reg128#1%top},[<input_0=int32#1]!

@@ -110,7 +110,7 @@ stack512 tmp
 stack64 ctarget
 
 
-enter ECRYPT_keystream_bytes
+enter crypto_stream_chacha12_e_amd64_3_ECRYPT_keystream_bytes
 
 x = arg1
 m = arg2
@@ -128,7 +128,7 @@ out -= bytes
 goto start
 
 
-enter ECRYPT_decrypt_bytes
+enter crypto_stream_chacha12_e_amd64_3_ECRYPT_decrypt_bytes
 
 x = arg1
 m = arg2
@@ -141,7 +141,7 @@ goto done if !unsigned>
 goto start
 
 
-enter ECRYPT_encrypt_bytes
+enter crypto_stream_chacha12_e_amd64_3_ECRYPT_encrypt_bytes
 
 x = arg1
 m = arg2
@@ -585,11 +585,11 @@ goto mainloop if unsigned>
 goto bytesatleast1
 
 
-enter ECRYPT_init
+enter crypto_stream_chacha12_e_amd64_3_ECRYPT_init
 leave
 
 
-enter ECRYPT_keysetup
+enter crypto_stream_chacha12_e_amd64_3_ECRYPT_keysetup
 
   k = arg2
   kbits = arg3
@@ -642,7 +642,7 @@ enter ECRYPT_keysetup
 leave
 
 
-enter ECRYPT_ivsetup
+enter crypto_stream_chacha12_e_amd64_3_ECRYPT_ivsetup
 
   iv = arg2
   x = arg1

@@ -184,7 +184,7 @@ mpz_clear(t);
 #line 142 "rwb0fuz1024.w"
 
 int
-CRYPTO_NAMESPACE(keypair)(uint8_t*pk,uint8_t*sk){
+crypto_sign_rwb0fuz1024_gmp_keypair(uint8_t*pk,uint8_t*sk){
 mpz_t p,q,n;
 
 /*7:*/
@@ -344,7 +344,7 @@ mpz_clear(vs[3]);
 #line 289 "rwb0fuz1024.w"
 
 int
-CRYPTO_NAMESPACETOP(uint8_t*sm,unsigned long long*smlen,
+crypto_sign_rwb0fuz1024_gmp(uint8_t*sm,unsigned long long*smlen,
 const uint8_t*m,unsigned long long mlen,
 const uint8_t*sk){
 mpz_t p,q,u,v,n;
@@ -517,7 +517,7 @@ return 0;
 #line 700 "rwb0fuz1024.w"
 
 int
-CRYPTO_NAMESPACE(open)(unsigned char*m,unsigned long long*mlen,
+crypto_sign_rwb0fuz1024_gmp_open(unsigned char*m,unsigned long long*mlen,
 const unsigned char*sm,unsigned long long smlen,
 const unsigned char*pk){
 int res= 0;

@@ -182,7 +182,7 @@ stack32 i28_stack
 stack32 i29_stack
 
 # Enter the function
-enter ECRYPT_process_bytes_qhasm
+enter crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_process_bytes_qhasm
 
 <? (uint32) length - 0
 

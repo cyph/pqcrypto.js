@@ -131,39 +131,6 @@
     res^=(a)[5]&(b)[5];\
     XORBITS64(res);
 
-#define DOTPRODUCT448(res,a,b) \
-    res=(a)[0]&(b)[0];\
-    res^=(a)[1]&(b)[1];\
-    res^=(a)[2]&(b)[2];\
-    res^=(a)[3]&(b)[3];\
-    res^=(a)[4]&(b)[4];\
-    res^=(a)[5]&(b)[5];\
-    res^=(a)[6]&(b)[6];\
-    XORBITS64(res);
-
-#define DOTPRODUCT512(res,a,b) \
-    res=(a)[0]&(b)[0];\
-    res^=(a)[1]&(b)[1];\
-    res^=(a)[2]&(b)[2];\
-    res^=(a)[3]&(b)[3];\
-    res^=(a)[4]&(b)[4];\
-    res^=(a)[5]&(b)[5];\
-    res^=(a)[6]&(b)[6];\
-    res^=(a)[7]&(b)[7];\
-    XORBITS64(res);
-
-#define DOTPRODUCT576(res,a,b) \
-    res=(a)[0]&(b)[0];\
-    res^=(a)[1]&(b)[1];\
-    res^=(a)[2]&(b)[2];\
-    res^=(a)[3]&(b)[3];\
-    res^=(a)[4]&(b)[4];\
-    res^=(a)[5]&(b)[5];\
-    res^=(a)[6]&(b)[6];\
-    res^=(a)[7]&(b)[7];\
-    res^=(a)[8]&(b)[8];\
-    XORBITS64(res);
-
 
 /* Bitwise multiplication and xor to res, b a constant */
 #define DOTPRODUCT64M(res,a,b) \
@@ -193,14 +160,6 @@
     DOTPRODUCT384M(res,a,b);\
     res[6]^=(a)[6]&(b);
 
-#define DOTPRODUCT512M(res,a,b) \
-    DOTPRODUCT448M(res,a,b);\
-    res[7]^=(a)[7]&(b);
-
-#define DOTPRODUCT576M(res,a,b) \
-    DOTPRODUCT512M(res,a,b);\
-    res[8]^=(a)[8]&(b);
-
 
 
 /* Equal 0 */
@@ -210,9 +169,6 @@
 #define ISZERO256(a) (ISZERO192(a)&&((a)[3]==0UL))
 #define ISZERO320(a) (ISZERO256(a)&&((a)[4]==0UL))
 #define ISZERO384(a) (ISZERO320(a)&&((a)[5]==0UL))
-#define ISZERO448(a) (ISZERO384(a)&&((a)[6]==0UL))
-#define ISZERO512(a) (ISZERO448(a)&&((a)[7]==0UL))
-#define ISZERO576(a) (ISZERO512(a)&&((a)[8]==0UL))
 
 
 
@@ -225,7 +181,6 @@
 #define ISEQUAL384(a,b) (ISEQUAL320(a,b)&&((a)[5]==(b)[5]))
 #define ISEQUAL448(a,b) (ISEQUAL384(a,b)&&((a)[6]==(b)[6]))
 #define ISEQUAL512(a,b) (ISEQUAL448(a,b)&&((a)[7]==(b)[7]))
-#define ISEQUAL576(a,b) (ISEQUAL512(a,b)&&((a)[8]==(b)[8]))
 
 
 
@@ -236,9 +191,6 @@
 #define CMP_LT256(a,b) (((a)[3]==(b)[3])?CMP_LT192(a,b):((a)[3]<(b)[3]))
 #define CMP_LT320(a,b) (((a)[4]==(b)[4])?CMP_LT256(a,b):((a)[4]<(b)[4]))
 #define CMP_LT384(a,b) (((a)[5]==(b)[5])?CMP_LT320(a,b):((a)[5]<(b)[5]))
-#define CMP_LT448(a,b) (((a)[6]==(b)[6])?CMP_LT384(a,b):((a)[6]<(b)[6]))
-#define CMP_LT512(a,b) (((a)[7]==(b)[7])?CMP_LT448(a,b):((a)[7]<(b)[7]))
-#define CMP_LT576(a,b) (((a)[8]==(b)[8])?CMP_LT512(a,b):((a)[8]<(b)[8]))
 
 #define CMP_GT64(a,b) ((a)[0]>(b)[0])
 #define CMP_GT128(a,b) (((a)[1]==(b)[1])?CMP_GT64(a,b):((a)[1]>(b)[1]))
@@ -246,9 +198,6 @@
 #define CMP_GT256(a,b) (((a)[3]==(b)[3])?CMP_GT192(a,b):((a)[3]>(b)[3]))
 #define CMP_GT320(a,b) (((a)[4]==(b)[4])?CMP_GT256(a,b):((a)[4]>(b)[4]))
 #define CMP_GT384(a,b) (((a)[5]==(b)[5])?CMP_GT320(a,b):((a)[5]>(b)[5]))
-#define CMP_GT448(a,b) (((a)[6]==(b)[6])?CMP_GT384(a,b):((a)[6]>(b)[6]))
-#define CMP_GT512(a,b) (((a)[7]==(b)[7])?CMP_GT448(a,b):((a)[7]>(b)[7]))
-#define CMP_GT576(a,b) (((a)[8]==(b)[8])?CMP_GT512(a,b):((a)[8]>(b)[8]))
 
 
 #endif

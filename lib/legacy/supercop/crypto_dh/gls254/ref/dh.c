@@ -8,7 +8,7 @@
 #include "ec.incl"
 #include "scmul.incl"
 
-int CRYPTO_NAMESPACE(keypair)(unsigned char *pk, unsigned char *sk) {
+int crypto_dh_gls254_ref_keypair(unsigned char *pk, unsigned char *sk) {
 	Curve curve;
 	curves_domParam(&curve, GLS254);
 	
@@ -22,7 +22,7 @@ int CRYPTO_NAMESPACE(keypair)(unsigned char *pk, unsigned char *sk) {
 	return 0;
 }
 
-int CRYPTO_NAMESPACETOP(unsigned char *out, const unsigned char *pk, const unsigned char *sk) {
+int crypto_dh_gls254_ref(unsigned char *out, const unsigned char *pk, const unsigned char *sk) {
 	Curve curve;
 	curves_domParam(&curve, GLS254);
 	

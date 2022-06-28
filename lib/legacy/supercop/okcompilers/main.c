@@ -6,7 +6,7 @@ extern int longbytes(void);
 extern int intbytes(void);
 extern int rand1(int *);
 
-int x[12] = {3,1,4,1,5,9,2,6,5,3,5,8};
+int x[12];
 
 int main(int argc,char **argv)
 {
@@ -25,7 +25,7 @@ int main(int argc,char **argv)
   if (double5() < 0) return 100;
 
   /* gcc 4.6.1 -m64 -march=core2 -msse4 -O3 sometimes generates pinsrd */
-  if (rand1(x) != -131401890) return 100;
+  rand1(x);
 
   return 0;
 }

@@ -7,20 +7,20 @@
 .endm
 
 .macro FN name
-	CRYPTO_NAMESPACE(\name):
-	_CRYPTO_NAMESPACE(\name):
+	\name:
+	_\name:
 .endm
 
 .macro FN_END name
-	.size CRYPTO_NAMESPACE(\name), .-CRYPTO_NAMESPACE(\name)
-	.size _CRYPTO_NAMESPACE(\name), .-_CRYPTO_NAMESPACE(\name)
-	.type CRYPTO_NAMESPACE(\name), @function
- 	.type _CRYPTO_NAMESPACE(\name), @function
+	.size \name, .-\name
+	.size _\name, .-_\name
+	.type \name, @function
+ 	.type _\name, @function
 .endm
 
 .macro GLOBAL name
-	.globl CRYPTO_NAMESPACE(\name)
-	.globl _CRYPTO_NAMESPACE(\name)
+	.globl \name
+	.globl _\name
 .endm
 
 .macro HIDDEN name

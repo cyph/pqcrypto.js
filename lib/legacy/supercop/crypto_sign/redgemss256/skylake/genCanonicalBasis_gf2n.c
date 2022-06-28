@@ -1,1 +1,0 @@
-../../gemss128/opt/genCanonicalBasis_gf2n.c

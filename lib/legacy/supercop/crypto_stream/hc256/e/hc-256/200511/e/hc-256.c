@@ -50,7 +50,7 @@
 }   
 
 /*16 steps of HC-256, generate 512 bits keystream*/
-void generate_keystream(ECRYPT_ctx* ctx, u32* keystream)  
+void generate_keystream(crypto_stream_hc256_e_hc_256_200511_ECRYPT_ctx* ctx, u32* keystream)  
 {
    u32 cc,dd;
    cc = ctx->counter2048 & 0x3ff;
@@ -127,7 +127,7 @@ void generate_keystream(ECRYPT_ctx* ctx, u32* keystream)
 }     
 
 /*16 steps of HC-256, without generating keystream*/
-void setup_update(ECRYPT_ctx* ctx)  /*each time 16 steps*/
+void setup_update(crypto_stream_hc256_e_hc_256_200511_ECRYPT_ctx* ctx)  /*each time 16 steps*/
 {
    u32 cc,dd;
    cc = ctx->counter2048 & 0x3ff;
@@ -175,7 +175,7 @@ void setup_update(ECRYPT_ctx* ctx)  /*each time 16 steps*/
    }       
 }
 
-void ECRYPT_init(void) {
+void crypto_stream_hc256_e_hc_256_200511_ECRYPT_init(void) {
 }  /* No operation performed */
 
 
@@ -194,8 +194,8 @@ void ECRYPT_init(void) {
 *  iv[31] is the most significant byte of ctx->iv[8]  (IV_8)
 */
 
-void ECRYPT_keysetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_hc256_e_hc_256_200511_ECRYPT_keysetup(
+  crypto_stream_hc256_e_hc_256_200511_ECRYPT_ctx* ctx, 
   const u8* key, 
   u32 keysize,                /* Key size in bits (128+128*i) */ 
   u32 ivsize)                 /* IV size in bits  (128+128*i)*/
@@ -213,7 +213,7 @@ void ECRYPT_keysetup(
 } /* initialize the key, save the iv size*/
 
 
-void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
+void crypto_stream_hc256_e_hc_256_200511_ECRYPT_ivsetup(crypto_stream_hc256_e_hc_256_200511_ECRYPT_ctx* ctx, const u8* iv)
 { 
     u32 i;
 	
@@ -253,9 +253,9 @@ void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
  *========================================================
  */
 
-void ECRYPT_process_bytes(
+void crypto_stream_hc256_e_hc_256_200511_ECRYPT_process_bytes(
   int action,                 /* 0 = encrypt; 1 = decrypt; */
-  ECRYPT_ctx* ctx, 
+  crypto_stream_hc256_e_hc_256_200511_ECRYPT_ctx* ctx, 
   const u8* input, 
   u8* output, 
   u32 msglen)                /* Message length in bytes. */ 

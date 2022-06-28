@@ -4,7 +4,6 @@
 
 #ifndef TRANSPOSE_H
 #define TRANSPOSE_H
-#define transpose_64x64 CRYPTO_NAMESPACE(transpose_64x64)
 
 #include <stdint.h>
 

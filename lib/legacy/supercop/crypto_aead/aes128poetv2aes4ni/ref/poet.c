@@ -56,9 +56,9 @@
 // ---------------------------------------------------------------------
 
 static __m128i loadu(const void* p) { return _mm_loadu_si128((__m128i*)p); }
-static __m128i load(const void* p)  { return _mm_loadu_si128((__m128i*)p);  }
+static __m128i load(const void* p)  { return _mm_load_si128((__m128i*)p);  }
 static void storeu(const void* p, __m128i x) { _mm_storeu_si128((__m128i*)p, x); }
-static void store(const void* p, __m128i x)  { _mm_storeu_si128((__m128i*)p, x);  }
+static void store(const void* p, __m128i x)  { _mm_store_si128((__m128i*)p, x);  }
 
 // ---------------------------------------------------------------------
 
@@ -314,7 +314,7 @@ static __m128i aes_keygen_assist(__m128i temp1, __m128i temp2)
 #define aes_create_round_key(temp1, temp2, rcon, k) \
     temp2 = _mm_aeskeygenassist_si128(temp1, rcon); \
     temp1 = aes_keygen_assist(temp1, temp2); \
-    _mm_storeu_si128(k, temp1)
+    _mm_store_si128(k, temp1)
 
 // ---------------------------------------------------------------------
 
@@ -339,8 +339,8 @@ static void aes_expand_key(__m128i userkey, AES_KEY enc_key)
     __m128i temp1, temp2;
     __m128i *key = (__m128i*)enc_key;
 
-    _mm_storeu_si128(&temp1, userkey);
-    _mm_storeu_si128(&key[0], temp1);
+    _mm_store_si128(&temp1, userkey);
+    _mm_store_si128(&key[0], temp1);
 
     aes_create_round_key(temp1, temp2, 0x01, &key[1]);
     aes_create_round_key(temp1, temp2, 0x02, &key[2]);

@@ -76,16 +76,13 @@ static void DRYSPONGE_g(
             DRYSPONGE_print_state(ctx);
         #endif
         DRYSPONGE_CoreRound(ctx,j);
-        uint32_t r32[DRYSPONGE_BLOCKSIZE32];
-        uint32_t cpart[DRYSPONGE_BLOCKSIZE32];
-	    memcpy(r32,ctx->r,sizeof(r32));
+        uint32_t*r32 = (uint32_t*)ctx->r;
         for(unsigned int k=0;k<DRYSPONGE_ACCUMULATE_FACTOR;k++){
-            memcpy(cpart,ctx->c+k*DRYSPONGE_BLOCKSIZE64,sizeof(cpart));
+            uint32_t *cpart = ((uint32_t*)ctx->c)+k*DRYSPONGE_BLOCKSIZE32;
             for(unsigned int i=0;i<DRYSPONGE_BLOCKSIZE32;i++){
                 r32[i]^=cpart[(i+k)%DRYSPONGE_BLOCKSIZE32];
             }
         }
-        memcpy(ctx->r,r32,sizeof(r32));
     }
 }
 #endif
@@ -129,38 +126,55 @@ static void DRYSPONGE_set_key(
     const uint8_t *const key,
     const unsigned int keylen
 ){
+    uint32_t *const c32 = (uint32_t *const)ctx->c;
+    uint32_t *const x32 = (uint32_t *const)ctx->x;
     assert(DRYSPONGE_KEYSIZE<=keylen);
     const unsigned int midkeysize = DRYSPONGE_KEYSIZE+DRYSPONGE_XSIZE;
     const unsigned int fullkeysize = DRYSPONGE_CAPACITYSIZE+DRYSPONGE_XSIZE;
     if(DRYSPONGE_KEYSIZE!=keylen){//all words for x assumed to be different
-        if(fullkeysize == keylen){
-            memcpy(ctx->c,key,DRYSPONGE_CAPACITYSIZE);
-            memcpy(ctx->x,key+DRYSPONGE_CAPACITYSIZE,DRYSPONGE_XSIZE);
-        } else {
-            uint8_t c[DRYSPONGE_CAPACITYSIZE];
-            uint8_t x[DRYSPONGE_XSIZE];
-            assert(midkeysize==keylen);
-            for(unsigned int i=0;i<DRYSPONGE_CAPACITYSIZE;i++){
-                c[i] = key[i%DRYSPONGE_KEYSIZE];
+        if((keylen%8) || (((uintptr_t)key)%ALIGN64)){
+            uint8_t*c = (uint8_t*)ctx->c;
+            uint8_t*x = (uint8_t*)ctx->x;
+            if(fullkeysize == keylen){
+                memcpy(ctx->c,key,DRYSPONGE_CAPACITYSIZE);
+                memcpy(ctx->x,key+DRYSPONGE_CAPACITYSIZE,DRYSPONGE_XSIZE);
+            } else {
+                assert(midkeysize==keylen);
+                for(unsigned int i=0;i<DRYSPONGE_CAPACITYSIZE;i++){
+                    c[i] = key[i%DRYSPONGE_KEYSIZE];
+                }
+                for(unsigned int i=0;i<DRYSPONGE_XSIZE;i++){
+                    x[i] = key[DRYSPONGE_KEYSIZE+i];
+                }
             }
-            for(unsigned int i=0;i<DRYSPONGE_XSIZE;i++){
-                x[i] = key[DRYSPONGE_KEYSIZE+i];
+        }else{
+            const uint64_t *const key64 = (const uint64_t *const)key;
+            if(fullkeysize==keylen){
+                for(unsigned int i=0;i<DRYSPONGE_CAPACITYSIZE64;i++){
+                    ctx->c[i] = key64[i];
+                }
+                for(unsigned int i=0;i<DRYSPONGE_XSIZE64;i++){
+                    ctx->x[i] = key64[i+DRYSPONGE_CAPACITYSIZE64];
+                }
+            }else{
+                assert(midkeysize==keylen);
+                for(unsigned int i=0;i<DRYSPONGE_CAPACITYSIZE64;i++){
+                    ctx->c[i] = key64[i%DRYSPONGE_KEYSIZE64];
+                }
+                for(unsigned int i=0;i<DRYSPONGE_XSIZE64;i++){
+                    ctx->x[i] = key64[i+DRYSPONGE_KEYSIZE64];
+                }
             }
-            memcpy(ctx->c,c,DRYSPONGE_CAPACITYSIZE);
-            memcpy(ctx->x,x,DRYSPONGE_XSIZE);
         }
     }else{
-        uint8_t c[DRYSPONGE_CAPACITYSIZE];
+        uint8_t*c = (uint8_t*)ctx->c;
         for(unsigned int i=0;i<DRYSPONGE_CAPACITYSIZE;i++){
             c[i] = key[i%DRYSPONGE_KEYSIZE];
         }
-        memcpy(ctx->c,c,DRYSPONGE_CAPACITYSIZE);
         DRYSPONGE_CoreRound(ctx,0);
         //need to fixup x such that all words are different
         unsigned int modified=1;
         while(modified){
-            uint32_t c32[DRYSPONGE_CAPACITYSIZE32];
-            memcpy(c32,ctx->c,DRYSPONGE_CAPACITYSIZE);
             modified=0;
             for(unsigned int i=0;i<DRYSPONGE_XSIZE32-1;i++){
                 for(unsigned int j=i+1;j<DRYSPONGE_XSIZE32;j++){
@@ -176,8 +190,6 @@ static void DRYSPONGE_set_key(
         memcpy(ctx->x,ctx->c,DRYSPONGE_XSIZE);
         memcpy(ctx->c,key,DRYSPONGE_XSIZE);
     }
-    uint32_t x32[DRYSPONGE_XSIZE32];// = (uint32_t *const)ctx->x;
-    memcpy(x32,ctx->x,DRYSPONGE_XSIZE);
     //sanity check: all words in x shall be different
     for(unsigned int i=0;i<DRYSPONGE_XSIZE32-1;i++){
         for(unsigned int j=i+1;j<DRYSPONGE_XSIZE32;j++){
@@ -328,7 +340,6 @@ static void DRYSPONGE_enc_core(
     DRYSPONGE_t *const ctx,
     const uint64_t *const ib//exactly one block of input
 ){
-
     DRYSPONGE_xor((uint8_t *)ctx->r,(uint8_t *)ib,ctx->obuf);
     DRYSPONGE_f(ctx,(uint8_t *)ib);
     ctx->obuf+=DRYSPONGE_BLOCKSIZE;

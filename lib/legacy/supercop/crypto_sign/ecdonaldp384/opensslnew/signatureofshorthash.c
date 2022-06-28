@@ -1,1 +1,0 @@
-../../ecdonaldp256/opensslnew/signatureofshorthash.c

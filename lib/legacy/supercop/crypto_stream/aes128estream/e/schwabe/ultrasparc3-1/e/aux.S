@@ -7,12 +7,12 @@
 .LLdebug_line0:
 	.section	".text"
 .LLtext0:
-	.global CRYPTO_NAMESPACE(aes_big_constants)
+	.global aes_big_constants
 	.section	".rodata"
 	.align 8
-	.type	CRYPTO_NAMESPACE(aes_big_constants), #object
-	.size	CRYPTO_NAMESPACE(aes_big_constants), 12368
-CRYPTO_NAMESPACE(aes_big_constants):
+	.type	aes_big_constants, #object
+	.size	aes_big_constants, 12368
+aes_big_constants:
 	.byte	0
 	.byte	0
 	.byte	0
@@ -12384,10 +12384,10 @@ CRYPTO_NAMESPACE(aes_big_constants):
 	.section	".text"
 	.align 4
 	.align 32
-	.global CRYPTO_NAMESPACE(ECRYPT_keysetup)
-	.type	CRYPTO_NAMESPACE(ECRYPT_keysetup), #function
+	.global crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_keysetup
+	.type	crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_keysetup, #function
 	.proc	020
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_keysetup:
 .LLFB4:
 .LLM1:
 	!#PROLOGUE# 0
@@ -12507,28 +12507,28 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	stx	%i1, [%i0+24]
 .LL8:
 .LLM57:
-	sethi	%hh(CRYPTO_NAMESPACE(aes_big_constants)), %g1
+	sethi	%hh(aes_big_constants), %g1
 .LLM58:
-	sethi	%hh(CRYPTO_NAMESPACE(aes_big_constants)+8276), %i0
+	sethi	%hh(aes_big_constants+8276), %i0
 .LLM59:
-	or	%g1, %hm(CRYPTO_NAMESPACE(aes_big_constants)), %i1
-	sethi	%lm(CRYPTO_NAMESPACE(aes_big_constants)), %i3
+	or	%g1, %hm(aes_big_constants), %i1
+	sethi	%lm(aes_big_constants), %i3
 	sllx	%i1, 32, %i5
 .LLM60:
-	or	%i0, %hm(CRYPTO_NAMESPACE(aes_big_constants)+8276), %i4
+	or	%i0, %hm(aes_big_constants+8276), %i4
 .LLM61:
 	add	%i5, %i3, %g4
 	srl	%l7, 0, %i2
 	sllx	%i2, 3, %i0
-	or	%g4, %lo(CRYPTO_NAMESPACE(aes_big_constants)), %i1
+	or	%g4, %lo(aes_big_constants), %i1
 .LLM62:
 	sllx	%i4, 32, %i2
 .LLM63:
-	sethi	%hh(CRYPTO_NAMESPACE(aes_big_constants)+8284), %g5
+	sethi	%hh(aes_big_constants+8284), %g5
 .LLM64:
-	sethi	%lm(CRYPTO_NAMESPACE(aes_big_constants)+8276), %i3
+	sethi	%lm(aes_big_constants+8276), %i3
 .LLM65:
-	or	%g5, %hm(CRYPTO_NAMESPACE(aes_big_constants)+8284), %i4
+	or	%g5, %hm(aes_big_constants+8284), %i4
 .LLM66:
 	add	%i0, %i1, %g5
 .LLM67:
@@ -12540,37 +12540,37 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 .LLM70:
 	ld	[%g5+4], %i2
 .LLM71:
-	sethi	%hh(CRYPTO_NAMESPACE(aes_big_constants)+8272), %i3
+	sethi	%hh(aes_big_constants+8272), %i3
 .LLM72:
 	and	%i1, 4080, %i4
 .LLM73:
-	or	%i3, %hm(CRYPTO_NAMESPACE(aes_big_constants)+8272), %g1
+	or	%i3, %hm(aes_big_constants+8272), %g1
 .LLM74:
-	or	%i0, %lo(CRYPTO_NAMESPACE(aes_big_constants)+8276), %g4
+	or	%i0, %lo(aes_big_constants+8276), %g4
 .LLM75:
 	srl	%l4, 4, %i1
 .LLM76:
-	sethi	%hh(CRYPTO_NAMESPACE(aes_big_constants)+8280), %o5
+	sethi	%hh(aes_big_constants+8280), %o5
 .LLM77:
 	ld	[%i4+%g4], %i3
 .LLM78:
-	sethi	%lm(CRYPTO_NAMESPACE(aes_big_constants)+8284), %i0
+	sethi	%lm(aes_big_constants+8284), %i0
 	and	%i1, 4080, %i4
 	add	%i5, %i0, %g5
 .LLM79:
-	sethi	%lm(CRYPTO_NAMESPACE(aes_big_constants)+8272), %i1
+	sethi	%lm(aes_big_constants+8272), %i1
 	sllx	%g1, 32, %i0
 .LLM80:
-	or	%g5, %lo(CRYPTO_NAMESPACE(aes_big_constants)+8284), %g4
+	or	%g5, %lo(aes_big_constants+8284), %g4
 .LLM81:
-	or	%o5, %hm(CRYPTO_NAMESPACE(aes_big_constants)+8280), %g1
+	or	%o5, %hm(aes_big_constants+8280), %g1
 .LLM82:
 	add	%i0, %i1, %i5
 .LLM83:
 	ld	[%i4+%g4], %i1
 .LLM84:
 	sllx	%g1, 32, %i0
-	sethi	%lm(CRYPTO_NAMESPACE(aes_big_constants)+8280), %g5
+	sethi	%lm(aes_big_constants+8280), %g5
 .LLM85:
 	xor	%l3, %i2, %l3
 .LLM86:
@@ -12579,7 +12579,7 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	srl	%l4, 20, %i2
 .LLM88:
 	and	%o1, 4080, %i4
-	or	%i5, %lo(CRYPTO_NAMESPACE(aes_big_constants)+8272), %g4
+	or	%i5, %lo(aes_big_constants+8272), %g4
 .LLM89:
 	cmp	%l7, 9
 .LLM90:
@@ -12588,7 +12588,7 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	xor	%l3, %i3, %i5
 .LLM92:
 	and	%i2, 4080, %i4
-	or	%g1, %lo(CRYPTO_NAMESPACE(aes_big_constants)+8280), %i2
+	or	%g1, %lo(aes_big_constants+8280), %i2
 .LLM93:
 	xor	%i5, %i1, %i3
 .LLM94:
@@ -12780,13 +12780,13 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	return	%i7+8
 	nop
 .LLFE4:
-	.size	CRYPTO_NAMESPACE(ECRYPT_keysetup), .-CRYPTO_NAMESPACE(ECRYPT_keysetup)
+	.size	crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_keysetup, .-crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_keysetup
 	.align 4
 	.align 32
-	.global CRYPTO_NAMESPACE(ECRYPT_init)
-	.type	CRYPTO_NAMESPACE(ECRYPT_init), #function
+	.global crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_init
+	.type	crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_init, #function
 	.proc	020
-CRYPTO_NAMESPACE(ECRYPT_init):
+crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_init:
 .LLFB6:
 .LLM182:
 	!#PROLOGUE# 0
@@ -12795,13 +12795,13 @@ CRYPTO_NAMESPACE(ECRYPT_init):
 	retl
 	nop
 .LLFE6:
-	.size	CRYPTO_NAMESPACE(ECRYPT_init), .-CRYPTO_NAMESPACE(ECRYPT_init)
+	.size	crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_init, .-crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_init
 	.align 4
 	.align 32
-	.global CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-	.type	CRYPTO_NAMESPACE(ECRYPT_ivsetup), #function
+	.global crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_ivsetup
+	.type	crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_ivsetup, #function
 	.proc	020
-CRYPTO_NAMESPACE(ECRYPT_ivsetup):
+crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_ivsetup:
 .LLFB7:
 .LLM184:
 	!#PROLOGUE# 0
@@ -12912,7 +12912,7 @@ CRYPTO_NAMESPACE(ECRYPT_ivsetup):
 	return	%i7+8
 	nop
 .LLFE7:
-	.size	CRYPTO_NAMESPACE(ECRYPT_ivsetup), .-CRYPTO_NAMESPACE(ECRYPT_ivsetup)
+	.size	crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_ivsetup, .-crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_ivsetup
 	.section	".debug_frame"
 .LLframe0:
 	.uaword	.LLECIE0-.LLSCIE0
@@ -14321,14 +14321,14 @@ CRYPTO_NAMESPACE(ECRYPT_ivsetup):
 	.byte	0x8
 	.byte	0x7
 	.byte	0x2
-	.asciz	"ECRYPT_ctx"
+	.asciz	"crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_ctx"
 	.byte	0x4
 	.byte	0x3d
 	.uaword	0x159
 	.byte	0x9
 	.uaword	0x24c
 	.byte	0x1
-	.asciz	"CRYPTO_NAMESPACE(ECRYPT_keysetup)"
+	.asciz	"crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_keysetup"
 	.byte	0x1
 	.uahalf	0x31f
 	.byte	0x1
@@ -14470,7 +14470,7 @@ CRYPTO_NAMESPACE(ECRYPT_ivsetup):
 	.byte	0x0
 	.byte	0x11
 	.byte	0x1
-	.asciz	"CRYPTO_NAMESPACE(ECRYPT_init)"
+	.asciz	"crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_init"
 	.byte	0x1
 	.uahalf	0x31a
 	.byte	0x1
@@ -14484,7 +14484,7 @@ CRYPTO_NAMESPACE(ECRYPT_ivsetup):
 	.byte	0x9
 	.uaword	0x33c
 	.byte	0x1
-	.asciz	"CRYPTO_NAMESPACE(ECRYPT_ivsetup)"
+	.asciz	"crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_ivsetup"
 	.byte	0x1
 	.uahalf	0x37d
 	.byte	0x1
@@ -14535,14 +14535,14 @@ CRYPTO_NAMESPACE(ECRYPT_ivsetup):
 	.byte	0xd
 	.uaword	0x147
 	.byte	0x14
-	.asciz	"CRYPTO_NAMESPACE(aes_big_constants)"
+	.asciz	"aes_big_constants"
 	.byte	0x1
 	.byte	0x3
 	.uaword	0x3a7
 	.byte	0x1
 	.byte	0x9
 	.byte	0x3
-	.uaxword	CRYPTO_NAMESPACE(aes_big_constants)
+	.uaxword	aes_big_constants
 	.byte	0xd
 	.uaword	0x36d
 	.byte	0x0
@@ -14804,13 +14804,13 @@ CRYPTO_NAMESPACE(ECRYPT_ivsetup):
 	.uaword	.LLdebug_info0
 	.uaword	0x3ad
 	.uaword	0x25d
-	.asciz	"CRYPTO_NAMESPACE(ECRYPT_keysetup)"
+	.asciz	"crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_keysetup"
 	.uaword	0x2e9
-	.asciz	"CRYPTO_NAMESPACE(ECRYPT_init)"
+	.asciz	"crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_init"
 	.uaword	0x33c
-	.asciz	"CRYPTO_NAMESPACE(ECRYPT_ivsetup)"
+	.asciz	"crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_ivsetup"
 	.uaword	0x383
-	.asciz	"CRYPTO_NAMESPACE(aes_big_constants)"
+	.asciz	"aes_big_constants"
 	.uaword	0x0
 	.section	".debug_aranges"
 	.uaword	0x2c

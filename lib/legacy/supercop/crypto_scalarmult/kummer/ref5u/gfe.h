@@ -9,14 +9,6 @@ typedef struct{
   crypto_uint32 v[5];
 } gfe;
 
-#define gfe_unpack CRYPTO_NAMESPACE(gfe_unpack)
-#define gfe_pack CRYPTO_NAMESPACE(gfe_pack)
-#define gfe_mul CRYPTO_NAMESPACE(gfe_mul)
-#define gfe_square CRYPTO_NAMESPACE(gfe_square)
-#define gfe_mulconst CRYPTO_NAMESPACE(gfe_mulconst)
-#define gfe_hadamard CRYPTO_NAMESPACE(gfe_hadamard)
-#define gfe_invert CRYPTO_NAMESPACE(gfe_invert)
-
 void gfe_unpack(gfe *r, const unsigned char b[16]);
 
 void gfe_pack(unsigned char r[16], const gfe *x);

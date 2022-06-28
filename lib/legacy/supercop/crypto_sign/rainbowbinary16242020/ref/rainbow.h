@@ -1,7 +1,6 @@
 #ifndef _RAINBOW_H
 #define _RAINBOW_H
 
-#include <string.h>
 #include "MQPKC.h"
 #include "linear_solver.h"
 
@@ -43,16 +42,14 @@ rainbow<GF,V0,O0,O1> * rainbow<GF,V0,O0,O1>::instance = NULL;
 template < unsigned GF , unsigned V0 , unsigned O0 , unsigned O1 >
 int rainbow<GF,V0,O0,O1>::gen_qkey( byte * pri_key ) 
 {
-	rainbow_private_key<GF,V0,O0,O1> pri;
+	rainbow_private_key<GF,V0,O0,O1>* pri=(rainbow_private_key<GF,V0,O0,O1>*)pri_key;
 
-	quad_poly<GF,O0,V0>::rand( pri.l0_v );
-	matrix<GF,O0,O0>::rand( pri.l0_o );
-	quad_poly<GF,O1,V0+O0>::rand( pri.l1_v );
-	matrix<GF,O1,O1>::rand( pri.l1_o );
-	for( unsigned i=O0;i--;) { matrix<GF,O0,V0>::rand( pri.l0_vo[i] );	}
-	for( unsigned i=O1;i--;) { matrix<GF,O1,V0+O0>::rand( pri.l1_vo[i] ); }
-
-	memcpy(pri_key,&pri,sizeof pri);
+	quad_poly<GF,O0,V0>::rand( pri->l0_v );
+	matrix<GF,O0,O0>::rand( pri->l0_o );
+	quad_poly<GF,O1,V0+O0>::rand( pri->l1_v );
+	matrix<GF,O1,O1>::rand( pri->l1_o );
+	for( unsigned i=O0;i--;) { matrix<GF,O0,V0>::rand( pri->l0_vo[i] );	}
+	for( unsigned i=O1;i--;) { matrix<GF,O1,V0+O0>::rand( pri->l1_vo[i] ); }
 
 	return 0;
 }
@@ -60,9 +57,7 @@ int rainbow<GF,V0,O0,O1>::gen_qkey( byte * pri_key )
 template < unsigned GF , unsigned V0 , unsigned O0 , unsigned O1 >
 void rainbow<GF,V0,O0,O1>::qmap( gfv<GF,M> & y , const byte *pri_key , const gfv<GF,N> & x ) const 
 {
-	rainbow_private_key<GF,V0,O0,O1> pri;
-
-	memcpy(&pri,pri_key,sizeof pri);
+	const rainbow_private_key<GF,V0,O0,O1>& pri=*((rainbow_private_key<GF,V0,O0,O1>*)pri_key);
 
 	const gfv<GF,V0> * v0 = (const gfv<GF,V0> *)&x;
 	const gfv<GF,V0+O0> * v1 = (const gfv<GF,V0+O0> *)&x;
@@ -86,9 +81,7 @@ void rainbow<GF,V0,O0,O1>::qmap( gfv<GF,M> & y , const byte *pri_key , const gfv
 template < unsigned GF , unsigned V0 , unsigned O0 , unsigned O1 >
 void rainbow<GF,V0,O0,O1>::ivs_qmap( gfv<GF,N> & y , const byte * pri_key , const gfv<GF,M> & x ) const 
 { 
-	rainbow_private_key<GF,V0,O0,O1> pri;
-	memcpy(&pri,pri_key,sizeof pri);
-
+	const rainbow_private_key<GF,V0,O0,O1>& pri=*((const rainbow_private_key<GF,V0,O0,O1>*)pri_key);
 	gfv<GF,V0> * v0 = (gfv<GF,V0> *)&y;
 	gfv<GF,V0+O0> * v1 = (gfv<GF,V0+O0> *)&y;
 	gfv<GF,O0> tmp, sol;

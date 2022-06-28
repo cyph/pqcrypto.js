@@ -316,7 +316,7 @@ fpr_lt(fpr x, fpr y)
 }
 
 static inline uint64_t
-fpr_expm_p63(fpr x, fpr ccs)
+fpr_expm_p63(fpr x)
 {
 	/*
 	 * Polynomial approximation of exp(-x) is taken from FACCT:
@@ -351,7 +351,6 @@ fpr_expm_p63(fpr x, fpr ccs)
 	y = 0.500000000000019206858326015208 - y * d;
 	y = 0.999999999999994892974086724280 - y * d;
 	y = 1.000000000000000000000000000000 - y * d;
-	y *= ccs.v;
 	return (uint64_t)(y * fpr_ptwo63.v);
 
 }

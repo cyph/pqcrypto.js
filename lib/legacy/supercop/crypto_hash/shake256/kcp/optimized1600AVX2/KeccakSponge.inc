@@ -13,27 +13,23 @@ and related or neighboring rights to the source code in this file.
 http://creativecommons.org/publicdomain/zero/1.0/
 */
 
-#define CJOIN1(a, b, c)                a ## _ ## b ## c
-#define CJOIN0(a, b, c)  CJOIN1(a, b, c)
-#define CJOIN(a, b)  CJOIN0(CRYPTO_NAMESPACETOP, a, b)
+#define JOIN0(a, b)                     a ## b
+#define JOIN(a, b)                      JOIN0(a, b)
 
-#define JOIN0(a, b)  a ## b
-#define JOIN(a, b)  JOIN0(a, b)
-
-#define Sponge                          CJOIN(prefix, _Sponge)
+#define Sponge                          JOIN(prefix, _Sponge)
 #define SpongeInstance                  JOIN(prefix, _SpongeInstance)
-#define SpongeInitialize                CJOIN(prefix, _SpongeInitialize)
-#define SpongeAbsorb                    CJOIN(prefix, _SpongeAbsorb)
-#define SpongeAbsorbLastFewBits         CJOIN(prefix, _SpongeAbsorbLastFewBits)
-#define SpongeSqueeze                   CJOIN(prefix, _SpongeSqueeze)
+#define SpongeInitialize                JOIN(prefix, _SpongeInitialize)
+#define SpongeAbsorb                    JOIN(prefix, _SpongeAbsorb)
+#define SpongeAbsorbLastFewBits         JOIN(prefix, _SpongeAbsorbLastFewBits)
+#define SpongeSqueeze                   JOIN(prefix, _SpongeSqueeze)
 
 #define SnP_stateSizeInBytes            JOIN(SnP, _stateSizeInBytes)
 #define SnP_stateAlignment              JOIN(SnP, _stateAlignment)
-#define SnP_StaticInitialize            CJOIN(SnP, _StaticInitialize)
-#define SnP_Initialize                  CJOIN(SnP, _Initialize)
-#define SnP_AddByte                     CJOIN(SnP, _AddByte)
-#define SnP_AddBytes                    CJOIN(SnP, _AddBytes)
-#define SnP_ExtractBytes                CJOIN(SnP, _ExtractBytes)
+#define SnP_StaticInitialize            JOIN(SnP, _StaticInitialize)
+#define SnP_Initialize                  JOIN(SnP, _Initialize)
+#define SnP_AddByte                     JOIN(SnP, _AddByte)
+#define SnP_AddBytes                    JOIN(SnP, _AddBytes)
+#define SnP_ExtractBytes                JOIN(SnP, _ExtractBytes)
 
 int Sponge(unsigned int rate, unsigned int capacity, const unsigned char *input, size_t inputByteLen, unsigned char suffix, unsigned char *output, size_t outputByteLen)
 {

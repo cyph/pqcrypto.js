@@ -1,1 +1,0 @@
-../../ascon128v12/esp32/core.h

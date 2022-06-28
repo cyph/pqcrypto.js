@@ -21,8 +21,8 @@
 #define OR(x,y)         _mm_or_si128((x),(y))                       /* logic OR of 128-bit words x and y */
 #define SHL(x,n)        _mm_shuffle_epi8((x), _mm_set_epi8(15-(n), 14-(n), 13-(n), 12-(n), 11-(n), 10-(n), 9-(n), 8-(n), 7-(n), 6-(n), 5-(n), 4-(n), 3-(n), 2-(n), 1-(n), 0-(n))) // shift to the left
 #define SHR(x,n)        _mm_shuffle_epi8((x), _mm_set_epi8(127+(n), 126+(n), 125+(n), 124+(n), 123+(n), 122+(n), 121+(n), 120+(n), 119+(n), 118+(n), 117+(n), 116+(n), 115+(n), 114+(n), 113+(n), 112+(n))) // shift to the right
-#define STORE(p,x)      _mm_storeu_si128((__m128i *)(p), (x))       /* store 128-bit word x to memory address p */
-#define LOAD(p)         _mm_loadu_si128((__m128i *)(p))             /* load 128-bit word from memory address p, on the tested machine, the first byte appears as LSB */
+#define STORE(p,x)      _mm_store_si128((__m128i *)(p), (x))       /* store 128-bit word x to memory address p */
+#define LOAD(p)         _mm_load_si128((__m128i *)(p))             /* load 128-bit word from memory address p, on the tested machine, the first byte appears as LSB */
 #define SETZERO()       _mm_setzero_si128()                         /* set all 0's */
 #define fix1(x)         x = OR((x), _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x80))   /* the fix1 function fixes the MSB of first byte to '1' */
 #define fix0(x)         x = AND((x), _mm_set_epi8(0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f))     /* the fix0 function fixes the MSB of first byte to '0' */

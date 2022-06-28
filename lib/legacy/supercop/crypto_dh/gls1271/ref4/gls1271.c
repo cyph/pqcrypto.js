@@ -60,7 +60,6 @@ gcc -O2 gls1271.c miracl.a -o gls1271
 
 #include <stdio.h>
 #include <string.h>
-#include "randombytes.h"
 #include "miracl.h"
 #define COMPRESSED  /* If public key compression required */
 #include "sizes.h"
@@ -393,16 +392,16 @@ int crypto_dh_keypair(unsigned char* pk,unsigned char *sk)
 #endif
 	sk[15]&=0x3f; sk[31]&=0x3f;
 
-	bytes_to_big(mip,16,(const char *) sk,a[0]);
-	bytes_to_big(mip,16,(const char *) &sk[16],a[1]);
+	bytes_to_big(mip,16,sk,a[0]);
+	bytes_to_big(mip,16,&sk[16],a[1]);
 
 	ecn2_mul_brick_gls(mip,&binst,a,psi,&x,&y);
 
-    big_to_bytes(mip,16,x.a,(char *) pk,TRUE);
-    big_to_bytes(mip,16,x.b,(char *) &pk[16],TRUE);
+    big_to_bytes(mip,16,x.a,pk,TRUE);
+    big_to_bytes(mip,16,x.b,&pk[16],TRUE);
 #ifndef COMPRESSED
-    big_to_bytes(mip,16,y.a,(char *) &pk[32],TRUE);
-    big_to_bytes(mip,16,y.b,(char *) &pk[48],TRUE);
+    big_to_bytes(mip,16,y.a,&pk[32],TRUE);
+    big_to_bytes(mip,16,y.b,&pk[48],TRUE);
 #endif
 
     memset(mem_big, 0, MR_BIG_RESERVE(11));
@@ -467,15 +466,15 @@ int crypto_dh(unsigned char *s,const unsigned char* pk,const unsigned char *sk)
 
 /* Alice calculates secret key */
 
-	bytes_to_big(mip,16,(const char *) pk,x.a);
-	bytes_to_big(mip,16,(const char *) &pk[16],x.b);
+	bytes_to_big(mip,16,pk,x.a);
+	bytes_to_big(mip,16,&pk[16],x.b);
 
-	bytes_to_big(mip,16,(const char *) sk,a[0]);
-	bytes_to_big(mip,16,(const char *) &sk[16],a[1]);
+	bytes_to_big(mip,16,sk,a[0]);
+	bytes_to_big(mip,16,&sk[16],a[1]);
 
 #ifndef COMPRESSED	
-	bytes_to_big(mip,16,(const char *) &pk[32],y.a);
-	bytes_to_big(mip,16,(const char *) &pk[48],y.b);
+	bytes_to_big(mip,16,&pk[32],y.a);
+	bytes_to_big(mip,16,&pk[48],y.b);
 	if (!ecn2_set(mip,&x,&y,&P)) 
 	{
 		memset(mem_big, 0, MR_BIG_RESERVE(17));
@@ -497,8 +496,8 @@ int crypto_dh(unsigned char *s,const unsigned char* pk,const unsigned char *sk)
 	zzn2_sqr(mip,&x,&x);  /* I tossed y, so I might have wrong sign.. */
 #endif
 
-    big_to_bytes(mip,16,x.a,(char *) s,TRUE);
-    big_to_bytes(mip,16,x.b,(char *) &s[16],TRUE);
+    big_to_bytes(mip,16,x.a,s,TRUE);
+    big_to_bytes(mip,16,x.b,&s[16],TRUE);
 
     memset(mem_big, 0, MR_BIG_RESERVE(17));
 	mirexit(mip);

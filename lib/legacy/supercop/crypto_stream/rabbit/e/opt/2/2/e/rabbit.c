@@ -1,7 +1,7 @@
 /******************************************************************************/
 /* File name: rabbit.c                                                        */
 /*----------------------------------------------------------------------------*/
-/* Rabbit C optimized source code in ECRYPT format                            */
+/* Rabbit C optimized source code in crypto_stream_rabbit_e_opt_2_2_ECRYPT format                            */
 /*----------------------------------------------------------------------------*/
 /* Copyright (C) Cryptico ApS. All rights reserved.                           */
 /*                                                                            */
@@ -33,13 +33,13 @@
 #define RABBIT_MSC 1
 #endif
 
-#if (ECRYPT_VARIANT > 4) && !(defined(RABBIT_GCC) || defined(RABBIT_MSC))
+#if (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 4) && !(defined(RABBIT_GCC) || defined(RABBIT_MSC))
 #error this variant does not compile on this platform
 #endif
 
 /* -------------------------------------------------------------------------- */
 /* 32-bit G function macros */
-/* Used in ECRYPT_VARIANT 1 */
+/* Used in crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT 1 */
 
 #define RABBIT_G32_VARS \
       u32 x_plus_c, a, b, h, l;
@@ -54,7 +54,7 @@
 
 /* -------------------------------------------------------------------------- */
 /* 64-bit G function macros */
-/* Used in ECRYPT_VARIANT 2 */
+/* Used in crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT 2 */
 
 #define RABBIT_G64_VARS \
       u64 prod; u32 x_plus_c;
@@ -95,7 +95,7 @@
 /* -------------------------------------------------------------------------- */
 /* Macros used in next-state function */
 
-#if defined(RABBIT_MSC) && (ECRYPT_VARIANT > 2)
+#if defined(RABBIT_MSC) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 2)
    /* COMPILER : MICROSOFT OR INTEL */
    /* PROCESSOR: x86 */
 
@@ -167,11 +167,11 @@
    #define RABBIT_NS_POST \
       _asm mov [esi]RABBIT_ctx.carry, ecx
 
-#elif defined(RABBIT_GCC) && (ECRYPT_VARIANT > 2)
+#elif defined(RABBIT_GCC) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 2)
    /* COMPILER : GCC */
    /* PROCESSOR: x86 */
 
-   #if (ECRYPT_VARIANT > 2)
+   #if (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 2)
       #define RABBIT_NS_VARS \
          u32 g0, g1, g2, g3, g4, g5, g6, g7, c_a, asm_dummy1;
    #else
@@ -230,7 +230,7 @@
       : "m" (p_instance->c##i), "m" (p_instance->x##i), "1" (c_a), "i" (a) \
       : "cc", "%eax");
 
-//   #if (ECRYPT_VARIANT > 3)
+//   #if (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 3)
 
       #undef RABBIT_GEN_X_EVEN
       #undef RABBIT_GEN_X_ODD
@@ -259,7 +259,7 @@
    #define RABBIT_NS_POST \
       p_instance->carry = c_a;
 
-#elif (ECRYPT_VARIANT > 1) && defined(I64T)
+#elif (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 1) && defined(I64T)
    /* Pure C with 64-bit G function */
 
    #define RABBIT_NS_VARS \
@@ -304,7 +304,7 @@ static void RABBIT_next_state(RABBIT_ctx *p_instance)
    /* Temporary variables */
    RABBIT_NS_VARS
 
-#if ECRYPT_VARIANT > 3
+#if crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 3
    /* With counters after next-state */
 
    /* Calculate new counter values */
@@ -357,7 +357,7 @@ static void RABBIT_next_state(RABBIT_ctx *p_instance)
 
 /* ------------------------------------------------------------------------- */
 
-#if defined(RABBIT_MSC) && (ECRYPT_VARIANT > 3)
+#if defined(RABBIT_MSC) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 3)
    /* COMPILER : MICROSOFT OR INTEL */
    /* PROCESSOR: x86 */
 
@@ -702,7 +702,7 @@ nextstate_opt_loop:
 
 /* -------------------------------------------------------------------------- */
 
-#elif defined(RABBIT_GCC) && (ECRYPT_VARIANT > 4)
+#elif defined(RABBIT_GCC) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 4)
    /* COMPILER : GCC */
    /* PROCESSOR: x86 */
 
@@ -1060,7 +1060,7 @@ void _nextstate_opt(RABBIT_ctx* p_inst, int iterations)
 /* ------------------------------------------------------------------------- */
 
 /* No initialization is needed for Rabbit */
-void ECRYPT_init(void)
+void crypto_stream_rabbit_e_opt_2_2_ECRYPT_init(void)
 {
    return;
 }
@@ -1068,11 +1068,11 @@ void ECRYPT_init(void)
 /* ------------------------------------------------------------------------- */
 
 /* Key setup */
-void ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
+void crypto_stream_rabbit_e_opt_2_2_ECRYPT_keysetup(crypto_stream_rabbit_e_opt_2_2_ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
 {
    /* Temporary variables */
    u32 k0, k1, k2, k3;
-#if ECRYPT_VARIANT < 5
+#if crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT < 5
    u32 i;
 #endif
    RABBIT_NS_VARS
@@ -1107,7 +1107,7 @@ void ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
    /* Clear carry bit */
    ctx->master_ctx.carry = RABBIT_CARRY_INIT;
 
-#if ((defined(RABBIT_MSC)) || defined(RABBIT_GCC)) && (ECRYPT_VARIANT > 4)
+#if ((defined(RABBIT_MSC)) || defined(RABBIT_GCC)) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 4)
 
    p_instance = &(ctx->master_ctx);
 
@@ -1185,11 +1185,11 @@ void ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
 /* ------------------------------------------------------------------------- */
 
 /* IV setup */
-void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
+void crypto_stream_rabbit_e_opt_2_2_ECRYPT_ivsetup(crypto_stream_rabbit_e_opt_2_2_ECRYPT_ctx* ctx, const u8* iv)
 {
    /* Temporary variables */
    u32 i0, i1, i2, i3;
-#if (ECRYPT_VARIANT < 5) || !((defined(RABBIT_MSC)))
+#if (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT < 5) || !((defined(RABBIT_MSC)))
    u32 i;
    RABBIT_NS_VARS
 #endif
@@ -1223,7 +1223,7 @@ void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
 
    ctx->work_ctx.carry = ctx->master_ctx.carry;
 
-#if (defined(RABBIT_MSC) || defined(RABBIT_GCC)) && (ECRYPT_VARIANT > 4)
+#if (defined(RABBIT_MSC) || defined(RABBIT_GCC)) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 4)
    p_instance = &(ctx->work_ctx);
 
    RABBIT_NS_PRE
@@ -1267,7 +1267,7 @@ void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
       RABBIT_NS_POST
    }
 
-#if ECRYPT_VARIANT > 3
+#if crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 3
    RABBIT_NS_PRE
    RABBIT_G_AND_COUNTER(0, 0xD34D34D3)
    RABBIT_G_AND_COUNTER(1, 0x34D34D34)
@@ -1285,14 +1285,14 @@ void ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
 /* ------------------------------------------------------------------------- */
 
 /* Encrypt/decrypt a message of any size */
-void ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, 
+void crypto_stream_rabbit_e_opt_2_2_ECRYPT_process_bytes(int action, crypto_stream_rabbit_e_opt_2_2_ECRYPT_ctx* ctx, const u8* input, 
           u8* output, u32 msglen)
 {
    u32 i;
    u8 buffer[16];
-   /* ECRYPT_ctx* temp = ctx; */
+   /* crypto_stream_rabbit_e_opt_2_2_ECRYPT_ctx* temp = ctx; */
 
-#if (defined(RABBIT_MSC) || defined(RABBIT_GCC)) && (ECRYPT_VARIANT > 4)
+#if (defined(RABBIT_MSC) || defined(RABBIT_GCC)) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 4)
    /* RABBIT_ctx* p_instance = &ctx->work_ctx; */
    if (msglen >= 16)
    {
@@ -1350,13 +1350,13 @@ void ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input,
 /* ------------------------------------------------------------------------- */
 
 /* Generate keystream */
-void ECRYPT_keystream_bytes(ECRYPT_ctx* ctx, u8* keystream, u32 length)
+void crypto_stream_rabbit_e_opt_2_2_ECRYPT_keystream_bytes(crypto_stream_rabbit_e_opt_2_2_ECRYPT_ctx* ctx, u8* keystream, u32 length)
 {
    /* Temporary variables */
    u32 i;
    u8 buffer[16];
 
-#if (defined(RABBIT_MSC) || defined(RABBIT_GCC)) && (ECRYPT_VARIANT > 4)
+#if (defined(RABBIT_MSC) || defined(RABBIT_GCC)) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 4)
    if (length >= 16)
    {
       _keystream_opt(&(ctx->work_ctx), keystream, keystream + (length&0xFFFFFFF0U));
@@ -1412,10 +1412,10 @@ void ECRYPT_keystream_bytes(ECRYPT_ctx* ctx, u8* keystream, u32 length)
 /* ------------------------------------------------------------------------- */
 
 /* Encrypt/decrypt a number of full blocks */
-void ECRYPT_process_blocks(int action, ECRYPT_ctx* ctx, const u8* input, 
+void crypto_stream_rabbit_e_opt_2_2_ECRYPT_process_blocks(int action, crypto_stream_rabbit_e_opt_2_2_ECRYPT_ctx* ctx, const u8* input, 
           u8* output, u32 blocks)
 {
-#if (defined(RABBIT_MSC) || defined(RABBIT_GCC)) && (ECRYPT_VARIANT > 4)
+#if (defined(RABBIT_MSC) || defined(RABBIT_GCC)) && (crypto_stream_rabbit_e_opt_2_2_ECRYPT_VARIANT > 4)
    if (!blocks)
       return;
    _process_opt(&(ctx->work_ctx), input, (s32)(output-input), input+(blocks*16));

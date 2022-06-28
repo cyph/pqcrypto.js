@@ -8,12 +8,12 @@ Public domain.
 typedef unsigned int V __attribute__ ((vector_size(16)));
 typedef unsigned long V64 __attribute__ ((vector_size(16)));
 
-#define printv(p,v)                                                  \
+#define printv4i(p,v)                                                  \
   {                                                                     \
     int z;                                                              \
     printf("%8s:%8s = ",p,#v);                                          \
     for (z = 3 ; z >= 0 ; z--) {                                       \
-      printf("0x%08x", ((V)v)[z]);                                        \
+      printf("%08hhx", v[z]);                                        \
       if ((z%1)==0) printf(" ");                                        \
     }                                                                   \
     printf("\n");                                                       \
@@ -101,19 +101,37 @@ if (bytes>=256) {
     x_14 = orig14;
     x_15 = orig15;
 
-    in12 = (x[12]);
-    in13 = (x[13]);
+
+
+    const V64 addv12 = (V64){2,3};
+    const V64 addv13 = (V64){0,1};
+    V64 t12, t13;
+    in12 = x[12];
+    in13 = x[13];
     u64 in1213 = ((u64)in12) | (((u64)in13) << 32);
-    x_12 = (V)
-      { (unsigned int)(in1213+0)&0xFFFFFFFF,
-        (unsigned int)(in1213+1)&0xFFFFFFFF,
-        (unsigned int)(in1213+2)&0xFFFFFFFF,
-        (unsigned int)(in1213+3)&0xFFFFFFFF };
-    x_13 = (V)
-      { (unsigned int)((in1213+0)>>32)&0xFFFFFFFF,
-        (unsigned int)((in1213+1)>>32)&0xFFFFFFFF,
-        (unsigned int)((in1213+2)>>32)&0xFFFFFFFF,
-        (unsigned int)((in1213+3)>>32)&0xFFFFFFFF };
+    t12 = (V64){in1213,in1213};
+    t13 = (V64){in1213,in1213};
+
+    V t0, t1;
+
+    t12 = t12 + addv12;
+    t13 = t13 + addv13;
+
+    t1 = *(V*)&(t12);
+    t0 = *(V*)&(t13); /* fixme */
+
+/*     uint32x4x2_t t; */
+/*     t = vuzpq_u32(x_13,x_12); */
+/*     x_12 = t.val[0]; */
+/*     x_13 = t.val[1]; */
+
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+    x_12 = (V){t0[0], t0[2], t1[0], t1[2]};
+    x_13 = (V){t0[1], t0[3], t1[1], t1[3]};
+#else
+    x_13 = (V){t0[0], t0[2], t1[0], t1[2]};
+    x_12 = (V){t0[1], t0[3], t1[1], t1[3]};
+#endif
 
     orig12 = x_12;
     orig13 = x_13;

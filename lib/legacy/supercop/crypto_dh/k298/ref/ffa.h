@@ -261,9 +261,9 @@ typedef uint64_t uint64_3[3];
 
 /* multisquaring initialization */
 #define ffa_msq_ini()\
-    _mm_storeu_si128((__m128i *) &op64[0], op00);\
-    _mm_storeu_si128((__m128i *) &op64[2], op01);\
-    _mm_storeu_si128((__m128i *) &op64[4], op02);\
+    _mm_store_si128((__m128i *) &op64[0], op00);\
+    _mm_store_si128((__m128i *) &op64[2], op01);\
+    _mm_store_si128((__m128i *) &op64[4], op02);\
     acc[0] = 0; acc[1] = 0; acc[2] = 0;
 
 /* multisquaring end */

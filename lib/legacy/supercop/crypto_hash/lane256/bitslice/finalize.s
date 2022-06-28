@@ -89,10 +89,10 @@ xorps	\g7, \g0
 
 xorps	\g5, \g4
 
-xorps	D0(%rip), \g6
-xorps	D0(%rip), \g0
-xorps	D0(%rip), \g7
-xorps	D0(%rip), \g4
+xorps	D0, \g6
+xorps	D0, \g0
+xorps	D0, \g7
+xorps	D0, \g4
 
 .endm
 
@@ -117,7 +117,7 @@ xorps	\t0, \x0
 
 .macro Inv_GF4 x0, x1
 pand	\x1, \x0
-xorps	D0(%rip), \x0
+xorps	D0, \x0
 
 .endm
 
@@ -244,14 +244,14 @@ movaps	176(%rsp),\x3
 
 .macro shiftrows x0, x1, x2, x3, x4, x5, x6, x7
 
-pshufb SR(%rip), \x0
-pshufb SR(%rip), \x1
-pshufb SR(%rip), \x2
-pshufb SR(%rip), \x3
-pshufb SR(%rip), \x4
-pshufb SR(%rip), \x5
-pshufb SR(%rip), \x6
-pshufb SR(%rip), \x7
+pshufb SR, \x0
+pshufb SR, \x1
+pshufb SR, \x2
+pshufb SR, \x3
+pshufb SR, \x4
+pshufb SR, \x5
+pshufb SR, \x6
+pshufb SR, \x7
 
 .endm
 
@@ -315,9 +315,9 @@ xorps \x7, \t7
 
 movaps \x, \t0
 movaps \x, \y
-pand SW0(%rip), \x
-pand SW1(%rip), \t0
-pand SW2(%rip), \y
+pand SW0, \x
+pand SW1, \t0
+pand SW2, \y
 psrld $12, \x
 pslld $12, \t0
 por \x, \y
@@ -341,14 +341,14 @@ mixcolumns %xmm1, %xmm0, %xmm5, %xmm3, %xmm12, %xmm7, %xmm4, %xmm6, %xmm2, %xmm8
 
 ### add round constants here ###
 
-xorps \c0(%rip), %xmm2
-xorps \c1(%rip), %xmm8
-xorps \c2(%rip), %xmm9
-xorps \c3(%rip), %xmm10
-xorps \c4(%rip), %xmm11
-xorps \c5(%rip), %xmm13
-xorps \c6(%rip), %xmm14
-xorps \c7(%rip), %xmm15
+xorps \c0, %xmm2
+xorps \c1, %xmm8
+xorps \c2, %xmm9
+xorps \c3, %xmm10
+xorps \c4, %xmm11
+xorps \c5, %xmm13
+xorps \c6, %xmm14
+xorps \c7, %xmm15
 
 ### lanes swap ###
 
@@ -427,8 +427,8 @@ movaps %xmm0, %xmm8
 psllq $1, %xmm8
 xorps %xmm8, %xmm0
 movaps %xmm0, %xmm8
-pand LEFT(%rip), %xmm0
-pand RIGHT(%rip), %xmm8
+pand LEFT, %xmm0
+pand RIGHT, %xmm8
 psrlq $5, %xmm0
 psrlq $1, %xmm8
 
@@ -436,8 +436,8 @@ movaps %xmm1, %xmm9
 psllq $1, %xmm9
 xorps %xmm9, %xmm1
 movaps %xmm1, %xmm9
-pand LEFT(%rip), %xmm1
-pand RIGHT(%rip), %xmm9
+pand LEFT, %xmm1
+pand RIGHT, %xmm9
 psrlq $4, %xmm1
 xorps %xmm1, %xmm0
 xorps %xmm9, %xmm8
@@ -446,8 +446,8 @@ movaps %xmm2, %xmm10
 psllq $1, %xmm10
 xorps %xmm10, %xmm2
 movaps %xmm2, %xmm10
-pand LEFT(%rip), %xmm2
-pand RIGHT(%rip), %xmm10
+pand LEFT, %xmm2
+pand RIGHT, %xmm10
 psrlq $3, %xmm2
 psllq $1, %xmm10
 xorps %xmm2, %xmm0
@@ -457,8 +457,8 @@ movaps %xmm3, %xmm11
 psllq $1, %xmm11
 xorps %xmm11, %xmm3
 movaps %xmm3, %xmm11
-pand LEFT(%rip), %xmm3
-pand RIGHT(%rip), %xmm11
+pand LEFT, %xmm3
+pand RIGHT, %xmm11
 psrlq $2, %xmm3
 psllq $2, %xmm11
 xorps %xmm3, %xmm0
@@ -468,8 +468,8 @@ movaps %xmm4, %xmm12
 psllq $1, %xmm12
 xorps %xmm12, %xmm4
 movaps %xmm4, %xmm12
-pand LEFT(%rip), %xmm4
-pand RIGHT(%rip), %xmm12
+pand LEFT, %xmm4
+pand RIGHT, %xmm12
 psrlq $1, %xmm4
 psllq $3, %xmm12
 xorps %xmm4, %xmm0
@@ -479,8 +479,8 @@ movaps %xmm5, %xmm13
 psllq $1, %xmm13
 xorps %xmm13, %xmm5
 movaps %xmm5, %xmm13
-pand LEFT(%rip), %xmm5
-pand RIGHT(%rip), %xmm13
+pand LEFT, %xmm5
+pand RIGHT, %xmm13
 psllq $4, %xmm13
 xorps %xmm5, %xmm0
 xorps %xmm13, %xmm8
@@ -489,8 +489,8 @@ movaps %xmm6, %xmm14
 psllq $1, %xmm14
 xorps %xmm14, %xmm6
 movaps %xmm6, %xmm14
-pand LEFT(%rip), %xmm6
-pand RIGHT(%rip), %xmm14
+pand LEFT, %xmm6
+pand RIGHT, %xmm14
 psllq $1, %xmm6
 psllq $5, %xmm14
 xorps %xmm6, %xmm0
@@ -500,8 +500,8 @@ movaps %xmm7, %xmm15
 psllq $1, %xmm15
 xorps %xmm15, %xmm7
 movaps %xmm7, %xmm15
-pand LEFT(%rip), %xmm7
-pand RIGHT(%rip), %xmm15
+pand LEFT, %xmm7
+pand RIGHT, %xmm15
 psllq $2, %xmm7
 psllq $6, %xmm15
 xorps %xmm7, %xmm0
@@ -509,8 +509,8 @@ xorps %xmm15, %xmm8
 
 # restore correct byte order
 
-pshufb USHUF(%rip), %xmm0
-pshufb USHUF(%rip), %xmm8
+pshufb USHUF, %xmm0
+pshufb USHUF, %xmm8
 
 movdqu %xmm0, (%rdi)
 movdqu %xmm8, 16(%rdi)
@@ -519,7 +519,7 @@ leave
 
 ret
 
-.section .rodata
+.data
 
 .align 16
 

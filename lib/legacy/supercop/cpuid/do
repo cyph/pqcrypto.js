@@ -24,7 +24,7 @@ mkdir include
 	    echo 'static const char cpuid[] = {' > cpuid.h || continue
 	    ./cbytes < cpuid.out >> cpuid.h || continue
 	    echo '} ;' >> cpuid.h || continue
-	    cp cpuid.h include/supercopcpuid.h || continue
+	    cp cpuid.h include/cpuid.h || continue
 	    cat cpuid.out
             exit 0
           done

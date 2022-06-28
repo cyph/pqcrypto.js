@@ -1,1 +1,0 @@
-../arm/sike_compressed.inc

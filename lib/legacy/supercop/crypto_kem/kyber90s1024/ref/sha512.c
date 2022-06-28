@@ -1,1 +1,1 @@
-../../kyber90s512/ref/sha512.c
+../../kyber90s768/ref/sha512.c

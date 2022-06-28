@@ -11,6 +11,7 @@
 #include "finite128.h"
 #include "constants.h"
 #include "base.h"
+#include "api.h"
 
 #ifdef TEST_BOX
 #include <stdlib.h>
@@ -23,6 +24,7 @@
 #include <stdarg.h>
 #include <math.h>
 #include "crypto_dh.h"
+#include "api.h"
 #endif
 
 #if SLICE == 0

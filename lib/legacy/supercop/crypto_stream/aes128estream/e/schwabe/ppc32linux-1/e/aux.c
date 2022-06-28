@@ -274,12 +274,12 @@ const u32 aes_big_constants[1034] = {
 #define table2 ((char *) &aes_big_constants[11])
 #define table3 ((char *) &aes_big_constants[13])
 
-void ECRYPT_init(void)
+void crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_init(void)
 { 
   ;
 }
 
-void ECRYPT_keysetup(ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
+void crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_keysetup(crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
 { 
   register u32 x0;
   register u32 x1;
@@ -329,7 +329,7 @@ void ECRYPT_keysetup(ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
   }
 }
 
-void ECRYPT_ivsetup(ECRYPT_ctx *c,const u8 *iv)
+void crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_ivsetup(crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_ctx *c,const u8 *iv)
 {
   c->data[14] = U8TO32_BIG(iv);
   c->data[15] = U8TO32_BIG(iv + 4);

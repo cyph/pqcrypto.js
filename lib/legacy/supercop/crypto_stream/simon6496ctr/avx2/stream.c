@@ -20,9 +20,9 @@
 #include "Simon6496AVX2.h"
 
 
-int CRYPTO_NAMESPACETOP(unsigned char *out, unsigned long long outlen, const unsigned char *n, const unsigned char *k);
+int crypto_stream_simon6496ctr_avx2(unsigned char *out, unsigned long long outlen, const unsigned char *n, const unsigned char *k);
 int Encrypt(unsigned char *out, u32 nonce[], u256 rk[][8], u32 key[], int numbytes);
-int CRYPTO_NAMESPACE(xor)(unsigned char *out, const unsigned char *in, unsigned long long inlen, const unsigned char *n, const unsigned char *k);
+int crypto_stream_simon6496ctr_avx2_xor(unsigned char *out, const unsigned char *in, unsigned long long inlen, const unsigned char *n, const unsigned char *k);
 int Encrypt_Xor(unsigned char *out, const unsigned char *in, u32 nonce[], u256 rk[][8], u32 key[], int numbytes);
 int ExpandKeyBS(u32 K[],u256 rk[][8]);
 int ExpandKeyNBS(u32 K[], u256 rk[][8], u32 key[]);
@@ -30,7 +30,7 @@ inline int Transpose(u256 M[]);
 
 
 
-int CRYPTO_NAMESPACETOP(
+int crypto_stream_simon6496ctr_avx2(
   unsigned char *out,
   unsigned long long outlen,
   const unsigned char *n,
@@ -195,7 +195,7 @@ int Encrypt(unsigned char *out, u32 nonce[], u256 rk[][8], u32 key[], int numbyt
 
 
 
-int CRYPTO_NAMESPACE(xor)(
+int crypto_stream_simon6496ctr_avx2_xor(
   unsigned char *out,
   const unsigned char *in,
   unsigned long long inlen,

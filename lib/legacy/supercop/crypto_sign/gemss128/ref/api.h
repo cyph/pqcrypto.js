@@ -13,28 +13,13 @@
 
 #include "config_HFE.h"
 
-/** Set to 1 if you want to use MQsoft in SUPERCOP. */
-#define SUPERCOP 1
-
 //  Set these three values apropriately for your algorithm
 #define CRYPTO_SECRETKEYBYTES SIZE_SK_BYTES
 #define CRYPTO_PUBLICKEYBYTES SIZE_PK_BYTES
-#define CRYPTO_BYTES SIZE_SIGN_HFE
+#define CRYPTO_BYTES SIZE_SIGNATURE_BYTES
 
-/** Name of the current used cryptosystem. */
-#ifdef GeMSS
-    #define CRYPTO_ALGNAME "GeMSS"
-#elif defined(BlueGeMSS)
-    #define CRYPTO_ALGNAME "BlueGeMSS"
-#elif defined(RedGeMSS)
-    #define CRYPTO_ALGNAME "RedGeMSS"
-#elif defined(FGeMSS)
-    #define CRYPTO_ALGNAME "FGeMSS"
-#elif defined (DualModeMS)
-    #define CRYPTO_ALGNAME "Inner_DualModeMS"
-#else
-    #define CRYPTO_ALGNAME "MQsoft"
-#endif
+// Change the algorithm name
+#define CRYPTO_ALGNAME "GeMSS"
 
 int
 crypto_sign_keypair(unsigned char *pk, unsigned char *sk);

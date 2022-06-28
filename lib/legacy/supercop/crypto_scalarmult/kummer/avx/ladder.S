@@ -1,4 +1,3 @@
-#include "consts.h"
 # block pos: 0 33 uops: 6
 
 # qhasm: int64 input_0
@@ -693,12 +692,12 @@
 
 # qhasm: stack256 127I5_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(ladder)
+# qhasm: enter ladder
 .p2align 5
-.global _CRYPTO_NAMESPACE(ladder)
-.global CRYPTO_NAMESPACE(ladder)
-_CRYPTO_NAMESPACE(ladder):
-CRYPTO_NAMESPACE(ladder):
+.global _ladder
+.global ladder
+_ladder:
+ladder:
 # bytes: 3 uops: 1
 mov %rsp,%r11
 # bytes: 4 uops: 1
@@ -824,76 +823,76 @@ add  $128,%r11
 # asm 1: vmovapd _2p22,>2p22=reg256#1
 # asm 2: vmovapd _2p22,>2p22=%ymm0
 # bytes: 9 uops: 1
-vmovapd _2p22(%rip),%ymm0
+vmovapd _2p22,%ymm0
 
 # qhasm:   2p43 aligned= mem256[_2p43]
 # asm 1: vmovapd _2p43,>2p43=reg256#2
 # asm 2: vmovapd _2p43,>2p43=%ymm1
 # bytes: 9 uops: 1
-vmovapd _2p43(%rip),%ymm1
+vmovapd _2p43,%ymm1
 # block pos: 163 199 uops: 4
 
 # qhasm:   2p64 aligned= mem256[_2p64]
 # asm 1: vmovapd _2p64,>2p64=reg256#3
 # asm 2: vmovapd _2p64,>2p64=%ymm2
 # bytes: 9 uops: 1
-vmovapd _2p64(%rip),%ymm2
+vmovapd _2p64,%ymm2
 
 # qhasm:   2p85 aligned= mem256[_2p85]
 # asm 1: vmovapd _2p85,>2p85=reg256#4
 # asm 2: vmovapd _2p85,>2p85=%ymm3
 # bytes: 9 uops: 1
-vmovapd _2p85(%rip),%ymm3
+vmovapd _2p85,%ymm3
 
 # qhasm:   2p106 aligned= mem256[_2p106]
 # asm 1: vmovapd _2p106,>2p106=reg256#5
 # asm 2: vmovapd _2p106,>2p106=%ymm4
 # bytes: 9 uops: 1
-vmovapd _2p106(%rip),%ymm4
+vmovapd _2p106,%ymm4
 
 # qhasm:   2p127 aligned= mem256[_2p127]
 # asm 1: vmovapd _2p127,>2p127=reg256#6
 # asm 2: vmovapd _2p127,>2p127=%ymm5
 # bytes: 9 uops: 1
-vmovapd _2p127(%rip),%ymm5
+vmovapd _2p127,%ymm5
 # block pos: 199 226 uops: 3
 
 # qhasm:   2pm22 aligned= mem256[_2pm22]
 # asm 1: vmovapd _2pm22,>2pm22=reg256#7
 # asm 2: vmovapd _2pm22,>2pm22=%ymm6
 # bytes: 9 uops: 1
-vmovapd _2pm22(%rip),%ymm6
+vmovapd _2pm22,%ymm6
 
 # qhasm:   2pm43 aligned= mem256[_2pm43]
 # asm 1: vmovapd _2pm43,>2pm43=reg256#8
 # asm 2: vmovapd _2pm43,>2pm43=%ymm7
 # bytes: 9 uops: 1
-vmovapd _2pm43(%rip),%ymm7
+vmovapd _2pm43,%ymm7
 
 # qhasm:   2pm64 aligned= mem256[_2pm64]
 # asm 1: vmovapd _2pm64,>2pm64=reg256#9
 # asm 2: vmovapd _2pm64,>2pm64=%ymm8
 # bytes: 9 uops: 1
-vmovapd _2pm64(%rip),%ymm8
+vmovapd _2pm64,%ymm8
 # block pos: 226 258 uops: 4
 
 # qhasm:   2pm85 aligned= mem256[_2pm85]
 # asm 1: vmovapd _2pm85,>2pm85=reg256#10
 # asm 2: vmovapd _2pm85,>2pm85=%ymm9
 # bytes: 9 uops: 1
-vmovapd _2pm85(%rip),%ymm9
+vmovapd _2pm85,%ymm9
 
 # qhasm:   2pm106 aligned= mem256[_2pm106]
 # asm 1: vmovapd _2pm106,>2pm106=reg256#11
 # asm 2: vmovapd _2pm106,>2pm106=%ymm10
 # bytes: 9 uops: 1
-vmovapd _2pm106(%rip),%ymm10
+vmovapd _2pm106,%ymm10
 
 # qhasm:   two aligned= mem256[_two]
 # asm 1: vmovapd _two,>two=reg256#12
 # asm 2: vmovapd _two,>two=%ymm11
 # bytes: 9 uops: 1
-vmovapd _two(%rip),%ymm11
+vmovapd _two,%ymm11
 
 # qhasm:   mem256[const0 - 128] aligned= 2p22
 # asm 1: vmovapd   <2p22=reg256#1,-128(<const0=int64#7)
@@ -973,7 +972,7 @@ vmovapd   %ymm11,0(%r10)
 # asm 1: vmovapd _2pm127,>2pm127=reg256#1
 # asm 2: vmovapd _2pm127,>2pm127=%ymm0
 # bytes: 9 uops: 1
-vmovapd _2pm127(%rip),%ymm0
+vmovapd _2pm127,%ymm0
 # block pos: 324 354 uops: 6
 
 # qhasm:   4x 127a5 = approx 2pm127 * mem256[work0 + 32]
@@ -1017,32 +1016,32 @@ vmovapd   %ymm0,-128(%r10)
 # asm 1: vmovapd alpha22,>a22=reg256#1
 # asm 2: vmovapd alpha22,>a22=%ymm0
 # bytes: 9 uops: 1
-vmovapd alpha22(%rip),%ymm0
+vmovapd alpha22,%ymm0
 
 # qhasm:   a64 aligned= mem256[alpha64]
 # asm 1: vmovapd alpha64,>a64=reg256#7
 # asm 2: vmovapd alpha64,>a64=%ymm6
 # bytes: 9 uops: 1
-vmovapd alpha64(%rip),%ymm6
+vmovapd alpha64,%ymm6
 
 # qhasm:   a106 aligned= mem256[alpha106]
 # asm 1: vmovapd alpha106,>a106=reg256#8
 # asm 2: vmovapd alpha106,>a106=%ymm7
 # bytes: 9 uops: 1
-vmovapd alpha106(%rip),%ymm7
+vmovapd alpha106,%ymm7
 
 # qhasm:   abcd aligned= mem256[newabcd]
 # asm 1: vmovapd newabcd,>abcd=reg256#9
 # asm 2: vmovapd newabcd,>abcd=%ymm8
 # bytes: 9 uops: 1
-vmovapd newabcd(%rip),%ymm8
+vmovapd newabcd,%ymm8
 # block pos: 390 419 uops: 5
 
 # qhasm:   ABCD aligned= mem256[newABCD]
 # asm 1: vmovapd newABCD,>ABCD=reg256#10
 # asm 2: vmovapd newABCD,>ABCD=%ymm9
 # bytes: 9 uops: 1
-vmovapd newABCD(%rip),%ymm9
+vmovapd newABCD,%ymm9
 
 # qhasm:   mem256[work3 - 128] aligned= 127a5
 # asm 1: vmovapd   <127a5=reg256#2,-128(<work3=int64#1)
@@ -1173,7 +1172,7 @@ vmovapd   -128(%r9),%ymm2
 # asm 1: vmovapd alpha127,>a127=reg256#4
 # asm 2: vmovapd alpha127,>a127=%ymm3
 # bytes: 9 uops: 1
-vmovapd alpha127(%rip),%ymm3
+vmovapd alpha127,%ymm3
 
 # qhasm:           4x c4 = approx E4 + a127
 # asm 1: vaddpd <E4=reg256#1,<a127=reg256#4,>c4=reg256#5
@@ -1216,7 +1215,7 @@ vaddpd %ymm3,%ymm2,%ymm2
 # asm 1: vmovapd alpha85,>a85=reg256#4
 # asm 2: vmovapd alpha85,>a85=%ymm3
 # bytes: 9 uops: 1
-vmovapd alpha85(%rip),%ymm3
+vmovapd alpha85,%ymm3
 # block pos: 547 578 uops: 6
 
 # qhasm:           4x c2 = approx E2 + a85
@@ -1253,7 +1252,7 @@ vsubpd %ymm4,%ymm1,%ymm1
 # asm 1: vmovapd alpha43,>a43=reg256#4
 # asm 2: vmovapd alpha43,>a43=%ymm3
 # bytes: 9 uops: 1
-vmovapd alpha43(%rip),%ymm3
+vmovapd alpha43,%ymm3
 # block pos: 578 608 uops: 6
 
 # qhasm:           4x c0 = approx E0 + a43

@@ -275,11 +275,11 @@
 
 # qhasm: stack64 x1f_stack
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hash_cubehash512_sparcv9
 .section ".text"
 .align 32
-.global CRYPTO_NAMESPACETOP
-CRYPTO_NAMESPACETOP:
+.global crypto_hash_cubehash512_sparcv9
+crypto_hash_cubehash512_sparcv9:
 save %sp,-448,%sp
 
 # qhasm:   out_stack = out

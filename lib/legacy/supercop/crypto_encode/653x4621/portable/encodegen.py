@@ -36,23 +36,31 @@ print('void crypto_encode(unsigned char *out,const void *v)')
 print('{')
 print('  const int16 *%s = v;' % reading)
 
-if Mlen > 1:
-  print('  /* XXX: caller could overlap R with input */')
-  print('  uint16 R[%d];' % ((Mlen+1)//2))
+tmparrays = None
 
-if Mlen > 2**29:
-  print('  long long i;')
-else:
-  print('  long i;')
+layer = 1
+x = Mlen
+while x > 1:
+  x = (x+1)//2
+  if tmparrays == None:
+    tmparrays = 'uint16 '
+  else:
+    tmparrays += ','
+  tmparrays += 'R%d[%d]' % (layer,x)
+  layer += 1
 
+if tmparrays:
+  print('  %s;' % tmparrays)
+
+print('  long long i;')
 print('  uint16 r0,r1;')
 print('  uint32 r2;')
 
 def access(reading,pos):
   if reading == 'R0' and div3:
-    return '(((%s[%s]%+d)&16383)*10923)>>15' % (reading,pos,offset)
-  if reading == 'R0':
-    return '(%s[%s]%+d)&16383' % (reading,pos,offset)
+    return '((%s[%s]%+d)*10923)>>15' % (reading,pos,offset)
+  if reading == 'R0' and offset != 0:
+    return '%s[%s]%+d' % (reading,pos,offset)
   return '%s[%s]' % (reading,pos)
 
 def printloop(looplen,reading,todo,m0,bytes):
@@ -74,7 +82,8 @@ def printloop(looplen,reading,todo,m0,bytes):
   print('    %s[i] = r2;' % todo)
   print('  }')
 
-todo = 'R'
+layer = 1
+todo = 'R%d' % layer
 while Mlen > 1:
   print('  ')
 
@@ -112,7 +121,9 @@ while Mlen > 1:
       print('  %s[%d] = r2;' % (todo,looplen))
 
   m0,m1,Mlen = n0,n1,(Mlen+1)//2
+  layer += 1
   reading = todo
+  todo = 'R%d' % layer
 
 print('  ')
 print('  r0 = %s;' % access(reading,0))

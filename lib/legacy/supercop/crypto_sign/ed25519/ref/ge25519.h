@@ -4,13 +4,13 @@
 #include "fe25519.h"
 #include "sc25519.h"
 
-#define ge25519                           CRYPTO_NAMESPACE(ge25519)
-#define ge25519_base                      CRYPTO_NAMESPACE(ge25519_base)
-#define ge25519_unpackneg_vartime         CRYPTO_NAMESPACE(unpackneg_vartime)
-#define ge25519_pack                      CRYPTO_NAMESPACE(pack)
-#define ge25519_isneutral_vartime         CRYPTO_NAMESPACE(isneutral_vartime)
-#define ge25519_double_scalarmult_vartime CRYPTO_NAMESPACE(double_scalarmult_vartime)
-#define ge25519_scalarmult_base           CRYPTO_NAMESPACE(scalarmult_base)
+#define ge25519                           crypto_sign_ed25519_ref_ge25519
+#define ge25519_base                      crypto_sign_ed25519_ref_ge25519_base
+#define ge25519_unpackneg_vartime         crypto_sign_ed25519_ref_unpackneg_vartime
+#define ge25519_pack                      crypto_sign_ed25519_ref_pack
+#define ge25519_isneutral_vartime         crypto_sign_ed25519_ref_isneutral_vartime
+#define ge25519_double_scalarmult_vartime crypto_sign_ed25519_ref_double_scalarmult_vartime
+#define ge25519_scalarmult_base           crypto_sign_ed25519_ref_scalarmult_base
 
 typedef struct
 {

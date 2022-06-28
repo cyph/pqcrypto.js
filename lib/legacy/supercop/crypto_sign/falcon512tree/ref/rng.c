@@ -115,7 +115,7 @@ falcon512tree_ref_get_seed(void *seed, size_t len)
 
 /* see inner.h */
 void
-falcon512tree_ref_prng_init(prng *p, inner_shake256_context *src)
+falcon512tree_ref_prng_init(prng *p, shake256_context *src)
 {
 	/*
 	 * To ensure reproducibility for a given seed, we
@@ -126,7 +126,7 @@ falcon512tree_ref_prng_init(prng *p, inner_shake256_context *src)
 	uint64_t th, tl;
 	int i;
 
-	inner_shake256_extract(src, tmp, 56);
+	shake256_extract(src, tmp, 56);
 	for (i = 0; i < 14; i ++) {
 		uint32_t w;
 

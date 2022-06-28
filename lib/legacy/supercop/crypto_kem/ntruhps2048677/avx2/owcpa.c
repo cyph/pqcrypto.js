@@ -1,1 +1,1 @@
-../../ntruhps2048509/ref/owcpa.c
+../ref/owcpa.c

@@ -1,1 +1,0 @@
-../bi32/permutations.c

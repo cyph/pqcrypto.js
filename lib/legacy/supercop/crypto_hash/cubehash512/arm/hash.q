@@ -96,7 +96,7 @@ stack32 x1d_stack
 stack32 x1e_stack
 stack32 x1f_stack
 
-enter CRYPTO_NAMESPACETOP
+enter crypto_hash_cubehash512_arm
 
   out_stack = out
 

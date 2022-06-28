@@ -1,1 +1,1 @@
-../../ntruhps2048509/ref/pack3.c
+../ref/pack3.c

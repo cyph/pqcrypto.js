@@ -1,1 +1,1 @@
-../../dilithium2/avx2/api.h
+../ref/api.h

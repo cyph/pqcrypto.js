@@ -2509,7 +2509,8 @@ static const block_t Ri_28[] = {
 };
 
 
-static const lowmc_partial_round_t rounds[30] = {
+static const lowmc_round_t rounds[30] = {
+
   {
     Zi_0, Ri_0, UINT64_C(0xffffffde00000000),
   },
@@ -2602,7 +2603,8 @@ static const lowmc_partial_round_t rounds[30] = {
   },
 };
 
-const lowmc_partial_t lowmc_192_192_30 = {
+const lowmc_t lowmc_192_192_30 = {
+  10, 192, 30, 192,
   precomputed_round_key_matrix_linear_part,
   Z_r,
   rounds,

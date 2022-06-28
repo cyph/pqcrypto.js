@@ -1,1 +1,1 @@
-../../asconhashbi32v12/ref/api.h
+#define CRYPTO_BYTES 32

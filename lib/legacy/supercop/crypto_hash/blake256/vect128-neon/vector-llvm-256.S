@@ -2026,10 +2026,10 @@ blake256_final:                         @ @blake256_final
 .Ltmp10:
 	.size	blake256_final, .Ltmp10-blake256_final
 
-	.globl	CRYPTO_NAMESPACETOP
+	.globl	crypto_hash_blake256_vect128_neon
 	.align	4
-	.type	CRYPTO_NAMESPACETOP,%function
-CRYPTO_NAMESPACETOP:      @ @CRYPTO_NAMESPACETOP
+	.type	crypto_hash_blake256_vect128_neon,%function
+crypto_hash_blake256_vect128_neon:      @ @crypto_hash_blake256_vect128_neon
 @ BB#0:
 	push	{r4, r5, r6, r7, r8, lr}
 	sub	sp, sp, #152
@@ -2053,7 +2053,7 @@ CRYPTO_NAMESPACETOP:      @ @CRYPTO_NAMESPACETOP
 	add	sp, sp, #152
 	pop	{r4, r5, r6, r7, r8, pc}
 .Ltmp11:
-	.size	CRYPTO_NAMESPACETOP, .Ltmp11-CRYPTO_NAMESPACETOP
+	.size	crypto_hash_blake256_vect128_neon, .Ltmp11-crypto_hash_blake256_vect128_neon
 
 	.type	cst,%object             @ @cst
 	.section	.rodata,"a",%progbits

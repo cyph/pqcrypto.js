@@ -16,8 +16,8 @@ void aegis128L_initialization(const unsigned char *key, const unsigned char *iv,
        int i;
 
         __m128i  tmp;
-        __m128i  keytmp = _mm_loadu_si128((__m128i*)key);
-        __m128i  ivtmp  = _mm_loadu_si128((__m128i*)iv);
+        __m128i  keytmp = _mm_load_si128((__m128i*)key);
+        __m128i  ivtmp  = _mm_load_si128((__m128i*)iv);
 
         state[0] = _mm_xor_si128(keytmp, ivtmp);
         state[1] = _mm_set_epi8(0xdd,0x28,0xb5,0x73,0x42,0x31,0x11,0x20,0xf1,0x2f,0xc2,0x6d,0x55,0x18,0x3d,0xdb);
@@ -61,7 +61,7 @@ void aegis128L_tag_generation(unsigned long long msglen, unsigned long long adle
 
         ((unsigned long long*)tt)[0] = adlen << 3;
         ((unsigned long long*)tt)[1] = msglen << 3;
-        msgtmp = _mm_loadu_si128((__m128i*)tt);
+        msgtmp = _mm_load_si128((__m128i*)tt);
 
         msgtmp = _mm_xor_si128(msgtmp, state[2]);   //note the change
 
@@ -89,7 +89,7 @@ void aegis128L_tag_generation(unsigned long long msglen, unsigned long long adle
         state[6] = _mm_xor_si128(state[6], state[1]);
         state[6] = _mm_xor_si128(state[6], state[0]);
 
-        _mm_storeu_si128((__m128i*)t, state[6]);
+        _mm_store_si128((__m128i*)t, state[6]);
         //in this program, the mac length is assumed to be multiple of bytes
         memcpy(mac,t,maclen);
 }
@@ -100,8 +100,8 @@ void aegis128L_enc_aut_step(const unsigned char *plaintextblk, unsigned char *ci
 {
         __m128i ct0,ct1;
         __m128i tmp;
-        __m128i msg0 = _mm_loadu_si128((__m128i*)plaintextblk);
-        __m128i msg1 = _mm_loadu_si128((__m128i*)(plaintextblk+16));
+        __m128i msg0 = _mm_load_si128((__m128i*)plaintextblk);
+        __m128i msg1 = _mm_load_si128((__m128i*)(plaintextblk+16));
 
         //encryption
         ct0 = _mm_xor_si128(msg0, state[6]);
@@ -110,8 +110,8 @@ void aegis128L_enc_aut_step(const unsigned char *plaintextblk, unsigned char *ci
         ct1 = _mm_xor_si128(ct1,  state[5]);
         ct0 = _mm_xor_si128(ct0,  _mm_and_si128(state[2], state[3]));
         ct1 = _mm_xor_si128(ct1,  _mm_and_si128(state[6], state[7]));
-    	_mm_storeu_si128((__m128i*)ciphertextblk, ct0);
-    	_mm_storeu_si128((__m128i*)(ciphertextblk+16), ct1);
+    	_mm_store_si128((__m128i*)ciphertextblk, ct0);
+    	_mm_store_si128((__m128i*)(ciphertextblk+16), ct1);
 
         //state update function
         tmp = state[7];
@@ -134,8 +134,8 @@ void aegis128L_enc_aut_step(const unsigned char *plaintextblk, unsigned char *ci
 void aegis128L_dec_aut_step(unsigned char *plaintextblk,
        const unsigned char *ciphertextblk, __m128i *state)
 {
-        __m128i msg0 = _mm_loadu_si128((__m128i*)ciphertextblk);
-        __m128i msg1 = _mm_loadu_si128((__m128i*)(ciphertextblk+16));
+        __m128i msg0 = _mm_load_si128((__m128i*)ciphertextblk);
+        __m128i msg1 = _mm_load_si128((__m128i*)(ciphertextblk+16));
         __m128i tmp;
 
         //decryption
@@ -145,8 +145,8 @@ void aegis128L_dec_aut_step(unsigned char *plaintextblk,
         msg1 = _mm_xor_si128(msg1, state[5]);
         msg0 = _mm_xor_si128(msg0, _mm_and_si128(state[2], state[3]));
         msg1 = _mm_xor_si128(msg1, _mm_and_si128(state[6], state[7]));
-        _mm_storeu_si128((__m128i*)plaintextblk, msg0);
-        _mm_storeu_si128((__m128i*)(plaintextblk+16), msg1);
+        _mm_store_si128((__m128i*)plaintextblk, msg0);
+        _mm_store_si128((__m128i*)(plaintextblk+16), msg1);
 
         //state update function
         tmp = state[7];
@@ -187,8 +187,8 @@ int crypto_aead_encrypt(
     //process the associated data 
     for (i = 0; (i+32) <= adlen; i = i+32)   
     {    
-        msg0 = _mm_loadu_si128((__m128i*)(ad+i));
-        msg1 = _mm_loadu_si128((__m128i*)(ad+i+16));
+        msg0 = _mm_load_si128((__m128i*)(ad+i));
+        msg1 = _mm_load_si128((__m128i*)(ad+i+16));
 
         //state update function
         tmp = state[7];
@@ -218,8 +218,8 @@ int crypto_aead_encrypt(
     // encrypt the message 
     for (i = 0; (i+32) <= mlen; i = i+32) 
     {   
-        msg0 = _mm_loadu_si128((__m128i*)(m+i));
-        msg1 = _mm_loadu_si128((__m128i*)(m+i+16));
+        msg0 = _mm_load_si128((__m128i*)(m+i));
+        msg1 = _mm_load_si128((__m128i*)(m+i+16));
 
         ct0 = _mm_xor_si128(msg0, state[6]);
         ct0 = _mm_xor_si128(ct0,  state[1]);
@@ -227,8 +227,8 @@ int crypto_aead_encrypt(
         ct1 = _mm_xor_si128(ct1,  state[5]);
         ct0 = _mm_xor_si128(ct0,  _mm_and_si128(state[2], state[3]));
         ct1 = _mm_xor_si128(ct1,  _mm_and_si128(state[6], state[7]));
-    	_mm_storeu_si128((__m128i*)(c+i), ct0);
-    	_mm_storeu_si128((__m128i*)(c+i+16), ct1);
+    	_mm_store_si128((__m128i*)(c+i), ct0);
+    	_mm_store_si128((__m128i*)(c+i+16), ct1);
 
         //state update function
         tmp = state[7];
@@ -286,8 +286,8 @@ int crypto_aead_decrypt(
     //process the associated data 
     for (i = 0; (i+32) <= adlen; i = i+32)   
     {    
-        msg0 = _mm_loadu_si128((__m128i*)(ad+i));
-        msg1 = _mm_loadu_si128((__m128i*)(ad+i+16));
+        msg0 = _mm_load_si128((__m128i*)(ad+i));
+        msg1 = _mm_load_si128((__m128i*)(ad+i+16));
 
         //state update function
         tmp = state[7];
@@ -317,8 +317,8 @@ int crypto_aead_decrypt(
     //decrypt the ciphertext 
     *mlen = clen - 16;  
     for (i = 0; (i+32) <= *mlen; i += 32) {
-        msg0 = _mm_loadu_si128((__m128i*)(c+i));
-        msg1 = _mm_loadu_si128((__m128i*)(c+i+16));
+        msg0 = _mm_load_si128((__m128i*)(c+i));
+        msg1 = _mm_load_si128((__m128i*)(c+i+16));
         
         //decryption
         msg0 = _mm_xor_si128(msg0, state[6]);
@@ -327,8 +327,8 @@ int crypto_aead_decrypt(
         msg1 = _mm_xor_si128(msg1, state[5]);
         msg0 = _mm_xor_si128(msg0, _mm_and_si128(state[2], state[3]));
         msg1 = _mm_xor_si128(msg1, _mm_and_si128(state[6], state[7]));
-        _mm_storeu_si128((__m128i*)(m+i), msg0); 
-        _mm_storeu_si128((__m128i*)(m+i+16), msg1); 
+        _mm_store_si128((__m128i*)(m+i), msg0); 
+        _mm_store_si128((__m128i*)(m+i+16), msg1); 
 
         //state update function
         tmp = state[7];
@@ -356,8 +356,8 @@ int crypto_aead_decrypt(
 
         //need to modify the state here (because in the last block, keystream is wrongly used to update the state)
         memset(plaintextblock, 0, *mlen & 0x1f);  
-        state[0] = _mm_xor_si128( state[0], _mm_loadu_si128((__m128i*)plaintextblock)  ) ;  
-        state[4] = _mm_xor_si128( state[4], _mm_loadu_si128((__m128i*)(plaintextblock+16) )  ) ;
+        state[0] = _mm_xor_si128( state[0], _mm_load_si128((__m128i*)plaintextblock)  ) ;  
+        state[4] = _mm_xor_si128( state[4], _mm_load_si128((__m128i*)(plaintextblock+16) )  ) ;
     }
 
     //we assume that the tag length is multiple of bytes

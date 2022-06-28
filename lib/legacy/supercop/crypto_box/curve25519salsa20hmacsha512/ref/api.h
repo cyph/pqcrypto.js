@@ -1,6 +1,6 @@
-#define CRYPTO_PUBLICKEYBYTES 32
-#define CRYPTO_SECRETKEYBYTES 32
-#define CRYPTO_BEFORENMBYTES 32
-#define CRYPTO_NONCEBYTES 8
-#define CRYPTO_ZEROBYTES 32
-#define CRYPTO_BOXZEROBYTES 0
+#define crypto_box_curve25519salsa20hmacsha512_ref_PUBLICKEYBYTES 32
+#define crypto_box_curve25519salsa20hmacsha512_ref_SECRETKEYBYTES 32
+#define crypto_box_curve25519salsa20hmacsha512_ref_BEFORENMBYTES 32
+#define crypto_box_curve25519salsa20hmacsha512_ref_NONCEBYTES 8
+#define crypto_box_curve25519salsa20hmacsha512_ref_ZEROBYTES 32
+#define crypto_box_curve25519salsa20hmacsha512_ref_BOXZEROBYTES 0

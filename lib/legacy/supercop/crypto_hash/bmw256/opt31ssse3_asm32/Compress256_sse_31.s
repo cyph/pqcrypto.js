@@ -11,43 +11,43 @@ Compress256:
 	movl	808(%esp), %eax
 	leal	16(%eax), %edx
 	movl	%edx, 144(%esp)
-	movdqu	(%edx), %xmm0
-	movdqu	%xmm0, 640(%esp)
+	movdqa	(%edx), %xmm0
+	movdqa	%xmm0, 640(%esp)
 	leal	32(%eax), %ecx
 	movl	%ecx, 148(%esp)
-	movdqu	(%ecx), %xmm0
-	movdqu	%xmm0, 656(%esp)
+	movdqa	(%ecx), %xmm0
+	movdqa	%xmm0, 656(%esp)
 	leal	48(%eax), %ebx
 	movl	%ebx, 152(%esp)
-	movdqu	(%ebx), %xmm0
-	movdqu	%xmm0, 672(%esp)
+	movdqa	(%ebx), %xmm0
+	movdqa	%xmm0, 672(%esp)
 	addl	$64, %eax
 	movl	%eax, 156(%esp)
-	movdqu	(%eax), %xmm0
-	movdqu	%xmm0, 688(%esp)
+	movdqa	(%eax), %xmm0
+	movdqa	%xmm0, 688(%esp)
 .L2:
 	leal	640(%esp), %eax
 	movl	%eax, 160(%esp)
-	movdqu	640(%esp), %xmm4
+	movdqa	640(%esp), %xmm4
 	movl	800(%esp), %edx
 	pxor	(%edx), %xmm4
-	movdqu	656(%esp), %xmm2
+	movdqa	656(%esp), %xmm2
 	pxor	16(%edx), %xmm2
-	movdqu	672(%esp), %xmm1
+	movdqa	672(%esp), %xmm1
 	pxor	32(%edx), %xmm1
-	movdqu	688(%esp), %xmm0
+	movdqa	688(%esp), %xmm0
 	pxor	48(%edx), %xmm0
 	movdqa	%xmm2, %xmm3
 	palignr	$4, %xmm4, %xmm3
-	movdqu	%xmm3, 128(%esp)
+	movdqa	%xmm3, 128(%esp)
 	movdqa	%xmm1, %xmm5
 	palignr	$4, %xmm2, %xmm5
 	movdqa	%xmm0, %xmm3
 	palignr	$4, %xmm1, %xmm3
-	movdqu	%xmm3, 112(%esp)
+	movdqa	%xmm3, 112(%esp)
 	movdqa	%xmm4, %xmm3
 	palignr	$4, %xmm0, %xmm3
-	movdqu	%xmm3, 96(%esp)
+	movdqa	%xmm3, 96(%esp)
 	movl	(%edx), %eax
 	rorl	$31, %eax
 	movl	%eax, 560(%esp)
@@ -62,10 +62,10 @@ Compress256:
 	movl	%eax, 572(%esp)
 	movdqa	%xmm2, %xmm3
 	palignr	$8, %xmm4, %xmm3
-	movdqu	%xmm3, 80(%esp)
+	movdqa	%xmm3, 80(%esp)
 	movdqa	%xmm1, %xmm3
 	palignr	$8, %xmm2, %xmm3
-	movdqu	%xmm3, 64(%esp)
+	movdqa	%xmm3, 64(%esp)
 	movdqa	%xmm0, %xmm2
 	palignr	$8, %xmm1, %xmm2
 	palignr	$8, %xmm0, %xmm4
@@ -84,17 +84,17 @@ Compress256:
 	movl	%eax, 588(%esp)
 	movdqa	%xmm5, %xmm6
 	palignr	$8, 128(%esp), %xmm6
-	movdqu	112(%esp), %xmm0
+	movdqa	112(%esp), %xmm0
 	palignr	$8, %xmm5, %xmm0
-	movdqu	%xmm0, (%esp)
-	movdqu	96(%esp), %xmm7
+	movdqa	%xmm0, (%esp)
+	movdqa	96(%esp), %xmm7
 	palignr	$8, 112(%esp), %xmm7
-	movdqu	128(%esp), %xmm1
+	movdqa	128(%esp), %xmm1
 	palignr	$8, 96(%esp), %xmm1
 	movdqa	.LC18, %xmm0
-	movdqu	%xmm0, 272(%esp)
+	movdqa	%xmm0, 272(%esp)
 	psignd	%xmm0, %xmm6
-	movdqu	(%esp), %xmm0
+	movdqa	(%esp), %xmm0
 	psignd	%xmm3, %xmm0
 	psignd	%xmm3, %xmm7
 	psignd	.LC21, %xmm1
@@ -113,13 +113,13 @@ Compress256:
 	movl	44(%edx), %eax
 	rorl	$20, %eax
 	movl	%eax, 604(%esp)
-	movdqu	%xmm5, 288(%esp)
+	movdqa	%xmm5, 288(%esp)
 	paddd	%xmm0, %xmm5
-	movdqu	96(%esp), %xmm3
-	movdqu	%xmm3, 304(%esp)
+	movdqa	96(%esp), %xmm3
+	movdqa	%xmm3, 304(%esp)
 	paddd	%xmm3, %xmm5
 	movdqa	.LC17, %xmm0
-	movdqu	%xmm0, 320(%esp)
+	movdqa	%xmm0, 320(%esp)
 	psignd	%xmm0, %xmm4
 	paddd	%xmm4, %xmm5
 	movl	48(%edx), %eax
@@ -134,42 +134,42 @@ Compress256:
 	movl	60(%edx), %eax
 	rorl	$16, %eax
 	movl	%eax, 620(%esp)
-	movdqu	112(%esp), %xmm3
-	movdqu	%xmm3, 336(%esp)
+	movdqa	112(%esp), %xmm3
+	movdqa	%xmm3, 336(%esp)
 	movdqa	%xmm3, %xmm0
 	psignd	272(%esp), %xmm0
 	paddd	%xmm0, %xmm7
 	psubd	%xmm4, %xmm7
 	movdqa	.LC19, %xmm3
-	movdqu	128(%esp), %xmm0
-	movdqu	%xmm0, 352(%esp)
+	movdqa	128(%esp), %xmm0
+	movdqa	%xmm0, 352(%esp)
 	psignd	%xmm3, %xmm0
 	paddd	%xmm0, %xmm7
 	movdqa	.LC20, %xmm2
-	movdqu	80(%esp), %xmm4
+	movdqa	80(%esp), %xmm4
 	movdqa	%xmm4, %xmm0
 	psignd	%xmm2, %xmm0
 	paddd	%xmm0, %xmm7
-	movdqu	304(%esp), %xmm0
+	movdqa	304(%esp), %xmm0
 	psignd	%xmm2, %xmm0
 	paddd	%xmm0, %xmm1
 	movdqa	%xmm4, %xmm0
 	psignd	%xmm3, %xmm0
 	paddd	%xmm0, %xmm1
-	movdqu	288(%esp), %xmm0
+	movdqa	288(%esp), %xmm0
 	psignd	320(%esp), %xmm0
 	psubd	%xmm0, %xmm1
-	movdqu	64(%esp), %xmm3
+	movdqa	64(%esp), %xmm3
 	movdqa	%xmm3, %xmm0
 	psignd	272(%esp), %xmm0
 	psubd	%xmm0, %xmm1
-	movdqu	352(%esp), %xmm0
+	movdqa	352(%esp), %xmm0
 	psignd	%xmm2, %xmm0
 	paddd	%xmm0, %xmm6
 	movdqa	%xmm3, %xmm0
 	psignd	.LC22, %xmm0
 	paddd	%xmm0, %xmm6
-	movdqu	336(%esp), %xmm0
+	movdqa	336(%esp), %xmm0
 	psignd	320(%esp), %xmm0
 	psubd	%xmm0, %xmm6
 	movaps	%xmm5, %xmm3
@@ -255,27 +255,27 @@ Compress256:
 	shufps	$141, %xmm0, %xmm2
 	shufps	$210, %xmm4, %xmm3
 	shufps	$120, %xmm3, %xmm3
-	movdqu	640(%esp), %xmm7
+	movdqa	640(%esp), %xmm7
 	palignr	$4, 688(%esp), %xmm7
-	movdqu	688(%esp), %xmm6
+	movdqa	688(%esp), %xmm6
 	palignr	$4, 672(%esp), %xmm6
-	movdqu	672(%esp), %xmm4
+	movdqa	672(%esp), %xmm4
 	palignr	$4, 656(%esp), %xmm4
-	movdqu	656(%esp), %xmm0
+	movdqa	656(%esp), %xmm0
 	palignr	$4, 640(%esp), %xmm0
 	paddd	%xmm0, %xmm1
-	movdqu	%xmm1, 192(%esp)
+	movdqa	%xmm1, 192(%esp)
 	paddd	%xmm4, %xmm3
-	movdqu	%xmm3, 208(%esp)
+	movdqa	%xmm3, 208(%esp)
 	paddd	%xmm6, %xmm5
-	movdqu	%xmm5, 224(%esp)
+	movdqa	%xmm5, 224(%esp)
 	paddd	%xmm7, %xmm2
-	movdqu	%xmm2, 240(%esp)
+	movdqa	%xmm2, 240(%esp)
 	leal	432(%esp), %ecx
-	movdqu	%xmm1, (%ecx)
-	movdqu	%xmm3, 16(%ecx)
-	movdqu	%xmm5, 32(%ecx)
-	movdqu	%xmm2, 48(%ecx)
+	movdqa	%xmm1, (%ecx)
+	movdqa	%xmm3, 16(%ecx)
+	movdqa	%xmm5, 32(%ecx)
+	movdqa	%xmm2, 48(%ecx)
 	pxor	%xmm5, %xmm5
 	movdqa	%xmm5, %xmm0
 	punpckhqdq	192(%esp), %xmm0
@@ -290,7 +290,7 @@ Compress256:
 	movl	%eax, 36(%esp)
 	movl	%eax, 752(%esp)
 	movl	%edx, 756(%esp)
-	movdqu	192(%esp), %xmm0
+	movdqa	192(%esp), %xmm0
 	punpcklqdq	208(%esp), %xmm0
 	movdqa	%xmm0, %xmm1
 	pslld	$2, %xmm1
@@ -305,7 +305,7 @@ Compress256:
 	pxor	%xmm1, %xmm4
 	psrld	$15, %xmm0
 	pxor	%xmm0, %xmm4
-	movdqu	192(%esp), %xmm0
+	movdqa	192(%esp), %xmm0
 	punpckhqdq	208(%esp), %xmm0
 	movdqa	%xmm0, %xmm1
 	pslld	$2, %xmm1
@@ -321,7 +321,7 @@ Compress256:
 	psrld	$14, %xmm0
 	pxor	%xmm0, %xmm2
 	paddd	%xmm2, %xmm4
-	movdqu	224(%esp), %xmm0
+	movdqa	224(%esp), %xmm0
 	punpcklqdq	240(%esp), %xmm0
 	movdqa	%xmm0, %xmm1
 	pslld	$2, %xmm1
@@ -337,7 +337,7 @@ Compress256:
 	psrld	$15, %xmm0
 	pxor	%xmm0, %xmm2
 	paddd	%xmm2, %xmm4
-	movdqu	224(%esp), %xmm0
+	movdqa	224(%esp), %xmm0
 	punpckhqdq	240(%esp), %xmm0
 	movdqa	%xmm0, %xmm1
 	pslld	$2, %xmm1
@@ -353,11 +353,11 @@ Compress256:
 	psrld	$14, %xmm0
 	pxor	%xmm0, %xmm2
 	paddd	%xmm2, %xmm4
-	movdqu	208(%esp), %xmm3
+	movdqa	208(%esp), %xmm3
 	palignr	$4, 192(%esp), %xmm3
-	movdqu	224(%esp), %xmm0
+	movdqa	224(%esp), %xmm0
 	palignr	$4, 208(%esp), %xmm0
-	movdqu	%xmm0, 48(%esp)
+	movdqa	%xmm0, 48(%esp)
 	movdqa	%xmm3, %xmm0
 	punpcklqdq	48(%esp), %xmm0
 	movdqa	%xmm0, %xmm1
@@ -389,7 +389,7 @@ Compress256:
 	psrld	$15, %xmm3
 	pxor	%xmm3, %xmm1
 	paddd	%xmm1, %xmm4
-	movdqu	240(%esp), %xmm7
+	movdqa	240(%esp), %xmm7
 	palignr	$4, 224(%esp), %xmm7
 	palignr	$4, 240(%esp), %xmm5
 	movdqa	%xmm7, %xmm0
@@ -428,12 +428,12 @@ Compress256:
 	pxor	%xmm0, %xmm0
 	phaddd	%xmm0, %xmm4
 	leal	560(%esp), %eax
-	movdqu	32(%eax), %xmm5
+	movdqa	32(%eax), %xmm5
 	leal	608(%esp), %edx
-	movdqu	(%edx), %xmm2
-	movdqu	(%eax), %xmm1
+	movdqa	(%edx), %xmm2
+	movdqa	(%eax), %xmm1
 	palignr	$12, %xmm2, %xmm1
-	movdqu	16(%eax), %xmm3
+	movdqa	16(%eax), %xmm3
 	palignr	$12, (%eax), %xmm3
 	movdqa	%xmm5, %xmm6
 	palignr	$12, 16(%eax), %xmm6
@@ -442,17 +442,17 @@ Compress256:
 	paddd	%xmm2, %xmm1
 	paddd	.LC15, %xmm1
 	psubd	%xmm0, %xmm1
-	movdqu	656(%esp), %xmm0
+	movdqa	656(%esp), %xmm0
 	palignr	$12, 640(%esp), %xmm0
 	pxor	%xmm1, %xmm0
-	movdqu	%xmm0, 112(%ecx)
+	movdqa	%xmm0, 112(%ecx)
 	palignr	$12, %xmm5, %xmm2
-	movdqu	16(%eax), %xmm0
+	movdqa	16(%eax), %xmm0
 	palignr	$8, (%eax), %xmm0
 	paddd	%xmm5, %xmm2
 	paddd	.LC14, %xmm2
 	psubd	%xmm0, %xmm2
-	movdqu	640(%esp), %xmm0
+	movdqa	640(%esp), %xmm0
 	palignr	$12, 688(%esp), %xmm0
 	pxor	%xmm0, %xmm2
 	movdqa	%xmm7, %xmm0
@@ -462,7 +462,7 @@ Compress256:
 	por	%xmm1, %xmm0
 	movdqa	%xmm2, %xmm5
 	paddd	%xmm0, %xmm5
-	movdqu	240(%esp), %xmm2
+	movdqa	240(%esp), %xmm2
 	palignr	$12, 224(%esp), %xmm2
 	movdqa	%xmm2, %xmm0
 	movdqa	%xmm2, %xmm1
@@ -471,35 +471,35 @@ Compress256:
 	por	%xmm0, %xmm1
 	movdqa	%xmm5, %xmm0
 	paddd	%xmm1, %xmm0
-	movdqu	%xmm0, 96(%ecx)
+	movdqa	%xmm0, 96(%ecx)
 	paddd	(%eax), %xmm3
 	paddd	.LC12, %xmm3
 	movq	40(%eax), %xmm0
 	movq	(%edx), %xmm1
 	punpcklqdq	%xmm1, %xmm0
 	psubd	%xmm0, %xmm3
-	movdqu	672(%esp), %xmm0
+	movdqa	672(%esp), %xmm0
 	palignr	$12, 656(%esp), %xmm0
 	pxor	%xmm3, %xmm0
 	paddd	%xmm0, %xmm4
-	movdqu	%xmm4, 64(%ecx)
+	movdqa	%xmm4, 64(%ecx)
 	paddd	16(%eax), %xmm6
 	paddd	.LC13, %xmm6
 	movq	56(%eax), %xmm0
 	movq	(%eax), %xmm1
 	punpcklqdq	%xmm1, %xmm0
 	psubd	%xmm0, %xmm6
-	movdqu	688(%esp), %xmm0
+	movdqa	688(%esp), %xmm0
 	palignr	$12, 672(%esp), %xmm0
 	movdqa	%xmm0, %xmm3
 	pxor	%xmm6, %xmm3
-	movdqu	48(%esp), %xmm1
+	movdqa	48(%esp), %xmm1
 	movdqa	%xmm1, %xmm0
 	psrld	$29, %xmm0
 	pslld	$3, %xmm1
 	por	%xmm1, %xmm0
 	paddd	%xmm0, %xmm3
-	movdqu	224(%esp), %xmm0
+	movdqa	224(%esp), %xmm0
 	palignr	$12, 208(%esp), %xmm0
 	movdqa	%xmm0, %xmm1
 	psrld	$25, %xmm1
@@ -513,7 +513,7 @@ Compress256:
 	paddd	%xmm1, %xmm0
 	pshufb	.LC23, %xmm2
 	paddd	%xmm2, %xmm0
-	movdqu	%xmm0, 80(%ecx)
+	movdqa	%xmm0, 80(%ecx)
 	movl	480(%esp), %esi
 	rorl	$13, %esi
 	movl	488(%esp), %ebx
@@ -1006,13 +1006,13 @@ Compress256:
 	movl	%edi, 736(%esp)
 	movq	736(%esp), %xmm4
 	pshufd	$0, %xmm4, %xmm4
-	movdqu	192(%esp), %xmm1
+	movdqa	192(%esp), %xmm1
 	pxor	%xmm0, %xmm1
 	leal	432(%esp), %esi
-	movdqu	96(%esi), %xmm3
-	movdqu	112(%esi), %xmm5
+	movdqa	96(%esi), %xmm3
+	movdqa	112(%esi), %xmm5
 	pxor	%xmm3, %xmm1
-	movdqu	%xmm1, 640(%esp)
+	movdqa	%xmm1, 640(%esp)
 	movl	496(%esp), %ebp
 	shrl	$5, %ebp
 	movl	800(%esp), %eax
@@ -1094,16 +1094,16 @@ Compress256:
 	xorl	%ecx, %eax
 	leal	(%ebx,%eax), %ecx
 	movl	%ecx, 668(%esp)
-	movdqu	64(%esi), %xmm1
-	movdqu	80(%esi), %xmm0
+	movdqa	64(%esi), %xmm1
+	movdqa	80(%esi), %xmm0
 	movdqa	%xmm1, %xmm2
 	palignr	$12, %xmm0, %xmm2
 	palignr	$12, %xmm1, %xmm0
-	movdqu	224(%esp), %xmm1
+	movdqa	224(%esp), %xmm1
 	pxor	%xmm2, %xmm1
 	leal	704(%esp), %eax
 	pxor	(%eax), %xmm1
-	movdqu	240(%esp), %xmm2
+	movdqa	240(%esp), %xmm2
 	pxor	%xmm0, %xmm2
 	pxor	16(%eax), %xmm2
 	movl	800(%esp), %eax
@@ -1114,8 +1114,8 @@ Compress256:
 	pxor	48(%eax), %xmm5
 	pxor	%xmm4, %xmm5
 	paddd	%xmm5, %xmm2
-	movdqu	%xmm2, 688(%esp)
-	movdqu	%xmm0, 672(%esp)
+	movdqa	%xmm2, 688(%esp)
+	movdqa	%xmm0, 672(%esp)
 	movl	44(%esp), %eax
 	rorl	$23, %eax
 	addl	%eax, 672(%esp)
@@ -1145,18 +1145,18 @@ Compress256:
 	cmpl	%edx, 800(%esp)
 	jb	.L2
 	movl	160(%esp), %ecx
-	movdqu	(%ecx), %xmm0
+	movdqa	(%ecx), %xmm0
 	movl	144(%esp), %ebx
-	movdqu	%xmm0, (%ebx)
-	movdqu	656(%esp), %xmm0
+	movdqa	%xmm0, (%ebx)
+	movdqa	656(%esp), %xmm0
 	movl	148(%esp), %eax
-	movdqu	%xmm0, (%eax)
-	movdqu	672(%esp), %xmm0
+	movdqa	%xmm0, (%eax)
+	movdqa	672(%esp), %xmm0
 	movl	152(%esp), %edx
-	movdqu	%xmm0, (%edx)
-	movdqu	688(%esp), %xmm0
+	movdqa	%xmm0, (%edx)
+	movdqa	688(%esp), %xmm0
 	movl	156(%esp), %ecx
-	movdqu	%xmm0, (%ecx)
+	movdqa	%xmm0, (%ecx)
 	addl	$780, %esp
 	popl	%ebx
 	popl	%esi

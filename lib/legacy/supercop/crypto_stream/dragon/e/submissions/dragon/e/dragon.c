@@ -60,7 +60,7 @@
  * called once when the program starts (e.g., to build expanded S-box
  * tables).
  */
-void ECRYPT_init(void)
+void crypto_stream_dragon_e_submissions_dragon_ECRYPT_init(void)
 {
 }
 
@@ -69,8 +69,8 @@ void ECRYPT_init(void)
  * keysize and ivsize from the set of supported values specified
  * above.
  */
-void ECRYPT_keysetup(
-    ECRYPT_ctx*  ctx,
+void crypto_stream_dragon_e_submissions_dragon_ECRYPT_keysetup(
+    crypto_stream_dragon_e_submissions_dragon_ECRYPT_ctx*  ctx,
     const u8*    key,
     u32          keysize, /* Key size in bits. */
     u32          ivsize)  /* IV size in bits. */
@@ -137,13 +137,13 @@ void ECRYPT_keysetup(
 #define DRAGON_MIXING_STAGES   16 /* number of mixes during initialization */
 
 /*
- * IV setup. After having called ECRYPT_keysetup(), the user is
- * allowed to call ECRYPT_ivsetup() different times in order to
+ * IV setup. After having called crypto_stream_dragon_e_submissions_dragon_ECRYPT_keysetup(), the user is
+ * allowed to call crypto_stream_dragon_e_submissions_dragon_ECRYPT_ivsetup() different times in order to
  * encrypt/decrypt different messages with the same key but different
  * IV's.
  */
-void ECRYPT_ivsetup(
-    ECRYPT_ctx* ctx,
+void crypto_stream_dragon_e_submissions_dragon_ECRYPT_ivsetup(
+    crypto_stream_dragon_e_submissions_dragon_ECRYPT_ctx* ctx,
     const u8* iv)
 {
     u32 a, b, c, d;
@@ -269,8 +269,8 @@ void ECRYPT_ivsetup(
  *                                bytes of memory
  * @param  blocks      [In]        number of keystream blocks to produce
  */
-void ECRYPT_keystream_blocks(
-  ECRYPT_ctx* ctx,
+void crypto_stream_dragon_e_submissions_dragon_ECRYPT_keystream_blocks(
+  crypto_stream_dragon_e_submissions_dragon_ECRYPT_ctx* ctx,
   u8* keystream,
   u32 blocks)
 {
@@ -296,9 +296,9 @@ void ECRYPT_keystream_blocks(
  *                             consisting of 8*(blocks) bytes
  * @param  blocks  [In]         number of blocks to (en/de)crypt
  */
-void ECRYPT_process_blocks(
+void crypto_stream_dragon_e_submissions_dragon_ECRYPT_process_blocks(
   int action,                 /* 0 = encrypt; 1 = decrypt; */
-  ECRYPT_ctx* ctx, 
+  crypto_stream_dragon_e_submissions_dragon_ECRYPT_ctx* ctx, 
   const u8* input, 
   u8* output, 
   u32 blocks)
@@ -328,8 +328,8 @@ void ECRYPT_process_blocks(
  *                                bytes
  * @param  length     [In]        number of keystream bytes to produce
  */
-void ECRYPT_keystream_bytes(
-    ECRYPT_ctx* ctx,
+void crypto_stream_dragon_e_submissions_dragon_ECRYPT_keystream_bytes(
+    crypto_stream_dragon_e_submissions_dragon_ECRYPT_ctx* ctx,
     u8* keystream,
     u32 length)
 {
@@ -337,7 +337,7 @@ void ECRYPT_keystream_bytes(
 
     while ((length--) > 0) {
         if (ctx->buffer_index == 0) {
-            ECRYPT_keystream_blocks(
+            crypto_stream_dragon_e_submissions_dragon_ECRYPT_keystream_blocks(
                 ctx, 
                 ctx->keystream_buffer, 
                 DRAGON_BUFFER_SIZE);
@@ -358,9 +358,9 @@ void ECRYPT_keystream_bytes(
  * @param  output  [Out]     (cipher)/(plain)text for (en/de)crypting
  * @param  msglen  [In]      number of bytes to (en/de)crypt
  */
-void ECRYPT_process_bytes(
+void crypto_stream_dragon_e_submissions_dragon_ECRYPT_process_bytes(
     int action,                 /* 0 = encrypt; 1 = decrypt; */
-    ECRYPT_ctx* ctx,
+    crypto_stream_dragon_e_submissions_dragon_ECRYPT_ctx* ctx,
     const u8* input,
     u8* output,
     u32 msglen)
@@ -370,7 +370,7 @@ void ECRYPT_process_bytes(
 
     assert(ctx && input && output);
 
-    ECRYPT_keystream_bytes(ctx, output, len);
+    crypto_stream_dragon_e_submissions_dragon_ECRYPT_keystream_bytes(ctx, output, len);
 
     for (i = 0; i < msglen; i++) {
         output[i] ^= input[i];

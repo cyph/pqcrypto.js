@@ -192,10 +192,7 @@ void TransformQ1(bitcontainer *T , const bitcontainer *Q1 , bitcontainer *P1, bi
 	// erase the bits of T that are not used
 	for (i = 0; i < VINEGAR_VARS+1; i++)
 	{
-		bitcontainer Ti;
-		memcpy(&Ti,i*sizeof(bitcontainer)+(char *) T,sizeof(bitcontainer));
-		Ti &= (uint64_t) 0x7fffffffffffffff;
-		memcpy(i*sizeof(bitcontainer)+(char *) T,&Ti,sizeof(bitcontainer));
+		T[i] &= (uint64_t) 0x7fffffffffffffff;
 	}
 
 	// initilize L to all zeros

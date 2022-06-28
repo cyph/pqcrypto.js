@@ -41,8 +41,6 @@ echo "=== `date` === grep . /dev/null /sys/devices/system/cpu/cpu*/cpufreq/cpb"
 grep . /dev/null /sys/devices/system/cpu/cpu*/cpufreq/cpb || :
 echo "=== `date` === grep . /dev/null /sys/devices/system/cpu/intel_pstate/no_turbo"
 grep . /dev/null /sys/devices/system/cpu/intel_pstate/no_turbo || :
-echo "=== `date` === grep . /dev/null /sys/devices/intel_pt/max_nonturbo_ratio"
-grep . /dev/null /sys/devices/intel_pt/max_nonturbo_ratio || :
 echo "=== `date` === grep . /dev/null /sys/devices/system/cpu/cpu*/clock_tick"
 grep . /dev/null /sys/devices/system/cpu/cpu*/clock_tick || :
 echo "=== `date` === grep . /dev/null /sys/devices/system/cpu/cpu*/regs/identification/*"
@@ -54,24 +52,3 @@ echo "=== `date` === sysctl machdep.tsc_freq"
 sysctl machdep.tsc_freq || :
 echo "=== `date` === /usr/sbin/psrinfo -v"
 /usr/sbin/psrinfo -v || :
-
-echo "=== `date` === gcc --version"
-gcc --version || :
-echo "=== `date` === g++ --version"
-g++ --version || :
-echo "=== `date` === clang --version"
-clang --version || :
-echo "=== `date` === clang++ --version"
-clang++ --version || :
-echo "=== `date` === rustc --version"
-rustc --version || :
-echo "=== `date` === cargo --version"
-cargo --version || :
-
-# MacOS
-echo "=== `date` === sw_vers"
-sw_vers || :
-echo "=== `date` === system_profiler -detailLevel mini"
-system_profiler -detailLevel mini || :
-echo "=== `date` === sysctl -n machdep.cpu.brand_string"
-sysctl -n machdep.cpu.brand_string || :

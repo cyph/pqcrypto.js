@@ -19,6 +19,7 @@ if len(sys.argv) > 4: offset = int(sys.argv[4])
 div3 = False
 if len(sys.argv) > 5: div3 = sys.argv[5]=='True'
 
+todo = 'R0'
 top = 16384
 
 print('/* auto-generated; do not edit */')
@@ -43,17 +44,33 @@ static int16 mulhi(int16 x,int16 y)
 
 print('void crypto_decode(void *v,const unsigned char *s)')
 print('{')
-print('  int16 *R = v;')
+print('  int16 *%s = v;' % todo)
+
+tmparrays = None
+
+layer = 1
+x = Mlen
+while x > 1:
+  x = (x+1)//2
+  if tmparrays == None:
+    tmparrays = 'int16 '
+  else:
+    tmparrays += ','
+  tmparrays += 'R%d[%d]' % (layer,x)
+  layer += 1
+
+if tmparrays:
+  print('  %s;' % tmparrays)
 
 print('  long long i;')
-print('  int16 a0,a1,ri,lo,hi,s0,s1;')
+print('  int16 a0,a1,a2;')
 
-def poke(layer,pos,contents):
-  if layer == 1 and div3:
-    return 'R[%s] = 3*%s%+d;' % (pos,contents,-offset)
-  if layer == 1 and offset != 0:
-    return 'R[%s] = %s%+d;' % (pos,contents,-offset)
-  return 'R[%s] = %s;' % (pos,contents)
+def poke(todo,pos,contents):
+  if todo == 'R0' and div3:
+    return '%s[%s] = 3*%s%+d;' % (todo,pos,contents,-offset)
+  if todo == 'R0' and offset != 0:
+    return '%s[%s] = %s%+d;' % (todo,pos,contents,-offset)
+  return '%s[%s] = %s;' % (todo,pos,contents)
 
 def mulmoddata(c,q):
   y = (c<<16)%q
@@ -76,36 +93,25 @@ def mulmoddata(c,q):
 
   return y,t,u,uinv,z
 
-def inner(indent,inpos,m0,m1,bytes,outpos0,outpos1):
+def inner(indent,reading,inpos,m0,m1,bytes,outpos0,outpos1):
   stanza = ''
 
   y,t,u,uinv,z = mulmoddata(256,m0)
 
-  stanza += indent + 'ri = R[%s];\n' % (inpos)
+  stanza += indent + 'a2 = a0 = %s[%s];\n' % (reading,inpos)
   a0lower,a0upper = 0,1<<14
 
-  for loop in reversed(range(bytes)):
-    stanza += indent + 's%d = *--s;\n' % loop
-
-  for loop in reversed(range(bytes)):
+  for loop in range(bytes):
     if y > 0:
       a0lower,a0upper = a0lower*y,a0upper*y
     else:
       a0lower,a0upper = a0upper*y,a0lower*y
     a0lower,a0upper = a0lower-(m0<<15),a0upper+(m0<<15)
     a0lower,a0upper = a0lower>>16,a0upper>>16
-    if loop == bytes-1:
-      stanza += indent + 'lo = mullo(ri,%d);\n' % z
-      stanza += indent + 'a0 = mulhi(ri,%d)-mulhi(lo,%d); /* %d...%d */\n' % (y,m0,a0lower,a0upper)
-    else:
-      stanza += indent + 'lo = mullo(a0,%d);\n' % z
-      stanza += indent + 'a0 = mulhi(a0,%d)-mulhi(lo,%d); /* %d...%d */\n' % (y,m0,a0lower,a0upper)
+    stanza += indent + 'a0 = mulhi(a0,%d)-mulhi(mullo(a0,%d),%d); /* %d...%d */\n' % (y,z,m0,a0lower,a0upper)
   
     a0upper += 255
-    stanza += indent + 'a0 += s%d; /* %d...%d */\n' % (loop,a0lower,a0upper)
-
-  if bytes == 0:
-    stanza += indent + 'a0 = ri;\n'
+    stanza += indent + 'a0 += *--s; /* %d...%d */\n' % (a0lower,a0upper)
 
   if a0upper >= 2*m0:
     y1,t1,u1,uinv1,z1 = mulmoddata(1,m0)
@@ -115,11 +121,7 @@ def inner(indent,inpos,m0,m1,bytes,outpos0,outpos1):
       a0lower,a0upper = a0upper*y1,a0lower*y1
     a0lower,a0upper = a0lower-(m0<<15),a0upper+(m0<<15)
     a0lower,a0upper = a0lower>>16,a0upper>>16
-    if bytes == 0:
-      stanza += indent + 'lo = mullo(a0,%d);\n' % z1
-    else:
-      stanza += indent + 'lo = mullo(a0,%d);\n' % z1
-    stanza += indent + 'a0 = mulhi(a0,%d)-mulhi(lo,%d); /* %d...%d */\n' % (y1,m0,a0lower,a0upper)
+    stanza += indent + 'a0 = mulhi(a0,%d)-mulhi(mullo(a0,%d),%d); /* %d...%d */\n' % (y1,z1,m0,a0lower,a0upper)
 
   while a0upper >= m0:
     a0lower,a0upper = a0lower-m0,a0upper-m0
@@ -130,28 +132,28 @@ def inner(indent,inpos,m0,m1,bytes,outpos0,outpos1):
     stanza += indent + 'a0 += (a0>>15)&%d; /* %d...%d */\n' % (m0,a0lower,a0upper)
 
   if bytes == 0:
-    stanza += indent + 'a1 = (ri-a0)>>%d;\n' % t
+    stanza += indent + 'a1 = (a2-a0)>>%d;\n' % t
 
   elif bytes == 1:
     if t == 0:
-      stanza += indent + 'a1 = (ri<<8)+s0-a0;\n'
+      stanza += indent + 'a1 = (a2<<8)+s[0]-a0;\n'
     elif t == 8:
-      stanza += indent + 'a1 = ri+((s0-a0)>>8);\n'
+      stanza += indent + 'a1 = a2+((s[0]-a0)>>8);\n'
     elif t < 8:
-      stanza += indent + 'a1 = (ri<<%d)+((s0-a0)>>%d);\n' % (8-t,t)
+      stanza += indent + 'a1 = (a2<<%d)+((s[0]-a0)>>%d);\n' % (8-t,t)
     else:
-      stanza += indent + 'a1 = (ri+((s0-a0)>>8))>>%d;\n' % t-8
+      stanza += indent + 'a1 = (a2+((s[0]-a0)>>8))>>%d;\n' % t-8
 
   else:
     assert bytes == 2
     if t == 0:
-      stanza += indent + 'a1 = (s1<<8)+s0-a0;\n'
+      stanza += indent + 'a1 = (s[1]<<8)+s[0]-a0;\n'
     elif t == 8:
-      stanza += indent + 'a1 = (ri<<8)+s1+((s0-a0)>>8);\n'
+      stanza += indent + 'a1 = (a2<<8)+s[1]+((s[0]-a0)>>8);\n'
     elif t < 8:
-      stanza += indent + 'a1 = (ri<<%d)+(s1<<%d)+((s0-a0)>>%d);\n' % (16-t,8-t,t)
+      stanza += indent + 'a1 = (a2<<%d)+(s[1]<<%d)+((s[0]-a0)>>%d);\n' % (16-t,8-t,t)
     else:
-      stanza += indent + 'a1 = ((((int32)ri)<<16)+(s1<<8)+s0-a0)>>%d;\n' % t
+      stanza += indent + 'a1 = ((((int32)a2)<<16)+(s[1]<<8)+s[0]-a0)>>%d;\n' % t
 
   stanza += indent + 'a1 = mullo(a1,%d);\n' % uinv
   stanza += '\n'
@@ -159,22 +161,23 @@ def inner(indent,inpos,m0,m1,bytes,outpos0,outpos1):
   stanza += indent + 'a1 -= %d;\n' % m1
   stanza += indent + 'a1 += (a1>>15)&%d;\n' % m1
   stanza += '\n'
-  stanza += indent + '%s\n' % poke(layer,outpos0,'a0')
-  stanza += indent + '%s\n' % poke(layer,outpos1,'a1')
+  stanza += indent + '%s\n' % poke(todo,outpos0,'a0')
+  stanza += indent + '%s\n' % poke(todo,outpos1,'a1')
 
   return stanza
 
-def stanzaloop(looplen,layer,m0,bytes):
+def stanzaloop(looplen,reading,todo,m0,bytes):
   stanza = ''
   if looplen >= 1:
     stanza += '  for (i = %d;i >= 0;--i) {\n' % (looplen-1)
-    stanza += inner('    ','i',m0,m0,bytes,'2*i','2*i+1')
+    stanza += inner('    ',reading,'i',m0,m0,bytes,'2*i','2*i+1')
     stanza += '  }\n'
   return stanza
 
 stanzas = []
 
 layer = 1
+reading = 'R%d' % layer
 while Mlen > 1:
   n0 = m0*m0
   bytes0 = 0
@@ -184,9 +187,9 @@ while Mlen > 1:
 
   if Mlen&1:
     looplen = Mlen//2
-    r0 = 'R[%s]' % (looplen)
-    stanza = '  %s\n' % poke(layer,2*looplen,r0)
-    stanza += stanzaloop(looplen,layer,m0,bytes0)
+    r0 = '%s[%s]' % (reading,looplen)
+    stanza = '  %s\n' % poke(todo,2*looplen,r0)
+    stanza += stanzaloop(looplen,reading,todo,m0,bytes0)
     n1 = m1
     stanzas += [stanza]
 
@@ -199,21 +202,23 @@ while Mlen > 1:
 
     if m1 == m0:
       looplen = (Mlen+1)//2
-      stanza = stanzaloop(looplen,layer,m0,bytes0)
+      stanza = stanzaloop(looplen,reading,todo,m0,bytes0)
     else:
       looplen = (Mlen-1)//2
-      stanza = inner('  ',looplen,m0,m1,bytes1,2*looplen,2*looplen+1)
-      stanza += stanzaloop(looplen,layer,m0,bytes0)
+      stanza = inner('  ',reading,looplen,m0,m1,bytes1,2*looplen,2*looplen+1)
+      stanza += stanzaloop(looplen,reading,todo,m0,bytes0)
 
     stanzas += [stanza]
 
   if m0 == m1:
-    stanzas += ['  /* reconstruct mod %d*[%d] */\n' % (Mlen,m0)]
+    stanzas += ['  /* %s ------> %s: reconstruct mod %d*[%d] */\n' % (reading,todo,Mlen,m0)]
   else:
-    stanzas += ['  /* reconstruct mod %d*[%d]+[%d] */\n' % (Mlen-1,m0,m1)]
+    stanzas += ['  /* %s ------> %s: reconstruct mod %d*[%d]+[%d] */\n' % (reading,todo,Mlen-1,m0,m1)]
 
   m0,m1,Mlen = n0,n1,(Mlen+1)//2
   layer += 1
+  todo = reading
+  reading = 'R%d' % layer
 
 stanza = ''
 stanza += '  s += crypto_decode_STRBYTES;\n'
@@ -226,8 +231,7 @@ a1upper = 0
 
 while m1 > 1:
   if m1 != q:
-    stanza += '  lo = mullo(a1,%d);\n' % z
-    stanza += '  a1 = mulhi(a1,%d)-mulhi(lo,%d);\n' % (y,q)
+    stanza += '  a1 = mulhi(a1,%d)-mulhi(mullo(a1,%d),%d);\n' % (y,z,q)
     if y > 0:
       a1lower,a1upper = a1lower*y,a1upper*y
       a1lower,a1upper = a1lower-(q<<15),a1upper+(q<<15)-1
@@ -250,7 +254,7 @@ while a1lower < 0:
   a1lower,a1upper = min(0,a1lower+q),max(a1upper,q-1)
   stanza += '  a1 += (a1>>15)&%d; /* %d...%d */\n' % (q,a1lower,a1upper)
   
-stanza += '  %s\n' % poke(layer,0,'a1')
+stanza += '  %s\n' % poke(todo,0,'a1')
 stanzas += [stanza]
 
 for stanza in reversed(stanzas):

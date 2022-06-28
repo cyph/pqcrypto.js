@@ -30,14 +30,14 @@ static void DRYSPONGE_g(
     DRYSPONGE_t *const ctx
 ){
     #if DRYSPONGE_DBG_EN
-        bytes_utiles_printf("   G entry %lu:\n",ctx->fcnt);
+        printf("   G entry %lu:\n",ctx->fcnt);
         DRYSPONGE_print_state(ctx);
     #endif
     ctx->fcnt++;
     memset(ctx->r,0,DRYSPONGE_BLOCKSIZE);
     for(unsigned int j = 0;j<ctx->rounds;j++){
         #if DRYSPONGE_DBG_EN >= DRYSPONGE_DBG_ROUND_IO
-            bytes_utiles_printf("   CoreRound entry %d:\n",j);
+            printf("   CoreRound entry %d:\n",j);
             DRYSPONGE_print_state(ctx);
         #endif
         DRYSPONGE_CoreRound(ctx,j);
@@ -55,13 +55,13 @@ static void DRYSPONGE_f(
     const uint8_t *const i
 ){
     #if DRYSPONGE_DBG_EN
-        bytes_utiles_printf("   F entry %lu:\n",ctx->fcnt);
+        printf("   F entry %lu:\n",ctx->fcnt);
         DRYSPONGE_print_state(ctx);
         print_bytes_sep("       I = ",i,DRYSPONGE_BLOCKSIZE,"\n","");
     #endif
     DRYSPONGE_MixPhase(ctx,i);
     #if DRYSPONGE_DBG_EN >= DRYSPONGE_DBG_ROUND_IO
-        bytes_utiles_printf("   After mix phase:\n");
+        printf("   After mix phase:\n");
         DRYSPONGE_print_state(ctx);
     #endif
     DRYSPONGE_g(ctx);
@@ -199,7 +199,7 @@ static void DRYSPONGE_hash(
     DRYSPONGE_init_ctx(ctx);
     ctx->rounds=DRYSPONGE_ROUNDS;
     #if DRYSPONGE_DBG_EN
-        bytes_utiles_printf("Hashing %lu bytes message: ",mlen);
+        printf("Hashing %lu bytes message: ",mlen);
         print_bytes_sep("",message,mlen,"\n","");
     #endif
     const uint8_t CST_H[] = {
@@ -224,7 +224,7 @@ static void DRYSPONGE_hash(
     DRYSPONGE_absorb_only(ctx,message,mlen,DRYSPONGE_DS,1);
     DRYSPONGE_squeez_only(ctx,digest,DRYSPONGE_DIGESTSIZE);
     #if DRYSPONGE_DBG_EN
-        bytes_utiles_printf("   Final state:\n");
+        printf("   Final state:\n");
         DRYSPONGE_print_state(ctx);
         print_bytes_sep("   Digest: ",digest,DRYSPONGE_DIGESTSIZE,"\n","");
     #endif
@@ -321,7 +321,7 @@ static void DRYSPONGE_enc(
     DRYSPONGE_squeez_only(ctx,ctx->obuf,DRYSPONGE_TAGSIZE);
     *clen = mlen+DRYSPONGE_TAGSIZE;
     #if DRYSPONGE_DBG_EN
-        bytes_utiles_printf("   Final state:\n");
+        printf("   Final state:\n");
         DRYSPONGE_print_state(ctx);
         print_bytes_sep("   CipherText: ",ciphertext,*clen,"\n","");
     #endif

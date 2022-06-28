@@ -181,15 +181,15 @@
 
 # qhasm: stack32 x1f_stack
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hash_cubehash1632_arm
 .text
 .align 2
-.global _CRYPTO_NAMESPACETOP
-.global CRYPTO_NAMESPACETOP
-.type _CRYPTO_NAMESPACETOP STT_FUNC
-.type CRYPTO_NAMESPACETOP STT_FUNC
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.global _crypto_hash_cubehash1632_arm
+.global crypto_hash_cubehash1632_arm
+.type _crypto_hash_cubehash1632_arm STT_FUNC
+.type crypto_hash_cubehash1632_arm STT_FUNC
+_crypto_hash_cubehash1632_arm:
+crypto_hash_cubehash1632_arm:
 stmfd sp!,{r4,r5,r6,r7,r8,r9,sl,fp,lr}
 sub sp,sp,#224
 

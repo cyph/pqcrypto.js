@@ -16,5 +16,5 @@ root := $(shell \
 
 include $(root)/test/ecrypt-test.mk
 
-lex.s: ECRYPT_process_bytes.s ECRYPT_ivsetup.s aux.s
+lex.s: crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_process_bytes.s crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_ivsetup.s aux.s
 	cat $^ > lex.s

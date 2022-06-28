@@ -115,7 +115,7 @@ stack64 length_save_stack
 stack320 tmp
 
 # Enter the function
-enter ECRYPT_process_bytes
+enter crypto_stream_lexv2_e_v2_schwabe_sparc_2_ECRYPT_process_bytes
 
 =? length - 0
 goto donothing if =

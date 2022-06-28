@@ -1,1 +1,0 @@
-../../sikep434/arm/P434_internal.h

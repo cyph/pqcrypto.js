@@ -1,1 +1,0 @@
-../../gemss128/opt/evalMQSv_gf2.c

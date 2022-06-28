@@ -1,5 +1,5 @@
 /*
- * crypto_decode/try.c version 20200816
+ * crypto_decode/try.c version 20190423
  * D. J. Bernstein
  * Public domain.
  */
@@ -10,14 +10,10 @@
 
 const char *primitiveimplementation = crypto_decode_IMPLEMENTATION;
 
-#ifdef TIMECOP
-#define LOOPS TIMECOP_LOOPS
-#else
 #ifdef SMALL
 #define LOOPS 1024
 #else
 #define LOOPS 4096
-#endif
 #endif
 
 static unsigned char *x;
@@ -31,27 +27,10 @@ void preallocate(void)
 
 void allocate(void)
 {
-  unsigned long long alloclen = crypto_decode_ITEMS * crypto_decode_ITEMBYTES + crypto_decode_ITEMBYTES + crypto_decode_STRBYTES;
-  x = alignedcalloc(alloclen);
-  y = alignedcalloc(alloclen);
-  x2 = alignedcalloc(alloclen);
-  y2 = alignedcalloc(alloclen);
-}
-
-void unalign(void)
-{
-  ++x;
-  ++x2;
-  y += crypto_decode_ITEMBYTES;
-  y2 += crypto_decode_ITEMBYTES;
-}
-
-void realign(void)
-{
-  --x;
-  --x2;
-  y -= crypto_decode_ITEMBYTES;
-  y2 -= crypto_decode_ITEMBYTES;
+  x = alignedcalloc(crypto_decode_STRBYTES);
+  y = alignedcalloc(crypto_decode_ITEMS * crypto_decode_ITEMBYTES);
+  x2 = alignedcalloc(crypto_decode_STRBYTES);
+  y2 = alignedcalloc(crypto_decode_ITEMS * crypto_decode_ITEMBYTES);
 }
 
 void predoit(void)
@@ -94,11 +73,7 @@ void test(void)
   for (loop = 0;loop < LOOPS;++loop) {
     input_prepare(x2,x,xbytes);
     output_prepare(y2,y,ybytes);
-    poison(x,xbytes);
-    poison(y,ybytes);
     crypto_decode(y,x);
-    unpoison(x,xbytes);
-    unpoison(y,ybytes);
     endianness(y,crypto_decode_ITEMS);
     checksum(y,ybytes);
     output_compare(y2,y,ybytes,"crypto_decode");
@@ -106,11 +81,7 @@ void test(void)
 
     double_canary(x2,x,xbytes);
     double_canary(y2,y,ybytes);
-    poison(x2,xbytes);
-    poison(y2,ybytes);
     crypto_decode(y2,x2);
-    unpoison(x2,xbytes);
-    unpoison(y2,ybytes);
     endianness(y2,crypto_decode_ITEMS);
     if (memcmp(y2,y,ybytes) != 0) fail("crypto_decode is nondeterministic");
   }

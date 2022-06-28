@@ -1,1 +1,1 @@
-../../dilithium2/avx2/rejsample.h
+../../dilithium3/avx2/rejsample.h

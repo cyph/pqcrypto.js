@@ -1,9 +1,9 @@
 #include "crypto_scalarmult.h"
 
-#define mult CRYPTO_NAMESPACE(mult)
-#define square CRYPTO_NAMESPACE(square)
+#define mult crypto_scalarmult_curve25519_athlon_mult
+#define square crypto_scalarmult_curve25519_athlon_square
 
-void CRYPTO_NAMESPACE(recip)(double out[10],const double z[10])
+void crypto_scalarmult_curve25519_athlon_recip(double out[10],const double z[10])
 {
   double z2[10];
   double z9[10];
@@ -81,11 +81,11 @@ int crypto_scalarmult(unsigned char *q,
   e[0] &= 248;
   e[31] &= 127;
   e[31] |= 64;
-  CRYPTO_NAMESPACE(init)();
-  CRYPTO_NAMESPACE(todouble)(work,p);
-  CRYPTO_NAMESPACE(mainloop)(work,e);
-  CRYPTO_NAMESPACE(recip)(work + 10,work + 10);
+  crypto_scalarmult_curve25519_athlon_init();
+  crypto_scalarmult_curve25519_athlon_todouble(work,p);
+  crypto_scalarmult_curve25519_athlon_mainloop(work,e);
+  crypto_scalarmult_curve25519_athlon_recip(work + 10,work + 10);
   mult(work + 20,work,work + 10);
-  CRYPTO_NAMESPACE(fromdouble)(q,work + 20);
+  crypto_scalarmult_curve25519_athlon_fromdouble(q,work + 20);
   return 0;
 }

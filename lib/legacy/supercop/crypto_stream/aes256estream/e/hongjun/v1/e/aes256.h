@@ -166,7 +166,7 @@
 }
 
 /*compute the intermediate values for the first two rounds*/
-void partial_precompute_tworounds(ECRYPT_ctx* ctx)
+void partial_precompute_tworounds(crypto_stream_aes256estream_e_hongjun_v1_ECRYPT_ctx* ctx)
 {
   u32 x0,x1,x2,x3,y0,y1,y2,y3;
 

@@ -1,11 +1,11 @@
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hashblocks_rfsb509_amd64_1
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_hashblocks_rfsb509_amd64_1
+.globl crypto_hashblocks_rfsb509_amd64_1
+_crypto_hashblocks_rfsb509_amd64_1:
+crypto_hashblocks_rfsb509_amd64_1:
 mov %rsp,%r11
 and $31,%r11
 add $128,%r11
@@ -112,10 +112,10 @@ movq %rbp,112(%rsp)
 
 # qhasm: int64 matrix
 
-# qhasm: matrix = CRYPTO_NAMESPACE(matrix)
-# asm 1: mov  $CRYPTO_NAMESPACE(matrix),>matrix=int64#4
-# asm 2: mov  $CRYPTO_NAMESPACE(matrix),>matrix=%rcx
-lea CRYPTO_NAMESPACE(matrix)(%rip),%rcx
+# qhasm: matrix = crypto_hashblocks_rfsb509_amd64_1_matrix
+# asm 1: mov  $crypto_hashblocks_rfsb509_amd64_1_matrix,>matrix=int64#4
+# asm 2: mov  $crypto_hashblocks_rfsb509_amd64_1_matrix,>matrix=%rcx
+mov  $crypto_hashblocks_rfsb509_amd64_1_matrix,%rcx
 
 # qhasm: assign 4 to matrix
 
@@ -8578,10 +8578,10 @@ psrldq $8,%xmm0
 # asm 2: pxor  <v=%xmm0,<f114=%xmm4
 pxor  %xmm0,%xmm4
 
-# qhasm: f111 &= CRYPTO_NAMESPACE(MASK125)
-# asm 1: pand  CRYPTO_NAMESPACE(MASK125),<f111=int6464#4
-# asm 2: pand  CRYPTO_NAMESPACE(MASK125),<f111=%xmm3
-pand  CRYPTO_NAMESPACE(MASK125)(%rip),%xmm3
+# qhasm: f111 &= crypto_hashblocks_rfsb509_amd64_1_MASK125
+# asm 1: pand  crypto_hashblocks_rfsb509_amd64_1_MASK125,<f111=int6464#4
+# asm 2: pand  crypto_hashblocks_rfsb509_amd64_1_MASK125,<f111=%xmm3
+pand  crypto_hashblocks_rfsb509_amd64_1_MASK125,%xmm3
 
 # qhasm: state3 = f111
 # asm 1: movdqa <f111=int6464#4,>state3=stack128#4

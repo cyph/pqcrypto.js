@@ -8,7 +8,7 @@ Public domain.
 #include <string.h>
 #include "ecrypt-sync.h"
 
-void ECRYPT_init(void)
+void crypto_stream_chacha12_e_ppc_altivec_ECRYPT_init(void)
 {
   return;
 }
@@ -16,7 +16,7 @@ void ECRYPT_init(void)
 static const char sigma[16] = "expand 32-byte k";
 static const char tau[16] = "expand 16-byte k";
 
-void ECRYPT_keysetup(ECRYPT_ctx *x,const u8 *k,u32 kbits,u32 ivbits)
+void crypto_stream_chacha12_e_ppc_altivec_ECRYPT_keysetup(crypto_stream_chacha12_e_ppc_altivec_ECRYPT_ctx *x,const u8 *k,u32 kbits,u32 ivbits)
 {
   const char *constants;
 
@@ -31,7 +31,7 @@ void ECRYPT_keysetup(ECRYPT_ctx *x,const u8 *k,u32 kbits,u32 ivbits)
   memcpy(x->myaligned.input + 0,constants,16);
 }
 
-void ECRYPT_ivsetup(ECRYPT_ctx *x,const u8 *iv)
+void crypto_stream_chacha12_e_ppc_altivec_ECRYPT_ivsetup(crypto_stream_chacha12_e_ppc_altivec_ECRYPT_ctx *x,const u8 *iv)
 {
   memset(x->myaligned.input + 48,0,8);
   memcpy(x->myaligned.input + 56,iv,8);
@@ -45,7 +45,7 @@ static const u32 permutations[] __attribute__((aligned (16))) = {
 , 0x03020100, 0x17161514, 0x0B0A0908, 0x1F1E1D1C
 } ;
 
-void ECRYPT_encrypt_bytes(ECRYPT_ctx *x,const u8 *m,u8 *c,u32 bytes)
+void crypto_stream_chacha12_e_ppc_altivec_ECRYPT_encrypt_bytes(crypto_stream_chacha12_e_ppc_altivec_ECRYPT_ctx *x,const u8 *m,u8 *c,u32 bytes)
 {
   const vu8  vrp1 = (vu8) vec_ld(0, permutations);
   const vu8  vrp2 = vec_perm(vrp1, vrp1, vrp1);
@@ -145,14 +145,14 @@ void ECRYPT_encrypt_bytes(ECRYPT_ctx *x,const u8 *m,u8 *c,u32 bytes)
   }
 }
 
-void ECRYPT_decrypt_bytes(ECRYPT_ctx *x,const u8 *c,u8 *m,u32 bytes)
+void crypto_stream_chacha12_e_ppc_altivec_ECRYPT_decrypt_bytes(crypto_stream_chacha12_e_ppc_altivec_ECRYPT_ctx *x,const u8 *c,u8 *m,u32 bytes)
 {
-  ECRYPT_encrypt_bytes(x,c,m,bytes);
+  crypto_stream_chacha12_e_ppc_altivec_ECRYPT_encrypt_bytes(x,c,m,bytes);
 }
 
-void ECRYPT_keystream_bytes(ECRYPT_ctx *x,u8 *stream,u32 bytes)
+void crypto_stream_chacha12_e_ppc_altivec_ECRYPT_keystream_bytes(crypto_stream_chacha12_e_ppc_altivec_ECRYPT_ctx *x,u8 *stream,u32 bytes)
 {
   u32 i;
   for (i = 0;i < bytes;++i) stream[i] = 0;
-  ECRYPT_encrypt_bytes(x,stream,stream,bytes);
+  crypto_stream_chacha12_e_ppc_altivec_ECRYPT_encrypt_bytes(x,stream,stream,bytes);
 }

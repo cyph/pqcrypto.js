@@ -1,4 +1,3 @@
-#include "consts.h"
 # block pos: 0 32 uops: 10
 
 # qhasm: int64 input_0
@@ -51,12 +50,12 @@
 
 # qhasm: int64 mask
 
-# qhasm: enter CRYPTO_NAMESPACE(gfe_mul)
+# qhasm: enter gfe_mul
 .p2align 5
-.global _CRYPTO_NAMESPACE(gfe_mul)
-.global CRYPTO_NAMESPACE(gfe_mul)
-_CRYPTO_NAMESPACE(gfe_mul):
-CRYPTO_NAMESPACE(gfe_mul):
+.global _gfe_mul
+.global gfe_mul
+_gfe_mul:
+gfe_mul:
 # bytes: 3 uops: 1
 mov %rsp,%r11
 # bytes: 4 uops: 1
@@ -234,7 +233,7 @@ shld $1,%r10,%r8
 # asm 1: movq mask63,>mask=int64#3
 # asm 2: movq mask63,>mask=%rdx
 # bytes: 8 uops: 1
-movq mask63(%rip),%rdx
+movq mask63,%rdx
 # block pos: 129 160 uops: 6
 
 # qhasm:   r1 &= mask

@@ -26,8 +26,8 @@ u8 internal_permutation[256];
  * Key setup. It is the user's responsibility to select a legal
  * keysize and ivsize, from the set of supported value.
  */
-void ECRYPT_keysetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_tpy_e_tpy_ECRYPT_keysetup(
+  crypto_stream_tpy_e_tpy_ECRYPT_ctx* ctx, 
   const u8* key, 
   u32 keysize,                /* Key size in bits. */ 
   u32 ivsize)                 /* IV size in bits. */ 
@@ -77,13 +77,13 @@ void ECRYPT_keysetup(
 #undef Y
 
 /*
- * IV setup. After having called ECRYPT_keysetup(), the user is
- * allowed to call ECRYPT_ivsetup() different times in order to
+ * IV setup. After having called crypto_stream_tpy_e_tpy_ECRYPT_keysetup(), the user is
+ * allowed to call crypto_stream_tpy_e_tpy_ECRYPT_ivsetup() different times in order to
  * encrypt/decrypt different messages with the same key but different
  * IV's.
  */
-void ECRYPT_ivsetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_tpy_e_tpy_ECRYPT_ivsetup(
+  crypto_stream_tpy_e_tpy_ECRYPT_ctx* ctx, 
   const u8* iv)
 {
   int i;
@@ -201,9 +201,9 @@ static u32 PY[(NUMBLOCKSATONCE+PYSIZE)*2];
 	/* Y is word 0 of the 2-word record */
 
 
-void ECRYPT_process_bytes(
+void crypto_stream_tpy_e_tpy_ECRYPT_process_bytes(
   int action,                 /* 0 = encrypt; 1 = decrypt; */
-  ECRYPT_ctx* ctx, 
+  crypto_stream_tpy_e_tpy_ECRYPT_ctx* ctx, 
   const u8* input, 
   u8* output, 
   u32 msglen)                /* Message length in bytes.     */ 
@@ -299,8 +299,8 @@ void ECRYPT_process_bytes(
   ctx->s=s;
 }
 
-void ECRYPT_keystream_bytes(
-  ECRYPT_ctx* ctx,
+void crypto_stream_tpy_e_tpy_ECRYPT_keystream_bytes(
+  crypto_stream_tpy_e_tpy_ECRYPT_ctx* ctx,
   u8* keystream,
   u32 length)                /* Length of keystream in bytes. */
      /* If the length is not a multiple of 8, this must be the */
@@ -389,7 +389,7 @@ void ECRYPT_keystream_bytes(
 #undef Y
 
 
-void ECRYPT_init(void)
+void crypto_stream_tpy_e_tpy_ECRYPT_init(void)
 {
   int i;
   u8 j=0;

@@ -1,1 +1,0 @@
-../../asconhashav12/opt8/config.h

@@ -1,1 +1,0 @@
-../opt/initMatrixId_gf2.c

@@ -1,1 +1,0 @@
-../arm/P503_compressed_pair_tables.inc

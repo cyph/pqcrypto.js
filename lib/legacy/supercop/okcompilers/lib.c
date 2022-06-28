@@ -31,22 +31,15 @@ int longbytes(void)
 int rand1(int *in)
 {
   static int out[8];
-  int t[12]; unsigned int x;
+  int t[12]; int x;
   int r; int i; int loop;
 
   for (i = 0;i < 12;++i) t[i] = in[i];
   for (i = 0;i < 8;++i) out[i] = in[i];
   x = t[11];
-  for (loop = 0;loop < 50;++loop) {
+  for (loop = 0;loop < 2;++loop) {
     for (r = 0;r < 16;++r)
-      for (i = 0;i < 12;++i) {
-        x ^= t[i];
-        x = (x<<3)|(x>>29);
-        x += in[i];
-        x = (x<<2)|(x>>30);
-        t[i] += x;
-        x += i;
-      }
+      for (i = 0;i < 12;++i) x = t[i] ^= ((x ^ in[i]) + x);
     for (i = 0;i < 8;++i) out[i] ^= t[i + 4];
   }
   return out[0];

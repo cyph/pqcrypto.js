@@ -29,11 +29,11 @@ int crypto_encrypt_open(
     goto error;
   }
 
-  clen -= crypto_kem_CIPHERTEXTBYTES;
-
-  result = crypto_kem_dec(k,c + clen,sk);
+  result = crypto_kem_dec(k,c,sk);
   if (result < 0) goto error;
 
+  c += crypto_kem_CIPHERTEXTBYTES;
+  clen -= crypto_kem_CIPHERTEXTBYTES;
   result = crypto_aead_decrypt(m,mlen,nsec,c,clen,ad,0,nonce,k);
   if (result < 0) goto error;
 

@@ -1,1 +1,2 @@
-../aesni/api.h
+#define CRYPTO_BYTES 64
+#define CRYPTO_VERSION "1.208"

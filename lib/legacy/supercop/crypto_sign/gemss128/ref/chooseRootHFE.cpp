@@ -64,95 +64,6 @@ static void quickSort(vec_gf2n tab,int d,int f)
 
 
 
-#include "randombytes.h"
-
-/* This function is extracted from NTL 10.5.0 */
-static
-void TraceMap(GF2EX& h, const GF2EX& a, const GF2EXModulus& F)
-
-// one could consider making a version based on modular composition,
-// as in ComposeFrobeniusMap...
-
-{
-   GF2EX res, tmp;
-
-   res = a;
-   tmp = a;
-
-   long i;
-   for (i = 0; i < GF2E::degree()-1; i++) {
-      SqrMod(tmp, tmp, F);
-      add(res, res, tmp);
-   }
-
-   h = res;
-}
-
-/* This function is extracted from NTL 10.5.0 */
-/* We just change the call to the function rand to use randombytes */
-static
-void RecFindRoots_with_randombytes(vec_GF2E& x, const GF2EX& f)
-{
-    unsigned char rand_UINT[NB_BYTES_GFqn];
-    GF2X monomX;
-
-   if (deg(f) == 0) return;
-
-   if (deg(f) == 1) {
-      long k = x.length();
-      x.SetLength(k+1);
-      x[k] = ConstTerm(f);
-      return;
-   }
-      
-   GF2EX h;
-
-   GF2E r;
-
-   
-   {
-      GF2EXModulus F;
-      build(F, f);
-
-      do {
-         /* We change this part to use the randombytes function */
-         /* random(r); */
-         randombytes(rand_UINT,NB_BYTES_GFqn);
-         #if HFEnr8
-             /* Clean the last byte (included the zero padding) */
-             rand_UINT[NB_BYTES_GFqn-1]&=HFE_MASKn8;
-         #endif
-         GF2XFromBytes(monomX,rand_UINT,(long)NB_BYTES_GFqn);
-         conv(r,monomX);
-
-         clear(h);
-         SetCoeff(h, 1, r);
-         TraceMap(h, h, F);
-         GCD(h, h, f);
-      } while (deg(h) <= 0 || deg(h) == deg(f));
-   }
-
-   RecFindRoots_with_randombytes(x, h);
-   div(h, f, h); 
-   RecFindRoots_with_randombytes(x, h);
-   monomX.kill();
-}
-
-/* This function is extracted from NTL 10.5.0 */
-static void FindRoots_with_randombytes(vec_GF2E& x, const GF2EX& ff)
-{
-   GF2EX f = ff;
-
-   if (!IsOne(LeadCoeff(f)))
-      LogicError("FindRoots: bad args");
-
-   x.SetMaxLength(deg(f));
-   x.SetLength(0);
-   RecFindRoots_with_randombytes(x, f);
-}
-
-
-
 
 /*  Input:
         F a HFE polynomial in GF(2^n)[X]
@@ -226,7 +137,7 @@ unsigned int chooseRootHFE(gf2n root, cst_sparse_monic_gf2nx F, cst_gf2n U)
         return 0;
     }
 
-    FindRoots_with_randombytes(roots_NTL,Pgcd);
+    FindRoots(roots_NTL,Pgcd);
     Pgcd.kill();
 
     #ifdef UNIQ_ROOT

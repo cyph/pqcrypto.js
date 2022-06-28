@@ -1,1 +1,1 @@
-../../kyber512/avx2/rejsample.c
+../../kyber768/avx2/rejsample.c

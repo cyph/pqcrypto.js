@@ -147,18 +147,18 @@
 
 # qhasm: int32 len
 
-# qhasm: qpushenter CRYPTO_NAMESPACE(blocks)
+# qhasm: qpushenter crypto_onetimeauth_poly1305_neon2_blocks
 .align 4
-.global _CRYPTO_NAMESPACE(blocks)
-.global CRYPTO_NAMESPACE(blocks)
-.type _CRYPTO_NAMESPACE(blocks) STT_FUNC
-.type CRYPTO_NAMESPACE(blocks) STT_FUNC
-_CRYPTO_NAMESPACE(blocks):
-CRYPTO_NAMESPACE(blocks):
+.global _crypto_onetimeauth_poly1305_neon2_blocks
+.global crypto_onetimeauth_poly1305_neon2_blocks
+.type _crypto_onetimeauth_poly1305_neon2_blocks STT_FUNC
+.type crypto_onetimeauth_poly1305_neon2_blocks STT_FUNC
+_crypto_onetimeauth_poly1305_neon2_blocks:
+crypto_onetimeauth_poly1305_neon2_blocks:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#192
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm: len = input_3
 # asm 1: mov >len=int32#4,<input_3=int32#4
@@ -741,7 +741,7 @@ vtrn.32 d6,d7
 # qhasm:   		4x v01 &= 0x03ffffff
 # asm 1: vand.i32 <v01=reg128#11,#0x03ffffff
 # asm 2: vand.i32 <v01=q10,#0x03ffffff
-vbic.i32 q10,#0xfc000000
+vand.i32 q10,#0x03ffffff
 
 # qhasm: ptr = &y34_stack
 # asm 1: lea >ptr=int32#3,<y34_stack=stack128#4
@@ -756,7 +756,7 @@ vld1.8 {d4-d5},[r2,: 128]
 # qhasm:   		4x v23 &= 0x03ffffff
 # asm 1: vand.i32 <v23=reg128#10,#0x03ffffff
 # asm 2: vand.i32 <v23=q9,#0x03ffffff
-vbic.i32 q9,#0xfc000000
+vand.i32 q9,#0x03ffffff
 
 # qhasm: ptr = &y12_stack
 # asm 1: lea >ptr=int32#3,<y12_stack=stack128#3

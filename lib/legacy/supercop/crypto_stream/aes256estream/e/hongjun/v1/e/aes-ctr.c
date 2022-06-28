@@ -12,13 +12,13 @@
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_init(void)
+void crypto_stream_aes256estream_e_hongjun_v1_ECRYPT_init(void)
 {}
 
 /* ------------------------------------------------------------------------- */
 /* key setup for AES-256*/
-void ECRYPT_keysetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_aes256estream_e_hongjun_v1_ECRYPT_keysetup(
+  crypto_stream_aes256estream_e_hongjun_v1_ECRYPT_ctx* ctx, 
   const u8* key, 
   u32 keysize,
   u32 ivsize)
@@ -94,8 +94,8 @@ void ECRYPT_keysetup(
 /* ------------------------------------------------------------------------- */
 
 
-void ECRYPT_ivsetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_aes256estream_e_hongjun_v1_ECRYPT_ivsetup(
+  crypto_stream_aes256estream_e_hongjun_v1_ECRYPT_ctx* ctx, 
   const u8* iv)
 { 
       memcpy(ctx->counter, iv, 16);
@@ -103,9 +103,9 @@ void ECRYPT_ivsetup(
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_process_bytes(
+void crypto_stream_aes256estream_e_hongjun_v1_ECRYPT_process_bytes(
   int action,
-  ECRYPT_ctx* ctx, 
+  crypto_stream_aes256estream_e_hongjun_v1_ECRYPT_ctx* ctx, 
   const u8* input, 
   u8* output, 
   u32 msglen)

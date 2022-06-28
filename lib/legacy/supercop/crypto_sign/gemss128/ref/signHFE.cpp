@@ -20,132 +20,6 @@ END_EXTERNC
 using namespace NTL;
 
 
-
-#if (NB_ITE!=1)
-
-/* Number of bits to complete the byte of sm64, in [0,7] */
-#define VAL_BITS_M (((HFEDELTA+HFEv)<(8-HFEmr8))?(HFEDELTA+HFEv):(8-HFEmr8))
-
-static void compress_signHFE(unsigned char* sm8, const UINT* sm)
-{
-    unsigned char *sm64;
-    unsigned int k2;
-
-    sm64=(unsigned char*)sm;
-
-    /* Take the (n+v) first bits */
-    for(k2=0;k2<NB_BYTES_GFqnv;++k2)
-    {
-        sm8[k2]=sm64[k2];
-    }
-
-    /* Take the (Delta+v)*(nb_ite-1) bits */
-    #if ((NB_ITE>1) || !(HFEDELTA+HFEv))
-        unsigned int k1,nb_bits,nb_rem2,nb_rem_m,val_n;
-        #if (HFEmr8)
-            int nb_rem;
-        #endif
-
-        /* HFEnv bits are already stored in sm8 */
-        nb_bits=HFEnv;
-        sm64+=(NB_WORD_GFqnv<<3)+(HFEmq8&7U);
-
-        for(k1=1;k1<NB_ITE;++k1)
-        {
-            /* Number of bits to complete the byte of sm8, in [0,7] */
-            val_n=((HFEDELTA+HFEv)<((8-(nb_bits&7U))&7U)?(HFEDELTA+HFEv):((8-(nb_bits&7U))&7U));
-
-            /* First byte of sm8 */
-            if(nb_bits&7U)
-            {
-                #if (HFEmr8)
-                    sm8[nb_bits>>3]^=((*sm64)>>HFEmr8)<<(nb_bits&7U);
-
-                    /* Number of bits to complete the first byte of sm8 */
-                    nb_rem=(int)((val_n-VAL_BITS_M));
-                    if(nb_rem>=0)
-                    {
-                        /* We take the next byte since we used VAL_BITS_M bits */
-                        ++sm64;
-                    }
-                    if(nb_rem > 0)
-                    {
-                        nb_bits+=VAL_BITS_M;
-                        sm8[nb_bits>>3]^=(*sm64)<<(nb_bits&7U);
-                        nb_bits+=nb_rem;
-                    } else
-                    {
-                        nb_bits+=val_n;
-                    }
-                #else
-                    /* We can take 8 bits, and we want at most 7 bits. */
-                    sm8[nb_bits>>3]^=(*sm64)<<(nb_bits&7U);
-                    nb_bits+=val_n;
-                #endif
-            }
-
-            /* Other bytes of sm8 */
-            nb_rem2=(HFEDELTA+HFEv)-val_n;
-            /*nb_rem2 can be zero only in this case */
-            #if ((HFEDELTA+HFEv)<8)
-            if(nb_rem2)
-            {
-            #endif
-                /* Number of bits used of sm64, mod 8 */
-                nb_rem_m=(HFEm+val_n)&7U;
-
-                /* Other bytes */
-                if(nb_rem_m)
-                {
-                    /* -1 to take the ceil of /8, -1 */
-                    for(k2=0;k2<((nb_rem2-1)>>3);++k2)
-                    {
-                        sm8[nb_bits>>3]=((*sm64)>>nb_rem_m)^((*(sm64+1))<<(8-nb_rem_m));
-                        nb_bits+=8;
-                        ++sm64;
-                    }
-                    /* The last byte of sm8, between 1 and 8 bits to put */
-                    sm8[nb_bits>>3]=(*sm64)>>nb_rem_m;
-                    ++sm64;
-
-                    /* nb_rem2 between 1 and 8 bits */
-                    nb_rem2=((nb_rem2+7U)&7U)+1U;
-                    if(nb_rem2>(8-nb_rem_m))
-                    {
-                        sm8[nb_bits>>3]^=(*sm64)<<(8-nb_rem_m);
-                        ++sm64;
-                    }
-
-                    nb_bits+=nb_rem2;
-                } else
-                {
-                    /* We are at the beginning of the bytes of sm8 and sm64 */
-
-                    /* +7 to take the ceil of /8 */
-                    for(k2=0;k2<((nb_rem2+7)>>3);++k2)
-                    {
-                        sm8[nb_bits>>3]=*sm64;
-                        nb_bits+=8;
-                        ++sm64;
-                    }
-                    /* The last byte has AT MOST 8 bits. */
-                    nb_bits-=(8-(nb_rem2&7U))&7U;
-                }
-            #if ((HFEDELTA+HFEv)<8)
-            } else
-            {
-                ++sm64;
-            }
-            #endif
-            /* We complete the word. Then we search the first byte. */
-            sm64+=((8-(NB_BYTES_GFqnv&7U))&7U)+(HFEmq8&7U);
-        }
-    #endif
-}
-#endif
-
-
-
 /* Input:
     m a document to sign
     len the size of document (in byte)
@@ -164,11 +38,8 @@ static void compress_signHFE(unsigned char* sm8, const UINT* sm)
     _ It is the same format for X_(NB_ITE-2),...,X1
 */
 
-int signHFE(unsigned char* sm8, const unsigned char* m, size_t len, \
-            const UINT* sk)
+int signHFE(UINT* sm, const unsigned char* m, size_t len, const UINT* sk)
 {
-    UINT sm[SIZE_SIGN_UNCOMPRESSED]={0};
-
     static_vecnv_gf2 DR[NB_WORD_GFqnv];
     static_gf2n U[NB_WORD_GFqn];
     UINT Hi_tab[SIZE_DIGEST_UINT],Hi1_tab[SIZE_DIGEST_UINT];
@@ -213,12 +84,7 @@ int signHFE(unsigned char* sm8, const unsigned char* m, size_t len, \
         for(i=0;i<HFEDegI;++i)
         {
             /* Copy i quadratic terms */
-
-            #if ENABLED_REMOVE_ODD_DEGREE
-            for(j=(((1U<<i)+1U)<=HFE_odd_degree)?0:1;j<i;++j)
-            #else
             for(j=0;j<i;++j)
-            #endif
             {
                 /* X^(2^i + 2^j) */
                 HFECOPY(F_cp,sk_cp);
@@ -233,11 +99,7 @@ int signHFE(unsigned char* sm8, const unsigned char* m, size_t len, \
         }
         #if HFEDegJ
             /* X^(2^HFEDegI + 2^j) */
-            #if ENABLED_REMOVE_ODD_DEGREE
-            for(j=(((1U<<i)+1U)<=HFE_odd_degree)?0:1;j<HFEDegJ;++j)
-            #else
             for(j=0;j<HFEDegJ;++j)
-            #endif
             {
                 HFECOPY(F_cp,sk_cp);
                 sk_cp+=NB_WORD_GFqn;
@@ -325,14 +187,9 @@ int signHFE(unsigned char* sm8, const unsigned char* m, size_t len, \
 
             /* Compute Sk||Xk = Inv_p(Dk,Rk) */
 
+            /* Firstly: compute T^(-1) * c */
             convUINTToNTLvecn_GF2(c_vec,DR);
-            #if RIGHT_MULTIPLICATION_BY_T
-                /* Firstly: compute c * T^(-1) */
-                mul(U_vec,c_vec,T_inv);
-            #else
-                /* Firstly: compute T^(-1) * c */
-                mul(U_vec,T_inv,c_vec);
-            #endif
+            mul(U_vec,T_inv,c_vec);
 
             /* Secondly: find v with F_HFE(v) = U */
             convNTLvecn_GF2ToUINT(U,U_vec);
@@ -352,32 +209,6 @@ int signHFE(unsigned char* sm8, const unsigned char* m, size_t len, \
                     /* Evaluation of the linear terms, linear maps with v vinegars */
                     convUINTToNTLvecv_GF2(v_vec,V);
 
-                    #if ENABLED_REMOVE_ODD_DEGREE
-                    #if(HFEDegI==HFEDegJ)
-                    for(i=0;i<=LOG_odd_degree;++i)
-                    #elif(HFEDegI<=LOG_odd_degree)
-                    for(i=0;i<=HFEDegI;++i)
-                    #else
-                    for(i=0;i<=(LOG_odd_degree+1);++i)
-                    #endif
-                    {
-                        convUINTToNTLmatV_GF2(V_lin,linear_coefs[i]+NB_WORD_GFqn);
-                        c_vec.SetLength(HFEn);
-                        mul(c_vec,v_vec,V_lin);
-                        c_vec.SetLength(HFEn);
-                        convNTLvecn_GF2ToUINT(tmp_n,c_vec);
-                        HFEADD(F+NB_WORD_GFqn*(((i*(i+1))>>1)+1),linear_coefs[i],tmp_n);
-                    }
-                    for(;i<=HFEDegI;++i)
-                    {
-                        convUINTToNTLmatV_GF2(V_lin,linear_coefs[i]+NB_WORD_GFqn);
-                        c_vec.SetLength(HFEn);
-                        mul(c_vec,v_vec,V_lin);
-                        c_vec.SetLength(HFEn);
-                        convNTLvecn_GF2ToUINT(tmp_n,c_vec);
-                        HFEADD(F+NB_WORD_GFqn*(((i*(i-1))>>1)+2+LOG_odd_degree),linear_coefs[i],tmp_n);
-                    }
-                    #else
                     for(i=0;i<=HFEDegI;++i)
                     {
                         convUINTToNTLmatV_GF2(V_lin,linear_coefs[i]+NB_WORD_GFqn);
@@ -387,7 +218,6 @@ int signHFE(unsigned char* sm8, const unsigned char* m, size_t len, \
                         convNTLvecn_GF2ToUINT(tmp_n,c_vec);
                         HFEADD(F+NB_WORD_GFqn*(((i*(i+1))>>1)+1),linear_coefs[i],tmp_n);
                     }
-                    #endif
                 #endif
 
                 nb_root=chooseRootHFE(DR,F,U);
@@ -466,16 +296,6 @@ int signHFE(unsigned char* sm8, const unsigned char* m, size_t len, \
     #endif
     #ifdef KAT_INT
         CLOSE_KAT_INT_FILE;
-    #endif
-
-    #if (NB_ITE==1)
-        /* Take the (n+v) first bits */
-        for(k=0;k<NB_BYTES_GFqnv;++k)
-        {
-            sm8[k]=((unsigned char*)sm)[k];
-        }
-    #else
-        compress_signHFE(sm8,sm);
     #endif
 
     return 0;

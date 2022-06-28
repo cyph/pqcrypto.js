@@ -35,9 +35,9 @@
 .global   KeccakF_armv7a_neon_asm
     
 @//int crypto_hash( unsigned char *out, const unsigned char *in, unsigned long long inlen )
-.global   CRYPTO_NAMESPACETOP
+.global   crypto_hash_keccakc1024_inplace_armv7a_neon
 
-CRYPTO_NAMESPACETOP:  @
+crypto_hash_keccakc1024_inplace_armv7a_neon:  @
 
     push  {r4-r6,lr}
     mov    r5, r0

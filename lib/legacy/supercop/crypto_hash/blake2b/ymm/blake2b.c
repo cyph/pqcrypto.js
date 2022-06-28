@@ -187,7 +187,7 @@ int crypto_hash(unsigned char *out, const unsigned char *in, unsigned long long 
 
   do
   {
-    __m256i m0, m1, m2, m3;
+    __m128i m0, m1, m2, m3;
     ALIGN(16) uint8_t buffer[128]  = {0};
     uint8_t *p = buffer;
 

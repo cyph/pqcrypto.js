@@ -77,13 +77,13 @@
 
 # qhasm:   stack64 caller7_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(ull4_mul) 
+# qhasm: enter crypto_sign_ed25519_amd64_64_ull4_mul 
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ull4_mul)
-.globl CRYPTO_NAMESPACE(ull4_mul)
-_CRYPTO_NAMESPACE(ull4_mul):
-CRYPTO_NAMESPACE(ull4_mul):
+.globl _crypto_sign_ed25519_amd64_64_ull4_mul
+.globl crypto_sign_ed25519_amd64_64_ull4_mul
+_crypto_sign_ed25519_amd64_64_ull4_mul:
+crypto_sign_ed25519_amd64_64_ull4_mul:
 mov %rsp,%r11
 and $31,%r11
 add $64,%r11

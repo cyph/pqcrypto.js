@@ -1,1 +1,16 @@
-../../mceliece348864/sse/fft.h
+/*
+  This file is for the Gao-Mateer FFT
+  sse http://www.math.clemson.edu/~sgao/papers/GM10.pdf
+*/
+
+#ifndef FFT_H
+#define FFT_H
+
+#include <stdint.h>
+#include "params.h"
+#include "vec128.h"
+
+void fft(vec128 [][GFBITS], uint64_t *);
+
+#endif
+

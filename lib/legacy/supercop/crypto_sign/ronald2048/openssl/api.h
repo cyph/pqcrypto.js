@@ -1,3 +1,7 @@
-#define CRYPTO_SECRETKEYBYTES 2048
-#define CRYPTO_PUBLICKEYBYTES 256
-#define CRYPTO_BYTES 256
+#include <openssl/rand.h>
+#define crypto_sign_ronald2048_openssl_MODULUSBITS 2048 
+#define crypto_sign_ronald2048_openssl_MODULUSBYTES (crypto_sign_ronald2048_openssl_MODULUSBITS / 8)
+
+#define crypto_sign_ronald2048_openssl_SECRETKEYBYTES (crypto_sign_ronald2048_openssl_MODULUSBYTES * 8)
+#define crypto_sign_ronald2048_openssl_PUBLICKEYBYTES (crypto_sign_ronald2048_openssl_MODULUSBYTES)
+#define crypto_sign_ronald2048_openssl_BYTES (crypto_sign_ronald2048_openssl_MODULUSBYTES)

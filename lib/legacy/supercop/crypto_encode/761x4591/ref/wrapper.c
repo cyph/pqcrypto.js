@@ -14,7 +14,7 @@ void crypto_encode(unsigned char *s,const void *v)
   uint16 R[p],M[p];
   int i;
   
-  for (i = 0;i < p;++i) R[i] = (r[i]+q12)&16383;
+  for (i = 0;i < p;++i) R[i] = r[i]+q12;
   for (i = 0;i < p;++i) M[i] = q;
   Encode(s,R,M,p);
 }

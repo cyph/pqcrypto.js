@@ -57,13 +57,13 @@
 
 # qhasm:   stack64 caller7_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(sc25519_lt)
+# qhasm: enter crypto_sign_ed25519_amd64_64_sc25519_lt
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(sc25519_lt)
-.globl CRYPTO_NAMESPACE(sc25519_lt)
-_CRYPTO_NAMESPACE(sc25519_lt):
-CRYPTO_NAMESPACE(sc25519_lt):
+.globl _crypto_sign_ed25519_amd64_64_sc25519_lt
+.globl crypto_sign_ed25519_amd64_64_sc25519_lt
+_crypto_sign_ed25519_amd64_64_sc25519_lt:
+crypto_sign_ed25519_amd64_64_sc25519_lt:
 mov %rsp,%r11
 and $31,%r11
 add $0,%r11

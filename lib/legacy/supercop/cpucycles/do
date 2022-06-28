@@ -7,67 +7,53 @@ okabi | (
     rm -f cpucycles.o cpucycles.h
     
     (
-      # try to keep better precision on top
-
       case "$abi" in
-        ppc64*)
-          # time base tends to be much too slow
-          echo perfevent
-          echo powerpccpuinfo
-          echo powerpcmacos
-          ;;
         ppc*)
           echo powerpccpuinfo
           echo powerpcmacos
-          ;;
+	  ;;
         amd64*)
-          echo amd64rdpmc
           echo amd64tscfreq
           echo amd64cpuinfo
           echo amd64cpuspeed
-          ;;
+	  ;;
         x86*)
           echo x86tscfreq
           echo x86cpuinfo
           echo x86cpuspeed
           echo x86estimate
-          ;;
-        cell*)
+	  ;;
+	cell*)
           echo celllinux
-          ;;
-        sparc*)
+	  ;;
+	sparc*)
           echo sparccpuinfo
           echo sparc32cpuinfo
-          ;;
-        mips*)
+	  ;;
+	mips*)
           echo mips
-          ;;
-        hppa*)
+	  ;;
+	hppa*)
           echo hppapstat
-          ;;
-        alpha*)
+	  ;;
+	alpha*)
           echo alpha
-          ;;
-        sgi*)
+	  ;;
+	sgi*)
           echo sgi
-          ;;
-        arm*)
-          echo arm1176
-          echo cortex
+	  ;;
+	arm*)
+	  echo cortex
           echo dev4ns
           ;;
-        aarch64)
-          echo armv8
+	aarch64)
+	  echo armv8
           echo cortex
-          echo apple # on m1 seems more precise than vct
           echo vct
-          ;;
+	  ;;
       esac
 
-      # rdpmc
-      echo amd64rdpmc
-
-      # rdtsc
+      echo apple
       echo amd64tscfreq
       echo amd64cpuinfo
       echo amd64cpuspeed
@@ -75,21 +61,9 @@ okabi | (
       echo x86cpuinfo
       echo x86cpuspeed
       echo x86estimate
-
-      # arm cycle counters
-      echo armv8
-      echo cortex
-      echo arm1176
-
-      # mach_absolute_time
-      echo apple
-
-      # powerpc time base
+      echo ia64cpuinfo
       echo powerpccpuinfo
       echo powerpcmacos
-
-      # miscellaneous platforms
-      echo ia64cpuinfo
       echo celllinux
       echo sparccpuinfo
       echo sparc32cpuinfo
@@ -97,13 +71,10 @@ okabi | (
       echo hppapstat
       echo alpha
       echo sgi
-      echo riscv
-
-      # semi-portable
+      echo armv8
+      echo cortex
       echo dev4ns
       echo perfevent
-
-      # portable; often microsecond or worse
       echo monotoniccpuinfo
       echo monotonic
       echo gettimeofday
@@ -119,12 +90,10 @@ okabi | (
             cp $n.h cpucycles-impl.h || continue
             $c -c cpucycles-impl.c || continue
             $c -o test test.c cpucycles-impl.o || continue
-            $CPUCYCLESWRAPPER ./test || continue
+            killafter 300 ./test || continue
             echo "=== `date` === Success. Using $n.c." >&2
             mkdir -p lib/$abi
             mv cpucycles-impl.o lib/$abi/cpucycles.o
-            okar-$abi cr lib/$abi/libcpucycles.a lib/$abi/cpucycles.o || continue
-            ranlib lib/$abi/libcpucycles.a || :
             mkdir -p include/$abi
             mv cpucycles-impl.h include/$abi/cpucycles.h
             exit 0

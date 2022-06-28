@@ -1,1 +1,1 @@
-../../dilithium2/avx2/ntt.S
+../../dilithium3/avx2/ntt.s

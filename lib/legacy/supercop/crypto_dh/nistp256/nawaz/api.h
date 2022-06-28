@@ -1,3 +1,3 @@
-#define CRYPTO_SECRETKEYBYTES 32
-#define CRYPTO_PUBLICKEYBYTES 64
-#define CRYPTO_BYTES 32
+#define crypto_dh_nistp256_nawaz_SECRETKEYBYTES 32
+#define crypto_dh_nistp256_nawaz_PUBLICKEYBYTES 64
+#define crypto_dh_nistp256_nawaz_BYTES 32

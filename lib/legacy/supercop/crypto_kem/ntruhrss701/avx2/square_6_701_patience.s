@@ -1,10 +1,11 @@
 .data
-.p2align 5
+.section .rodata
+.align 32
 .text
-.global crypto_kem_ntruhrss701_avx2_constbranchindex_square_6_701
-.global _crypto_kem_ntruhrss701_avx2_constbranchindex_square_6_701
-crypto_kem_ntruhrss701_avx2_constbranchindex_square_6_701:
-_crypto_kem_ntruhrss701_avx2_constbranchindex_square_6_701:
+.att_syntax prefix
+.hidden square_6_701
+.global square_6_701
+square_6_701:
 push %r15
 push %r14
 push %r13

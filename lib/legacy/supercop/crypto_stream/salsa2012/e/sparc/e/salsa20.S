@@ -229,22 +229,22 @@
 
 # qhasm: int64 m15
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_init)
+# qhasm: enter crypto_stream_salsa2012_e_sparc_ECRYPT_init
 .section ".text"
 .align 32
-.global CRYPTO_NAMESPACE(ECRYPT_init)
-CRYPTO_NAMESPACE(ECRYPT_init):
+.global crypto_stream_salsa2012_e_sparc_ECRYPT_init
+crypto_stream_salsa2012_e_sparc_ECRYPT_init:
 save %sp,-288,%sp
 
 # qhasm: leave
 ret
 restore
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_ivsetup)
+# qhasm: enter crypto_stream_salsa2012_e_sparc_ECRYPT_ivsetup
 .section ".text"
 .align 32
-.global CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-CRYPTO_NAMESPACE(ECRYPT_ivsetup):
+.global crypto_stream_salsa2012_e_sparc_ECRYPT_ivsetup
+crypto_stream_salsa2012_e_sparc_ECRYPT_ivsetup:
 save %sp,-288,%sp
 
 # qhasm:   x6 = *(uint32 *) (arg2 + 0)
@@ -311,11 +311,11 @@ stw %g1,[%i0+0]
 ret
 restore
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_keysetup)
+# qhasm: enter crypto_stream_salsa2012_e_sparc_ECRYPT_keysetup
 .section ".text"
 .align 32
-.global CRYPTO_NAMESPACE(ECRYPT_keysetup)
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+.global crypto_stream_salsa2012_e_sparc_ECRYPT_keysetup
+crypto_stream_salsa2012_e_sparc_ECRYPT_keysetup:
 save %sp,-288,%sp
 
 # qhasm:                  unsigned>? arg3 - 128
@@ -619,11 +619,11 @@ stw %o0,[%i0+0]
 ret
 restore
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
+# qhasm: enter crypto_stream_salsa2012_e_sparc_ECRYPT_keystream_bytes
 .section ".text"
 .align 32
-.global CRYPTO_NAMESPACE(ECRYPT_keystream_bytes)
-CRYPTO_NAMESPACE(ECRYPT_keystream_bytes):
+.global crypto_stream_salsa2012_e_sparc_ECRYPT_keystream_bytes
+crypto_stream_salsa2012_e_sparc_ECRYPT_keystream_bytes:
 save %sp,-288,%sp
 
 # qhasm: bytes = arg3
@@ -691,11 +691,11 @@ sub %i1,%i4,%i1
 b ._bytesatleast1
 nop
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
+# qhasm: enter crypto_stream_salsa2012_e_sparc_ECRYPT_decrypt_bytes
 .section ".text"
 .align 32
-.global CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes)
-CRYPTO_NAMESPACE(ECRYPT_decrypt_bytes):
+.global crypto_stream_salsa2012_e_sparc_ECRYPT_decrypt_bytes
+crypto_stream_salsa2012_e_sparc_ECRYPT_decrypt_bytes:
 save %sp,-288,%sp
 
 # qhasm: bytes = arg4
@@ -726,11 +726,11 @@ nop
 b ._bytesatleast1
 nop
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
+# qhasm: enter crypto_stream_salsa2012_e_sparc_ECRYPT_encrypt_bytes
 .section ".text"
 .align 32
-.global CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes)
-CRYPTO_NAMESPACE(ECRYPT_encrypt_bytes):
+.global crypto_stream_salsa2012_e_sparc_ECRYPT_encrypt_bytes
+crypto_stream_salsa2012_e_sparc_ECRYPT_encrypt_bytes:
 save %sp,-288,%sp
 
 # qhasm: bytes = arg4

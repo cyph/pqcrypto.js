@@ -455,11 +455,11 @@
 @//int crypto_hash( unsigned char *out, const unsigned char *in, unsigned long long inlen )
 	@// .size ???
 	.align	2
-	.global	CRYPTO_NAMESPACETOP                 @
+	.global	crypto_hash_keccakc1024_inplace32bi_armv7m                 @
 	.thumb
 	.thumb_func
-	.type	CRYPTO_NAMESPACETOP, %function      @
-CRYPTO_NAMESPACETOP:  @                         @
+	.type	crypto_hash_keccakc1024_inplace32bi_armv7m, %function      @
+crypto_hash_keccakc1024_inplace32bi_armv7m:  @                         @
 
 		push	{r4-r12,lr}
 		subs	sp, sp, #8*4

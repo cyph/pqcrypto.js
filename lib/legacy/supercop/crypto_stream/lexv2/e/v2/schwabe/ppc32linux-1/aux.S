@@ -1,19 +1,19 @@
 	.file	"aux.c"
 	.section	".text"
 	.align 2
-	.globl CRYPTO_NAMESPACE(ECRYPT_init)
-	.type	CRYPTO_NAMESPACE(ECRYPT_init), @function
-CRYPTO_NAMESPACE(ECRYPT_init):
+	.globl crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_init
+	.type	crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_init, @function
+crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_init:
 	stwu 1,-16(1)
 	addi 1,1,16
 	blr
-	.size	CRYPTO_NAMESPACE(ECRYPT_init),.-CRYPTO_NAMESPACE(ECRYPT_init)
+	.size	crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_init,.-crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_init
 	.align 2
-	.globl CRYPTO_NAMESPACE(ECRYPT_keysetup)
-	.type	CRYPTO_NAMESPACE(ECRYPT_keysetup), @function
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+	.globl crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_keysetup
+	.type	crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_keysetup, @function
+crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_keysetup:
 	stwu 1,-32(1)
-	lis 9,CRYPTO_NAMESPACE(aes_big_constants)@ha
+	lis 9,aes_big_constants@ha
 	li 0,10
 	mtctr 0
 	lwz 7,12(4)
@@ -21,7 +21,7 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	lwz 12,4(4)
 	lwz 5,8(4)
 	stw 31,28(1)
-	la 31,CRYPTO_NAMESPACE(aes_big_constants)@l(9)
+	la 31,aes_big_constants@l(9)
 	stw 7,12(3)
 	stw 6,0(3)
 	mr 4,31
@@ -59,11 +59,11 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	lwz 31,28(1)
 	addi 1,1,32
 	blr
-	.size	CRYPTO_NAMESPACE(ECRYPT_keysetup),.-CRYPTO_NAMESPACE(ECRYPT_keysetup)
+	.size	crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_keysetup,.-crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_keysetup
 	.align 2
-	.globl CRYPTO_NAMESPACE(ECRYPT_process_bytes_C)
-	.type	CRYPTO_NAMESPACE(ECRYPT_process_bytes_C), @function
-CRYPTO_NAMESPACE(ECRYPT_process_bytes_C):
+	.globl crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_process_bytes_C
+	.type	crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_process_bytes_C, @function
+crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_process_bytes_C:
 	mflr 0
 	stwu 1,-384(1)
 	mtlr 6
@@ -147,13 +147,13 @@ CRYPTO_NAMESPACE(ECRYPT_process_bytes_C):
 	rlwinm 9,10,8,0xffffffff
 	rlwinm 0,10,24,0xffffffff
 	lwz 8,48(1)
-	lis 11,CRYPTO_NAMESPACE(aes_big_constants)+40@ha
+	lis 11,aes_big_constants+40@ha
 	lwz 24,88(1)
 	lwz 26,84(1)
 	lwz 12,80(1)
 	and 0,0,7
 	and 9,9,30
-	la 30,CRYPTO_NAMESPACE(aes_big_constants)+40@l(11)
+	la 30,aes_big_constants+40@l(11)
 	xor 11,10,8
 	lwz 10,36(1)
 	or 9,9,0
@@ -378,13 +378,13 @@ CRYPTO_NAMESPACE(ECRYPT_process_bytes_C):
 	addi 1,1,384
 	mtlr 0
 	blr
-	.size	CRYPTO_NAMESPACE(ECRYPT_process_bytes_C),.-CRYPTO_NAMESPACE(ECRYPT_process_bytes_C)
-	.globl CRYPTO_NAMESPACE(aes_big_constants)
+	.size	crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_process_bytes_C,.-crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_process_bytes_C
+	.globl aes_big_constants
 	.section	.rodata
 	.align 2
-	.type	CRYPTO_NAMESPACE(aes_big_constants), @object
-	.size	CRYPTO_NAMESPACE(aes_big_constants), 4136
-CRYPTO_NAMESPACE(aes_big_constants):
+	.type	aes_big_constants, @object
+	.size	aes_big_constants, 4136
+aes_big_constants:
 	.long	16777216
 	.long	33554432
 	.long	67108864

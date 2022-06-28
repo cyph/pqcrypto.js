@@ -241,13 +241,13 @@
 
 # qhasm:   stack64 caller7_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(batch_ge25519_dbl_p1p1)
+# qhasm: enter crypto_sign_ed25519_amd64_51_30k_batch_ge25519_dbl_p1p1
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(batch_ge25519_dbl_p1p1)
-.globl CRYPTO_NAMESPACE(batch_ge25519_dbl_p1p1)
-_CRYPTO_NAMESPACE(batch_ge25519_dbl_p1p1):
-CRYPTO_NAMESPACE(batch_ge25519_dbl_p1p1):
+.globl _crypto_sign_ed25519_amd64_51_30k_batch_ge25519_dbl_p1p1
+.globl crypto_sign_ed25519_amd64_51_30k_batch_ge25519_dbl_p1p1
+_crypto_sign_ed25519_amd64_51_30k_batch_ge25519_dbl_p1p1:
+crypto_sign_ed25519_amd64_51_30k_batch_ge25519_dbl_p1p1:
 mov %rsp,%r11
 and $31,%r11
 add $224,%r11
@@ -648,10 +648,10 @@ add  %rax,%r13
 # asm 2: adc <squarerdx=%rdx,<squarer31=%r14
 adc %rdx,%r14
 
-# qhasm:   squareredmask = *(uint64 *) &CRYPTO_NAMESPACE(batch_REDMASK51)
-# asm 1: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=int64#3
-# asm 2: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=%rdx
-movq CRYPTO_NAMESPACE(batch_REDMASK51)(%rip),%rdx
+# qhasm:   squareredmask = *(uint64 *) &crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=int64#3
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=%rdx
+movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,%rdx
 
 # qhasm:   squarer01 = (squarer01.a0) << 13
 # asm 1: shld $13,<a0=int64#4,<squarer01=int64#5
@@ -1223,10 +1223,10 @@ add  %rax,%r13
 # asm 2: adc <squarerdx=%rdx,<squarer31=%r14
 adc %rdx,%r14
 
-# qhasm:   squareredmask = *(uint64 *) &CRYPTO_NAMESPACE(batch_REDMASK51)
-# asm 1: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=int64#3
-# asm 2: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=%rdx
-movq CRYPTO_NAMESPACE(batch_REDMASK51)(%rip),%rdx
+# qhasm:   squareredmask = *(uint64 *) &crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=int64#3
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=%rdx
+movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,%rdx
 
 # qhasm:   squarer01 = (squarer01.b0) << 13
 # asm 1: shld $13,<b0=int64#4,<squarer01=int64#5
@@ -1798,10 +1798,10 @@ add  %rax,%r13
 # asm 2: adc <squarerdx=%rdx,<squarer31=%r14
 adc %rdx,%r14
 
-# qhasm:   squareredmask = *(uint64 *) &CRYPTO_NAMESPACE(batch_REDMASK51)
-# asm 1: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=int64#3
-# asm 2: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=%rdx
-movq CRYPTO_NAMESPACE(batch_REDMASK51)(%rip),%rdx
+# qhasm:   squareredmask = *(uint64 *) &crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=int64#3
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=%rdx
+movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,%rdx
 
 # qhasm:   squarer01 = (squarer01.c0) << 13
 # asm 1: shld $13,<c0=int64#4,<squarer01=int64#5
@@ -2038,30 +2038,30 @@ movq %r10,160(%rsp)
 # asm 2: movq <c4=%r11,>c4_stack=168(%rsp)
 movq %r11,168(%rsp)
 
-# qhasm: d0 = *(uint64 *)&CRYPTO_NAMESPACE(batch_2P0)
-# asm 1: movq CRYPTO_NAMESPACE(batch_2P0),>d0=int64#3
-# asm 2: movq CRYPTO_NAMESPACE(batch_2P0),>d0=%rdx
-movq CRYPTO_NAMESPACE(batch_2P0)(%rip),%rdx
+# qhasm: d0 = *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P0
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_2P0,>d0=int64#3
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_2P0,>d0=%rdx
+movq crypto_sign_ed25519_amd64_51_30k_batch_2P0,%rdx
 
-# qhasm: d1 = *(uint64 *)&CRYPTO_NAMESPACE(batch_2P1234)
-# asm 1: movq CRYPTO_NAMESPACE(batch_2P1234),>d1=int64#4
-# asm 2: movq CRYPTO_NAMESPACE(batch_2P1234),>d1=%rcx
-movq CRYPTO_NAMESPACE(batch_2P1234)(%rip),%rcx
+# qhasm: d1 = *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P1234
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,>d1=int64#4
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,>d1=%rcx
+movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,%rcx
 
-# qhasm: d2 = *(uint64 *)&CRYPTO_NAMESPACE(batch_2P1234)
-# asm 1: movq CRYPTO_NAMESPACE(batch_2P1234),>d2=int64#5
-# asm 2: movq CRYPTO_NAMESPACE(batch_2P1234),>d2=%r8
-movq CRYPTO_NAMESPACE(batch_2P1234)(%rip),%r8
+# qhasm: d2 = *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P1234
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,>d2=int64#5
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,>d2=%r8
+movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,%r8
 
-# qhasm: d3 = *(uint64 *)&CRYPTO_NAMESPACE(batch_2P1234)
-# asm 1: movq CRYPTO_NAMESPACE(batch_2P1234),>d3=int64#6
-# asm 2: movq CRYPTO_NAMESPACE(batch_2P1234),>d3=%r9
-movq CRYPTO_NAMESPACE(batch_2P1234)(%rip),%r9
+# qhasm: d3 = *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P1234
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,>d3=int64#6
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,>d3=%r9
+movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,%r9
 
-# qhasm: d4 = *(uint64 *)&CRYPTO_NAMESPACE(batch_2P1234)
-# asm 1: movq CRYPTO_NAMESPACE(batch_2P1234),>d4=int64#7
-# asm 2: movq CRYPTO_NAMESPACE(batch_2P1234),>d4=%rax
-movq CRYPTO_NAMESPACE(batch_2P1234)(%rip),%rax
+# qhasm: d4 = *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P1234
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,>d4=int64#7
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,>d4=%rax
+movq crypto_sign_ed25519_amd64_51_30k_batch_2P1234,%rax
 
 # qhasm: e0 = d0
 # asm 1: mov  <d0=int64#3,>e0=int64#8
@@ -2263,30 +2263,30 @@ movq   %r13,64(%rdi)
 # asm 2: movq   <rz4=%r14,72(<rp=%rdi)
 movq   %r14,72(%rdi)
 
-# qhasm: d0 += *(uint64 *)&CRYPTO_NAMESPACE(batch_2P0)
-# asm 1: add  CRYPTO_NAMESPACE(batch_2P0),<d0=int64#3
-# asm 2: add  CRYPTO_NAMESPACE(batch_2P0),<d0=%rdx
-add  CRYPTO_NAMESPACE(batch_2P0)(%rip),%rdx
+# qhasm: d0 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P0
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_2P0,<d0=int64#3
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_2P0,<d0=%rdx
+add  crypto_sign_ed25519_amd64_51_30k_batch_2P0,%rdx
 
-# qhasm: d1 += *(uint64 *)&CRYPTO_NAMESPACE(batch_2P1234)
-# asm 1: add  CRYPTO_NAMESPACE(batch_2P1234),<d1=int64#4
-# asm 2: add  CRYPTO_NAMESPACE(batch_2P1234),<d1=%rcx
-add  CRYPTO_NAMESPACE(batch_2P1234)(%rip),%rcx
+# qhasm: d1 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P1234
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,<d1=int64#4
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,<d1=%rcx
+add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,%rcx
 
-# qhasm: d2 += *(uint64 *)&CRYPTO_NAMESPACE(batch_2P1234)
-# asm 1: add  CRYPTO_NAMESPACE(batch_2P1234),<d2=int64#5
-# asm 2: add  CRYPTO_NAMESPACE(batch_2P1234),<d2=%r8
-add  CRYPTO_NAMESPACE(batch_2P1234)(%rip),%r8
+# qhasm: d2 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P1234
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,<d2=int64#5
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,<d2=%r8
+add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,%r8
 
-# qhasm: d3 += *(uint64 *)&CRYPTO_NAMESPACE(batch_2P1234)
-# asm 1: add  CRYPTO_NAMESPACE(batch_2P1234),<d3=int64#6
-# asm 2: add  CRYPTO_NAMESPACE(batch_2P1234),<d3=%r9
-add  CRYPTO_NAMESPACE(batch_2P1234)(%rip),%r9
+# qhasm: d3 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P1234
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,<d3=int64#6
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,<d3=%r9
+add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,%r9
 
-# qhasm: d4 += *(uint64 *)&CRYPTO_NAMESPACE(batch_2P1234)
-# asm 1: add  CRYPTO_NAMESPACE(batch_2P1234),<d4=int64#7
-# asm 2: add  CRYPTO_NAMESPACE(batch_2P1234),<d4=%rax
-add  CRYPTO_NAMESPACE(batch_2P1234)(%rip),%rax
+# qhasm: d4 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_2P1234
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,<d4=int64#7
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,<d4=%rax
+add  crypto_sign_ed25519_amd64_51_30k_batch_2P1234,%rax
 
 # qhasm: d0 -= b0_stack
 # asm 1: subq <b0_stack=stack64#13,<d0=int64#3
@@ -2338,30 +2338,30 @@ movq   %r9,104(%rdi)
 # asm 2: movq   <d4=%rax,112(<rp=%rdi)
 movq   %rax,112(%rdi)
 
-# qhasm: rz0 += *(uint64 *)&CRYPTO_NAMESPACE(batch_4P0)
-# asm 1: add  CRYPTO_NAMESPACE(batch_4P0),<rz0=int64#8
-# asm 2: add  CRYPTO_NAMESPACE(batch_4P0),<rz0=%r10
-add  CRYPTO_NAMESPACE(batch_4P0)(%rip),%r10
+# qhasm: rz0 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_4P0
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_4P0,<rz0=int64#8
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_4P0,<rz0=%r10
+add  crypto_sign_ed25519_amd64_51_30k_batch_4P0,%r10
 
-# qhasm: rz1 += *(uint64 *)&CRYPTO_NAMESPACE(batch_4P1234)
-# asm 1: add  CRYPTO_NAMESPACE(batch_4P1234),<rz1=int64#9
-# asm 2: add  CRYPTO_NAMESPACE(batch_4P1234),<rz1=%r11
-add  CRYPTO_NAMESPACE(batch_4P1234)(%rip),%r11
+# qhasm: rz1 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_4P1234
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,<rz1=int64#9
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,<rz1=%r11
+add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,%r11
 
-# qhasm: rz2 += *(uint64 *)&CRYPTO_NAMESPACE(batch_4P1234)
-# asm 1: add  CRYPTO_NAMESPACE(batch_4P1234),<rz2=int64#10
-# asm 2: add  CRYPTO_NAMESPACE(batch_4P1234),<rz2=%r12
-add  CRYPTO_NAMESPACE(batch_4P1234)(%rip),%r12
+# qhasm: rz2 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_4P1234
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,<rz2=int64#10
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,<rz2=%r12
+add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,%r12
 
-# qhasm: rz3 += *(uint64 *)&CRYPTO_NAMESPACE(batch_4P1234)
-# asm 1: add  CRYPTO_NAMESPACE(batch_4P1234),<rz3=int64#11
-# asm 2: add  CRYPTO_NAMESPACE(batch_4P1234),<rz3=%r13
-add  CRYPTO_NAMESPACE(batch_4P1234)(%rip),%r13
+# qhasm: rz3 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_4P1234
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,<rz3=int64#11
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,<rz3=%r13
+add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,%r13
 
-# qhasm: rz4 += *(uint64 *)&CRYPTO_NAMESPACE(batch_4P1234)
-# asm 1: add  CRYPTO_NAMESPACE(batch_4P1234),<rz4=int64#12
-# asm 2: add  CRYPTO_NAMESPACE(batch_4P1234),<rz4=%r14
-add  CRYPTO_NAMESPACE(batch_4P1234)(%rip),%r14
+# qhasm: rz4 += *(uint64 *)&crypto_sign_ed25519_amd64_51_30k_batch_4P1234
+# asm 1: add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,<rz4=int64#12
+# asm 2: add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,<rz4=%r14
+add  crypto_sign_ed25519_amd64_51_30k_batch_4P1234,%r14
 
 # qhasm: rz0 -= c0_stack
 # asm 1: subq <c0_stack=stack64#18,<rz0=int64#8
@@ -2848,10 +2848,10 @@ add  %rax,%r12
 # asm 2: adc <squarerdx=%rdx,<squarer31=%r13
 adc %rdx,%r13
 
-# qhasm:   squareredmask = *(uint64 *) &CRYPTO_NAMESPACE(batch_REDMASK51)
-# asm 1: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=int64#3
-# asm 2: movq CRYPTO_NAMESPACE(batch_REDMASK51),>squareredmask=%rdx
-movq CRYPTO_NAMESPACE(batch_REDMASK51)(%rip),%rdx
+# qhasm:   squareredmask = *(uint64 *) &crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51
+# asm 1: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=int64#3
+# asm 2: movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,>squareredmask=%rdx
+movq crypto_sign_ed25519_amd64_51_30k_batch_REDMASK51,%rdx
 
 # qhasm:   squarer01 = (squarer01.rx0) << 13
 # asm 1: shld $13,<rx0=int64#2,<squarer01=int64#4

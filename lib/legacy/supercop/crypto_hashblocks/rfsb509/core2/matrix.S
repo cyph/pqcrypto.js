@@ -1,7 +1,7 @@
 .section	.rodata
 .align 64
-.globl CRYPTO_NAMESPACE(matrix)
-CRYPTO_NAMESPACE(matrix):
+.globl crypto_hashblocks_rfsb509_core2_matrix
+crypto_hashblocks_rfsb509_core2_matrix:
 .byte	102
 .byte	-23
 .byte	75

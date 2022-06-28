@@ -737,17 +737,6 @@ extern miracl *mr_mip;  /* pointer to MIRACL's only global variable */
 
 /* Group 0 - Internal routines */
 
-extern void modadd();
-extern void modneg();
-extern void modsub();
-extern void moddblsub();
-extern void modsqr();
-extern void modpmul();
-extern void modmult();
-extern void modtim2();
-extern void modtim3();
-extern void moddiv2();
-
 extern void  mr_berror(_MIPT_ int);
 extern mr_small mr_shiftbits(mr_small,int);
 extern mr_small mr_setbase(_MIPT_ mr_small);

@@ -15903,9 +15903,9 @@ T.44:
 .LFE534:
 	.size	T.44, .-T.44
 	.p2align 4,,15
-.globl CRYPTO_NAMESPACETOP
-	.type	CRYPTO_NAMESPACETOP, @function
-CRYPTO_NAMESPACETOP:
+.globl crypto_hash_echosp512_pentium_pentium4v64v2
+	.type	crypto_hash_echosp512_pentium_pentium4v64v2, @function
+crypto_hash_echosp512_pentium_pentium4v64v2:
 .LFB533:
 	.cfi_startproc
 	movq	%rdi, %rax
@@ -15922,7 +15922,7 @@ CRYPTO_NAMESPACETOP:
 	ret
 	.cfi_endproc
 .LFE533:
-	.size	CRYPTO_NAMESPACETOP, .-CRYPTO_NAMESPACETOP
+	.size	crypto_hash_echosp512_pentium_pentium4v64v2, .-crypto_hash_echosp512_pentium_pentium4v64v2
 	.p2align 4,,15
 .globl Hash
 	.type	Hash, @function

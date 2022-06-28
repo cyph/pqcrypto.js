@@ -55,7 +55,7 @@
  *          ...
  *        key[31]-> lsb of k_0
  */
-void snow_loadkey_fast(ECRYPT_ctx* ctx,u32 IV3,u32 IV2,u32 IV1,u32 IV0)
+void snow_loadkey_fast(crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_ctx* ctx,u32 IV3,u32 IV2,u32 IV1,u32 IV0)
 {
  int i;
  
@@ -232,7 +232,7 @@ void snow_loadkey_fast(ECRYPT_ctx* ctx,u32 IV3,u32 IV2,u32 IV1,u32 IV0)
  * 
  */
 
-INLINE void snow_keystream_fast(ECRYPT_ctx* ctx, u32 *keystream_block) 
+INLINE void snow_keystream_fast(crypto_stream_snow20_e_benchmarks_snow_2_0_ECRYPT_ctx* ctx, u32 *keystream_block) 
 {
       u32 fsmtmp;
 

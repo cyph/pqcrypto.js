@@ -20,6 +20,6 @@
 }
 #endif
 
-void fp_cnt_bits(int *bc, const uni an, const uni_t al);
-void find_nextwindow(int *v, int *k, uni_t kl, int *wd, const uni en, const int i, uni_t WINDOW_SIZE_LTR, uni_t TABLE_SIZE_LTR);
+inline void fp_cnt_bits(int *bc, const uni an, const uni_t al);
+inline void find_nextwindow(int *v, int *k, uni_t kl, int *wd, const uni en, const int i, uni_t WINDOW_SIZE_LTR, uni_t TABLE_SIZE_LTR);
 

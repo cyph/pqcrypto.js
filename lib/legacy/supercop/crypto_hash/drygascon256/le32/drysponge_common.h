@@ -14,7 +14,7 @@
 #include <assert.h>
 
 #if DRYSPONGE_DBG_EN
-#include "bytes_utils.h"
+#include <stdio.h>
 #endif
 
 #define DRYSPONGE_PASS 0
@@ -74,7 +74,7 @@
 
 DRYSPONGE_FUNC unsigned int DRYSPONGE_DSINFO(unsigned int padded, unsigned int domain, unsigned int finalize){
     #if DRYSPONGE_DBG_EN
-        bytes_utiles_printf("   Adding DS: padded=%d, domain=%u, finalize=%d\n",padded,domain,finalize);
+        printf("   Adding DS: padded=%d, domain=%u, finalize=%d\n",padded,domain,finalize);
     #endif
     return padded+(finalize<<1)+(domain<<2);
 }

@@ -10,21 +10,18 @@
 
 #include "io.h"
 #include "lowmc.h"
+#include "lowmc_pars.h"
 #include "mzd_additional.h"
+#include "picnic2_impl.h"
+
 #include "simd.h"
 
 #if !defined(_MSC_VER)
 #include <stdalign.h>
 #endif
 #include <string.h>
-#include <assert.h>
 
-#include "lowmc_192_192_30.h"
-
-// clang-format off
-// clang-format on
-/* S-box for m = 10 */
-static inline uint64_t sbox_layer_10_bitsliced_uint64(uint64_t in) {
+static uint64_t sbox_layer_10_bitsliced_uint64(uint64_t in) {
   // a, b, c
   const uint64_t x0s = (in & MASK_X0I) << 2;
   const uint64_t x1s = (in & MASK_X1I) << 1;
@@ -40,157 +37,120 @@ static inline uint64_t sbox_layer_10_bitsliced_uint64(uint64_t in) {
   return (in & MASK_MASK) ^ (t0 >> 2) ^ (t1 >> 1) ^ t2;
 }
 
-/* S-box for m = 10 */
-static inline void sbox_layer_10_uint64(uint64_t* d) {
+/**
+ * S-box for m = 10
+ */
+static void sbox_layer_10_uint64(uint64_t* d) {
   *d = sbox_layer_10_bitsliced_uint64(*d);
 }
 
-#if !defined(NO_UINT64_FALLBACK)
 
+#include "lowmc_192_192_30.h"
 
-#endif /* NO_UINT_FALLBACK */
-
-ATTR_TARGET_S128
-static inline void sbox_s128_full(mzd_local_t* in, const word128* mask_a, const word128* mask_b,
-                                  const word128* mask_c) {
-  word128 x0m[2] ATTR_ALIGNED(alignof(word128)), x1m[2] ATTR_ALIGNED(alignof(word128)),
-      x2m[2] ATTR_ALIGNED(alignof(word128));
-  mm128_and_256(x0m, CONST_BLOCK(in, 0)->w128, mask_a);
-  mm128_and_256(x1m, CONST_BLOCK(in, 0)->w128, mask_b);
-  mm128_and_256(x2m, CONST_BLOCK(in, 0)->w128, mask_c);
-
-  mm128_shift_left_256(x0m, x0m, 2);
-  mm128_shift_left_256(x1m, x1m, 1);
-
-  word128 t0[2] ATTR_ALIGNED(alignof(word128)), t1[2] ATTR_ALIGNED(alignof(word128)),
-      t2[2] ATTR_ALIGNED(alignof(word128));
-  mm128_and_256(t0, x1m, x2m);
-  mm128_and_256(t1, x0m, x2m);
-  mm128_and_256(t2, x0m, x1m);
-
-  mm128_xor_256(t0, t0, x0m);
-
-  mm128_xor_256(x0m, x0m, x1m);
-  mm128_xor_256(t1, t1, x0m);
-
-  mm128_xor_256(t2, t2, x0m);
-  mm128_xor_256(t2, t2, x2m);
-
-  mm128_shift_right_256(t0, t0, 2);
-  mm128_shift_right_256(t1, t1, 1);
-
-  mm128_xor_256(t0, t0, t1);
-  mm128_xor_256(in->w128, t0, t2);
-}
-
-
-
-
-
-
-#if !defined(NO_UINT64_FALLBACK)
 // uint64 based implementation
-#define IMPL uint64
-
-#include "lowmc_129_129_4_fns_uint64.h"
+#include "lowmc_fns_uint64_L1.h"
+#define LOWMC lowmc_uint64_128
 #include "lowmc.c.i"
 
-#include "lowmc_192_192_4_fns_uint64.h"
+#include "lowmc_fns_uint64_L3.h"
+#undef LOWMC
+#define LOWMC lowmc_uint64_192
 #include "lowmc.c.i"
 
-#include "lowmc_255_255_4_fns_uint64.h"
-#include "lowmc.c.i"
-
-#include "lowmc_128_128_20_fns_uint64.h"
-#include "lowmc.c.i"
-
-#include "lowmc_192_192_30_fns_uint64.h"
-#include "lowmc.c.i"
-
-#include "lowmc_256_256_38_fns_uint64.h"
-#include "lowmc.c.i"
-#endif
-
-#define FN_ATTR ATTR_TARGET_S128
-#undef IMPL
-#define IMPL s128
-
-
-#include "lowmc_129_129_4_fns_s128.h"
-#include "lowmc.c.i"
-
-#include "lowmc_192_192_4_fns_s128.h"
-#include "lowmc.c.i"
-
-#include "lowmc_255_255_4_fns_s128.h"
-#include "lowmc.c.i"
-
-#include "lowmc_128_128_20_fns_s128.h"
-#include "lowmc.c.i"
-
-#include "lowmc_192_192_30_fns_s128.h"
-#include "lowmc.c.i"
-
-#include "lowmc_256_256_38_fns_s128.h"
+#include "lowmc_fns_uint64_L5.h"
+#undef LOWMC
+#define LOWMC lowmc_uint64_256
 #include "lowmc.c.i"
 
 
-void lowmc_compute(const lowmc_parameters_t* lowmc, const lowmc_key_t* key, const mzd_local_t* x,
-                   mzd_local_t* y) {
-  const uint32_t lowmc_id = LOWMC_GET_ID(lowmc);
+// L1 using SSE2/NEON
+#include "lowmc_fns_s128_L1.h"
+#undef LOWMC
+#define LOWMC lowmc_s128_128
+#include "lowmc.c.i"
 
-  /* SSE2/NEON enabled instances */
+// L3 using SSE2/NEON
+#include "lowmc_fns_s128_L3.h"
+#undef LOWMC
+#define LOWMC lowmc_s128_192
+#include "lowmc.c.i"
+
+// L5 using SSE2/NEON
+#include "lowmc_fns_s128_L5.h"
+#undef LOWMC
+#define LOWMC lowmc_s128_256
+#include "lowmc.c.i"
+
+#undef FN_ATTR
+
+
+lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc) {
+  ASSUME(lowmc->m == 10);
+  ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
+
   if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
-    switch (lowmc_id) {
-      /* Instances with partial Sbox layer */
-    case LOWMC_ID(192, 10):
-      lowmc_s128_lowmc_192_192_30(key, x, y);
-      return;
-      /* Instances with full Sbox layer */
+    if (lowmc->m == 10) {
+      switch (lowmc->n) {
+      case 192:
+        return lowmc_s128_192_10;
+      }
     }
   }
 
-#if !defined(NO_UINT64_FALLBACK)
-  /* uint64_t implementations */
-  switch (lowmc_id) {
-    /* Instances with partial Sbox layer */
-  case LOWMC_ID(192, 10):
-    lowmc_uint64_lowmc_192_192_30(key, x, y);
-    return;
-    /* Instances with full Sbox layer */
-  }
-#endif
-
-  UNREACHABLE;
-}
-
-
-void lowmc_record_state(const lowmc_parameters_t* lowmc, const lowmc_key_t* key,
-                        const mzd_local_t* x, recorded_state_t* state) {
-  const uint32_t lowmc_id = LOWMC_GET_ID(lowmc);
-
-  /* SSE2/NEON enabled instances */
-  if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
-    switch (lowmc_id) {
-      /* Instances with partial Sbox layer */
-    case LOWMC_ID(192, 10):
-      lowmc_store_s128_lowmc_192_192_30(key, x, state);
-      return;
-      /* Instances with full Sbox layer */
+  if (lowmc->m == 10) {
+    switch (lowmc->n) {
+    case 192:
+      return lowmc_uint64_192_10;
     }
   }
 
-#if !defined(NO_UINT64_FALLBACK)
-  /* uint64_t implementations */
-  switch (lowmc_id) {
-    /* Instances with partial Sbox layer */
-  case LOWMC_ID(192, 10):
-    lowmc_store_uint64_lowmc_192_192_30(key, x, state);
-    return;
-    /* Instances with full Sbox layer */
-  }
-#endif
 
-  UNREACHABLE;
+  return NULL;
 }
 
+lowmc_store_implementation_f lowmc_store_get_implementation(const lowmc_t* lowmc) {
+  ASSUME(lowmc->m == 10);
+  ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
+
+  if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
+    if (lowmc->m == 10) {
+      switch (lowmc->n) {
+      case 192:
+        return lowmc_s128_192_store_10;
+      }
+    }
+  }
+
+  if (lowmc->m == 10) {
+    switch (lowmc->n) {
+    case 192:
+      return lowmc_uint64_192_store_10;
+    }
+  }
+
+
+  return NULL;
+}
+
+lowmc_compute_aux_implementation_f lowmc_compute_aux_get_implementation(const lowmc_t* lowmc) {
+  ASSUME(lowmc->m == 10);
+  ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
+
+  if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
+    if (lowmc->m == 10) {
+      switch (lowmc->n) {
+      case 192:
+        return lowmc_s128_192_compute_aux_10;
+      }
+    }
+  }
+
+  if (lowmc->m == 10) {
+    switch (lowmc->n) {
+    case 192:
+      return lowmc_uint64_192_compute_aux_10;
+    }
+  }
+
+  return NULL;
+}

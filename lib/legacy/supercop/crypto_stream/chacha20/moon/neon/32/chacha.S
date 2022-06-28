@@ -5,15 +5,15 @@
 
 SECTION_TEXT
 
-GLOBAL_HIDDEN_FN CRYPTO_NAMESPACE(blocks_neon)
-CRYPTO_NAMESPACE(blocks_neon_local):
+GLOBAL_HIDDEN_FN chacha_blocks_neon
+chacha_blocks_neon_local:
 tst r3, r3
-beq .Lcrypto_blocks_neon_nobytes
+beq .Lchacha_blocks_neon_nobytes
 vstmdb sp!, {q4,q5,q6,q7}
 stmfd sp!, {r4-r12, r14}
 mov r8, sp
 sub sp, sp, #196
-bic sp, sp, #63
+and sp, sp, #0xffffffe0
 str r0, [sp, #60]
 str r1, [sp, #48]
 str r2, [sp, #40]
@@ -31,8 +31,8 @@ stmia r1!, {r4-r11}
 ldr r4, [r0]
 str r4, [sp, #44]
 cmp r3, #256
-blo .Lcrypto_blocks_neon_mainloop2
-.Lcrypto_blocks_neon_mainloop1:
+blo .Lchacha_blocks_neon_mainloop2
+.Lchacha_blocks_neon_mainloop1:
 ldr r0, [sp, #44]
 str r0, [sp, #0]
 add r1, sp, #(64)
@@ -58,7 +58,7 @@ str r11, [sp, #12]
 str r14, [sp, #28]
 ldr r11, [sp, #(64 +52)]
 ldr r14, [sp, #(64 +56)]
-.Lcrypto_blocks_neon_rounds1:
+.Lchacha_blocks_neon_rounds1:
 ldr r6, [sp, #0]
 vadd.i32 q0, q0, q1
 add r0, r0, r4
@@ -276,7 +276,7 @@ vext.32 q6, q6, q6, #2
 ror r7, r7, #25
 vext.32 q10, q10, q10, #2
 ror r4, r4, #25
-bne .Lcrypto_blocks_neon_rounds1
+bne .Lchacha_blocks_neon_rounds1
 str r8, [sp, #0]
 str r9, [sp, #4]
 str r10, [sp, #8]
@@ -323,7 +323,7 @@ tst r12, r12
 vadd.i32 q7, q7, q13
 add r7, r7, r11
 vadd.i32 q11, q11, q14
-beq .Lcrypto_blocks_neon_nomessage11
+beq .Lchacha_blocks_neon_nomessage11
 ldmia r12!, {r8-r11}
 eor r0, r0, r8
 eor r1, r1, r9
@@ -338,7 +338,7 @@ ldr r11, [r12, #12]
 eor r6, r6, r10
 add r12, r12, #16
 eor r7, r7, r11
-.Lcrypto_blocks_neon_nomessage11:
+.Lchacha_blocks_neon_nomessage11:
 stmia r14!, {r0-r7}
 ldm sp, {r0-r7}
 ldr r8, [sp, #(64 +32)]
@@ -362,7 +362,7 @@ adc r9, r9, #0
 str r8, [sp, #(64 +48)]
 tst r12, r12
 str r9, [sp, #(64 +52)]
-beq .Lcrypto_blocks_neon_nomessage12
+beq .Lchacha_blocks_neon_nomessage12
 ldmia r12!, {r8-r11}
 eor r0, r0, r8
 eor r1, r1, r9
@@ -377,36 +377,36 @@ ldr r11, [r12, #12]
 eor r6, r6, r10
 add r12, r12, #16
 eor r7, r7, r11
-.Lcrypto_blocks_neon_nomessage12:
+.Lchacha_blocks_neon_nomessage12:
 stmia r14!, {r0-r7}
-beq .Lcrypto_blocks_neon_nomessage13
+beq .Lchacha_blocks_neon_nomessage13
 vld1.32 {q12,q13}, [r12]!
 vld1.32 {q14,q15}, [r12]!
 veor q0, q0, q12
 veor q1, q1, q13
 veor q2, q2, q14
 veor q3, q3, q15
-.Lcrypto_blocks_neon_nomessage13:
+.Lchacha_blocks_neon_nomessage13:
 vst1.32 {q0,q1}, [r14]!
 vst1.32 {q2,q3}, [r14]!
-beq .Lcrypto_blocks_neon_nomessage14
+beq .Lchacha_blocks_neon_nomessage14
 vld1.32 {q12,q13}, [r12]!
 vld1.32 {q14,q15}, [r12]!
 veor q4, q4, q12
 veor q5, q5, q13
 veor q6, q6, q14
 veor q7, q7, q15
-.Lcrypto_blocks_neon_nomessage14:
+.Lchacha_blocks_neon_nomessage14:
 vst1.32 {q4,q5}, [r14]!
 vst1.32 {q6,q7}, [r14]!
-beq .Lcrypto_blocks_neon_nomessage15
+beq .Lchacha_blocks_neon_nomessage15
 vld1.32 {q12,q13}, [r12]!
 vld1.32 {q14,q15}, [r12]!
 veor q8, q8, q12
 veor q9, q9, q13
 veor q10, q10, q14
 veor q11, q11, q15
-.Lcrypto_blocks_neon_nomessage15:
+.Lchacha_blocks_neon_nomessage15:
 vst1.32 {q8,q9}, [r14]!
 vst1.32 {q10,q11}, [r14]!
 str r12, [sp, #48]
@@ -415,29 +415,29 @@ ldr r3, [sp, #52]
 sub r3, r3, #256
 cmp r3, #256
 str r3, [sp, #52]
-bhs .Lcrypto_blocks_neon_mainloop1
+bhs .Lchacha_blocks_neon_mainloop1
 tst r3, r3
-beq .Lcrypto_blocks_neon_done
-.Lcrypto_blocks_neon_mainloop2:
+beq .Lchacha_blocks_neon_done
+.Lchacha_blocks_neon_mainloop2:
 ldr r3, [sp, #52]
 ldr r1, [sp, #48]
 cmp r3, #64
-bhs .Lcrypto_blocks_neon_noswap1
+bhs .Lchacha_blocks_neon_noswap1
 add r4, sp, #128
 mov r5, r4
 tst r1, r1
-beq .Lcrypto_blocks_neon_nocopy1
-.Lcrypto_blocks_neon_copyinput1:
+beq .Lchacha_blocks_neon_nocopy1
+.Lchacha_blocks_neon_copyinput1:
 subs r3, r3, #1
 ldrb r0, [r1], #1
 strb r0, [r4], #1
-bne .Lcrypto_blocks_neon_copyinput1
+bne .Lchacha_blocks_neon_copyinput1
 str r5, [sp, #48]
-.Lcrypto_blocks_neon_nocopy1:
+.Lchacha_blocks_neon_nocopy1:
 ldr r4, [sp, #40]
 str r5, [sp, #40]
 str r4, [sp, #56]
-.Lcrypto_blocks_neon_noswap1:
+.Lchacha_blocks_neon_noswap1:
 ldr r0, [sp, #44]
 str r0, [sp, #0]
 add r0, sp, #64
@@ -448,7 +448,7 @@ str r11, [sp, #12]
 str r14, [sp, #28]
 ldr r11, [sp, #(64 +52)]
 ldr r14, [sp, #(64 +56)]
-.Lcrypto_blocks_neon_rounds2:
+.Lchacha_blocks_neon_rounds2:
 ldr r6, [sp, #0]
 add r0, r0, r4
 add r1, r1, r5
@@ -558,7 +558,7 @@ eor r7, r7, r8
 eor r4, r4, r9
 ror r7, r7, #25
 ror r4, r4, #25
-bne .Lcrypto_blocks_neon_rounds2
+bne .Lchacha_blocks_neon_rounds2
 str r8, [sp, #0]
 str r9, [sp, #4]
 str r10, [sp, #8]
@@ -584,7 +584,7 @@ ldr r11, [sp, #(64 +28)]
 add r6, r6, r10
 tst r12, r12
 add r7, r7, r11
-beq .Lcrypto_blocks_neon_nomessage21
+beq .Lchacha_blocks_neon_nomessage21
 ldmia r12!, {r8-r11}
 eor r0, r0, r8
 eor r1, r1, r9
@@ -599,7 +599,7 @@ ldr r11, [r12, #12]
 eor r6, r6, r10
 add r12, r12, #16
 eor r7, r7, r11
-.Lcrypto_blocks_neon_nomessage21:
+.Lchacha_blocks_neon_nomessage21:
 stmia r14!, {r0-r7}
 ldm sp, {r0-r7}
 ldr r8, [sp, #(64 +32)]
@@ -623,7 +623,7 @@ adc r9, r9, #0
 str r8, [sp, #(64 +48)]
 tst r12, r12
 str r9, [sp, #(64 +52)]
-beq .Lcrypto_blocks_neon_nomessage22
+beq .Lchacha_blocks_neon_nomessage22
 ldmia r12!, {r8-r11}
 eor r0, r0, r8
 eor r1, r1, r9
@@ -638,7 +638,7 @@ ldr r11, [r12, #12]
 eor r6, r6, r10
 add r12, r12, #16
 eor r7, r7, r11
-.Lcrypto_blocks_neon_nomessage22:
+.Lchacha_blocks_neon_nomessage22:
 stmia r14!, {r0-r7}
 str r12, [sp, #48]
 str r14, [sp, #40]
@@ -646,18 +646,18 @@ ldr r3, [sp, #52]
 cmp r3, #64
 sub r4, r3, #64
 str r4, [sp, #52]
-bhi .Lcrypto_blocks_neon_mainloop2
+bhi .Lchacha_blocks_neon_mainloop2
 cmp r3, #64
-beq .Lcrypto_blocks_neon_nocopy2
+beq .Lchacha_blocks_neon_nocopy2
 ldr r1, [sp, #56]
 sub r14, r14, #64
-.Lcrypto_blocks_neon_copyinput2:
+.Lchacha_blocks_neon_copyinput2:
 subs r3, r3, #1
 ldrb r0, [r14], #1
 strb r0, [r1], #1
-bne .Lcrypto_blocks_neon_copyinput2
-.Lcrypto_blocks_neon_nocopy2:
-.Lcrypto_blocks_neon_done:
+bne .Lchacha_blocks_neon_copyinput2
+.Lchacha_blocks_neon_nocopy2:
+.Lchacha_blocks_neon_done:
 ldr r7, [sp, #60]
 ldr r8, [sp, #(64 +48)]
 ldr r9, [sp, #(64 +52)]
@@ -670,35 +670,181 @@ stmia r12!, {r0-r7}
 ldr sp, [sp, #192]
 ldmfd sp!, {r4-r12, r14}
 vldm sp!, {q4-q7}
-.Lcrypto_blocks_neon_nobytes:
+.Lchacha_blocks_neon_nobytes:
 bx lr
-FN_END CRYPTO_NAMESPACE(blocks_neon)
+FN_END chacha_blocks_neon
 
 .ltorg
 
-GLOBAL_HIDDEN_FN CRYPTO_NAMESPACE(chacha)
-stmfd sp!, {r4-r8, lr}
+GLOBAL_HIDDEN_FN hchacha_neon
+hchacha_neon_local:
+stmfd sp!, {r4-r12, r14}
+sub sp, sp, #32
+str r2, [sp, #20]
+str r3, [sp, #24]
+ldr r12, [r1, #0]
+ldr r11, [r1, #4]
+ldr r14, [r1, #8]
+ldr r4, [r1, #12]
+str r11, [sp, #4]
+str r4, [sp, #16]
+ldmia r0, {r4-r11}
+str r4, [sp, #8]
+str r6, [sp, #0]
+str r11, [sp, #12]
+ldr r11, [sp, #4]
+ldr r0, =0x61707865
+ldr r1, =0x3320646e
+ldr r2, =0x79622d32
+ldr r3, =0x6b206574
+.Lhchacha_neon_mainloop:
+ldr r6, [sp, #24]
+subs r6, r6, #2
+str r6, [sp, #24]
+ldr r6, [sp, #0]
+add r0, r0, r4
+add r1, r1, r5
+eor r12, r12, r0
+eor r11, r11, r1
+ror r12, r12, #16
+ror r11, r11, #16
+add r8, r8, r12
+add r9, r9, r11
+eor r4, r4, r8
+eor r5, r5, r9
+ror r4, r4, #20
+ror r5, r5, #20
+add r0, r0, r4
+add r1, r1, r5
+eor r12, r12, r0
+eor r11, r11, r1
+ror r12, r12, #24
+ror r11, r11, #24
+add r8, r8, r12
+add r9, r9, r11
+eor r4, r4, r8
+eor r5, r5, r9
+ror r4, r4, #25
+ror r5, r5, #25
+str r11, [sp, #4]
+str r4, [sp, #8]
+ldr r11, [sp, #12]
+ldr r4, [sp, #16]
+add r2, r2, r6
+add r3, r3, r7
+eor r14, r14, r2
+eor r4, r4, r3
+ror r14, r14, #16
+ror r4, r4, #16
+add r10, r10, r14
+add r11, r11, r4
+eor r6, r6, r10
+eor r7, r7, r11
+ror r6, r6, #20
+ror r7, r7, #20
+add r2, r2, r6
+add r3, r3, r7
+eor r14, r14, r2
+eor r4, r4, r3
+ror r14, r14, #24
+ror r4, r4, #24
+add r10, r10, r14
+add r11, r11, r4
+eor r6, r6, r10
+eor r7, r7, r11
+ror r6, r6, #25
+ror r7, r7, #25
+add r0, r0, r5
+add r1, r1, r6
+eor r4, r4, r0
+eor r12, r12, r1
+ror r4, r4, #16
+ror r12, r12, #16
+add r10, r10, r4
+add r11, r11, r12
+eor r5, r5, r10
+eor r6, r6, r11
+ror r5, r5, #20
+ror r6, r6, #20
+add r0, r0, r5
+add r1, r1, r6
+eor r4, r4, r0
+eor r12, r12, r1
+ror r4, r4, #24
+ror r12, r12, #24
+add r10, r10, r4
+add r11, r11, r12
+eor r5, r5, r10
+eor r6, r6, r11
+ror r5, r5, #25
+ror r6, r6, #25
+str r11, [sp, #12]
+str r4, [sp, #16]
+ldr r11, [sp, #4]
+ldr r4, [sp, #8]
+add r2, r2, r7
+add r3, r3, r4
+eor r11, r11, r2
+eor r14, r14, r3
+ror r11, r11, #16
+ror r14, r14, #16
+add r8, r8, r11
+add r9, r9, r14
+eor r7, r7, r8
+eor r4, r4, r9
+ror r7, r7, #20
+ror r4, r4, #20
+add r2, r2, r7
+add r3, r3, r4
+eor r11, r11, r2
+eor r14, r14, r3
+ror r11, r11, #24
+ror r14, r14, #24
+add r8, r8, r11
+add r9, r9, r14
+eor r7, r7, r8
+eor r4, r4, r9
+ror r7, r7, #25
+ror r4, r4, #25
+str r6, [sp, #0]
+bne .Lhchacha_neon_mainloop
+stm sp, {r0-r3}
+ldr r8, [sp, #20]
+mov r4, r12
+mov r5, r11
+mov r6, r14
+ldr r7, [sp, #16]
+stmia r8, {r0-r7}
+add sp, sp, #32
+ldmfd sp!, {r4-r12, r14}
+bx lr
+FN_END hchacha_neon
+
+.ltorg
+
+GLOBAL_HIDDEN_FN chacha_neon
+stmfd sp!, {r4-r7, lr}
 mov r12, sp
 sub sp, sp, #64
-bic sp, sp, #127
-mov r8, sp
+and sp, sp, #0xffffff80
 ldmia r0!, {r4-r7}
-stmia r8!, {r4-r7}
+stmia sp!, {r4-r7}
 ldmia r0!, {r4-r7}
-stmia r8!, {r4-r7}
+stmia sp!, {r4-r7}
 eor r4, r4, r4
 eor r5, r5, r5
 mov r7, r12
-stmia r8!, {r4-r5}
+stmia sp!, {r4-r5}
 ldmia r1!, {r4-r5}
-stmia r8!, {r4-r5}
-ldr r4, [r7, #28]
-str r4, [r8]
+stmia sp!, {r4-r5}
+ldr r4, [r7, #24]
+str r4, [sp]
+sub sp, sp, #48
 mov r0, sp
 mov r1, r2
 mov r2, r3
-ldr r3, [r7, #24]
-bl CRYPTO_NAMESPACE(blocks_neon_local)
+ldr r3, [r7, #20]
+bl chacha_blocks_neon_local
 eor r0, r0, r0
 eor r1, r1, r1
 eor r2, r2, r2
@@ -707,6 +853,45 @@ stmia sp!, {r0-r3}
 stmia sp!, {r0-r3}
 stmia sp!, {r0-r3}
 mov sp, r7
-ldmfd sp!, {r4-r8, lr}
+ldmfd sp!, {r4-r7, lr}
 bx lr
-FN_END CRYPTO_NAMESPACE(chacha)
+FN_END chacha_neon
+
+
+GLOBAL_HIDDEN_FN xchacha_neon
+stmfd sp!, {r4-r6, lr}
+mov r7, sp
+sub sp, sp, #64
+and sp, sp, #0xffffff80
+mov r4, r2
+mov r5, r3
+add r6, r1, #16
+mov r2, sp
+ldr r3, [r7, #20]
+bl hchacha_neon_local
+eor r0, r0, r0
+eor r1, r1, r1
+add sp, sp, #32
+stmia sp!, {r0-r1}
+ldm r6, {r0-r1}
+stmia sp!, {r0-r1}
+ldr r2, [r7, #20]
+str r2, [sp]
+sub sp, sp, #48
+mov r0, sp
+mov r1, r4
+mov r2, r5
+ldr r3, [r7, #16]
+bl chacha_blocks_neon_local
+eor r0, r0, r0
+eor r1, r1, r1
+eor r2, r2, r2
+eor r3, r3, r3
+stmia sp!, {r0-r3}
+stmia sp!, {r0-r3}
+stmia sp!, {r0-r3}
+mov sp, r7
+ldmfd sp!, {r4-r6, lr}
+bx lr
+FN_END xchacha_neon
+

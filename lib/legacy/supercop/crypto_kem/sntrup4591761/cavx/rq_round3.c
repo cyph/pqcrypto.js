@@ -1,4 +1,3 @@
-#include "crypto_kem.h" /* for namespacing */
 #include <immintrin.h>
 #include "params.h"
 #include "rq.h"

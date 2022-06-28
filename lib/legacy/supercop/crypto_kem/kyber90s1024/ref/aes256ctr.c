@@ -1,1 +1,1 @@
-../../kyber90s512/ref/aes256ctr.c
+../../kyber90s768/ref/aes256ctr.c

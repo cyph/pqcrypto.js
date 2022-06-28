@@ -1,5 +1,3 @@
-#define syndrome_asm CRYPTO_NAMESPACE(syndrome_asm)
-#define _syndrome_asm _CRYPTO_NAMESPACE(syndrome_asm)
 /*
   This file is for Niederreiter encryption
 */
@@ -7,20 +5,10 @@
 #include "encrypt.h"
 
 #include "randombytes.h"
-#include "uint16_sort.h"
 #include "params.h"
 #include "util.h"
 
 #include <stdint.h>
-#include "crypto_declassify.h"
-#include "crypto_uint32.h"
-
-static inline crypto_uint32 uint32_is_equal_declassify(uint32_t t,uint32_t u)
-{
-  crypto_uint32 mask = crypto_uint32_equal_mask(t,u);
-  crypto_declassify(&mask,sizeof mask);
-  return mask;
-}
 
 /* input: public key pk, error vector e */
 /* output: syndrome s */
@@ -32,7 +20,6 @@ static void gen_e(unsigned char *e)
 	int i, j, eq;
 
 	uint16_t ind[ SYS_T ];
-	unsigned char bytes[ sizeof(ind) ];
 	uint64_t e_int[ SYS_N/64 ];	
 	uint64_t one = 1;	
 	uint64_t mask;	
@@ -40,18 +27,17 @@ static void gen_e(unsigned char *e)
 
 	while (1)
 	{
-		randombytes(bytes, sizeof(bytes));
+		randombytes((unsigned char *) ind, sizeof(ind));
 
 		for (i = 0; i < SYS_T; i++)
-			ind[i] = load_gf(bytes + i*2);
+			ind[i] &= GFMASK;
 
 		// check for repetition
 
-		uint16_sort(ind, SYS_T);
-		
 		eq = 0;
-		for (i = 1; i < SYS_T; i++)
-                        if (uint32_is_equal_declassify(ind[i-1],ind[i]))
+
+		for (i = 1; i < SYS_T; i++) for (j = 0; j < i; j++)
+			if (ind[i] == ind[j]) 
 				eq = 1;
 
 		if (eq == 0)

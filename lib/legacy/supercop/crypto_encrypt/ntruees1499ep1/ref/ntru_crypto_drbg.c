@@ -762,7 +762,7 @@ ntru_crypto_drbg_instantiate(
 } 
 
 
-/* ntru_crypto_external_drbg_instantiate
+/* ntru_crypto_drbg_external_instantiate
  *
  * This routine instruments an external DRBG so that ntru_crypto routines
  * can call it. randombytesfn must be of type
@@ -777,7 +777,7 @@ ntru_crypto_drbg_instantiate(
  */
 
 uint32_t
-ntru_crypto_external_drbg_instantiate(
+ntru_crypto_drbg_external_instantiate(
     RANDOM_BYTES_FN  randombytesfn, /*  in - pointer to random bytes function */
     DRBG_HANDLE     *handle)        /* out - address for drbg handle */
 {

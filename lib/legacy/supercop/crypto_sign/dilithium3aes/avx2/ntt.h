@@ -1,1 +1,1 @@
-../../dilithium2/avx2/ntt.h
+../../dilithium3/avx2/ntt.h

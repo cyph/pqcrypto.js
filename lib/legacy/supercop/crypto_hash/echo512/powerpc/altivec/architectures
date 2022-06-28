@@ -1,1 +1,2 @@
-../../../echo256/powerpc/altivec/architectures
+ppc32
+ppc64

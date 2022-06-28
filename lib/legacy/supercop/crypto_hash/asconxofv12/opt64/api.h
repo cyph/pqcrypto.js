@@ -1,1 +1,1 @@
-../bi8/api.h
+#define CRYPTO_BYTES 32

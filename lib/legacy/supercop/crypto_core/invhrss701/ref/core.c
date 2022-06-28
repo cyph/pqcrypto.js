@@ -9,7 +9,7 @@ typedef struct {
   uint16_t coeffs[NTRU_N_PADDED] __attribute__((aligned(32)));
 } poly;
 
-static uint16_t mod3(uint16_t a)
+uint16_t mod3(uint16_t a)
 {
   uint16_t r;
   int16_t t, c;
@@ -34,8 +34,8 @@ static inline void poly_mulx(poly *a, int s)
   int i;
 
   for(i=1; i<NTRU_N; i++)
-    a->coeffs[NTRU_N-i] = (s * a->coeffs[NTRU_N-i-1]) | ((1-s) * a->coeffs[NTRU_N-i]);
-  a->coeffs[0] = ((1-s) * a->coeffs[0]);
+    a->coeffs[NTRU_N-i] = (s * a->coeffs[NTRU_N-i-1]) | (!s * a->coeffs[NTRU_N-i]);
+  a->coeffs[0] = (!s * a->coeffs[0]);
 }
 
 static inline void poly_divx(poly *a, int s)
@@ -43,8 +43,8 @@ static inline void poly_divx(poly *a, int s)
   int i;
 
   for(i=1; i<NTRU_N; i++)
-    a->coeffs[i-1] = (s * a->coeffs[i]) | ((1-s) * a->coeffs[i-1]);
-  a->coeffs[NTRU_N-1] = ((1-s) * a->coeffs[NTRU_N-1]);
+    a->coeffs[i-1] = (s * a->coeffs[i]) | (!s * a->coeffs[i-1]);
+  a->coeffs[NTRU_N-1] = (!s * a->coeffs[NTRU_N-1]);
 }
 
 static void cswappoly(poly *a, poly *b, int swap)
@@ -71,6 +71,9 @@ static void cmov(unsigned char *r, const unsigned char *x, size_t len, unsigned 
 
 int crypto_core(unsigned char *rbytes,const unsigned char *abytes,const unsigned char *kbytes,const unsigned char *cbytes)
 {
+  poly *r = (void *) rbytes;
+  const poly *a = (void *) abytes;
+  
   /* Schroeppel--Orman--O'Malley--Spatscheck
    * "Almost Inverse" algorithm as described
    * by Silverman in NTRU Tech Report #14 */
@@ -82,7 +85,6 @@ int crypto_core(unsigned char *rbytes,const unsigned char *abytes,const unsigned
   int sign, fsign = 0, t, swap;
   int done = 0;
   poly b, c, f, g;
-  poly r;
   poly *temp_r = &f;
 
   /* b(X) := 1 */
@@ -96,7 +98,7 @@ int crypto_core(unsigned char *rbytes,const unsigned char *abytes,const unsigned
 
   /* f(X) := a(X) */
   for(i=0; i<NTRU_N; i++)
-    f.coeffs[i] = mod3(abytes[2*i] & 3);
+    f.coeffs[i] = mod3(a->coeffs[i] & 3);
 
   /* g(X) := 1 + X + X^2 + ... + X^{N-1} */
   for(i=0; i<NTRU_N; i++)
@@ -105,7 +107,7 @@ int crypto_core(unsigned char *rbytes,const unsigned char *abytes,const unsigned
   for(j=0; j<2*(NTRU_N-1)-1; j++)
   {
     sign = mod3(2 * g.coeffs[0] * f.coeffs[0]);
-    swap = (((sign & 2) >> 1) | sign) & (1-done) & ((degf - degg) >> 15);
+    swap = (((sign & 2) >> 1) | sign) & !done & ((degf - degg) >> 15);
 
     cswappoly(&f, &g, swap);
     cswappoly(&b, &c, swap);
@@ -113,13 +115,13 @@ int crypto_core(unsigned char *rbytes,const unsigned char *abytes,const unsigned
     degf ^= t;
     degg ^= t;
 
-    POLY_S3_FMADD(i, f, g, sign*(1-done));
-    POLY_S3_FMADD(i, b, c, sign*(1-done));
+    POLY_S3_FMADD(i, f, g, sign*(!done));
+    POLY_S3_FMADD(i, b, c, sign*(!done));
 
-    poly_divx(&f, 1-done);
-    poly_mulx(&c, 1-done);
-    degf -= 1-done;
-    k += 1-done;
+    poly_divx(&f, !done);
+    poly_mulx(&c, !done);
+    degf -= !done;
+    k += !done;
 
     done = 1 - (((uint16_t)-degf) >> 15);
   }
@@ -132,27 +134,23 @@ int crypto_core(unsigned char *rbytes,const unsigned char *abytes,const unsigned
      representation of k, rotating for every power of 2, and performing a cmov
      if the respective bit is set. */
   for (i = 0; i < NTRU_N; i++)
-    r.coeffs[i] = mod3(fsign * b.coeffs[i]);
+    r->coeffs[i] = mod3(fsign * b.coeffs[i]);
 
   for (i = 0; i < 10; i++) {
     for (j = 0; j < NTRU_N; j++) {
-      temp_r->coeffs[j] = r.coeffs[(j + (1 << i)) % NTRU_N];
+      temp_r->coeffs[j] = r->coeffs[(j + (1 << i)) % NTRU_N];
     }
-    cmov((unsigned char *)&(r.coeffs),
+    cmov((unsigned char *)&(r->coeffs),
          (unsigned char *)&(temp_r->coeffs), sizeof(uint16_t) * NTRU_N, k & 1);
     k >>= 1;
   }
 
   /* Reduce modulo Phi_n */
-  for(i=0; i<NTRU_N; i++) {
-    rbytes[2*i] = mod3(r.coeffs[i] + 2*r.coeffs[NTRU_N-1]);
-    rbytes[2*i+1] = 0;
-  }
+  for(i=0; i<NTRU_N; i++)
+    r->coeffs[i] = mod3(r->coeffs[i] + 2*r->coeffs[NTRU_N-1]);
 
-  for(i=NTRU_N; i<NTRU_N_PADDED; i++) {
-    rbytes[2*i] = 0;
-    rbytes[2*i+1] = 0;
-  }
+  for(i=NTRU_N; i<NTRU_N_PADDED; i++)
+    r->coeffs[i] = 0;
 
   return 0;
 }

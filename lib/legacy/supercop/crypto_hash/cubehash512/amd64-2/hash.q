@@ -46,7 +46,7 @@ caller r15_caller
 caller rbx_caller
 caller rbp_caller
 
-enter CRYPTO_NAMESPACETOP
+enter crypto_hash_cubehash512_amd64_2
 
   out = arg1
   in = arg2
@@ -55,7 +55,7 @@ enter CRYPTO_NAMESPACETOP
   y0 = 0
   tmp = y0
 
-  constants = &CRYPTO_NAMESPACE(constants)
+  constants = &crypto_hash_cubehash512_amd64_2_constants
 
   x5 = *(int128 *) (constants + 80)
   x7 = *(int128 *) (constants + 112)

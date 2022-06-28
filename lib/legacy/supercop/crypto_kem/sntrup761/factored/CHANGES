@@ -1,20 +1,4 @@
-Reverse-chronological changelog for sntrup*/factored:
-
-Added crypto_declassify() for the rejection sampling in key generation
-to work with TIMECOP.
-
-Used CRYPTO_NAMESPACE.
-
-Used crypto_verify_clen.
-
-Rearranged variables for better stack usage.
-
-Factored out crypto_core_wforcesntrup761. (Same for other sizes.)
-Factored out crypto_core_scale3sntrup761. (Same for other sizes.)
-Switched to 16-bit arithmetic for Rq_mult3.
-Factored out crypto_encode_761xfreeze3. (Same for other sizes.)
-
-Introduced ppadsort.
+Reverse-chronological changelog for sntrup{653,761,857}/factored:
 
 Factored out crypto_core_mult3sntrup761. (Same for other sizes.)
 Factored out crypto_core_multsntrup761. (Same for other sizes.)

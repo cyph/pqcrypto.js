@@ -3,9 +3,9 @@
 #define crypto_stream_BEFORENMBYTES 1408
 #endif
 
-#define crypto_stream_beforenm CRYPTO_NAMESPACE(beforenm)
-#define crypto_stream_afternm_constants CRYPTO_NAMESPACE(afternm_constants)
-#define crypto_stream_xor_afternm_constants CRYPTO_NAMESPACE(xor_afternm_constants)
+#define crypto_stream_beforenm crypto_stream_aes128ctr_neon_beforenm
+#define crypto_stream_afternm_constants crypto_stream_aes128ctr_neon_afternm_constants
+#define crypto_stream_xor_afternm_constants crypto_stream_aes128ctr_neon_xor_afternm_constants
 
 extern int crypto_stream_beforenm(
         unsigned char *d,

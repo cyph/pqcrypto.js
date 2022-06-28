@@ -1,8 +1,19 @@
+/* This file is based on the output of D. J. Bernstein's r3_recipgen.py
+ * The line
+ *    f = [-1,-1] + [0]*(p-2) + [1]
+ * was changed to
+ *    f = [1]*(p+1)
+ * The program was then run as
+ *    python3 r3_recipgen.py 676
+ */
+
 #include "poly.h"
 
 #include <immintrin.h>
 
-typedef signed char small;
+#include "crypto_int8.h"
+#define int8 crypto_int8
+typedef int8 small;
 
 #define p 508
 #define ppad 512
@@ -291,7 +302,7 @@ static inline void vec256_timesx_2(vec256 *f)
 }
 
 
-static int __poly_S3_inv(unsigned char *outbytes,const unsigned char *inbytes)
+int __poly_S3_inv(unsigned char *outbytes,const unsigned char *inbytes)
 { 
   small *out = (void *) outbytes;
   small *in = (void *) inbytes;
@@ -311,8 +322,8 @@ static int __poly_S3_inv(unsigned char *outbytes,const unsigned char *inbytes)
   vec256 swapvec;
 
   vec256_init(G0,G1,in);
-  F0[0] = _mm256_set_epi32(-1,-1,-1,-1,-1,-1,-1,-1);
-  F0[1] = _mm256_set_epi32(2147483647,-1,2147483647,-1,2147483647,-1,-1,-1);
+  F0[0] = _mm256_set_epi32(4294967295,4294967295,4294967295,4294967295,4294967295,4294967295,4294967295,4294967295);
+  F0[1] = _mm256_set_epi32(2147483647,4294967295,2147483647,4294967295,2147483647,4294967295,4294967295,4294967295);
   F1[0] = _mm256_set1_epi32(0);
   F1[1] = _mm256_set1_epi32(0);
 
@@ -421,17 +432,17 @@ static int __poly_S3_inv(unsigned char *outbytes,const unsigned char *inbytes)
 
 // This code is based on crypto_core/invhrss701/faster from SUPERCOP. The code was written as a case study
 // for the paper "Fast constant-time gcd computation and modular inversion" by Daniel J. Bernstein and Bo-Yin Yang.
-void crypto_kem_ntruhps2048509_avx2_constbranchindex_poly_S3_inv(poly *r_out, const poly *a) {
+void poly_S3_inv(poly *r_out, const poly *a) {
   const unsigned char *in = (void*) a;
   unsigned char *out = (void*) r_out;
 
-  small input[ppad];
-  small output[ppad];
+  small input[512];
+  small output[512];
   int i;
 
   /* XXX: obviously input/output format should be packed into bytes */
 
-  for (i = 0;i < p;++i) {
+  for (i = 0;i < 508;++i) {
     small x = in[2*i]&3; /* 0 1 2 3 */
     x += 1; /* 0 1 2 3 4 5 6, offset by 1 */
     x &= (x-3)>>5; /* 0 1 2, offset by 1 */
@@ -441,7 +452,7 @@ void crypto_kem_ntruhps2048509_avx2_constbranchindex_poly_S3_inv(poly *r_out, co
 
   __poly_S3_inv((unsigned char *)output,(unsigned char *)input);
 
-  for (i = 0;i < p;++i) {
+  for (i = 0;i < 508;++i) {
     out[2*i] = (3 & output[i]) ^ ((3 & output[i]) >> 1);
     out[2*i+1] = 0;
   }

@@ -2,7 +2,7 @@
 #include "params.h"
 #include "prg.h"
 
-static const unsigned char nonce[crypto_stream_chacha12_NONCEBYTES] = {0};
+static unsigned char nonce[crypto_stream_chacha12_NONCEBYTES] = {0};
 
 #if crypto_stream_chacha12_KEYBYTES != SEED_BYTES
   #error "SEED_BYTES needs to match CRYPTO_STREAM_KEYBYTES for this implementation"

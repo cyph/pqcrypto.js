@@ -1,5 +1,0 @@
-#!/bin/sh
-
-echo ''
-echo '[[bin]]'
-echo 'name = "try-timecop"'

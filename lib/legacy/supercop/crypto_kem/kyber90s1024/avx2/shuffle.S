@@ -1,1 +1,1 @@
-../../kyber512/avx2/shuffle.S
+../../kyber768/avx2/shuffle.s

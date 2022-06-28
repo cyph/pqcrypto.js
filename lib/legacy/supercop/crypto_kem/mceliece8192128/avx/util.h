@@ -9,13 +9,13 @@
 
 #include <stdint.h>
 
-static inline void store_gf(unsigned char *dest, uint16_t a)
+static inline void store2(unsigned char *dest, uint16_t a)
 {
 	dest[0] = a & 0xFF;
 	dest[1] = a >> 8;
 }
 
-static inline uint16_t load_gf(const unsigned char *src)
+static inline uint16_t load2(const unsigned char *src)
 {
 	uint16_t a;
 
@@ -45,7 +45,10 @@ static inline void irr_load(vec128 * out, const unsigned char * in)
 	uint16_t irr[ SYS_T ];
 
 	for (i = 0; i < SYS_T; i++)
-		irr[i] = load_gf(in + i*2);
+	{
+		irr[i] = load2(in + i*2);
+		irr[i] &= GFMASK;
+	}
 
 	for (i = 0; i < GFBITS; i++)
 	{

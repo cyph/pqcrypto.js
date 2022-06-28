@@ -1,2 +1,2 @@
-#define CRYPTO_KEYBYTES 32
-#define CRYPTO_NONCEBYTES 8
+#define crypto_stream_chacha12_e_merged_KEYBYTES 32
+#define crypto_stream_chacha12_e_merged_NONCEBYTES 8

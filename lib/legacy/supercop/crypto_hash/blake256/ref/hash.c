@@ -26,7 +26,7 @@ typedef struct  {
   u8  buf[64];
 } state;
 
-static const u8 sigma[][16] = {
+const u8 sigma[][16] = {
   { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 },
   {14,10, 4, 8, 9,15,13, 6, 1,12, 0, 2,11, 7, 5, 3 },
   {11, 8,12, 0, 5, 2,15,13,10,14, 3, 6, 7, 1, 9, 4 },
@@ -42,18 +42,18 @@ static const u8 sigma[][16] = {
   {11, 8,12, 0, 5, 2,15,13,10,14, 3, 6, 7, 1, 9, 4 },
   { 7, 9, 3, 1,13,12,11,14, 2, 6, 5,10, 4, 0,15, 8 }};
 
-static const u32 cst[16] = {
+const u32 cst[16] = {
   0x243F6A88,0x85A308D3,0x13198A2E,0x03707344,
   0xA4093822,0x299F31D0,0x082EFA98,0xEC4E6C89,
   0x452821E6,0x38D01377,0xBE5466CF,0x34E90C6C,
   0xC0AC29B7,0xC97C50DD,0x3F84D5B5,0xB5470917};
 
-static const u8 padding[] =
+const u8 padding[] =
   {0x80,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
-static void blake256_compress( state *S, const u8 *block ) {
+void blake256_compress( state *S, const u8 *block ) {
 
   u32 v[16], m[16], i;
 #define ROT(x,n) (((x)<<(32-n))|( (x)>>(n)))
@@ -100,7 +100,7 @@ static void blake256_compress( state *S, const u8 *block ) {
 }
 
 
-static void blake256_init( state *S ) {
+void blake256_init( state *S ) {
 
   S->h[0]=0x6A09E667;
   S->h[1]=0xBB67AE85;
@@ -115,7 +115,7 @@ static void blake256_init( state *S ) {
 }
 
 
-static void blake256_update( state *S, const u8 *data, u64 datalen ) {
+void blake256_update( state *S, const u8 *data, u64 datalen ) {
 
   int left=S->buflen >> 3; 
   int fill=64 - left;
@@ -146,7 +146,7 @@ static void blake256_update( state *S, const u8 *data, u64 datalen ) {
 }
 
 
-static void blake256_final( state *S, u8 *digest ) {
+void blake256_final( state *S, u8 *digest ) {
   
   u8 msglen[8], zo=0x01, oo=0x81;
   u32 lo=S->t[0] + S->buflen, hi=S->t[1];

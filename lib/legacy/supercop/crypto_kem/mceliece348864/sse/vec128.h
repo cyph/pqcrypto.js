@@ -5,10 +5,6 @@
 
 #ifndef VEC128_H
 #define VEC128_H
-#define vec128_inv CRYPTO_NAMESPACE(vec128_inv)
-#define vec128_mul_asm CRYPTO_NAMESPACE(vec128_mul_asm)
-#define vec128_mul_GF CRYPTO_NAMESPACE(vec128_mul_GF)
-#define vec128_sq CRYPTO_NAMESPACE(vec128_sq)
 
 #include "params.h"
 
@@ -20,11 +16,6 @@ typedef __m128i vec128;
 static inline vec128 vec128_set1_16b(uint16_t a)
 {
 	return _mm_set1_epi16(a);
-}
-
-static inline vec128 vec128_set1_32b(uint64_t a)
-{
-	return _mm_set1_epi32(a);
 }
 
 static inline vec128 vec128_setzero() 

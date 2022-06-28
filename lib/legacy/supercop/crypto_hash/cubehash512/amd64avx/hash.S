@@ -81,13 +81,13 @@
 
 # qhasm: caller rbp_caller
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hash_cubehash512_amd64avx
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_hash_cubehash512_amd64avx
+.globl crypto_hash_cubehash512_amd64avx
+_crypto_hash_cubehash512_amd64avx:
+crypto_hash_cubehash512_amd64avx:
 mov %rsp,%r11
 and $31,%r11
 add $32,%r11
@@ -118,10 +118,10 @@ pxor   %xmm0,%xmm0
 # asm 2: movdqa <y0=%xmm0,>tmp=0(%rsp)
 movdqa %xmm0,0(%rsp)
 
-# qhasm:   constants = &CRYPTO_NAMESPACE(constants)
-# asm 1: movq  CRYPTO_NAMESPACE(constants)@GOTPCREL(%rip),>constants=int64#3
-# asm 2: movq  CRYPTO_NAMESPACE(constants)@GOTPCREL(%rip),>constants=%rdx
-movq  CRYPTO_NAMESPACE(constants)@GOTPCREL(%rip),%rdx
+# qhasm:   constants = &crypto_hash_cubehash512_amd64avx_constants
+# asm 1: movq  crypto_hash_cubehash512_amd64avx_constants@GOTPCREL(%rip),>constants=int64#3
+# asm 2: movq  crypto_hash_cubehash512_amd64avx_constants@GOTPCREL(%rip),>constants=%rdx
+movq  crypto_hash_cubehash512_amd64avx_constants@GOTPCREL(%rip),%rdx
 
 # qhasm:   x5 = *(int128 *) (constants + 80)
 # asm 1: movdqa 80(<constants=int64#3),>x5=int6464#1

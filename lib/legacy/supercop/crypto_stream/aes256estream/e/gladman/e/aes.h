@@ -52,7 +52,7 @@ extern "C"
 /* The following must also be set in assembler files if being used  */
 
 #define AES_ENCRYPT /* if support for encryption is needed          */
-#undef  AES_DECRYPT /* if support for decryption is needed          */
+#undef  AES_Dcrypto_stream_aes256estream_e_gladman_ECRYPT /* if support for decryption is needed          */
 #undef  AES_ERR_CHK /* for parameter checks & error return codes    */
 
 #if UCHAR_MAX == 0xff                   /* an unsigned 8 bit type   */
@@ -99,7 +99,7 @@ extern "C"
 #define aes_rval    aes_ret __declspec(dllexport) _stdcall
 #endif
 
-#ifndef ECRYPT_API
+#ifndef crypto_stream_aes256estream_e_gladman_ECRYPT_API
 
 typedef struct
 {   aes_32t ks[KS_LENGTH];
@@ -142,7 +142,7 @@ aes_rval aes_encrypt_key(const unsigned char *in_key, int key_len, aes_encrypt_c
 aes_rval aes_encrypt(const unsigned char *in_blk, unsigned char *out_blk, const aes_encrypt_ctx cx[1]);
 #endif
 
-#if defined( AES_DECRYPT )
+#if defined( AES_Dcrypto_stream_aes256estream_e_gladman_ECRYPT )
 
 #if defined(AES_128) || defined(AES_VAR)
 aes_rval aes_decrypt_key128(const unsigned char *in_key, aes_decrypt_ctx cx[1]);

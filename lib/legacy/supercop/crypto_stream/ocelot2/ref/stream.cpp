@@ -9,7 +9,7 @@ int crypto_stream(
 	const unsigned char *k
 )
 {
-	Ocelot2 prng(k, crypto_stream_KEYBYTES, Ocelot2::OCELOTSize32);
+	Ocelot2 prng(k, crypto_stream_ocelot1_ref_KEYBYTES, Ocelot2::OCELOTSize32);
 	unsigned char *p=out;
 	for (unsigned long long l=0; l<outlen; l++,p++)
 	{
@@ -26,7 +26,7 @@ int crypto_stream_xor(
 	const unsigned char *k
 )
 {
-	Ocelot2 prng(k, crypto_stream_KEYBYTES, Ocelot2::OCELOTSize32);
+	Ocelot2 prng(k, crypto_stream_ocelot1_ref_KEYBYTES, Ocelot2::OCELOTSize32);
 	unsigned char rnd;
 	const unsigned char *p1=in;
 	unsigned char *p2=out;

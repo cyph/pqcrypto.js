@@ -1,1 +1,0 @@
-../../ntruhrss701/ref/poly_r2_inv.c

@@ -26,7 +26,7 @@
 
 // data
 
-.section .rodata
+.data
 
     .align 16
 PERM0246:
@@ -74,8 +74,8 @@ mslc_ntt:
   mov        rax, reg_p3 
   mov        r12, reg_p3      
   shr        r12, 4           // n/16
-  vmovdqu    ymm14, [rip+MASK12x8]
-  vmovdqu    ymm12, [rip+PERM0246]
+  vmovdqu    ymm14, MASK12x8
+  vmovdqu    ymm12, PERM0246
   mov        r14, 16
   mov        rcx, 11
 loop1:
@@ -259,7 +259,7 @@ loop6:
   jl         loop6
 
 // Stage m=256 
-  vmovdqu    ymm9, [rip+PERM02134657]
+  vmovdqu    ymm9, PERM02134657  
   shl        r9, 1
   xor        rdx, rdx         // i = 0
   xor        r10, r10         // j1 = 0
@@ -353,7 +353,7 @@ loop7:
   jl         loop7
 
 // Stage m=512
-  vmovdqu    ymm9, [rip+PERM00224466]
+  vmovdqu    ymm9, PERM00224466
   shl        r9, 1            // m = n/2 
   xor        rdx, rdx         // i = 0
   xor        r10, r10         // j1 = 0
@@ -402,8 +402,8 @@ mslc_intt:
   push       rbx
 
 // Stage m=1024
-  vmovdqu    ymm9, [rip+PERM00224466]
-  vmovdqu    ymm14, [rip+MASK12x8]
+  vmovdqu    ymm9, PERM00224466
+  vmovdqu    ymm14, MASK12x8  
   mov        r12, reg_p5           
   shr        r12, 1          // n/2 = 512
   xor        r15, r15        // i = 0
@@ -433,9 +433,9 @@ loop1b:
   jl         loop1b
   
 // Stage m=512 
-  vmovdqu    ymm9, [rip+PERM02134657]
-  vmovdqu    ymm13, [rip+PERM0145]
-  vmovdqu    ymm15, [rip+PERM2367]
+  vmovdqu    ymm9, PERM02134657
+  vmovdqu    ymm13, PERM0145
+  vmovdqu    ymm15, PERM2367   
   shr        r12, 1          // n/4 = 256
   xor        r15, r15        // i = 0
   xor        r10, r10        // j1 = 0
@@ -521,7 +521,7 @@ loop2b:
   jl         loop2b
      
 // Stage m=256 
-  vmovdqu    ymm12, [rip+PERM0246]
+  vmovdqu    ymm12, PERM0246   
   shr        r12, 1          // n/8 = 128
   xor        r15, r15        // i = 0
   xor        r10, r10        // j1 = 0
@@ -816,8 +816,8 @@ loop9b:
 //*********************************************************************** 
 .global mslc_pmuladd
 mslc_pmuladd:
-  vmovdqu    ymm5, [rip+PERM0246]
-  vmovdqu    ymm6, [rip+MASK12x8]
+  vmovdqu    ymm5, PERM0246
+  vmovdqu    ymm6, MASK12x8 
   xor        rax, rax
   mov        r11, 4
 lazo2:
@@ -857,8 +857,8 @@ lazo2:
 //*********************************************************************** 
 .global mslc_pmul
 mslc_pmul: 
-  vmovdqu    ymm5, [rip+PERM0246]
-  vmovdqu    ymm6, [rip+MASK12x8]
+  vmovdqu    ymm5, PERM0246
+  vmovdqu    ymm6, MASK12x8 
   xor        rax, rax
   mov        r11, 4
 lazo3:
@@ -896,8 +896,8 @@ lazo3:
 //*********************************************************************** 
 .global mslc_two_reduce12289
 mslc_two_reduce12289: 
-  vmovdqu    ymm6, [rip+MASK12x8]
-  vmovdqu    ymm7, [rip+PRIME8x]
+  vmovdqu    ymm6, MASK12x8 
+  vmovdqu    ymm7, PRIME8x
   xor        rax, rax
   mov        r11, 8
 lazo4:

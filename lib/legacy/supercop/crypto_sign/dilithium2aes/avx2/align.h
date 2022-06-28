@@ -1,1 +1,1 @@
-../../dilithium2/avx2/align.h
+../../dilithium3/avx2/align.h

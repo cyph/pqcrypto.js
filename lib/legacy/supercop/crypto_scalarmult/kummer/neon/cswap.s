@@ -100,7 +100,7 @@ cswap:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#0
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm: adr0 = input_0
 # asm 1: mov >adr0=int32#4,<input_0=int32#1

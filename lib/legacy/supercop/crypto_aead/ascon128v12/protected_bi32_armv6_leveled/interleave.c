@@ -1,1 +1,0 @@
-../protected_bi32_armv6/interleave.c

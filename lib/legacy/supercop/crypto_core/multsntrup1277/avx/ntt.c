@@ -1,1 +1,0 @@
-../../multsntrup761/avx/ntt.c

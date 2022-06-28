@@ -34,45 +34,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-/*
- * IMPORTANT API RULES
- * -------------------
- *
- * This API has some non-trivial usage rules:
- *
- *
- *  - All public functions (i.e. the non-static ones) must be referenced
- *    with the falcon1024dyn_avx2_ macro (e.g. falcon1024dyn_avx2_verify_raw for the verify_raw()
- *    function). That macro adds a prefix to the name, which is
- *    configurable with the FALCON_PREFIX macro. This allows compiling
- *    the code into a specific "namespace" and potentially including
- *    several versions of this code into a single application (e.g. to
- *    have an AVX2 and a non-AVX2 variants and select the one to use at
- *    runtime based on availability of AVX2 opcodes).
- *
- *  - Functions that need temporary buffers expects them as a final
- *    tmp[] array of type uint8_t*, with a size which is documented for
- *    each function. However, most have some alignment requirements,
- *    because they will use the array to store 16-bit, 32-bit or 64-bit
- *    values (e.g. uint64_t or double). The caller must ensure proper
- *    alignment. What happens on unaligned access depends on the
- *    underlying architecture, ranging from a slight time penalty
- *    to immediate termination of the process.
- *
- *  - Some functions rely on specific rounding rules and precision for
- *    floating-point numbers. On some systems (in particular 32-bit x86
- *    with the 387 FPU), this requires setting an hardware control
- *    word. The caller MUST use set_fpu_cw() to ensure proper precision:
- *
- *      oldcw = set_fpu_cw(2);
- *      falcon1024dyn_avx2_sign_dyn(...);
- *      set_fpu_cw(oldcw);
- *
- *    On systems where the native floating-point precision is already
- *    proper, or integer-based emulation is used, the set_fpu_cw()
- *    function does nothing, so it can be called systematically.
- */
-
 #define FALCON_FPEMU          0
 #define FALCON_FPNATIVE       1
 #define FALCON_ASM_CORTEXM4   0
@@ -220,6 +181,9 @@
 #ifndef FALCON_KG_CHACHA20
 #define FALCON_KG_CHACHA20   0
 #endif
+#ifndef FALCON_CT_HASH
+#define FALCON_CT_HASH   0
+#endif
 
 
 /*
@@ -311,7 +275,7 @@ set_fpu_cw(unsigned x)
  * SHAKE256 implementation (shake.c).
  *
  * API is defined to be easily replaced with the fips202.h API defined
- * as part of PQClean.
+ * as part of PQ Clean.
  */
 
 typedef struct {
@@ -320,21 +284,17 @@ typedef struct {
 		uint8_t dbuf[200];
 	} st;
 	uint64_t dptr;
-} inner_shake256_context;
+} shake256_context;
 
-#define inner_shake256_init      falcon1024dyn_avx2_i_shake256_init
-#define inner_shake256_inject    falcon1024dyn_avx2_i_shake256_inject
-#define inner_shake256_flip      falcon1024dyn_avx2_i_shake256_flip
-#define inner_shake256_extract   falcon1024dyn_avx2_i_shake256_extract
+#define shake256_init      falcon1024dyn_avx2_i_shake256_init
+#define shake256_inject    falcon1024dyn_avx2_i_shake256_inject
+#define shake256_flip      falcon1024dyn_avx2_i_shake256_flip
+#define shake256_extract   falcon1024dyn_avx2_i_shake256_extract
 
-void falcon1024dyn_avx2_i_shake256_init(
-	inner_shake256_context *sc);
-void falcon1024dyn_avx2_i_shake256_inject(
-	inner_shake256_context *sc, const uint8_t *in, size_t len);
-void falcon1024dyn_avx2_i_shake256_flip(
-	inner_shake256_context *sc);
-void falcon1024dyn_avx2_i_shake256_extract(
-	inner_shake256_context *sc, uint8_t *out, size_t len);
+void falcon1024dyn_avx2_i_shake256_init(shake256_context *sc);
+void falcon1024dyn_avx2_i_shake256_inject(shake256_context *sc, const uint8_t *in, size_t len);
+void falcon1024dyn_avx2_i_shake256_flip(shake256_context *sc);
+void falcon1024dyn_avx2_i_shake256_extract(shake256_context *sc, uint8_t *out, size_t len);
 
 /*
  */
@@ -419,22 +379,9 @@ extern const uint8_t falcon1024dyn_avx2_max_sig_bits[];
 
 /*
  * From a SHAKE256 context (must be already flipped), produce a new
- * point. This is the non-constant-time version, which may leak enough
- * information to serve as a stop condition on a brute force attack on
- * the hashed message (provided that the nonce value is known).
- */
-void falcon1024dyn_avx2_hash_to_point_vartime(inner_shake256_context *sc,
-	uint16_t *x, unsigned logn);
-
-/*
- * From a SHAKE256 context (must be already flipped), produce a new
  * point. The temporary buffer (tmp) must have room for 2*2^logn bytes.
- * This function is constant-time but is typically more expensive than
- * falcon1024dyn_avx2_hash_to_point_vartime().
- *
- * tmp[] must have 16-bit alignment.
  */
-void falcon1024dyn_avx2_hash_to_point_ct(inner_shake256_context *sc,
+void falcon1024dyn_avx2_hash_to_point(shake256_context *sc,
 	uint16_t *x, unsigned logn, uint8_t *tmp);
 
 /*
@@ -476,8 +423,6 @@ void falcon1024dyn_avx2_to_ntt_monty(uint16_t *h, unsigned logn);
  *   logn      is the degree log
  *   tmp[]     temporary, must have at least 2*2^logn bytes
  * Returned value is 1 on success, 0 on error.
- *
- * tmp[] must have 16-bit alignment.
  */
 int falcon1024dyn_avx2_verify_raw(const uint16_t *c0, const int16_t *s2,
 	const uint16_t *h, unsigned logn, uint8_t *tmp);
@@ -489,7 +434,6 @@ int falcon1024dyn_avx2_verify_raw(const uint16_t *c0, const int16_t *s2,
  * reported if f is not invertible mod phi mod q).
  *
  * The tmp[] array must have room for at least 2*2^logn elements.
- * tmp[] must have 16-bit alignment.
  */
 int falcon1024dyn_avx2_compute_public(uint16_t *h,
 	const int8_t *f, const int8_t *g, unsigned logn, uint8_t *tmp);
@@ -503,51 +447,9 @@ int falcon1024dyn_avx2_compute_public(uint16_t *h,
  * The tmp[] array must have room for at least 4*2^logn bytes.
  *
  * Returned value is 1 in success, 0 on error (f not invertible).
- * tmp[] must have 16-bit alignment.
  */
 int falcon1024dyn_avx2_complete_private(int8_t *G,
 	const int8_t *f, const int8_t *g, const int8_t *F,
-	unsigned logn, uint8_t *tmp);
-
-/*
- * Test whether a given polynomial is invertible modulo phi and q.
- * Polynomial coefficients are small integers.
- *
- * tmp[] must have 16-bit alignment.
- */
-int falcon1024dyn_avx2_is_invertible(
-	const int16_t *s2, unsigned logn, uint8_t *tmp);
-
-/*
- * Count the number of elements of value zero in the NTT representation
- * of the given polynomial: this is the number of primitive 2n-th roots
- * of unity (modulo q = 12289) that are roots of the provided polynomial
- * (taken modulo q).
- *
- * tmp[] must have 16-bit alignment.
- */
-int falcon1024dyn_avx2_count_nttzero(int16_t *sig, unsigned logn, uint8_t *tmp);
-
-/*
- * Internal signature verification with public key recovery:
- *   h[]       receives the public key (NOT in NTT/Montgomery format)
- *   c0[]      contains the hashed nonce+message
- *   s1[]      is the first signature half
- *   s2[]      is the second signature half
- *   logn      is the degree log
- *   tmp[]     temporary, must have at least 2*2^logn bytes
- * Returned value is 1 on success, 0 on error. Success is returned if
- * the signature is a short enough vector; in that case, the public
- * key has been written to h[]. However, the caller must still
- * verify that h[] is the correct value (e.g. with regards to a known
- * hash of the public key).
- *
- * h[] may not overlap with any of the other arrays.
- *
- * tmp[] must have 16-bit alignment.
- */
-int falcon1024dyn_avx2_verify_recover(uint16_t *h,
-	const uint16_t *c0, const int16_t *s1, const int16_t *s2,
 	unsigned logn, uint8_t *tmp);
 
 /* ==================================================================== */
@@ -695,7 +597,7 @@ typedef struct {
  * Instantiate a PRNG. That PRNG will feed over the provided SHAKE256
  * context (in "flipped" state) to obtain its initial state.
  */
-void falcon1024dyn_avx2_prng_init(prng *p, inner_shake256_context *src);
+void falcon1024dyn_avx2_prng_init(prng *p, shake256_context *src);
 
 /*
  * Refill the PRNG buffer. This is normally invoked automatically, and
@@ -918,9 +820,6 @@ void falcon1024dyn_avx2_poly_merge_fft(fpr *restrict f,
 
 /*
  * Required sizes of the temporary buffer (in bytes).
- *
- * This size is 28*2^logn bytes, except for degrees 2 and 4 (logn = 1
- * or 2) where it is slightly greater.
  */
 #define FALCON_KEYGEN_TEMP_1      136
 #define FALCON_KEYGEN_TEMP_2      272
@@ -943,11 +842,8 @@ void falcon1024dyn_avx2_poly_merge_fft(fpr *restrict f,
  * public key is written in h. Either or both of G and h may be NULL,
  * in which case the corresponding element is not returned (they can
  * be recomputed from f, g and F).
- *
- * tmp[] must have 64-bit alignment.
- * This function uses floating-point rounding (see set_fpu_cw()).
  */
-void falcon1024dyn_avx2_keygen(inner_shake256_context *rng,
+void falcon1024dyn_avx2_keygen(shake256_context *rng,
 	int8_t *f, int8_t *g, int8_t *F, int8_t *G, uint16_t *h,
 	unsigned logn, uint8_t *tmp);
 
@@ -962,9 +858,6 @@ void falcon1024dyn_avx2_keygen(inner_shake256_context *rng,
  * a total of (8*logn+40)*2^logn bytes.
  *
  * The tmp[] array must have room for at least 48*2^logn bytes.
- *
- * tmp[] must have 64-bit alignment.
- * This function uses floating-point rounding (see set_fpu_cw()).
  */
 void falcon1024dyn_avx2_expand_privkey(fpr *restrict expanded_key,
 	const int8_t *f, const int8_t *g, const int8_t *F, const int8_t *G,
@@ -977,15 +870,9 @@ void falcon1024dyn_avx2_expand_privkey(fpr *restrict expanded_key,
  *
  * The sig[] and hm[] buffers may overlap.
  *
- * On successful output, the start of the tmp[] buffer contains the s1
- * vector (as int16_t elements).
- *
  * The minimal size (in bytes) of tmp[] is 48*2^logn bytes.
- *
- * tmp[] must have 64-bit alignment.
- * This function uses floating-point rounding (see set_fpu_cw()).
  */
-void falcon1024dyn_avx2_sign_tree(int16_t *sig, inner_shake256_context *rng,
+void falcon1024dyn_avx2_sign_tree(int16_t *sig, shake256_context *rng,
 	const fpr *restrict expanded_key,
 	const uint16_t *hm, unsigned logn, uint8_t *tmp);
 
@@ -998,48 +885,12 @@ void falcon1024dyn_avx2_sign_tree(int16_t *sig, inner_shake256_context *rng,
  *
  * The sig[] and hm[] buffers may overlap.
  *
- * On successful output, the start of the tmp[] buffer contains the s1
- * vector (as int16_t elements).
- *
  * The minimal size (in bytes) of tmp[] is 72*2^logn bytes.
- *
- * tmp[] must have 64-bit alignment.
- * This function uses floating-point rounding (see set_fpu_cw()).
  */
-void falcon1024dyn_avx2_sign_dyn(int16_t *sig, inner_shake256_context *rng,
+void falcon1024dyn_avx2_sign_dyn(int16_t *sig, shake256_context *rng,
 	const int8_t *restrict f, const int8_t *restrict g,
 	const int8_t *restrict F, const int8_t *restrict G,
 	const uint16_t *hm, unsigned logn, uint8_t *tmp);
-
-/*
- * Internal sampler engine. Exported for tests.
- *
- * sampler_context wraps around a source of random numbers (PRNG) and
- * the sigma_min value (nominally dependent on the degree).
- *
- * sampler() takes as parameters:
- *   ctx      pointer to the sampler_context structure
- *   mu       center for the distribution
- *   isigma   inverse of the distribution standard deviation
- * It returns an integer sampled along the Gaussian distribution centered
- * on mu and of standard deviation sigma = 1/isigma.
- *
- * gaussian0_sampler() takes as parameter a pointer to a PRNG, and
- * returns an integer sampled along a half-Gaussian with standard
- * deviation sigma0 = 1.8205 (center is 0, returned value is
- * nonnegative).
- */
-
-typedef struct {
-	prng p;
-	fpr sigma_min;
-} sampler_context;
-
-TARGET_AVX2
-int falcon1024dyn_avx2_sampler(void *ctx, fpr mu, fpr isigma);
-
-TARGET_AVX2
-int falcon1024dyn_avx2_gaussian0_sampler(prng *p);
 
 /* ==================================================================== */
 

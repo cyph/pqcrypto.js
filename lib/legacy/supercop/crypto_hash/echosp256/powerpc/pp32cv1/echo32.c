@@ -723,7 +723,7 @@ HashReturn Hash(unsigned int hashbitlen, const BitSequence *data, DataLength dat
   return Final(&state, hashval); 
 }
 
-int CRYPTO_NAMESPACETOP(unsigned char *out,const unsigned char *in,unsigned long long inlen)
+int crypto_hash_echosp256_powerpc_pp32cv1(unsigned char *out,const unsigned char *in,unsigned long long inlen)
 {
   if (Hash(CRYPTO_BYTES * 8,in,inlen * 8,out) == SUCCESS) return 0;
   return -1;

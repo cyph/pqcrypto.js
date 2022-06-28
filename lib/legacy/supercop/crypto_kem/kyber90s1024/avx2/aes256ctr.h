@@ -1,1 +1,1 @@
-../../kyber90s512/avx2/aes256ctr.h
+../../kyber90s768/avx2/aes256ctr.h

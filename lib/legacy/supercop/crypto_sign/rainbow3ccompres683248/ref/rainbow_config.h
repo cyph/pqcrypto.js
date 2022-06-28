@@ -1,1 +1,0 @@
-../../rainbow3cclassic683248/ref/rainbow_config.h

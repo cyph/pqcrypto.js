@@ -1,4 +1,4 @@
-#define chacha_fn CRYPTO_NAMESPACE(chacha)
+#define chacha_fn chacha_ssse3
 
 #include "crypto_stream.h"
 #include <stddef.h>

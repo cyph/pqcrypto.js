@@ -4,16 +4,15 @@
  */
 
 
-#ifndef API_H
-#define API_H
+
+
 
 #define CRYPTO_ALGNAME "RQC-256"
 
-#define CRYPTO_SECRETKEYBYTES 4130
-#define CRYPTO_PUBLICKEYBYTES 4090
+#define CRYPTO_SECRETKEYBYTES 2324
+#define CRYPTO_PUBLICKEYBYTES 2284
 #define CRYPTO_BYTES 64
-#define CRYPTO_CIPHERTEXTBYTES 8164
-
+#define CRYPTO_CIPHERTEXTBYTES 4552
 
 // As a technicality, the public key is appended to the secret key in order to respect the NIST API. 
 // Without this constraint, CRYPTO_SECRETKEYBYTES would be defined as 40
@@ -23,5 +22,5 @@ int crypto_kem_keypair(unsigned char* pk, unsigned char* sk);
 int crypto_kem_enc(unsigned char* ct, unsigned char* ss, const unsigned char* pk);
 int crypto_kem_dec(unsigned char* ss, const unsigned char* ct, const unsigned char* sk);
 
-#endif
+
 

@@ -1,7 +1,7 @@
-/*-------------------------------------------------------------------------
-/ OCB (RFC 7253) Reference Code (Optimized C)     Last modified 25-JUN-2019
-/--------------------------------------------------------------------------
-/ Copyright (c) 2019 Ted Krovetz.
+/*------------------------------------------------------------------------
+/ CAESAR OCB Version 3 Reference Code (Optimized C)   Modified 15-OCT-2015
+/-------------------------------------------------------------------------
+/ Copyright (c) 2015 Ted Krovetz.
 /
 / Permission to use, copy, modify, and/or distribute this software for any
 / purpose with or without fee is hereby granted, provided that the above
@@ -24,52 +24,40 @@
 /------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------- */
-/* Usage and implementation notes                                                             */
+/* Usage notes                                                             */
 /* ----------------------------------------------------------------------- */
 
-/* Usage notes:
-/  - This implementation is intended for maximum speed using C (and intrinsics).
-/  - Unsupported OCB features: 192-bit keys and nonces other than 12-bytes.
-/  - Pointer alignment: loadu/storeu is used on SSE registers, but no other
-/    support is given for unaligned pointers. On many systems this is not a
-/    problem, but if your system cares, you should ensure aligned pointers.
-/  - When AE_PENDING is passed as the 'final' parameter of any function,
-/    the length parameters must be a multiple of BPI*16 (64 or 128 bytes).
+/* - When AE_PENDING is passed as the 'final' parameter of any function,
+/    the length parameters must be a multiple of (BPI*16).
+/  - When available, SSE or AltiVec registers are used to manipulate data.
+/    So, when on machines with these facilities, all pointers passed to
+/    any function should be 16-byte aligned.
 /  - Plaintext and ciphertext pointers may be equal (ie, plaintext gets
-/    encrypted in-place), but no other pointers may be equal or overlap.
-/  - On systems with AES-NI or ARMv8 AES, this implementation uses those. On
-/    other systems OpenSSL AES is used (so compile with its crypto library). A
-/    slower reference AES is also supported (see below).
-/
-/  Implementation notes:
-/  - If either of the compiler predefined macros __SSE2__ or __ARM_NEON are
-/    set then 128-bit SIMD registers are used.
-/  - If either of the compiler predefined macros __ARM_FEATURE_CRYPTO or
-/    __AES__ are set then hardware AES is used.
-/  - When _MSC_VER is set on an x86 or x64 system, __AES__, __SSE2__, and
-/    __SSSE3__ are assumed to be true. Alter these #defines if they are wrong.
-/  - This code uses loadu/storeu with SSE registers, but does native reads and
-/    writes of NEON registers and of type uint64_t, so if such reads and writes
-/    are a problem for your system, ensure pointers are properly aligned.
-/  - This code was developed on little-endian ARM and x86 systems using gcc,
-/    and has only been lightly tested on big-endian or Microsoft C.
-*/
+/    encrypted in-place), but no other pair of pointers may be equal.
+/  - This code assumes all x86 processors have SSE2 and SSSE3 instructions
+/    when compiling under MSVC. If untrue, alter the #define.
+/  - This code is tested for C99 and recent versions of GCC and MSVC.      */
 
 /* ----------------------------------------------------------------------- */
 /* User configuration options                                              */
 /* ----------------------------------------------------------------------- */
 
+#include "api.h"
+#include "crypto_aead.h"
+
 /* Set the AES key length to use and length of authentication tag to produce.
 /  Setting either to 0 requires the value be set at runtime via ae_init().
 /  Some optimizations occur for each when set to a fixed value.            */
-#define OCB_KEY_LEN         32  /* 0, 16 or 32. 0 means set in ae_init     */
-#define OCB_TAG_LEN         16  /* 0 to 16. 0 means set in ae_init         */
+#define OCB_KEY_LEN         CRYPTO_KEYBYTES  /* 0, 16, 24 or 32            */
+#define OCB_TAG_LEN         16
 
-/* This implementation uses AES intrinsics if any of the macros __AES__,   */
-/* __ARM_FEATURE_CRYPTO, or __ARM_FEATURE_AES are non-zero. The default    */
-/* alternative is to use OpenSSL, which can be overridden by setting the   */
-/* following to zero and compiling along with "rijndael-alg-fst.c".        */
-#define OPENSSL_IS_AES_BACKUP    1
+/* This implementation has built-in support for multiple AES APIs. Set any
+/  one of the following to non-zero to specify which to use.               */
+#if __AES__
+#define USE_AES_NI           1  /* Uses compiler's intrinsics              */
+#else
+#define USE_OPENSSL_AES      1  /* http://openssl.org                      */
+#endif
 
 /* During encryption and decryption, various "L values" are required.
 /  The L values can be precomputed during initialization (requiring extra
@@ -92,41 +80,43 @@
 #include "ae.h"
 #include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
+
+/* Define standard sized integers                                          */
+#if defined(_MSC_VER) && (_MSC_VER < 1600)
+	typedef unsigned __int8  uint8_t;
+	typedef unsigned __int32 uint32_t;
+	typedef unsigned __int64 uint64_t;
+	typedef          __int64 int64_t;
+#else
+	#include <stdint.h>
+#endif
 
 /* Compiler-specific intrinsics and fixes: bswap64, ntz                    */
 #if _MSC_VER
-
 	#define inline __inline        /* MSVC doesn't recognize "inline" in C */
-    #define __SSE2__   (_M_IX86 || _M_AMD64 || _M_X64)    /* Assume SSE2   */
-    #define __SSSE3__  (_M_IX86 || _M_AMD64 || _M_X64)    /* Assume SSSE3  */
-    #define __AES__  (_M_IX86 || _M_AMD64 || _M_X64)      /* Assume AES-NI */
+	#define restrict __restrict  /* MSVC doesn't recognize "restrict" in C */
+    #define __SSE2__   (_M_IX86 || _M_AMD64 || _M_X64)    /* Assume SSE2  */
+    #define __SSSE3__  (_M_IX86 || _M_AMD64 || _M_X64)    /* Assume SSSE3 */
 	#include <intrin.h>
-	#include <malloc.h>
 	#pragma intrinsic(_byteswap_uint64, _BitScanForward, memcpy)
 	#define bswap64(x) _byteswap_uint64(x)
-	static inline unsigned ntz(unsigned long x){_BitScanForward(&x,x);return x;}
-	
+	static inline unsigned ntz(unsigned x) {_BitScanForward(&x,x);return x;}
 #elif __GNUC__
-
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
-
 	#define inline __inline__            /* No "inline" in GCC ansi C mode */
+	#define restrict __restrict__      /* No "restrict" in GCC ansi C mode */
 	#define bswap64(x) __builtin_bswap64(x)           /* Assuming GCC 4.3+ */
 	#define ntz(x)     __builtin_ctz((unsigned)(x))   /* Assuming GCC 3.4+ */
+#else              /* Assume some C99 features: stdint.h, inline, restrict */
+	#define bswap32(x)                                              \
+	   ((((x) & 0xff000000u) >> 24) | (((x) & 0x00ff0000u) >>  8) | \
+		(((x) & 0x0000ff00u) <<  8) | (((x) & 0x000000ffu) << 24))
 
-#else                        /* Assume some C99 features: stdint.h, inline */
-
-    static inline uint64_t bswap64(uint64_t x) {
-        return ((x & UINT64_C(0xFF00000000000000)) >> 56) |
-               ((x & UINT64_C(0x00FF000000000000)) >> 40) |
-               ((x & UINT64_C(0x0000FF0000000000)) >> 24) |
-               ((x & UINT64_C(0x000000FF00000000)) >>  8) |
-               ((x & UINT64_C(0x00000000FF000000)) <<  8) |      
-               ((x & UINT64_C(0x0000000000FF0000)) << 24) |
-               ((x & UINT64_C(0x000000000000FF00)) << 40) |
-               ((x & UINT64_C(0x00000000000000FF)) << 56);
+	 static inline uint64_t bswap64(uint64_t x) {
+		union { uint64_t u64; uint32_t u32[2]; } in, out;
+		in.u64 = x;
+		out.u32[0] = bswap32(in.u32[1]);
+		out.u32[1] = bswap32(in.u32[0]);
+		return out.u64;
 	}
 
 	#if (L_TABLE_SZ <= 9) && (L_TABLE_SZ_IS_ENOUGH)   /* < 2^13 byte texts */
@@ -146,7 +136,6 @@
 		return tz_table[((uint32_t)((x & -x) * 0x077CB531u)) >> 27];
 	}
 	#endif
-
 #endif
 
 /* ----------------------------------------------------------------------- */
@@ -154,13 +143,15 @@
 /* ----------------------------------------------------------------------- */
 
 #if __SSE2__
-
-    #include <immintrin.h>
+    #include <xmmintrin.h>              /* SSE instructions and _mm_malloc */
+    #include <emmintrin.h>              /* SSE2 instructions               */
     typedef __m128i block;
-    #define xor_block(x,y)       _mm_xor_si128(x,y)
-    #define zero_block()         _mm_setzero_si128()
-    #define unequal_blocks(x,y) (_mm_movemask_epi8(_mm_cmpeq_epi8(x,y))!=0xffff)
-	#if __SSSE3__
+    #define xor_block(x,y)        _mm_xor_si128(x,y)
+    #define zero_block()          _mm_setzero_si128()
+    #define unequal_blocks(x,y) \
+    					   (_mm_movemask_epi8(_mm_cmpeq_epi8(x,y)) != 0xffff)
+	#if __SSSE3__ || USE_AES_NI
+    #include <tmmintrin.h>              /* SSSE3 instructions              */
     #define swap_if_le(b) \
       _mm_shuffle_epi8(b,_mm_set_epi8(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15))
 	#else
@@ -177,7 +168,7 @@
 		__m128i lshift = _mm_cvtsi32_si128(bot);
 		__m128i rshift = _mm_cvtsi32_si128(64-bot);
 		lo = _mm_xor_si128(_mm_sll_epi64(hi,lshift),_mm_srl_epi64(lo,rshift));
-		#if __SSSE3__
+		#if __SSSE3__ || USE_AES_NI
 		return _mm_shuffle_epi8(lo,_mm_set_epi8(8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7));
 		#else
 		return swap_if_le(_mm_shuffle_epi32(lo, _MM_SHUFFLE(1,0,3,2)));
@@ -191,20 +182,66 @@
 		bl = _mm_slli_epi32(bl, 1);
 		return _mm_xor_si128(bl,tmp);
 	}
-	#define load(p)               _mm_loadu_si128((__m128i *)(p))
-	#define store(p,x)            _mm_storeu_si128((__m128i *)(p),x)
-
-#elif __ARM_NEON || __ARM_NEON__
-
+#elif __ALTIVEC__
+    #include <altivec.h>
+    typedef vector unsigned block;
+    #define xor_block(x,y)         vec_xor(x,y)
+    #define zero_block()           vec_splat_u32(0)
+    #define unequal_blocks(x,y)    vec_any_ne(x,y)
+    #define swap_if_le(b)          (b)
+	#if __PPC64__
+	block gen_offset(uint64_t KtopStr[3], unsigned bot) {
+		union {uint64_t u64[2]; block bl;} rval;
+		rval.u64[0] = (KtopStr[0] << bot) | (KtopStr[1] >> (64-bot));
+		rval.u64[1] = (KtopStr[1] << bot) | (KtopStr[2] >> (64-bot));
+        return rval.bl;
+	}
+	#else
+	/* Special handling: Shifts are mod 32, and no 64-bit types */
+	block gen_offset(uint64_t KtopStr[3], unsigned bot) {
+		const vector unsigned k32 = {32,32,32,32};
+		vector unsigned hi = *(vector unsigned *)(KtopStr+0);
+		vector unsigned lo = *(vector unsigned *)(KtopStr+2);
+		vector unsigned bot_vec;
+		if (bot < 32) {
+			lo = vec_sld(hi,lo,4);
+		} else {
+			vector unsigned t = vec_sld(hi,lo,4);
+			lo = vec_sld(hi,lo,8);
+			hi = t;
+			bot = bot - 32;
+		}
+		if (bot == 0) return hi;
+		*(unsigned *)&bot_vec = bot;
+		vector unsigned lshift = vec_splat(bot_vec,0);
+		vector unsigned rshift = vec_sub(k32,lshift);
+		hi = vec_sl(hi,lshift);
+		lo = vec_sr(lo,rshift);
+		return vec_xor(hi,lo);
+	}
+	#endif
+	static inline block double_block(block b) {
+		const vector unsigned char mask = {135,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+		const vector unsigned char perm = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0};
+		const vector unsigned char shift7  = vec_splat_u8(7);
+		const vector unsigned char shift1  = vec_splat_u8(1);
+		vector unsigned char c = (vector unsigned char)b;
+		vector unsigned char t = vec_sra(c,shift7);
+		t = vec_and(t,mask);
+		t = vec_perm(t,t,perm);
+		c = vec_sl(c,shift1);
+		return (block)vec_xor(c,t);
+	}
+#elif __ARM_NEON__
     #include <arm_neon.h>
-    typedef uint32x4_t block;
-    #define xor_block(x,y)             veorq_u32(x,y)
-    #define zero_block()               ((block){0})
+    typedef int8x16_t block;      /* Yay! Endian-neutral reads! */
+    #define xor_block(x,y)             veorq_s8(x,y)
+    #define zero_block()               vdupq_n_s8(0)
     static inline int unequal_blocks(block a, block b) {
 		int64x2_t t=veorq_s64((int64x2_t)a,(int64x2_t)b);
 		return (vgetq_lane_s64(t,0)|vgetq_lane_s64(t,1))!=0;
     }
-    #define swap_if_le(b)              (b)
+    #define swap_if_le(b)          (b)  /* Using endian-neutral int8x16_t */
 	/* KtopStr is reg correct by 64 bits, return mem correct */
 	block gen_offset(uint64_t KtopStr[3], unsigned bot) {
 		const union { unsigned x; unsigned char endian; } little = { 1 };
@@ -215,22 +252,19 @@
 		int64x2_t rs = vqaddq_s64(k64,ls);
 		block rval = (block)veorq_u64(vshlq_u64(hi,ls),vshlq_u64(lo,rs));
 		if (little.endian)
-			rval = (block)vrev64q_s8((int8x16_t)rval);
+			rval = vrev64q_s8(rval);
 		return rval;
 	}
 	static inline block double_block(block b)
 	{
-		const int8x16_t mask = {-121,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
-		int8x16_t tmp = vshrq_n_s8((int8x16_t)b,7);
+		const block mask = {-121,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; /* Tnx Pasi */
+		block tmp = vshrq_n_s8(b,7);
 		tmp = vandq_s8(tmp, mask);
 		tmp = vextq_s8(tmp, tmp, 1);  /* Rotate high byte to end */
-		return (block)veorq_s8(tmp,vshlq_n_s8((int8x16_t)b,1));
+		b = vshlq_n_s8(b,1);
+		return veorq_s8(tmp,b);
 	}
-	#define load(p)               (*(block *)(p))
-	#define store(p,x)            (*(block *)(p)) = (block)(x)
-
 #else
-
     typedef struct { uint64_t l,r; } block;
     static inline block xor_block(block x, block y) {
     	x.l^=y.l; x.r^=y.r; return x;
@@ -280,30 +314,86 @@
 		return b;
 	}
 	#endif
-	#define load(p)               (*(block *)(p))
-	#define store(p,x)            (*(block *)(p)) = (block)(x)
 
 #endif
 
 /* ----------------------------------------------------------------------- */
-/* AES 128 and 256 - Uses intrinsics if available or OpenSSL.              */
+/* AES - Code uses OpenSSL API. Other implementations get mapped to it.    */
 /* ----------------------------------------------------------------------- */
 
-#define USE_AES_INTRINSICS (__AES__||__ARM_FEATURE_CRYPTO||__ARM_FEATURE_AES)
+/*---------------*/
+#if USE_OPENSSL_AES
+/*---------------*/
 
-/* ------------------------------------------------------------------------- */
-#if USE_AES_INTRINSICS
-/* ------------------------------------------------------------------------- */
+#include <openssl/aes.h>                            /* http://openssl.org/ */
 
-/* ------------------------------------------------------------------------- */
-#if __AES__
-/* ------------------------------------------------------------------------- */
+/* How to ECB encrypt an array of blocks, in place                         */
+static inline void AES_ecb_encrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
+	while (nblks) {
+		--nblks;
+		AES_encrypt((unsigned char *)(blks+nblks), (unsigned char *)(blks+nblks), key);
+	}
+}
 
-#define enc_rnd(b,k)          _mm_aesenc_si128(b,k)
-#define enc_last(b,k)         _mm_aesenclast_si128(b,k)
-#define dec_rnd(b,k)          _mm_aesdec_si128(b,k)
-#define dec_last(b,k)         _mm_aesdeclast_si128(b,k)
-#define aes_imc(k)            _mm_aesimc_si128(k)
+static inline void AES_ecb_decrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
+	while (nblks) {
+		--nblks;
+		AES_decrypt((unsigned char *)(blks+nblks), (unsigned char *)(blks+nblks), key);
+	}
+}
+
+#define BPI 4  /* Number of blocks in buffer per ECB call */
+
+/*-------------------*/
+#elif USE_REFERENCE_AES
+/*-------------------*/
+
+#include "rijndael-alg-fst.h"              /* Barreto's Public-Domain Code */
+#if (OCB_KEY_LEN == 0)
+	typedef struct { uint32_t rd_key[60]; int rounds; } AES_KEY;
+	#define ROUNDS(ctx) ((ctx)->rounds)
+	#define AES_set_encrypt_key(x, y, z) \
+	 do {rijndaelKeySetupEnc((z)->rd_key, x, y); (z)->rounds = y/32+6;} while (0)
+	#define AES_set_decrypt_key(x, y, z) \
+	 do {rijndaelKeySetupDec((z)->rd_key, x, y); (z)->rounds = y/32+6;} while (0)
+#else
+	typedef struct { uint32_t rd_key[OCB_KEY_LEN+28]; } AES_KEY;
+	#define ROUNDS(ctx) (6+OCB_KEY_LEN/4)
+	#define AES_set_encrypt_key(x, y, z) rijndaelKeySetupEnc((z)->rd_key, x, y)
+	#define AES_set_decrypt_key(x, y, z) rijndaelKeySetupDec((z)->rd_key, x, y)
+#endif
+#define AES_encrypt(x,y,z) rijndaelEncrypt((z)->rd_key, ROUNDS(z), x, y)
+#define AES_decrypt(x,y,z) rijndaelDecrypt((z)->rd_key, ROUNDS(z), x, y)
+
+static void AES_ecb_encrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
+	while (nblks) {
+		--nblks;
+		AES_encrypt((unsigned char *)(blks+nblks), (unsigned char *)(blks+nblks), key);
+	}
+}
+
+ void AES_ecb_decrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
+	while (nblks) {
+		--nblks;
+		AES_decrypt((unsigned char *)(blks+nblks), (unsigned char *)(blks+nblks), key);
+	}
+}
+
+#define BPI 4  /* Number of blocks in buffer per ECB call */
+
+/*----------*/
+#elif USE_AES_NI
+/*----------*/
+
+#include <wmmintrin.h>
+
+#if (OCB_KEY_LEN == 0)
+	typedef struct { __m128i rd_key[15]; int rounds; } AES_KEY;
+	#define ROUNDS(ctx) ((ctx)->rounds)
+#else
+	typedef struct { __m128i rd_key[7+OCB_KEY_LEN/4]; } AES_KEY;
+	#define ROUNDS(ctx) (6+OCB_KEY_LEN/4)
+#endif
 
 #define EXPAND_ASSIST(v1,v2,v3,v4,shuff_const,aes_const)                    \
     v2 = _mm_aeskeygenassist_si128(v4,aes_const);                           \
@@ -316,60 +406,25 @@
     v2 = _mm_shuffle_epi32(v2,shuff_const);                                 \
     v1 = _mm_xor_si128(v1,v2)
 
-/* ------------------------------------------------------------------------- */
-#elif __ARM_FEATURE_CRYPTO || __ARM_FEATURE_AES
-/* ------------------------------------------------------------------------- */
+#define EXPAND192_STEP(idx,aes_const)                                       \
+    EXPAND_ASSIST(x0,x1,x2,x3,85,aes_const);                                \
+    x3 = _mm_xor_si128(x3,_mm_slli_si128 (x3, 4));                          \
+    x3 = _mm_xor_si128(x3,_mm_shuffle_epi32(x0, 255));                      \
+    kp[idx] = _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(tmp),        \
+                                              _mm_castsi128_ps(x0), 68));   \
+    kp[idx+1] = _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(x0),       \
+                                                _mm_castsi128_ps(x3), 78)); \
+    EXPAND_ASSIST(x0,x1,x2,x3,85,(aes_const*2));                            \
+    x3 = _mm_xor_si128(x3,_mm_slli_si128 (x3, 4));                          \
+    x3 = _mm_xor_si128(x3,_mm_shuffle_epi32(x0, 255));                      \
+    kp[idx+2] = x0; tmp = x3
 
-#define enc_rnd(b,k)   (block)vaesmcq_u8(vaeseq_u8((uint8x16_t)b,(uint8x16_t)k))
-#define enc_last(b,k)  (block)vaeseq_u8((uint8x16_t)b,(uint8x16_t)k)
-#define dec_rnd(b,k)   (block)vaesimcq_u8(vaesdq_u8((uint8x16_t)b,(uint8x16_t)k))
-#define dec_last(b,k)  (block)vaesdq_u8((uint8x16_t)b,(uint8x16_t)k)
-#define aes_imc(k)     (block)vaesimcq_u8((uint8x16_t)k)
-
-/* The following function is based on code from Michael Brase's blog         */
-static inline block _mm_aeskeygenassist_si128 (block in, const int rcon)
-{   /* AESE does ShiftRows and SubBytes. */
-    uint8x16_t a = vaeseq_u8((uint8x16_t)in, (uint8x16_t){0});
-    return xor_block(((block)(uint8x16_t){
-        /* Undo ShiftRows step from AESE and extract X1 and X3 */
-        a[0x4], a[0x1], a[0xE], a[0xB], /* SubBytes(X1)        */
-        a[0x1], a[0xE], a[0xB], a[0x4], /* ROT(SubBytes(X1))   */
-        a[0xC], a[0x9], a[0x6], a[0x3], /* SubBytes(X3)        */
-        a[0x9], a[0x6], a[0x3], a[0xC], /* ROT(SubBytes(X3))   */
-    }), ((block)(uint32x4_t){0, (unsigned)rcon, 0, (unsigned)rcon}));
-}
-
-#define EXPAND_ASSIST(v1,v2,v3,v4,i,aes_const)          \
-    v2 = _mm_aeskeygenassist_si128(v4,aes_const);                 \
-    v3 = (uint32x4_t){v3[0],v3[0],v1[1],v1[0]};                   \
-    v1 = xor_block(v1, v3);                                       \
-    v3 = (uint32x4_t){v3[0],v3[3],v1[0],v1[2]};                   \
-    v1 = xor_block(v1, v3);                                       \
-    v1 = xor_block(v1, ((uint32x4_t){v2[i&3],v2[i&3],v2[i&3],v2[i&3]}))
-
-/* ------------------------------------------------------------------------- */
-#endif                                          /* x86 or ARM AES intrinsics */
-/* ------------------------------------------------------------------------- */
-
-#if (OCB_KEY_LEN == 32)                 /* Set number of blocks per ECB call */
-#define BPI 4                           /* 4 helps with register pressure    */
-#else
-#define BPI 8
-#endif
-
-#if (OCB_KEY_LEN == 0)
-    typedef struct { block rd_key[15]; int rounds; } AES_KEY;
-    #define ROUNDS(ctx) ((ctx)->rounds)
-#else
-    typedef struct { block rd_key[7+OCB_KEY_LEN/4]; } AES_KEY;
-    #define ROUNDS(ctx) (6+OCB_KEY_LEN/4)
-#endif
-
-static void AES_128_Key_Expansion(const unsigned char *userkey, void *key) {
-    block x0, x1, x2;
-    block *kp = (block *)key;
-    kp[0] = x0 = load(userkey);
-    x2 = zero_block();
+static void AES_128_Key_Expansion(const unsigned char *userkey, void *key)
+{
+    __m128i x0,x1,x2;
+    __m128i *kp = (__m128i *)key;
+    kp[0] = x0 = _mm_loadu_si128((__m128i*)userkey);
+    x2 = _mm_setzero_si128();
     EXPAND_ASSIST(x0,x1,x2,x0,255,1);   kp[1]  = x0;
     EXPAND_ASSIST(x0,x1,x2,x0,255,2);   kp[2]  = x0;
     EXPAND_ASSIST(x0,x1,x2,x0,255,4);   kp[3]  = x0;
@@ -382,12 +437,24 @@ static void AES_128_Key_Expansion(const unsigned char *userkey, void *key) {
     EXPAND_ASSIST(x0,x1,x2,x0,255,54);  kp[10] = x0;
 }
 
+static void AES_192_Key_Expansion(const unsigned char *userkey, void *key)
+{
+    __m128i x0,x1,x2,x3,tmp,*kp = (__m128i *)key;
+    kp[0] = x0 = _mm_loadu_si128((__m128i*)userkey);
+    tmp = x3 = _mm_loadu_si128((__m128i*)(userkey+16));
+    x2 = _mm_setzero_si128();
+    EXPAND192_STEP(1,1);
+    EXPAND192_STEP(4,4);
+    EXPAND192_STEP(7,16);
+    EXPAND192_STEP(10,64);
+}
+
 static void AES_256_Key_Expansion(const unsigned char *userkey, void *key)
 {
-    block x0,x1,x2,x3,*kp = (block *)key;
-    kp[0] = x0 = load(userkey);
-    kp[1] = x3 = load(userkey+16);
-    x2 = zero_block();
+    __m128i x0,x1,x2,x3,*kp = (__m128i *)key;
+    kp[0] = x0 = _mm_loadu_si128((__m128i*)userkey   );
+    kp[1] = x3 = _mm_loadu_si128((__m128i*)(userkey+16));
+    x2 = _mm_setzero_si128();
     EXPAND_ASSIST(x0,x1,x2,x3,255,1);  kp[2]  = x0;
     EXPAND_ASSIST(x3,x1,x2,x0,170,1);  kp[3]  = x3;
     EXPAND_ASSIST(x0,x1,x2,x3,255,2);  kp[4]  = x0;
@@ -403,204 +470,74 @@ static void AES_256_Key_Expansion(const unsigned char *userkey, void *key)
     EXPAND_ASSIST(x0,x1,x2,x3,255,64); kp[14] = x0;
 }
 
-static void AES_set_decrypt_key_fast(AES_KEY *dkey, const AES_KEY *ekey)
+static int AES_set_encrypt_key(const unsigned char *userKey, const int bits, AES_KEY *key)
 {
-    int j = 0, i = ROUNDS(ekey);
+    if (bits == 128) {
+        AES_128_Key_Expansion (userKey,key);
+    } else if (bits == 192) {
+        AES_192_Key_Expansion (userKey,key);
+    } else if (bits == 256) {
+        AES_256_Key_Expansion (userKey,key);
+    }
     #if (OCB_KEY_LEN == 0)
-    dkey->rounds = i;
+    	key->rounds = 6+bits/32;
     #endif
-    dkey->rd_key[i--] = ekey->rd_key[j++];
-    while (i)
-        dkey->rd_key[i--] = aes_imc(ekey->rd_key[j++]);
-    dkey->rd_key[i] = ekey->rd_key[j];
-}
-
-static int AES_set_keys(const unsigned char *userKey, const int bits,
-                        AES_KEY *ekey, AES_KEY *dkey)
-{
-    if (bits == 128)
-        AES_128_Key_Expansion (userKey,ekey);
-    else 
-        AES_256_Key_Expansion (userKey,ekey);
-    #if (OCB_KEY_LEN == 0)
-    ekey->rounds = 6+bits/32;
-    #endif
-    AES_set_decrypt_key_fast(dkey, ekey);
     return 0;
 }
 
-static void AES_encrypt(const unsigned char *in,
-                        unsigned char *out, const AES_KEY *key)
+static void AES_set_decrypt_key_fast(AES_KEY *dkey, const AES_KEY *ekey)
 {
-    int j, rnds=ROUNDS(key);
-    const block *kp = ((block *)(key->rd_key));
-    block tmp =  load(in);
-    #if __AES__
-        tmp = xor_block(tmp,kp[0]);
-        for (j=1; j<rnds; j++)
-            tmp = enc_rnd(tmp,kp[j]);
-        tmp = enc_last(tmp,kp[j]);
-    #else
-        for (j=0; j<rnds-1; j++)
-            tmp = enc_rnd(tmp,kp[j]);
-        tmp = enc_last(tmp,kp[j]);
-        tmp = xor_block(tmp,kp[j+1]);
+    int j = 0;
+    int i = ROUNDS(ekey);
+    #if (OCB_KEY_LEN == 0)
+    	dkey->rounds = i;
     #endif
-    store(out, tmp);
+    dkey->rd_key[i--] = ekey->rd_key[j++];
+    while (i)
+        dkey->rd_key[i--] = _mm_aesimc_si128(ekey->rd_key[j++]);
+    dkey->rd_key[i] = ekey->rd_key[j];
 }
 
+static inline void AES_encrypt(const unsigned char *in,
+                        unsigned char *out, const AES_KEY *key)
+{
+	int j,rnds=ROUNDS(key);
+	const __m128i *sched = ((__m128i *)(key->rd_key));
+	__m128i tmp = _mm_load_si128 ((__m128i*)in);
+	tmp = _mm_xor_si128 (tmp,sched[0]);
+	for (j=1; j<rnds; j++)  tmp = _mm_aesenc_si128 (tmp,sched[j]);
+	tmp = _mm_aesenclast_si128 (tmp,sched[j]);
+	_mm_store_si128 ((__m128i*)out,tmp);
+}
 
 static inline void AES_ecb_encrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
     unsigned i,j,rnds=ROUNDS(key);
-    block tmp[BPI+1];
-    const block *kp = ((block *)(key->rd_key));
-    #if __AES__
-        for (i=0; i<nblks; ++i)
-            tmp[i] = enc_rnd(xor_block(load(blks+i), kp[0]), kp[1]);
-        for(j=2; j<rnds; ++j)
-            for (i=0; i<nblks; ++i)
-                tmp[i] = enc_rnd(tmp[i], kp[j]);
-        for (i=0; i<nblks; ++i)
-            store(blks+i, enc_last(tmp[i], kp[j]));
-    #else
-        for (i=0; i<nblks; ++i)
-            tmp[i] = enc_rnd(load(blks+i), kp[0]);
-        for(j=1; j<rnds-1; ++j)
-            for (i=0; i<nblks; ++i)
-                tmp[i] = enc_rnd(tmp[i], kp[j]);
-        for (i=0; i<nblks; ++i)
-            store(blks+i, xor_block(enc_last(tmp[i], kp[j]), kp[j+1]));
-    #endif
+	const __m128i *sched = ((__m128i *)(key->rd_key));
+	for (i=0; i<nblks; ++i)
+	    blks[i] =_mm_xor_si128(blks[i], sched[0]);
+	for(j=1; j<rnds; ++j)
+	    for (i=0; i<nblks; ++i)
+		    blks[i] = _mm_aesenc_si128(blks[i], sched[j]);
+	for (i=0; i<nblks; ++i)
+	    blks[i] =_mm_aesenclast_si128(blks[i], sched[j]);
 }
 
 static inline void AES_ecb_decrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
     unsigned i,j,rnds=ROUNDS(key);
-    block tmp[BPI+1];
-    const block *kp = ((block *)(key->rd_key));
-    #if __AES__
-        for (i=0; i<nblks; ++i)
-            tmp[i] = dec_rnd(xor_block(load(blks+i), kp[0]), kp[1]);
-        for(j=2; j<rnds; ++j)
-            for (i=0; i<nblks; ++i)
-                tmp[i] = dec_rnd(tmp[i], kp[j]);
-        for (i=0; i<nblks; ++i)
-            store(blks+i, dec_last(tmp[i], kp[j]));
-    #else
-        for (i=0; i<nblks; ++i)
-            tmp[i] = dec_rnd(load(blks+i), kp[0]);
-        for(j=1; j<rnds-1; ++j)
-            for (i=0; i<nblks; ++i)
-                tmp[i] = dec_rnd(tmp[i], kp[j]);
-        for (i=0; i<nblks; ++i)
-            store(blks+i, xor_block(dec_last(tmp[i], kp[j]), kp[j+1]));
-    #endif
+	const __m128i *sched = ((__m128i *)(key->rd_key));
+	for (i=0; i<nblks; ++i)
+	    blks[i] =_mm_xor_si128(blks[i], sched[0]);
+	for(j=1; j<rnds; ++j)
+	    for (i=0; i<nblks; ++i)
+		    blks[i] = _mm_aesdec_si128(blks[i], sched[j]);
+	for (i=0; i<nblks; ++i)
+	    blks[i] =_mm_aesdeclast_si128(blks[i], sched[j]);
 }
 
-/*-------------------*/
-#elif !OPENSSL_IS_AES_BACKUP
-/*-------------------*/
+#define BPI 8  /* Number of blocks in buffer per ECB call   */
+               /* Set to 4 for Westmere, 8 for Sandy Bridge */
 
-#define BPI 4  /* Number of blocks in buffer per ECB call */
-
-#include "rijndael-alg-fst.h"              /* Barreto's Public-Domain Code */
-#if (OCB_KEY_LEN == 0)
-	typedef struct { uint32_t rd_key[60]; int rounds; } AES_KEY;
-	#define ROUNDS(ctx) ((ctx)->rounds)
-#else
-	typedef struct { uint32_t rd_key[OCB_KEY_LEN+28]; } AES_KEY;
-	#define ROUNDS(ctx) (6+OCB_KEY_LEN/4)
 #endif
-
-static int AES_set_keys(const unsigned char *userKey, const int bits,
-                        AES_KEY *ekey, AES_KEY *dkey)
-{
-    rijndaelKeySetupEnc(ekey->rd_key, userKey, bits);
-    rijndaelKeySetupDec(dkey->rd_key, userKey, bits);
-    #if (OCB_KEY_LEN == 0)
-        ekey->rounds = dkey->rounds = bits/32+6;
-    #endif
-    return 0;
-}
-
-static void AES_ecb_encrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
-	while (nblks) {
-		--nblks;
-		rijndaelEncrypt(key->rd_key, ROUNDS(key), (unsigned char *)(blks+nblks),
-		                (unsigned char *)(blks+nblks));
-	}
-}
-
-static void AES_ecb_decrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
-	while (nblks) {
-		--nblks;
-		rijndaelDecrypt(key->rd_key, ROUNDS(key), (unsigned char *)(blks+nblks),
-		                (unsigned char *)(blks+nblks));
-	}
-}
-
-#define AES_encrypt(x,y,z) rijndaelEncrypt((z)->rd_key, ROUNDS(z), x, y)
-
-/*---------------*/
-#else
-/*---------------*/
-
-#define BPI 8  /* Number of blocks in buffer per ECB call */
-
-#include <openssl/evp.h>
-
-typedef EVP_CIPHER_CTX* AES_KEY;
-
-static int AES_set_keys(const unsigned char *userKey, const int bits,
-                        AES_KEY *ekey, AES_KEY *dkey)
-{
-    int a, b;
-    *ekey = EVP_CIPHER_CTX_new();
-    if (*ekey == NULL)
-        return -1;
-    *dkey = EVP_CIPHER_CTX_new();
-    if (*dkey == NULL) {
-        EVP_CIPHER_CTX_free(*ekey);
-        return -1;
-    }
-    if (bits == 128) {
-        a = EVP_EncryptInit_ex(*ekey, EVP_aes_128_ecb(), NULL, userKey, NULL);
-        b = EVP_DecryptInit_ex(*dkey, EVP_aes_128_ecb(), NULL, userKey, NULL);
-    } else {
-        a = EVP_EncryptInit_ex(*ekey, EVP_aes_256_ecb(), NULL, userKey, NULL);
-        b = EVP_DecryptInit_ex(*dkey, EVP_aes_256_ecb(), NULL, userKey, NULL);
-    }
-    if ((a==0) || (b==0)) {
-        EVP_CIPHER_CTX_free(*ekey);
-        EVP_CIPHER_CTX_free(*dkey);
-        return -1;
-    }
-    EVP_CIPHER_CTX_set_padding(*ekey, 0);
-    EVP_CIPHER_CTX_set_padding(*dkey, 0);
-    return 0;
-}
-
-static void AES_encrypt(const unsigned char *in,
-                        unsigned char *out, const AES_KEY *key)
-{
-    int len;
-    EVP_EncryptUpdate(*key, out, &len, in, 16);
-}
-
-static void AES_ecb_encrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
-    int len;
-    EVP_EncryptUpdate(*key, (unsigned char *)blks, &len,
-                        (unsigned char *)blks, nblks*16);
-}
-
-static void AES_ecb_decrypt_blks(block *blks, unsigned nblks, AES_KEY *key) {
-    int len;
-    EVP_DecryptUpdate(*key, (unsigned char *)blks, &len,
-                        (unsigned char *)blks, nblks*16);
-}
-
-/* ------------------------------------------------------------------------- */
-#endif
-/* ------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------- */
 /* Define OCB context structure.                                           */
@@ -662,31 +599,27 @@ static block getL(const ae_ctx *ctx, unsigned tz)
 /* Public functions                                                        */
 /* ----------------------------------------------------------------------- */
 
-/* 32-bit SSE2 systems need to be forced to allocate memory on 16-byte
-   alignments. (I believe all major 64-bit systems do already.) */
+/* 32-bit SSE2 and Altivec systems need to be forced to allocate memory
+   on 16-byte alignments. (I believe all major 64-bit systems do already.) */
 
 ae_ctx* ae_allocate(void *misc)
 {
-    void *p;
-	((void)misc);                            /* Suppress "unused variable" */
-	#if _MSC_VER && _M_IX86                  /* 32-bit Microsoft x86       */
-	    p = _aligned_malloc(sizeof(ae_ctx),16);
-	#elif __SSE2__ && __i386                   /* 32-bit x86                 */
+	void *p;
+	(void) misc;                     /* misc unused in this implementation */
+	#if (__SSE2__ && !_M_X64 && !_M_AMD64 && !__amd64__)
+    	p = _mm_malloc(sizeof(ae_ctx),16);
+	#elif (__ALTIVEC__ && !__PPC64__)
 		if (posix_memalign(&p,16,sizeof(ae_ctx)) != 0) p = NULL;
 	#else
 		p = malloc(sizeof(ae_ctx));
 	#endif
-    return (ae_ctx *)p;
+	return (ae_ctx *)p;
 }
 
 void ae_free(ae_ctx *ctx)
 {
-    #if !USE_AES_INTRINSICS && OPENSSL_IS_AES_BACKUP
-        if (ctx->decrypt_key) EVP_CIPHER_CTX_free(ctx->decrypt_key);
-        if (ctx->encrypt_key) EVP_CIPHER_CTX_free(ctx->encrypt_key);
-    #endif
-	#if _MSC_VER && _M_IX86                  /* 32-bit Windows             */
-        _aligned_free(ctx);
+	#if (__SSE2__ && !_M_X64 && !_M_AMD64 && !__amd64__)
+		_mm_free(ctx);
 	#else
 		free(ctx);
 	#endif
@@ -696,10 +629,6 @@ void ae_free(ae_ctx *ctx)
 
 int ae_clear (ae_ctx *ctx) /* Zero ae_ctx and undo initialization          */
 {
-    #if !USE_AES_INTRINSICS && OPENSSL_IS_AES_BACKUP
-        EVP_CIPHER_CTX_free(ctx->decrypt_key);
-        EVP_CIPHER_CTX_free(ctx->encrypt_key);
-    #endif
 	memset(ctx, 0, sizeof(ae_ctx));
 	return AE_SUCCESS;
 }
@@ -713,15 +642,19 @@ int ae_init(ae_ctx *ctx, const void *key, int key_len, int nonce_len, int tag_le
     unsigned i;
     block tmp_blk;
 
-    if ((nonce_len != 12) ||
-        (OCB_KEY_LEN != 0 && key_len != OCB_KEY_LEN) ||
-        (OCB_TAG_LEN != 0 && tag_len != OCB_TAG_LEN) ||
-        (tag_len < 1 || tag_len > 16) ||
-        (key_len != 16 && key_len != 32))
+    if (nonce_len != 12)
     	return AE_NOT_SUPPORTED;
 
     /* Initialize encryption & decryption keys */
-    AES_set_keys((unsigned char *)key, key_len*8, &ctx->encrypt_key, &ctx->decrypt_key);
+    #if (OCB_KEY_LEN > 0)
+    key_len = OCB_KEY_LEN;
+    #endif
+    AES_set_encrypt_key((unsigned char *)key, key_len*8, &ctx->encrypt_key);
+    #if USE_AES_NI
+    AES_set_decrypt_key_fast(&ctx->decrypt_key,&ctx->encrypt_key);
+    #else
+    AES_set_decrypt_key((unsigned char *)key, (int)(key_len*8), &ctx->decrypt_key);
+    #endif
 
     /* Zero things that need zeroing */
     ctx->cached_Top = ctx->ad_checksum = zero_block();
@@ -742,6 +675,8 @@ int ae_init(ae_ctx *ctx, const void *key, int key_len, int nonce_len, int tag_le
 
     #if (OCB_TAG_LEN == 0)
     	ctx->tag_len = tag_len;
+    #else
+    	(void) tag_len;  /* Suppress var not used error */
     #endif
 
     return AE_SUCCESS;
@@ -754,15 +689,22 @@ static block gen_offset_from_nonce(ae_ctx *ctx, const void *nonce)
 	const union { unsigned x; unsigned char endian; } little = { 1 };
 	union { uint32_t u32[4]; uint8_t u8[16]; block bl; } tmp;
 	unsigned idx;
-    #if (OCB_TAG_LEN > 0)
-        unsigned tag_len = OCB_TAG_LEN;
-    #else
-        unsigned tag_len = ctx->tag_len;
-    #endif
+
 	/* Replace cached nonce Top if needed */
-    if (little.endian) tmp.u32[0] = 0x01000000 + ((tag_len * 8 % 128) << 1);
-    else               tmp.u32[0] = 0x00000001 + ((tag_len * 8 % 128) << 25);
-	memcpy(tmp.u32+1,nonce,12);
+    #if (OCB_TAG_LEN > 0)
+        if (little.endian)
+            tmp.u32[0] = 0x01000000 + ((OCB_TAG_LEN * 8 % 128) << 1);
+        else
+            tmp.u32[0] = 0x00000001 + ((OCB_TAG_LEN * 8 % 128) << 25);
+    #else
+        if (little.endian)
+            tmp.u32[0] = 0x01000000 + ((ctx->tag_len * 8 % 128) << 1);
+        else
+            tmp.u32[0] = 0x00000001 + ((ctx->tag_len * 8 % 128) << 25);
+    #endif
+	tmp.u32[1] = ((uint32_t *)nonce)[0];
+	tmp.u32[2] = ((uint32_t *)nonce)[1];
+	tmp.u32[3] = ((uint32_t *)nonce)[2];
 	idx = (unsigned)(tmp.u8[15] & 0x3f);   /* Get low 6 bits of nonce  */
 	tmp.u8[15] = tmp.u8[15] & 0xc0;        /* Zero low 6 bits of nonce */
 	if ( unequal_blocks(tmp.bl,ctx->cached_Top) )   { /* Cached?       */
@@ -795,25 +737,25 @@ static void process_ad(ae_ctx *ctx, const void *ad, int ad_len, int final)
 			ad_block_num += BPI;
 			tz = ntz(ad_block_num);
 			oa[0] = xor_block(ad_offset, ctx->L[0]);
-			ta[0] = xor_block(oa[0], load(adp+0));
+			ta[0] = xor_block(oa[0], adp[0]);
 			oa[1] = xor_block(oa[0], ctx->L[1]);
-			ta[1] = xor_block(oa[1], load(adp+1));
+			ta[1] = xor_block(oa[1], adp[1]);
 			oa[2] = xor_block(ad_offset, ctx->L[1]);
-			ta[2] = xor_block(oa[2], load(adp+2));
+			ta[2] = xor_block(oa[2], adp[2]);
 			#if BPI == 4
 				ad_offset = xor_block(oa[2], getL(ctx, tz));
-				ta[3] = xor_block(ad_offset, load(adp+3));
+				ta[3] = xor_block(ad_offset, adp[3]);
 			#elif BPI == 8
 				oa[3] = xor_block(oa[2], ctx->L[2]);
-				ta[3] = xor_block(oa[3], load(adp+3));
+				ta[3] = xor_block(oa[3], adp[3]);
 				oa[4] = xor_block(oa[1], ctx->L[2]);
-				ta[4] = xor_block(oa[4], load(adp+4));
+				ta[4] = xor_block(oa[4], adp[4]);
 				oa[5] = xor_block(oa[0], ctx->L[2]);
-				ta[5] = xor_block(oa[5], load(adp+5));
+				ta[5] = xor_block(oa[5], adp[5]);
 				oa[6] = xor_block(ad_offset, ctx->L[2]);
-				ta[6] = xor_block(oa[6], load(adp+6));
+				ta[6] = xor_block(oa[6], adp[6]);
 				ad_offset = xor_block(oa[6], getL(ctx, tz));
-				ta[7] = xor_block(ad_offset, load(adp+7));
+				ta[7] = xor_block(ad_offset, adp[7]);
 			#endif
 			AES_ecb_encrypt_blks(ta,BPI,&ctx->encrypt_key);
 			ad_checksum = xor_block(ad_checksum, ta[0]);
@@ -843,28 +785,28 @@ static void process_ad(ae_ctx *ctx, const void *ad, int ad_len, int final)
 			#if (BPI == 8)
 			if (remaining >= 64) {
 				tmp.bl = xor_block(ad_offset, ctx->L[0]);
-				ta[0] = xor_block(tmp.bl, load(adp+0));
+				ta[0] = xor_block(tmp.bl, adp[0]);
 				tmp.bl = xor_block(tmp.bl, ctx->L[1]);
-				ta[1] = xor_block(tmp.bl, load(adp+1));
+				ta[1] = xor_block(tmp.bl, adp[1]);
 				ad_offset = xor_block(ad_offset, ctx->L[1]);
-				ta[2] = xor_block(ad_offset, load(adp+2));
+				ta[2] = xor_block(ad_offset, adp[2]);
 				ad_offset = xor_block(ad_offset, ctx->L[2]);
-				ta[3] = xor_block(ad_offset, load(adp+3));
+				ta[3] = xor_block(ad_offset, adp[3]);
 				remaining -= 64;
 				k=4;
 			}
 			#endif
 			if (remaining >= 32) {
 				ad_offset = xor_block(ad_offset, ctx->L[0]);
-				ta[k] = xor_block(ad_offset, load(adp+k));
+				ta[k] = xor_block(ad_offset, adp[k]);
 				ad_offset = xor_block(ad_offset, getL(ctx, ntz(k+2)));
-				ta[k+1] = xor_block(ad_offset, load(adp+k+1));
+				ta[k+1] = xor_block(ad_offset, adp[k+1]);
 				remaining -= 32;
 				k+=2;
 			}
 			if (remaining >= 16) {
 				ad_offset = xor_block(ad_offset, ctx->L[0]);
-				ta[k] = xor_block(ad_offset, load(adp+k));
+				ta[k] = xor_block(ad_offset, adp[k]);
 				remaining = remaining - 16;
 				++k;
 			}
@@ -896,8 +838,8 @@ static void process_ad(ae_ctx *ctx, const void *ad, int ad_len, int final)
 
 /* ----------------------------------------------------------------------- */
 
-int ae_encrypt(ae_ctx     *ctx,
-               const void *nonce,
+int ae_encrypt(ae_ctx     *  ctx,
+               const void *  nonce,
                const void *pt,
                int         pt_len,
                const void *ad,
@@ -909,17 +851,18 @@ int ae_encrypt(ae_ctx     *ctx,
 	union { uint32_t u32[4]; uint8_t u8[16]; block bl; } tmp;
     block offset, checksum;
     unsigned i, k;
-    block       *ctp = (block *)ct;
-    const block *ptp = (block *)pt;
+    block       * ctp = (block *)ct;
+    const block * ptp = (block *)pt;
 
     /* Non-null nonce means start of new message, init per-message values */
     if (nonce) {
         ctx->offset = gen_offset_from_nonce(ctx, nonce);
-        ctx->ad_offset = ctx->checksum = zero_block();
-        ctx->ad_blocks_processed = ctx->blocks_processed = 0;
+        ctx->ad_offset = ctx->checksum   = zero_block();
+        ctx->ad_blocks_processed = ctx->blocks_processed    = 0;
         if (ad_len >= 0)
         	ctx->ad_checksum = zero_block();
     }
+
 	/* Process associated data */
 	if (ad_len > 0)
 		process_ad(ctx, ad, ad_len, final);
@@ -936,45 +879,45 @@ int ae_encrypt(ae_ctx     *ctx,
 			block ta[BPI];
 			block_num += BPI;
 			oa[0] = xor_block(oa[BPI-1], ctx->L[0]);
-			ta[0] = xor_block(oa[0], load(ptp+0));
-			checksum = xor_block(checksum, load(ptp+0));
+			ta[0] = xor_block(oa[0], ptp[0]);
+			checksum = xor_block(checksum, ptp[0]);
 			oa[1] = xor_block(oa[0], ctx->L[1]);
-			ta[1] = xor_block(oa[1], load(ptp+1));
-			checksum = xor_block(checksum, load(ptp+1));
+			ta[1] = xor_block(oa[1], ptp[1]);
+			checksum = xor_block(checksum, ptp[1]);
 			oa[2] = xor_block(oa[1], ctx->L[0]);
-			ta[2] = xor_block(oa[2], load(ptp+2));
-			checksum = xor_block(checksum, load(ptp+2));
+			ta[2] = xor_block(oa[2], ptp[2]);
+			checksum = xor_block(checksum, ptp[2]);
 			#if BPI == 4
 				oa[3] = xor_block(oa[2], getL(ctx, ntz(block_num)));
-				ta[3] = xor_block(oa[3], load(ptp+3));
-				checksum = xor_block(checksum, load(ptp+3));
+				ta[3] = xor_block(oa[3], ptp[3]);
+				checksum = xor_block(checksum, ptp[3]);
 			#elif BPI == 8
 				oa[3] = xor_block(oa[2], ctx->L[2]);
-				ta[3] = xor_block(oa[3], load(ptp+3));
-				checksum = xor_block(checksum, load(ptp+3));
+				ta[3] = xor_block(oa[3], ptp[3]);
+				checksum = xor_block(checksum, ptp[3]);
 				oa[4] = xor_block(oa[1], ctx->L[2]);
-				ta[4] = xor_block(oa[4], load(ptp+4));
-				checksum = xor_block(checksum, load(ptp+4));
+				ta[4] = xor_block(oa[4], ptp[4]);
+				checksum = xor_block(checksum, ptp[4]);
 				oa[5] = xor_block(oa[0], ctx->L[2]);
-				ta[5] = xor_block(oa[5], load(ptp+5));
-				checksum = xor_block(checksum, load(ptp+5));
+				ta[5] = xor_block(oa[5], ptp[5]);
+				checksum = xor_block(checksum, ptp[5]);
 				oa[6] = xor_block(oa[7], ctx->L[2]);
-				ta[6] = xor_block(oa[6], load(ptp+6));
-				checksum = xor_block(checksum, load(ptp+6));
+				ta[6] = xor_block(oa[6], ptp[6]);
+				checksum = xor_block(checksum, ptp[6]);
 				oa[7] = xor_block(oa[6], getL(ctx, ntz(block_num)));
-				ta[7] = xor_block(oa[7], load(ptp+7));
-				checksum = xor_block(checksum, load(ptp+7));
+				ta[7] = xor_block(oa[7], ptp[7]);
+				checksum = xor_block(checksum, ptp[7]);
 			#endif
 			AES_ecb_encrypt_blks(ta,BPI,&ctx->encrypt_key);
-			store(ctp+0, xor_block(ta[0], oa[0]));
-			store(ctp+1, xor_block(ta[1], oa[1]));
-			store(ctp+2, xor_block(ta[2], oa[2]));
-			store(ctp+3, xor_block(ta[3], oa[3]));
+			ctp[0] = xor_block(ta[0], oa[0]);
+			ctp[1] = xor_block(ta[1], oa[1]);
+			ctp[2] = xor_block(ta[2], oa[2]);
+			ctp[3] = xor_block(ta[3], oa[3]);
 			#if (BPI == 8)
-                store(ctp+4, xor_block(ta[4], oa[4]));
-                store(ctp+5, xor_block(ta[5], oa[5]));
-                store(ctp+6, xor_block(ta[6], oa[6]));
-                store(ctp+7, xor_block(ta[7], oa[7]));
+			ctp[4] = xor_block(ta[4], oa[4]);
+			ctp[5] = xor_block(ta[5], oa[5]);
+			ctp[6] = xor_block(ta[6], oa[6]);
+			ctp[7] = xor_block(ta[7], oa[7]);
 			#endif
 			ptp += BPI;
 			ctp += BPI;
@@ -992,37 +935,37 @@ int ae_encrypt(ae_ctx     *ctx,
         k = 0;                      /* How many blocks in ta[] need ECBing */
         if (remaining) {
 			#if (BPI == 8)
-                if (remaining >= 64) {
-                    oa[0] = xor_block(offset, ctx->L[0]);
-                    ta[0] = xor_block(oa[0], load(ptp+0));
-                    checksum = xor_block(checksum, load(ptp+0));
-                    oa[1] = xor_block(oa[0], ctx->L[1]);
-                    ta[1] = xor_block(oa[1], load(ptp+1));
-                    checksum = xor_block(checksum, load(ptp+1));
-                    oa[2] = xor_block(oa[1], ctx->L[0]);
-                    ta[2] = xor_block(oa[2], load(ptp+2));
-                    checksum = xor_block(checksum, load(ptp+2));
-                    offset = oa[3] = xor_block(oa[2], ctx->L[2]);
-                    ta[3] = xor_block(offset, load(ptp+3));
-                    checksum = xor_block(checksum, load(ptp+3));
-                    remaining -= 64;
-                    k = 4;
-                }
+			if (remaining >= 64) {
+				oa[0] = xor_block(offset, ctx->L[0]);
+				ta[0] = xor_block(oa[0], ptp[0]);
+				checksum = xor_block(checksum, ptp[0]);
+				oa[1] = xor_block(oa[0], ctx->L[1]);
+				ta[1] = xor_block(oa[1], ptp[1]);
+				checksum = xor_block(checksum, ptp[1]);
+				oa[2] = xor_block(oa[1], ctx->L[0]);
+				ta[2] = xor_block(oa[2], ptp[2]);
+				checksum = xor_block(checksum, ptp[2]);
+				offset = oa[3] = xor_block(oa[2], ctx->L[2]);
+				ta[3] = xor_block(offset, ptp[3]);
+				checksum = xor_block(checksum, ptp[3]);
+				remaining -= 64;
+				k = 4;
+			}
 			#endif
 			if (remaining >= 32) {
 				oa[k] = xor_block(offset, ctx->L[0]);
-				ta[k] = xor_block(oa[k], load(ptp+k));
-				checksum = xor_block(checksum, load(ptp+k));
+				ta[k] = xor_block(oa[k], ptp[k]);
+				checksum = xor_block(checksum, ptp[k]);
 				offset = oa[k+1] = xor_block(oa[k], ctx->L[1]);
-				ta[k+1] = xor_block(offset, load(ptp+k+1));
-				checksum = xor_block(checksum, load(ptp+k+1));
+				ta[k+1] = xor_block(offset, ptp[k+1]);
+				checksum = xor_block(checksum, ptp[k+1]);
 				remaining -= 32;
 				k+=2;
 			}
 			if (remaining >= 16) {
 				offset = oa[k] = xor_block(offset, ctx->L[0]);
-				ta[k] = xor_block(offset, load(ptp+k));
-				checksum = xor_block(checksum, load(ptp+k));
+				ta[k] = xor_block(offset, ptp[k]);
+				checksum = xor_block(checksum, ptp[k]);
 				remaining -= 16;
 				++k;
 			}
@@ -1046,21 +989,21 @@ int ae_encrypt(ae_ctx     *ctx,
 		}
 		switch (k) {
 			#if (BPI == 8)
-                case 7: store(ctp+6, xor_block(ta[6], oa[6]));
-                case 6: store(ctp+5, xor_block(ta[5], oa[5]));
-                case 5: store(ctp+4, xor_block(ta[4], oa[4]));
-                case 4: store(ctp+3, xor_block(ta[3], oa[3]));
+			case 7: ctp[6] = xor_block(ta[6], oa[6]);
+			case 6: ctp[5] = xor_block(ta[5], oa[5]);
+			case 5: ctp[4] = xor_block(ta[4], oa[4]);
+			case 4: ctp[3] = xor_block(ta[3], oa[3]);
 			#endif
-			case 3: store(ctp+2, xor_block(ta[2], oa[2]));
-			case 2: store(ctp+1, xor_block(ta[1], oa[1]));
-			case 1: store(ctp+0, xor_block(ta[0], oa[0]));
+			case 3: ctp[2] = xor_block(ta[2], oa[2]);
+			case 2: ctp[1] = xor_block(ta[1], oa[1]);
+			case 1: ctp[0] = xor_block(ta[0], oa[0]);
 		}
 
         /* Tag is placed at the correct location
          */
         if (tag) {
 			#if (OCB_TAG_LEN == 16)
-            	store(tag, offset);
+            	*(block *)tag = offset;
 			#elif (OCB_TAG_LEN > 0)
 	            memcpy((char *)tag, &offset, OCB_TAG_LEN);
 			#else
@@ -1088,14 +1031,18 @@ int ae_encrypt(ae_ctx     *ctx,
    Use this to avoid timing side-channel attacks.
 
    Returns 0 for memory regions with equal contents; non-zero otherwise. */
-static int constant_time_memcmp(const void *av, const void *bv, int n) {
+static int constant_time_memcmp(const void *av, const void *bv, size_t n) {
     const uint8_t *a = (const uint8_t *) av;
     const uint8_t *b = (const uint8_t *) bv;
     uint8_t result = 0;
-    while (n >= 1) {
-        n--;
-        result |= a[n] ^ b[n];
+    size_t i;
+
+    for (i=0; i<n; i++) {
+        result |= *a ^ *b;
+        a++;
+        b++;
     }
+
     return (int) result;
 }
 
@@ -1126,8 +1073,8 @@ int ae_decrypt(ae_ctx     *ctx,
     /* Non-null nonce means start of new message, init per-message values */
     if (nonce) {
         ctx->offset = gen_offset_from_nonce(ctx, nonce);
-        ctx->ad_offset = ctx->checksum = zero_block();
-        ctx->ad_blocks_processed = ctx->blocks_processed = 0;
+        ctx->ad_offset = ctx->checksum   = zero_block();
+        ctx->ad_blocks_processed = ctx->blocks_processed    = 0;
         if (ad_len >= 0)
         	ctx->ad_checksum = zero_block();
     }
@@ -1148,44 +1095,44 @@ int ae_decrypt(ae_ctx     *ctx,
 			block ta[BPI];
 			block_num += BPI;
 			oa[0] = xor_block(oa[BPI-1], ctx->L[0]);
-			ta[0] = xor_block(oa[0], load(ctp+0));
+			ta[0] = xor_block(oa[0], ctp[0]);
 			oa[1] = xor_block(oa[0], ctx->L[1]);
-			ta[1] = xor_block(oa[1], load(ctp+1));
+			ta[1] = xor_block(oa[1], ctp[1]);
 			oa[2] = xor_block(oa[1], ctx->L[0]);
-			ta[2] = xor_block(oa[2], load(ctp+2));
+			ta[2] = xor_block(oa[2], ctp[2]);
 			#if BPI == 4
 				oa[3] = xor_block(oa[2], getL(ctx, ntz(block_num)));
-				ta[3] = xor_block(oa[3], load(ctp+3));
+				ta[3] = xor_block(oa[3], ctp[3]);
 			#elif BPI == 8
 				oa[3] = xor_block(oa[2], ctx->L[2]);
-				ta[3] = xor_block(oa[3], load(ctp+3));
+				ta[3] = xor_block(oa[3], ctp[3]);
 				oa[4] = xor_block(oa[1], ctx->L[2]);
-				ta[4] = xor_block(oa[4], load(ctp+4));
+				ta[4] = xor_block(oa[4], ctp[4]);
 				oa[5] = xor_block(oa[0], ctx->L[2]);
-				ta[5] = xor_block(oa[5], load(ctp+5));
+				ta[5] = xor_block(oa[5], ctp[5]);
 				oa[6] = xor_block(oa[7], ctx->L[2]);
-				ta[6] = xor_block(oa[6], load(ctp+6));
+				ta[6] = xor_block(oa[6], ctp[6]);
 				oa[7] = xor_block(oa[6], getL(ctx, ntz(block_num)));
-				ta[7] = xor_block(oa[7], load(ctp+7));
+				ta[7] = xor_block(oa[7], ctp[7]);
 			#endif
 			AES_ecb_decrypt_blks(ta,BPI,&ctx->decrypt_key);
-			store(ptp+0, xor_block(ta[0], oa[0]));
-			checksum = xor_block(checksum, load(ptp+0));
-			store(ptp+1, xor_block(ta[1], oa[1]));
-			checksum = xor_block(checksum, load(ptp+1));
-			store(ptp+2, xor_block(ta[2], oa[2]));
-			checksum = xor_block(checksum, load(ptp+2));
-			store(ptp+3, xor_block(ta[3], oa[3]));
-			checksum = xor_block(checksum, load(ptp+3));
+			ptp[0] = xor_block(ta[0], oa[0]);
+			checksum = xor_block(checksum, ptp[0]);
+			ptp[1] = xor_block(ta[1], oa[1]);
+			checksum = xor_block(checksum, ptp[1]);
+			ptp[2] = xor_block(ta[2], oa[2]);
+			checksum = xor_block(checksum, ptp[2]);
+			ptp[3] = xor_block(ta[3], oa[3]);
+			checksum = xor_block(checksum, ptp[3]);
 			#if (BPI == 8)
-                store(ptp+4, xor_block(ta[4], oa[4]));
-                checksum = xor_block(checksum, load(ptp+4));
-                store(ptp+5, xor_block(ta[5], oa[5]));
-                checksum = xor_block(checksum, load(ptp+5));
-                store(ptp+6, xor_block(ta[6], oa[6]));
-                checksum = xor_block(checksum, load(ptp+6));
-                store(ptp+7, xor_block(ta[7], oa[7]));
-                checksum = xor_block(checksum, load(ptp+7));
+			ptp[4] = xor_block(ta[4], oa[4]);
+			checksum = xor_block(checksum, ptp[4]);
+			ptp[5] = xor_block(ta[5], oa[5]);
+			checksum = xor_block(checksum, ptp[5]);
+			ptp[6] = xor_block(ta[6], oa[6]);
+			checksum = xor_block(checksum, ptp[6]);
+			ptp[7] = xor_block(ta[7], oa[7]);
+			checksum = xor_block(checksum, ptp[7]);
 			#endif
 			ptp += BPI;
 			ctp += BPI;
@@ -1203,30 +1150,30 @@ int ae_decrypt(ae_ctx     *ctx,
         k = 0;                      /* How many blocks in ta[] need ECBing */
         if (remaining) {
 			#if (BPI == 8)
-                if (remaining >= 64) {
-                    oa[0] = xor_block(offset, ctx->L[0]);
-                    ta[0] = xor_block(oa[0], load(ctp+0));
-                    oa[1] = xor_block(oa[0], ctx->L[1]);
-                    ta[1] = xor_block(oa[1], load(ctp+1));
-                    oa[2] = xor_block(oa[1], ctx->L[0]);
-                    ta[2] = xor_block(oa[2], load(ctp+2));
-                    offset = oa[3] = xor_block(oa[2], ctx->L[2]);
-                    ta[3] = xor_block(offset, load(ctp+3));
-                    remaining -= 64;
-                    k = 4;
-                }
+			if (remaining >= 64) {
+				oa[0] = xor_block(offset, ctx->L[0]);
+				ta[0] = xor_block(oa[0], ctp[0]);
+				oa[1] = xor_block(oa[0], ctx->L[1]);
+				ta[1] = xor_block(oa[1], ctp[1]);
+				oa[2] = xor_block(oa[1], ctx->L[0]);
+				ta[2] = xor_block(oa[2], ctp[2]);
+				offset = oa[3] = xor_block(oa[2], ctx->L[2]);
+				ta[3] = xor_block(offset, ctp[3]);
+				remaining -= 64;
+				k = 4;
+			}
 			#endif
 			if (remaining >= 32) {
 				oa[k] = xor_block(offset, ctx->L[0]);
-				ta[k] = xor_block(oa[k], load(ctp+k));
+				ta[k] = xor_block(oa[k], ctp[k]);
 				offset = oa[k+1] = xor_block(oa[k], ctx->L[1]);
-				ta[k+1] = xor_block(offset, load(ctp+k+1));
+				ta[k+1] = xor_block(offset, ctp[k+1]);
 				remaining -= 32;
 				k+=2;
 			}
 			if (remaining >= 16) {
 				offset = oa[k] = xor_block(offset, ctx->L[0]);
-				ta[k] = xor_block(offset, load(ctp+k));
+				ta[k] = xor_block(offset, ctp[k]);
 				remaining -= 16;
 				++k;
 			}
@@ -1245,21 +1192,21 @@ int ae_decrypt(ae_ctx     *ctx,
 		AES_ecb_decrypt_blks(ta,k,&ctx->decrypt_key);
 		switch (k) {
 			#if (BPI == 8)
-                case 7: store(ptp+6, xor_block(ta[6], oa[6]));
-                        checksum = xor_block(checksum, load(ptp+6));
-                case 6: store(ptp+5, xor_block(ta[5], oa[5]));
-                        checksum = xor_block(checksum, load(ptp+5));
-                case 5: store(ptp+4, xor_block(ta[4], oa[4]));
-                        checksum = xor_block(checksum, load(ptp+4));
-                case 4: store(ptp+3, xor_block(ta[3], oa[3]));
-                        checksum = xor_block(checksum, load(ptp+3));
+			case 7: ptp[6] = xor_block(ta[6], oa[6]);
+				    checksum = xor_block(checksum, ptp[6]);
+			case 6: ptp[5] = xor_block(ta[5], oa[5]);
+				    checksum = xor_block(checksum, ptp[5]);
+			case 5: ptp[4] = xor_block(ta[4], oa[4]);
+				    checksum = xor_block(checksum, ptp[4]);
+			case 4: ptp[3] = xor_block(ta[3], oa[3]);
+				    checksum = xor_block(checksum, ptp[3]);
 			#endif
-			case 3: store(ptp+2, xor_block(ta[2], oa[2]));
-				    checksum = xor_block(checksum, load(ptp+2));
-			case 2: store(ptp+1, xor_block(ta[1], oa[1]));
-				    checksum = xor_block(checksum, load(ptp+1));
-			case 1: store(ptp+0, xor_block(ta[0], oa[0]));
-				    checksum = xor_block(checksum, load(ptp+0));
+			case 3: ptp[2] = xor_block(ta[2], oa[2]);
+				    checksum = xor_block(checksum, ptp[2]);
+			case 2: ptp[1] = xor_block(ta[1], oa[1]);
+				    checksum = xor_block(checksum, ptp[1]);
+			case 1: ptp[0] = xor_block(ta[0], oa[0]);
+				    checksum = xor_block(checksum, ptp[0]);
 		}
 
 		/* Calculate expected tag */
@@ -1270,7 +1217,7 @@ int ae_decrypt(ae_ctx     *ctx,
 
 		/* Compare with proposed tag, change ct_len if invalid */
 		if ((OCB_TAG_LEN == 16) && tag) {
-			if (unequal_blocks(tmp.bl, load(tag)))
+			if (unequal_blocks(tmp.bl, *(block *)tag))
 				ct_len = AE_INVALID;
 		} else {
 			#if (OCB_TAG_LEN > 0)
@@ -1289,133 +1236,3 @@ int ae_decrypt(ae_ctx     *ctx,
     }
     return ct_len;
  }
-
-/* ----------------------------------------------------------------------- */
-/* Test programs                                                           */
-/* ----------------------------------------------------------------------- */
-
-#if 0
-
-#include <stdio.h>
-
-/* If UNALIGNED==0, then all key/nonce/pt/ct/tag pointers are 16-byte aligned
- * for all calls during the test. Otherwise, key/nonce/tag are at odd addresses
- * and pt/ct are many different alignments over the test, including odd ones.
- */ 
-#define UNALIGNED     1            /* MUST be 0 or 1 */
-
-/* Attempt to generate RFC extended vector. If OCB_(TAG|LEN)_LEN are non-zero
-/  the values passed in are ignored. */
-static int ex_vector(int kbytes, int tbytes) {
-    unsigned char *val_buf, *ct, *pt, *nonce, *tag, *key, *next;
-    int i;
-    ae_ctx *ctx = ae_allocate(NULL);
-
-    if (OCB_TAG_LEN != 0) tbytes = OCB_TAG_LEN;
-    if (OCB_KEY_LEN != 0) kbytes = OCB_KEY_LEN;
-
-	#if _MSC_VER
-	    val_buf = (unsigned char *)_aligned_malloc(22401,16) + UNALIGNED;
-	    ct = (unsigned char *)_aligned_malloc(129+tbytes,16) + UNALIGNED;
-	    pt = (unsigned char *)_aligned_malloc(129,16) + UNALIGNED;
-	    nonce = (unsigned char *)_aligned_malloc(13,16) + UNALIGNED;
-	    tag = (unsigned char *)_aligned_malloc(tbytes+1,16) + UNALIGNED;
-	    key = (unsigned char *)_aligned_malloc(kbytes+1,16) + UNALIGNED;
-	#else
-		posix_memalign((void **)&val_buf,16,22401); val_buf += UNALIGNED;
-		posix_memalign((void **)&ct,16,129+tbytes); ct += UNALIGNED;
-		posix_memalign((void **)&pt,16,129);        pt += UNALIGNED;
-		posix_memalign((void **)&nonce,16,13);      nonce += UNALIGNED;
-		posix_memalign((void **)&tag,16,tbytes+1);  tag += UNALIGNED;
-		posix_memalign((void **)&key,16,kbytes+1);  key += UNALIGNED;
-	#endif
-
-    next = val_buf;
-
-    memset(key,0,kbytes);
-    key[kbytes-1] = tbytes * 8;
-    memset(nonce,0,11);
-    nonce[11] = 1;
-    memset(pt,0,128);
-    ae_init(ctx, key, kbytes, 12, tbytes);
-
-    /* RFC Vector test */
-    for (i = 0; i < 128; i++) {
-        #if UNALIGNED
-            ae_encrypt(ctx,nonce,pt,i,pt,i,next,NULL,AE_FINALIZE);
-        #else
-            ae_encrypt(ctx,nonce,pt,i,pt,i,ct,NULL,AE_FINALIZE);
-            memcpy(next,ct,(size_t)i+tbytes);
-        #endif
-        next = next+i+tbytes;
-        nonce[11] += 1; if (nonce[11]==0) nonce[10] += 1;
-
-        #if UNALIGNED
-            ae_encrypt(ctx,nonce,pt,i,pt,0,next,NULL,AE_FINALIZE);
-        #else
-            ae_encrypt(ctx,nonce,pt,i,pt,0,ct,NULL,AE_FINALIZE);
-            memcpy(next,ct,(size_t)i+tbytes);
-        #endif
-        next = next+i+tbytes;
-        nonce[11] += 1; if (nonce[11]==0) nonce[10] += 1;
-
-        #if UNALIGNED
-            ae_encrypt(ctx,nonce,pt,0,pt,i,next,NULL,AE_FINALIZE);
-        #else
-            ae_encrypt(ctx,nonce,pt,0,pt,i,ct,NULL,AE_FINALIZE);
-            memcpy(next,ct,tbytes);
-        #endif
-        next = next+tbytes;
-        nonce[11] += 1; if (nonce[11]==0) nonce[10] += 1;
-    }
-    ae_encrypt(ctx,nonce,NULL,0,val_buf,next-val_buf,ct,tag,AE_FINALIZE);
-
-	const char * tags[] = {
-        "\x19\x2C\x9B\x7B\xD9\x0B\xA0\x6A",
-        "\x77\xA3\xD8\xE7\x35\x89\x15\x8D\x25\xD0\x12\x09",
-        "\x67\xE9\x44\xD2\x32\x56\xC5\xE0\xB6\xC6\x1F\xA2\x2F\xDF\x1E\xA2",
-        "\x7D\x4E\xA5\xD4\x45\x50\x1C\xBE",
-        "\x54\x58\x35\x9A\xC2\x3B\x0C\xBA\x9E\x63\x30\xDD",
-        "\xD9\x0E\xB8\xE9\xC9\x77\xC8\x8B\x79\xDD\x79\x3D\x7F\xFA\x16\x1C",
-    };
-    unsigned tag_idx = ((kbytes/16)-1) * 3 + ((tbytes/4)-2);
-    int result = (tag_idx < 6) && !memcmp(tag,tags[tag_idx],tbytes);
-
-	ae_free(ctx);
-	#if _MSC_VER
-	    _aligned_free(val_buf - UNALIGNED);
-	    _aligned_free(ct - UNALIGNED);
-	    _aligned_free(pt - UNALIGNED);
-	    _aligned_free(nonce - UNALIGNED);
-	    _aligned_free(tag - UNALIGNED);
-	    _aligned_free(key - UNALIGNED);
-	#else
-	    free(val_buf - UNALIGNED);
-	    free(ct - UNALIGNED);
-	    free(pt - UNALIGNED);
-	    free(nonce - UNALIGNED);
-	    free(tag - UNALIGNED);
-	    free(key - UNALIGNED);
-	#endif
-	
-    return result;
-}
-
-int main()
-{
-    printf("RFC vector %s\n",ex_vector(16,16)?"PASS":"FAIL");
-    return 0;
-}
-#endif
-
-#if USE_AES_INTRINSICS
-char infoString[] = "OCB (AES Intrinsics)";
-#elif OPENSSL_IS_AES_BACKUP
-char infoString[] = "OCB (OpenSSL AES)";
-#else
-char infoString[] = "OCB (Reference AES)";
-#endif
-
-#if __GNUC__
-#pragma GCC diagnostic pop
-#endif

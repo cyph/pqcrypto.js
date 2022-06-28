@@ -187,7 +187,7 @@ stack32 i28_stack
 stack32 i29_stack
 
 # Enter the function
-enter ECRYPT_process_bytes
+enter crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_process_bytes
 
 =? (uint32) length - 0
 goto donothing if =

@@ -278,7 +278,7 @@ fpr_lt(fpr x, fpr y)
 
 TARGET_AVX2
 static inline uint64_t
-fpr_expm_p63(fpr x, fpr ccs)
+fpr_expm_p63(fpr x)
 {
 	/*
 	 * Polynomial approximation of exp(-x) is taken from FACCT:
@@ -335,18 +335,7 @@ fpr_expm_p63(fpr x, fpr ccs)
 	d9c = _mm256_hadd_pd(d9c, d9c);
 	y = 1.0 + _mm_cvtsd_f64(_mm256_castpd256_pd128(d9c)) // _mm256_cvtsd_f64(d9c)
 		+ _mm_cvtsd_f64(_mm256_extractf128_pd(d9c, 1));
-	y *= ccs.v;
-
-	/*
-	 * Final conversion goes through int64_t first, because that's what
-	 * the underlying opcode (vcvttsd2si) will do, and we know that the
-	 * result will fit, since x >= 0 and ccs < 1. If we did the
-	 * conversion directly to uint64_t, then the compiler would add some
-	 * extra code to cover the case of a source value of 2^63 or more,
-	 * and though the alternate path would never be exercised, the
-	 * extra comparison would cost us some cycles.
-	 */
-	return (uint64_t)(int64_t)(y * fpr_ptwo63.v);
+	return (uint64_t)(y * fpr_ptwo63.v);
 
 }
 

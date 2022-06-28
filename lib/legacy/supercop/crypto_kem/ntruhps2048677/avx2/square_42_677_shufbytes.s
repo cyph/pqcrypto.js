@@ -1,6 +1,7 @@
 .data
-.p2align 5
-mask_0_1:
+.section .rodata
+.align 32
+mask_0_ff4aa1393f3e21d3888656616098884:
 .byte 0
 .byte 255
 .byte 255
@@ -34,7 +35,7 @@ mask_0_1:
 .byte 255
 .byte 255
 
-mask_1_1:
+mask_1_ff4aa1393f3e21d3888656616098884:
 .word 0x1
 .word 0x0
 .word 0x0
@@ -52,7 +53,7 @@ mask_1_1:
 .word 0x0
 .word 0x0
 
-mask_2_1:
+mask_2_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -70,7 +71,7 @@ mask_2_1:
 .word 0x0
 .word 0x0
 
-mask_3_1:
+mask_3_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -88,7 +89,7 @@ mask_3_1:
 .word 0x0
 .word 0x0
 
-mask_4_1:
+mask_4_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -122,7 +123,7 @@ mask_4_1:
 .byte 255
 .byte 255
 
-mask_5_1:
+mask_5_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -140,7 +141,7 @@ mask_5_1:
 .word 0x0
 .word 0x0
 
-mask_6_1:
+mask_6_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -158,7 +159,7 @@ mask_6_1:
 .word 0x0
 .word 0x0
 
-mask_7_1:
+mask_7_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -192,7 +193,7 @@ mask_7_1:
 .byte 255
 .byte 255
 
-mask_8_1:
+mask_8_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -210,7 +211,7 @@ mask_8_1:
 .word 0x0
 .word 0x0
 
-mask_9_1:
+mask_9_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -228,7 +229,7 @@ mask_9_1:
 .word 0x0
 .word 0x0
 
-mask_10_1:
+mask_10_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x8000
@@ -246,7 +247,7 @@ mask_10_1:
 .word 0x0
 .word 0x0
 
-mask_11_1:
+mask_11_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -280,7 +281,7 @@ mask_11_1:
 .byte 255
 .byte 255
 
-mask_12_1:
+mask_12_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -298,7 +299,7 @@ mask_12_1:
 .word 0x0
 .word 0x0
 
-mask_13_1:
+mask_13_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -316,7 +317,7 @@ mask_13_1:
 .word 0x0
 .word 0x0
 
-mask_14_1:
+mask_14_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -334,7 +335,7 @@ mask_14_1:
 .word 0x0
 .word 0x0
 
-mask_15_1:
+mask_15_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -368,7 +369,7 @@ mask_15_1:
 .byte 255
 .byte 255
 
-mask_16_1:
+mask_16_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -386,7 +387,7 @@ mask_16_1:
 .word 0x0
 .word 0x0
 
-mask_17_1:
+mask_17_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -404,7 +405,7 @@ mask_17_1:
 .word 0x0
 .word 0x0
 
-mask_18_1:
+mask_18_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x4000
@@ -422,7 +423,7 @@ mask_18_1:
 .word 0x0
 .word 0x0
 
-mask_19_1:
+mask_19_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -456,7 +457,7 @@ mask_19_1:
 .byte 255
 .byte 255
 
-mask_20_1:
+mask_20_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -474,7 +475,7 @@ mask_20_1:
 .word 0x0
 .word 0x0
 
-mask_21_1:
+mask_21_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -492,7 +493,7 @@ mask_21_1:
 .word 0x0
 .word 0x0
 
-mask_22_1:
+mask_22_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -510,7 +511,7 @@ mask_22_1:
 .word 0x0
 .word 0x0
 
-mask_23_1:
+mask_23_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 13
@@ -544,7 +545,7 @@ mask_23_1:
 .byte 255
 .byte 255
 
-mask_24_1:
+mask_24_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -562,7 +563,7 @@ mask_24_1:
 .word 0x0
 .word 0x0
 
-mask_25_1:
+mask_25_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -580,7 +581,7 @@ mask_25_1:
 .word 0x0
 .word 0x0
 
-mask_26_1:
+mask_26_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x8020
 .word 0x210
@@ -598,7 +599,7 @@ mask_26_1:
 .word 0x0
 .word 0x0
 
-mask_27_1:
+mask_27_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -632,7 +633,7 @@ mask_27_1:
 .byte 255
 .byte 255
 
-mask_28_1:
+mask_28_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -650,7 +651,7 @@ mask_28_1:
 .word 0x0
 .word 0x0
 
-mask_29_1:
+mask_29_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -668,7 +669,7 @@ mask_29_1:
 .word 0x0
 .word 0x0
 
-mask_30_1:
+mask_30_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x400
 .word 0x0
@@ -686,7 +687,7 @@ mask_30_1:
 .word 0x0
 .word 0x0
 
-mask_31_1:
+mask_31_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 13
@@ -720,7 +721,7 @@ mask_31_1:
 .byte 255
 .byte 14
 
-mask_32_1:
+mask_32_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -738,7 +739,7 @@ mask_32_1:
 .word 0x0
 .word 0x800
 
-mask_33_1:
+mask_33_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x4010
 .word 0x8
@@ -756,7 +757,7 @@ mask_33_1:
 .word 0x0
 .word 0x0
 
-mask_34_1:
+mask_34_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -790,7 +791,7 @@ mask_34_1:
 .byte 255
 .byte 255
 
-mask_35_1:
+mask_35_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -808,7 +809,7 @@ mask_35_1:
 .word 0x0
 .word 0x0
 
-mask_36_1:
+mask_36_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x200
 .word 0x0
@@ -826,7 +827,7 @@ mask_36_1:
 .word 0x0
 .word 0x0
 
-mask_37_1:
+mask_37_ff4aa1393f3e21d3888656616098884:
 .byte 7
 .byte 0
 .byte 255
@@ -860,7 +861,7 @@ mask_37_1:
 .byte 255
 .byte 255
 
-mask_38_1:
+mask_38_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -878,7 +879,7 @@ mask_38_1:
 .word 0x0
 .word 0x0
 
-mask_39_1:
+mask_39_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -896,7 +897,7 @@ mask_39_1:
 .word 0x0
 .word 0x0
 
-mask_40_1:
+mask_40_ff4aa1393f3e21d3888656616098884:
 .word 0x8020
 .word 0x0
 .word 0x0
@@ -914,7 +915,7 @@ mask_40_1:
 .word 0x0
 .word 0x0
 
-mask_41_1:
+mask_41_ff4aa1393f3e21d3888656616098884:
 .byte 11
 .byte 4
 .byte 255
@@ -948,7 +949,7 @@ mask_41_1:
 .byte 255
 .byte 255
 
-mask_42_1:
+mask_42_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -966,7 +967,7 @@ mask_42_1:
 .word 0x0
 .word 0x0
 
-mask_43_1:
+mask_43_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -984,7 +985,7 @@ mask_43_1:
 .word 0x0
 .word 0x0
 
-mask_44_1:
+mask_44_ff4aa1393f3e21d3888656616098884:
 .word 0x401
 .word 0x0
 .word 0x0
@@ -1002,7 +1003,7 @@ mask_44_1:
 .word 0x0
 .word 0x0
 
-mask_45_1:
+mask_45_ff4aa1393f3e21d3888656616098884:
 .byte 7
 .byte 0
 .byte 255
@@ -1036,7 +1037,7 @@ mask_45_1:
 .byte 1
 .byte 255
 
-mask_46_1:
+mask_46_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1054,7 +1055,7 @@ mask_46_1:
 .word 0x0
 .word 0x0
 
-mask_47_1:
+mask_47_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x8000
@@ -1072,7 +1073,7 @@ mask_47_1:
 .word 0x840
 .word 0x20
 
-mask_48_1:
+mask_48_ff4aa1393f3e21d3888656616098884:
 .word 0x4010
 .word 0x0
 .word 0x0
@@ -1090,7 +1091,7 @@ mask_48_1:
 .word 0x0
 .word 0x0
 
-mask_49_1:
+mask_49_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 4
 .byte 255
@@ -1124,7 +1125,7 @@ mask_49_1:
 .byte 5
 .byte 255
 
-mask_50_1:
+mask_50_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1142,7 +1143,7 @@ mask_50_1:
 .word 0x0
 .word 0x0
 
-mask_51_1:
+mask_51_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1160,7 +1161,7 @@ mask_51_1:
 .word 0x2
 .word 0x1
 
-mask_52_1:
+mask_52_ff4aa1393f3e21d3888656616098884:
 .word 0x200
 .word 0x0
 .word 0x0
@@ -1178,7 +1179,7 @@ mask_52_1:
 .word 0x0
 .word 0x0
 
-mask_53_1:
+mask_53_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -1212,7 +1213,7 @@ mask_53_1:
 .byte 255
 .byte 10
 
-mask_54_1:
+mask_54_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1230,7 +1231,7 @@ mask_54_1:
 .word 0x0
 .word 0x0
 
-mask_55_1:
+mask_55_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x800
 .word 0x420
@@ -1248,7 +1249,7 @@ mask_55_1:
 .word 0x0
 .word 0x8000
 
-mask_56_1:
+mask_56_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -1282,7 +1283,7 @@ mask_56_1:
 .byte 255
 .byte 14
 
-mask_57_1:
+mask_57_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1300,7 +1301,7 @@ mask_57_1:
 .word 0x0
 .word 0x0
 
-mask_58_1:
+mask_58_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x1
@@ -1318,7 +1319,7 @@ mask_58_1:
 .word 0x0
 .word 0x400
 
-mask_59_1:
+mask_59_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -1352,7 +1353,7 @@ mask_59_1:
 .byte 255
 .byte 255
 
-mask_60_1:
+mask_60_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1370,7 +1371,7 @@ mask_60_1:
 .word 0x0
 .word 0x0
 
-mask_61_1:
+mask_61_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x8000
 .word 0x210
@@ -1388,7 +1389,7 @@ mask_61_1:
 .word 0x0
 .word 0x0
 
-mask_62_1:
+mask_62_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1406,7 +1407,7 @@ mask_62_1:
 .word 0x0
 .word 0x0
 
-mask_63_1:
+mask_63_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -1440,7 +1441,7 @@ mask_63_1:
 .byte 255
 .byte 255
 
-mask_64_1:
+mask_64_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1458,7 +1459,7 @@ mask_64_1:
 .word 0x0
 .word 0x0
 
-mask_65_1:
+mask_65_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x400
 .word 0x0
@@ -1476,7 +1477,7 @@ mask_65_1:
 .word 0x0
 .word 0x0
 
-mask_66_1:
+mask_66_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1494,7 +1495,7 @@ mask_66_1:
 .word 0x0
 .word 0x0
 
-mask_67_1:
+mask_67_ff4aa1393f3e21d3888656616098884:
 .byte 10
 .byte 7
 .byte 0
@@ -1528,7 +1529,7 @@ mask_67_1:
 .byte 1
 .byte 255
 
-mask_68_1:
+mask_68_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1546,7 +1547,7 @@ mask_68_1:
 .word 0x0
 .word 0x0
 
-mask_69_1:
+mask_69_ff4aa1393f3e21d3888656616098884:
 .word 0x840
 .word 0x20
 .word 0x0
@@ -1564,7 +1565,7 @@ mask_69_1:
 .word 0x8020
 .word 0x10
 
-mask_70_1:
+mask_70_ff4aa1393f3e21d3888656616098884:
 .byte 14
 .byte 255
 .byte 4
@@ -1598,7 +1599,7 @@ mask_70_1:
 .byte 255
 .byte 255
 
-mask_71_1:
+mask_71_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1616,7 +1617,7 @@ mask_71_1:
 .word 0x0
 .word 0x0
 
-mask_72_1:
+mask_72_ff4aa1393f3e21d3888656616098884:
 .word 0x2
 .word 0x1
 .word 0x0
@@ -1634,7 +1635,7 @@ mask_72_1:
 .word 0x401
 .word 0x0
 
-mask_73_1:
+mask_73_ff4aa1393f3e21d3888656616098884:
 .byte 10
 .byte 3
 .byte 255
@@ -1668,7 +1669,7 @@ mask_73_1:
 .byte 4
 .byte 1
 
-mask_74_1:
+mask_74_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x1000
 .word 0x0
@@ -1686,7 +1687,7 @@ mask_74_1:
 .word 0x1080
 .word 0x840
 
-mask_75_1:
+mask_75_ff4aa1393f3e21d3888656616098884:
 .word 0x8020
 .word 0x0
 .word 0x0
@@ -1704,7 +1705,7 @@ mask_75_1:
 .word 0x0
 .word 0x0
 
-mask_76_1:
+mask_76_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1722,7 +1723,7 @@ mask_76_1:
 .word 0x0
 .word 0x0
 
-mask_77_1:
+mask_77_ff4aa1393f3e21d3888656616098884:
 .byte 14
 .byte 7
 .byte 255
@@ -1756,7 +1757,7 @@ mask_77_1:
 .byte 8
 .byte 255
 
-mask_78_1:
+mask_78_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1774,7 +1775,7 @@ mask_78_1:
 .word 0x0
 .word 0x2
 
-mask_79_1:
+mask_79_ff4aa1393f3e21d3888656616098884:
 .word 0x401
 .word 0x0
 .word 0x0
@@ -1792,7 +1793,7 @@ mask_79_1:
 .word 0x0
 .word 0x0
 
-mask_80_1:
+mask_80_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1810,7 +1811,7 @@ mask_80_1:
 .word 0x0
 .word 0x0
 
-mask_81_1:
+mask_81_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -1844,7 +1845,7 @@ mask_81_1:
 .byte 255
 .byte 255
 
-mask_82_1:
+mask_82_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x840
@@ -1862,7 +1863,7 @@ mask_82_1:
 .word 0x0
 .word 0x0
 
-mask_83_1:
+mask_83_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1880,7 +1881,7 @@ mask_83_1:
 .word 0x0
 .word 0x0
 
-mask_84_1:
+mask_84_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1898,7 +1899,7 @@ mask_84_1:
 .word 0x0
 .word 0x0
 
-mask_85_1:
+mask_85_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -1932,7 +1933,7 @@ mask_85_1:
 .byte 255
 .byte 255
 
-mask_86_1:
+mask_86_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x2
@@ -1950,7 +1951,7 @@ mask_86_1:
 .word 0x0
 .word 0x0
 
-mask_87_1:
+mask_87_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1968,7 +1969,7 @@ mask_87_1:
 .word 0x0
 .word 0x0
 
-mask_88_1:
+mask_88_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -1986,7 +1987,7 @@ mask_88_1:
 .word 0x0
 .word 0x0
 
-mask_89_1:
+mask_89_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -2020,7 +2021,7 @@ mask_89_1:
 .byte 255
 .byte 255
 
-mask_90_1:
+mask_90_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x8020
@@ -2038,7 +2039,7 @@ mask_90_1:
 .word 0x2
 .word 0x0
 
-mask_91_1:
+mask_91_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2056,7 +2057,7 @@ mask_91_1:
 .word 0x0
 .word 0x0
 
-mask_92_1:
+mask_92_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2074,7 +2075,7 @@ mask_92_1:
 .word 0x0
 .word 0x0
 
-mask_93_1:
+mask_93_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -2108,7 +2109,7 @@ mask_93_1:
 .byte 255
 .byte 255
 
-mask_94_1:
+mask_94_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x401
@@ -2126,7 +2127,7 @@ mask_94_1:
 .word 0x0
 .word 0x0
 
-mask_95_1:
+mask_95_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2144,7 +2145,7 @@ mask_95_1:
 .word 0x0
 .word 0x0
 
-mask_96_1:
+mask_96_ff4aa1393f3e21d3888656616098884:
 .byte 13
 .byte 10
 .byte 3
@@ -2178,7 +2179,7 @@ mask_96_1:
 .byte 4
 .byte 1
 
-mask_97_1:
+mask_97_ff4aa1393f3e21d3888656616098884:
 .word 0x1080
 .word 0x840
 .word 0x0
@@ -2196,7 +2197,7 @@ mask_97_1:
 .word 0x840
 .word 0x420
 
-mask_98_1:
+mask_98_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2214,7 +2215,7 @@ mask_98_1:
 .word 0x0
 .word 0x0
 
-mask_99_1:
+mask_99_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2232,7 +2233,7 @@ mask_99_1:
 .word 0x0
 .word 0x0
 
-mask_100_1:
+mask_100_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 7
@@ -2266,7 +2267,7 @@ mask_100_1:
 .byte 8
 .byte 255
 
-mask_101_1:
+mask_101_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x2
 .word 0x0
@@ -2284,7 +2285,7 @@ mask_101_1:
 .word 0x0
 .word 0x1
 
-mask_102_1:
+mask_102_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2302,7 +2303,7 @@ mask_102_1:
 .word 0x0
 .word 0x0
 
-mask_103_1:
+mask_103_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2320,7 +2321,7 @@ mask_103_1:
 .word 0x0
 .word 0x0
 
-mask_104_1:
+mask_104_ff4aa1393f3e21d3888656616098884:
 .byte 13
 .byte 10
 .byte 3
@@ -2354,7 +2355,7 @@ mask_104_1:
 .byte 255
 .byte 255
 
-mask_105_1:
+mask_105_ff4aa1393f3e21d3888656616098884:
 .word 0x840
 .word 0x20
 .word 0x0
@@ -2372,7 +2373,7 @@ mask_105_1:
 .word 0x0
 .word 0x0
 
-mask_106_1:
+mask_106_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2390,7 +2391,7 @@ mask_106_1:
 .word 0x0
 .word 0x0
 
-mask_107_1:
+mask_107_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2408,7 +2409,7 @@ mask_107_1:
 .word 0x0
 .word 0x0
 
-mask_108_1:
+mask_108_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 7
@@ -2442,7 +2443,7 @@ mask_108_1:
 .byte 255
 .byte 255
 
-mask_109_1:
+mask_109_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x1
 .word 0x0
@@ -2460,7 +2461,7 @@ mask_109_1:
 .word 0x0
 .word 0x0
 
-mask_110_1:
+mask_110_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2478,7 +2479,7 @@ mask_110_1:
 .word 0x0
 .word 0x0
 
-mask_111_1:
+mask_111_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2496,7 +2497,7 @@ mask_111_1:
 .word 0x0
 .word 0x0
 
-mask_112_1:
+mask_112_ff4aa1393f3e21d3888656616098884:
 .byte 1
 .byte 255
 .byte 255
@@ -2530,7 +2531,7 @@ mask_112_1:
 .byte 255
 .byte 255
 
-mask_113_1:
+mask_113_ff4aa1393f3e21d3888656616098884:
 .word 0x2
 .word 0x0
 .word 0x0
@@ -2548,7 +2549,7 @@ mask_113_1:
 .word 0x1
 .word 0x0
 
-mask_114_1:
+mask_114_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2566,7 +2567,7 @@ mask_114_1:
 .word 0x0
 .word 0x0
 
-mask_115_1:
+mask_115_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2584,7 +2585,7 @@ mask_115_1:
 .word 0x0
 .word 0x0
 
-mask_116_1:
+mask_116_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -2618,7 +2619,7 @@ mask_116_1:
 .byte 255
 .byte 255
 
-mask_117_1:
+mask_117_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2636,7 +2637,7 @@ mask_117_1:
 .word 0x0
 .word 0x0
 
-mask_118_1:
+mask_118_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2654,7 +2655,7 @@ mask_118_1:
 .word 0x0
 .word 0x0
 
-mask_119_1:
+mask_119_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2672,7 +2673,7 @@ mask_119_1:
 .word 0x0
 .word 0x0
 
-mask_120_1:
+mask_120_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 13
@@ -2706,7 +2707,7 @@ mask_120_1:
 .byte 255
 .byte 14
 
-mask_121_1:
+mask_121_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2724,7 +2725,7 @@ mask_121_1:
 .word 0x0
 .word 0x0
 
-mask_122_1:
+mask_122_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2742,7 +2743,7 @@ mask_122_1:
 .word 0x0
 .word 0x2000
 
-mask_123_1:
+mask_123_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x840
 .word 0x420
@@ -2760,7 +2761,7 @@ mask_123_1:
 .word 0x0
 .word 0x0
 
-mask_124_1:
+mask_124_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -2794,7 +2795,7 @@ mask_124_1:
 .byte 255
 .byte 255
 
-mask_125_1:
+mask_125_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2812,7 +2813,7 @@ mask_125_1:
 .word 0x0
 .word 0x0
 
-mask_126_1:
+mask_126_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x1
@@ -2830,7 +2831,7 @@ mask_126_1:
 .word 0x0
 .word 0x0
 
-mask_127_1:
+mask_127_ff4aa1393f3e21d3888656616098884:
 .byte 7
 .byte 4
 .byte 1
@@ -2864,7 +2865,7 @@ mask_127_1:
 .byte 255
 .byte 255
 
-mask_128_1:
+mask_128_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2882,7 +2883,7 @@ mask_128_1:
 .word 0x0
 .word 0x0
 
-mask_129_1:
+mask_129_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2900,7 +2901,7 @@ mask_129_1:
 .word 0x0
 .word 0x0
 
-mask_130_1:
+mask_130_ff4aa1393f3e21d3888656616098884:
 .word 0x1080
 .word 0x2
 .word 0x0
@@ -2918,7 +2919,7 @@ mask_130_1:
 .word 0x0
 .word 0x0
 
-mask_131_1:
+mask_131_ff4aa1393f3e21d3888656616098884:
 .byte 11
 .byte 255
 .byte 255
@@ -2952,7 +2953,7 @@ mask_131_1:
 .byte 255
 .byte 255
 
-mask_132_1:
+mask_132_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2970,7 +2971,7 @@ mask_132_1:
 .word 0x0
 .word 0x0
 
-mask_133_1:
+mask_133_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -2988,7 +2989,7 @@ mask_133_1:
 .word 0x0
 .word 0x0
 
-mask_134_1:
+mask_134_ff4aa1393f3e21d3888656616098884:
 .word 0x4
 .word 0x0
 .word 0x0
@@ -3006,7 +3007,7 @@ mask_134_1:
 .word 0x0
 .word 0x0
 
-mask_135_1:
+mask_135_ff4aa1393f3e21d3888656616098884:
 .byte 7
 .byte 4
 .byte 1
@@ -3040,7 +3041,7 @@ mask_135_1:
 .byte 1
 .byte 255
 
-mask_136_1:
+mask_136_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3058,7 +3059,7 @@ mask_136_1:
 .word 0x0
 .word 0x0
 
-mask_137_1:
+mask_137_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3076,7 +3077,7 @@ mask_137_1:
 .word 0x2008
 .word 0x80
 
-mask_138_1:
+mask_138_ff4aa1393f3e21d3888656616098884:
 .word 0x840
 .word 0x1
 .word 0x0
@@ -3094,7 +3095,7 @@ mask_138_1:
 .word 0x0
 .word 0x0
 
-mask_139_1:
+mask_139_ff4aa1393f3e21d3888656616098884:
 .byte 11
 .byte 255
 .byte 255
@@ -3128,7 +3129,7 @@ mask_139_1:
 .byte 5
 .byte 255
 
-mask_140_1:
+mask_140_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3146,7 +3147,7 @@ mask_140_1:
 .word 0x0
 .word 0x0
 
-mask_141_1:
+mask_141_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3164,7 +3165,7 @@ mask_141_1:
 .word 0x100
 .word 0x4
 
-mask_142_1:
+mask_142_ff4aa1393f3e21d3888656616098884:
 .word 0x2
 .word 0x0
 .word 0x0
@@ -3182,7 +3183,7 @@ mask_142_1:
 .word 0x0
 .word 0x0
 
-mask_143_1:
+mask_143_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -3216,7 +3217,7 @@ mask_143_1:
 .byte 255
 .byte 14
 
-mask_144_1:
+mask_144_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3234,7 +3235,7 @@ mask_144_1:
 .word 0x0
 .word 0x0
 
-mask_145_1:
+mask_145_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x2000
 .word 0x1080
@@ -3252,7 +3253,7 @@ mask_145_1:
 .word 0x0
 .word 0x1000
 
-mask_146_1:
+mask_146_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -3286,7 +3287,7 @@ mask_146_1:
 .byte 255
 .byte 255
 
-mask_147_1:
+mask_147_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3304,7 +3305,7 @@ mask_147_1:
 .word 0x0
 .word 0x0
 
-mask_148_1:
+mask_148_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x4
@@ -3322,7 +3323,7 @@ mask_148_1:
 .word 0x0
 .word 0x0
 
-mask_149_1:
+mask_149_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -3356,7 +3357,7 @@ mask_149_1:
 .byte 255
 .byte 255
 
-mask_150_1:
+mask_150_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3374,7 +3375,7 @@ mask_150_1:
 .word 0x0
 .word 0x0
 
-mask_151_1:
+mask_151_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x1000
 .word 0x840
@@ -3392,7 +3393,7 @@ mask_151_1:
 .word 0x0
 .word 0x0
 
-mask_152_1:
+mask_152_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3410,7 +3411,7 @@ mask_152_1:
 .word 0x0
 .word 0x0
 
-mask_153_1:
+mask_153_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -3444,7 +3445,7 @@ mask_153_1:
 .byte 255
 .byte 255
 
-mask_154_1:
+mask_154_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3462,7 +3463,7 @@ mask_154_1:
 .word 0x0
 .word 0x0
 
-mask_155_1:
+mask_155_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x2
@@ -3480,7 +3481,7 @@ mask_155_1:
 .word 0x0
 .word 0x0
 
-mask_156_1:
+mask_156_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3498,7 +3499,7 @@ mask_156_1:
 .word 0x0
 .word 0x0
 
-mask_157_1:
+mask_157_ff4aa1393f3e21d3888656616098884:
 .byte 14
 .byte 7
 .byte 0
@@ -3532,7 +3533,7 @@ mask_157_1:
 .byte 1
 .byte 255
 
-mask_158_1:
+mask_158_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3550,7 +3551,7 @@ mask_158_1:
 .word 0x0
 .word 0x0
 
-mask_159_1:
+mask_159_ff4aa1393f3e21d3888656616098884:
 .word 0x2008
 .word 0x80
 .word 0x0
@@ -3568,7 +3569,7 @@ mask_159_1:
 .word 0x1080
 .word 0x40
 
-mask_160_1:
+mask_160_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 11
 .byte 4
@@ -3602,7 +3603,7 @@ mask_160_1:
 .byte 5
 .byte 255
 
-mask_161_1:
+mask_161_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3620,7 +3621,7 @@ mask_161_1:
 .word 0x0
 .word 0x0
 
-mask_162_1:
+mask_162_ff4aa1393f3e21d3888656616098884:
 .word 0x100
 .word 0x4
 .word 0x0
@@ -3638,7 +3639,7 @@ mask_162_1:
 .word 0x4
 .word 0x2
 
-mask_163_1:
+mask_163_ff4aa1393f3e21d3888656616098884:
 .byte 10
 .byte 7
 .byte 0
@@ -3672,7 +3673,7 @@ mask_163_1:
 .byte 8
 .byte 1
 
-mask_164_1:
+mask_164_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3690,7 +3691,7 @@ mask_164_1:
 .word 0x4000
 .word 0x2008
 
-mask_165_1:
+mask_165_ff4aa1393f3e21d3888656616098884:
 .word 0x1080
 .word 0x40
 .word 0x0
@@ -3708,7 +3709,7 @@ mask_165_1:
 .word 0x0
 .word 0x0
 
-mask_166_1:
+mask_166_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3726,7 +3727,7 @@ mask_166_1:
 .word 0x0
 .word 0x0
 
-mask_167_1:
+mask_167_ff4aa1393f3e21d3888656616098884:
 .byte 14
 .byte 255
 .byte 4
@@ -3760,7 +3761,7 @@ mask_167_1:
 .byte 255
 .byte 5
 
-mask_168_1:
+mask_168_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3778,7 +3779,7 @@ mask_168_1:
 .word 0x200
 .word 0x100
 
-mask_169_1:
+mask_169_ff4aa1393f3e21d3888656616098884:
 .word 0x4
 .word 0x2
 .word 0x0
@@ -3796,7 +3797,7 @@ mask_169_1:
 .word 0x0
 .word 0x0
 
-mask_170_1:
+mask_170_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3814,7 +3815,7 @@ mask_170_1:
 .word 0x0
 .word 0x0
 
-mask_171_1:
+mask_171_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -3848,7 +3849,7 @@ mask_171_1:
 .byte 255
 .byte 255
 
-mask_172_1:
+mask_172_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x2008
@@ -3866,7 +3867,7 @@ mask_172_1:
 .word 0x0
 .word 0x0
 
-mask_173_1:
+mask_173_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3884,7 +3885,7 @@ mask_173_1:
 .word 0x0
 .word 0x0
 
-mask_174_1:
+mask_174_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3902,7 +3903,7 @@ mask_174_1:
 .word 0x0
 .word 0x0
 
-mask_175_1:
+mask_175_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -3936,7 +3937,7 @@ mask_175_1:
 .byte 255
 .byte 255
 
-mask_176_1:
+mask_176_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x100
@@ -3954,7 +3955,7 @@ mask_176_1:
 .word 0x0
 .word 0x0
 
-mask_177_1:
+mask_177_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3972,7 +3973,7 @@ mask_177_1:
 .word 0x0
 .word 0x0
 
-mask_178_1:
+mask_178_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -3990,7 +3991,7 @@ mask_178_1:
 .word 0x0
 .word 0x0
 
-mask_179_1:
+mask_179_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -4024,7 +4025,7 @@ mask_179_1:
 .byte 255
 .byte 255
 
-mask_180_1:
+mask_180_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x1080
@@ -4042,7 +4043,7 @@ mask_180_1:
 .word 0x8
 .word 0x0
 
-mask_181_1:
+mask_181_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4060,7 +4061,7 @@ mask_181_1:
 .word 0x0
 .word 0x0
 
-mask_182_1:
+mask_182_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4078,7 +4079,7 @@ mask_182_1:
 .word 0x0
 .word 0x0
 
-mask_183_1:
+mask_183_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -4112,7 +4113,7 @@ mask_183_1:
 .byte 255
 .byte 255
 
-mask_184_1:
+mask_184_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x4
@@ -4130,7 +4131,7 @@ mask_184_1:
 .word 0x0
 .word 0x0
 
-mask_185_1:
+mask_185_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4148,7 +4149,7 @@ mask_185_1:
 .word 0x0
 .word 0x0
 
-mask_186_1:
+mask_186_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4166,7 +4167,7 @@ mask_186_1:
 .word 0x0
 .word 0x0
 
-mask_187_1:
+mask_187_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 10
 .byte 7
@@ -4200,7 +4201,7 @@ mask_187_1:
 .byte 4
 .byte 1
 
-mask_188_1:
+mask_188_ff4aa1393f3e21d3888656616098884:
 .word 0x4000
 .word 0x2008
 .word 0x0
@@ -4218,7 +4219,7 @@ mask_188_1:
 .word 0x2000
 .word 0x1080
 
-mask_189_1:
+mask_189_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4236,7 +4237,7 @@ mask_189_1:
 .word 0x0
 .word 0x0
 
-mask_190_1:
+mask_190_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4254,7 +4255,7 @@ mask_190_1:
 .word 0x0
 .word 0x0
 
-mask_191_1:
+mask_191_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 14
 .byte 255
@@ -4288,7 +4289,7 @@ mask_191_1:
 .byte 8
 .byte 255
 
-mask_192_1:
+mask_192_ff4aa1393f3e21d3888656616098884:
 .word 0x200
 .word 0x100
 .word 0x0
@@ -4306,7 +4307,7 @@ mask_192_1:
 .word 0x100
 .word 0x4
 
-mask_193_1:
+mask_193_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4324,7 +4325,7 @@ mask_193_1:
 .word 0x0
 .word 0x0
 
-mask_194_1:
+mask_194_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4342,7 +4343,7 @@ mask_194_1:
 .word 0x0
 .word 0x0
 
-mask_195_1:
+mask_195_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 10
 .byte 3
@@ -4376,7 +4377,7 @@ mask_195_1:
 .byte 255
 .byte 255
 
-mask_196_1:
+mask_196_ff4aa1393f3e21d3888656616098884:
 .word 0x2000
 .word 0x80
 .word 0x0
@@ -4394,7 +4395,7 @@ mask_196_1:
 .word 0x0
 .word 0x0
 
-mask_197_1:
+mask_197_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4412,7 +4413,7 @@ mask_197_1:
 .word 0x0
 .word 0x0
 
-mask_198_1:
+mask_198_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4430,7 +4431,7 @@ mask_198_1:
 .word 0x0
 .word 0x0
 
-mask_199_1:
+mask_199_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 14
 .byte 7
@@ -4464,7 +4465,7 @@ mask_199_1:
 .byte 255
 .byte 255
 
-mask_200_1:
+mask_200_ff4aa1393f3e21d3888656616098884:
 .word 0x100
 .word 0x4
 .word 0x0
@@ -4482,7 +4483,7 @@ mask_200_1:
 .word 0x0
 .word 0x0
 
-mask_201_1:
+mask_201_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4500,7 +4501,7 @@ mask_201_1:
 .word 0x0
 .word 0x0
 
-mask_202_1:
+mask_202_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4518,7 +4519,7 @@ mask_202_1:
 .word 0x0
 .word 0x0
 
-mask_203_1:
+mask_203_ff4aa1393f3e21d3888656616098884:
 .byte 1
 .byte 255
 .byte 255
@@ -4552,7 +4553,7 @@ mask_203_1:
 .byte 255
 .byte 255
 
-mask_204_1:
+mask_204_ff4aa1393f3e21d3888656616098884:
 .word 0x8
 .word 0x0
 .word 0x0
@@ -4570,7 +4571,7 @@ mask_204_1:
 .word 0x4
 .word 0x0
 
-mask_205_1:
+mask_205_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4588,7 +4589,7 @@ mask_205_1:
 .word 0x0
 .word 0x0
 
-mask_206_1:
+mask_206_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4606,7 +4607,7 @@ mask_206_1:
 .word 0x0
 .word 0x0
 
-mask_207_1:
+mask_207_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -4640,7 +4641,7 @@ mask_207_1:
 .byte 255
 .byte 255
 
-mask_208_1:
+mask_208_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4658,7 +4659,7 @@ mask_208_1:
 .word 0x0
 .word 0x0
 
-mask_209_1:
+mask_209_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4676,7 +4677,7 @@ mask_209_1:
 .word 0x0
 .word 0x0
 
-mask_210_1:
+mask_210_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4694,7 +4695,7 @@ mask_210_1:
 .word 0x0
 .word 0x0
 
-mask_211_1:
+mask_211_ff4aa1393f3e21d3888656616098884:
 .byte 1
 .byte 255
 .byte 255
@@ -4728,7 +4729,7 @@ mask_211_1:
 .byte 255
 .byte 255
 
-mask_212_1:
+mask_212_ff4aa1393f3e21d3888656616098884:
 .word 0x4
 .word 0x0
 .word 0x0
@@ -4746,7 +4747,7 @@ mask_212_1:
 .word 0x0
 .word 0x0
 
-mask_213_1:
+mask_213_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4764,7 +4765,7 @@ mask_213_1:
 .word 0x0
 .word 0x0
 
-mask_214_1:
+mask_214_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4782,7 +4783,7 @@ mask_214_1:
 .word 0x0
 .word 0x0
 
-mask_215_1:
+mask_215_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -4816,7 +4817,7 @@ mask_215_1:
 .byte 255
 .byte 255
 
-mask_216_1:
+mask_216_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4834,7 +4835,7 @@ mask_216_1:
 .word 0x0
 .word 0x0
 
-mask_217_1:
+mask_217_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4852,7 +4853,7 @@ mask_217_1:
 .word 0x0
 .word 0x0
 
-mask_218_1:
+mask_218_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -4886,7 +4887,7 @@ mask_218_1:
 .byte 255
 .byte 255
 
-mask_219_1:
+mask_219_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4904,7 +4905,7 @@ mask_219_1:
 .word 0x0
 .word 0x0
 
-mask_220_1:
+mask_220_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4922,7 +4923,7 @@ mask_220_1:
 .word 0x0
 .word 0x0
 
-mask_221_1:
+mask_221_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4940,7 +4941,7 @@ mask_221_1:
 .word 0x0
 .word 0x0
 
-mask_222_1:
+mask_222_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -4974,7 +4975,7 @@ mask_222_1:
 .byte 255
 .byte 255
 
-mask_223_1:
+mask_223_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -4992,7 +4993,7 @@ mask_223_1:
 .word 0x0
 .word 0x0
 
-mask_224_1:
+mask_224_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5010,7 +5011,7 @@ mask_224_1:
 .word 0x0
 .word 0x0
 
-mask_225_1:
+mask_225_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5028,7 +5029,7 @@ mask_225_1:
 .word 0x0
 .word 0x0
 
-mask_226_1:
+mask_226_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5062,7 +5063,7 @@ mask_226_1:
 .byte 255
 .byte 255
 
-mask_227_1:
+mask_227_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5080,7 +5081,7 @@ mask_227_1:
 .word 0x0
 .word 0x0
 
-mask_228_1:
+mask_228_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5098,7 +5099,7 @@ mask_228_1:
 .word 0x0
 .word 0x0
 
-mask_229_1:
+mask_229_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5116,7 +5117,7 @@ mask_229_1:
 .word 0x0
 .word 0x0
 
-mask_230_1:
+mask_230_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5150,7 +5151,7 @@ mask_230_1:
 .byte 255
 .byte 255
 
-mask_231_1:
+mask_231_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5168,7 +5169,7 @@ mask_231_1:
 .word 0x0
 .word 0x0
 
-mask_232_1:
+mask_232_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5186,7 +5187,7 @@ mask_232_1:
 .word 0x0
 .word 0x0
 
-mask_233_1:
+mask_233_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5204,7 +5205,7 @@ mask_233_1:
 .word 0x0
 .word 0x0
 
-mask_234_1:
+mask_234_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 14
@@ -5238,7 +5239,7 @@ mask_234_1:
 .byte 255
 .byte 255
 
-mask_235_1:
+mask_235_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5256,7 +5257,7 @@ mask_235_1:
 .word 0x0
 .word 0x0
 
-mask_236_1:
+mask_236_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5274,7 +5275,7 @@ mask_236_1:
 .word 0x0
 .word 0x0
 
-mask_237_1:
+mask_237_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x1080
 .word 0x840
@@ -5292,7 +5293,7 @@ mask_237_1:
 .word 0x0
 .word 0x0
 
-mask_238_1:
+mask_238_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5326,7 +5327,7 @@ mask_238_1:
 .byte 255
 .byte 255
 
-mask_239_1:
+mask_239_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5344,7 +5345,7 @@ mask_239_1:
 .word 0x0
 .word 0x0
 
-mask_240_1:
+mask_240_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5362,7 +5363,7 @@ mask_240_1:
 .word 0x0
 .word 0x0
 
-mask_241_1:
+mask_241_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x2
@@ -5380,7 +5381,7 @@ mask_241_1:
 .word 0x0
 .word 0x0
 
-mask_242_1:
+mask_242_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5414,7 +5415,7 @@ mask_242_1:
 .byte 255
 .byte 255
 
-mask_243_1:
+mask_243_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5432,7 +5433,7 @@ mask_243_1:
 .word 0x0
 .word 0x0
 
-mask_244_1:
+mask_244_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x4000
 .word 0x2008
@@ -5450,7 +5451,7 @@ mask_244_1:
 .word 0x0
 .word 0x0
 
-mask_245_1:
+mask_245_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5484,7 +5485,7 @@ mask_245_1:
 .byte 255
 .byte 255
 
-mask_246_1:
+mask_246_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5502,7 +5503,7 @@ mask_246_1:
 .word 0x0
 .word 0x0
 
-mask_247_1:
+mask_247_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x100
@@ -5520,7 +5521,7 @@ mask_247_1:
 .word 0x0
 .word 0x0
 
-mask_248_1:
+mask_248_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 4
@@ -5554,7 +5555,7 @@ mask_248_1:
 .byte 5
 .byte 2
 
-mask_249_1:
+mask_249_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5572,7 +5573,7 @@ mask_249_1:
 .word 0x0
 .word 0x0
 
-mask_250_1:
+mask_250_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x210
 .word 0x0
@@ -5590,7 +5591,7 @@ mask_250_1:
 .word 0x4010
 .word 0x108
 
-mask_251_1:
+mask_251_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5624,7 +5625,7 @@ mask_251_1:
 .byte 255
 .byte 255
 
-mask_252_1:
+mask_252_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5642,7 +5643,7 @@ mask_252_1:
 .word 0x200
 .word 0x0
 
-mask_253_1:
+mask_253_ff4aa1393f3e21d3888656616098884:
 .byte 14
 .byte 7
 .byte 4
@@ -5676,7 +5677,7 @@ mask_253_1:
 .byte 255
 .byte 1
 
-mask_254_1:
+mask_254_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5694,7 +5695,7 @@ mask_254_1:
 .word 0x0
 .word 0x8000
 
-mask_255_1:
+mask_255_ff4aa1393f3e21d3888656616098884:
 .word 0x4010
 .word 0x108
 .word 0x0
@@ -5712,7 +5713,7 @@ mask_255_1:
 .word 0x0
 .word 0x0
 
-mask_256_1:
+mask_256_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5730,7 +5731,7 @@ mask_256_1:
 .word 0x0
 .word 0x0
 
-mask_257_1:
+mask_257_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 11
 .byte 255
@@ -5764,7 +5765,7 @@ mask_257_1:
 .byte 255
 .byte 255
 
-mask_258_1:
+mask_258_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5782,7 +5783,7 @@ mask_258_1:
 .word 0x0
 .word 0x0
 
-mask_259_1:
+mask_259_ff4aa1393f3e21d3888656616098884:
 .word 0x200
 .word 0x0
 .word 0x0
@@ -5800,7 +5801,7 @@ mask_259_1:
 .word 0x0
 .word 0x0
 
-mask_260_1:
+mask_260_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5834,7 +5835,7 @@ mask_260_1:
 .byte 255
 .byte 255
 
-mask_261_1:
+mask_261_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5852,7 +5853,7 @@ mask_261_1:
 .word 0x0
 .word 0x0
 
-mask_262_1:
+mask_262_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5870,7 +5871,7 @@ mask_262_1:
 .word 0x0
 .word 0x0
 
-mask_263_1:
+mask_263_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5888,7 +5889,7 @@ mask_263_1:
 .word 0x0
 .word 0x0
 
-mask_264_1:
+mask_264_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5922,7 +5923,7 @@ mask_264_1:
 .byte 255
 .byte 255
 
-mask_265_1:
+mask_265_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5940,7 +5941,7 @@ mask_265_1:
 .word 0x0
 .word 0x0
 
-mask_266_1:
+mask_266_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -5958,7 +5959,7 @@ mask_266_1:
 .word 0x0
 .word 0x0
 
-mask_267_1:
+mask_267_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -5992,7 +5993,7 @@ mask_267_1:
 .byte 255
 .byte 255
 
-mask_268_1:
+mask_268_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x4010
@@ -6010,7 +6011,7 @@ mask_268_1:
 .word 0x20
 .word 0x0
 
-mask_269_1:
+mask_269_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6028,7 +6029,7 @@ mask_269_1:
 .word 0x0
 .word 0x0
 
-mask_270_1:
+mask_270_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6046,7 +6047,7 @@ mask_270_1:
 .word 0x0
 .word 0x0
 
-mask_271_1:
+mask_271_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -6080,7 +6081,7 @@ mask_271_1:
 .byte 255
 .byte 255
 
-mask_272_1:
+mask_272_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x200
@@ -6098,7 +6099,7 @@ mask_272_1:
 .word 0x0
 .word 0x0
 
-mask_273_1:
+mask_273_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -6132,7 +6133,7 @@ mask_273_1:
 .byte 8
 .byte 1
 
-mask_274_1:
+mask_274_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x8000
 .word 0x0
@@ -6150,7 +6151,7 @@ mask_274_1:
 .word 0x8000
 .word 0x4010
 
-mask_275_1:
+mask_275_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6168,7 +6169,7 @@ mask_275_1:
 .word 0x0
 .word 0x0
 
-mask_276_1:
+mask_276_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6186,7 +6187,7 @@ mask_276_1:
 .word 0x0
 .word 0x0
 
-mask_277_1:
+mask_277_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -6220,7 +6221,7 @@ mask_277_1:
 .byte 255
 .byte 5
 
-mask_278_1:
+mask_278_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x400
 .word 0x0
@@ -6238,7 +6239,7 @@ mask_278_1:
 .word 0x400
 .word 0x200
 
-mask_279_1:
+mask_279_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6256,7 +6257,7 @@ mask_279_1:
 .word 0x0
 .word 0x0
 
-mask_280_1:
+mask_280_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6274,7 +6275,7 @@ mask_280_1:
 .word 0x0
 .word 0x0
 
-mask_281_1:
+mask_281_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 10
 .byte 7
@@ -6308,7 +6309,7 @@ mask_281_1:
 .byte 255
 .byte 255
 
-mask_282_1:
+mask_282_ff4aa1393f3e21d3888656616098884:
 .word 0x8000
 .word 0x4010
 .word 0x0
@@ -6326,7 +6327,7 @@ mask_282_1:
 .word 0x0
 .word 0x0
 
-mask_283_1:
+mask_283_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6344,7 +6345,7 @@ mask_283_1:
 .word 0x0
 .word 0x0
 
-mask_284_1:
+mask_284_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6362,7 +6363,7 @@ mask_284_1:
 .word 0x0
 .word 0x0
 
-mask_285_1:
+mask_285_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 14
 .byte 255
@@ -6396,7 +6397,7 @@ mask_285_1:
 .byte 255
 .byte 255
 
-mask_286_1:
+mask_286_ff4aa1393f3e21d3888656616098884:
 .word 0x400
 .word 0x200
 .word 0x0
@@ -6414,7 +6415,7 @@ mask_286_1:
 .word 0x0
 .word 0x0
 
-mask_287_1:
+mask_287_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6432,7 +6433,7 @@ mask_287_1:
 .word 0x0
 .word 0x0
 
-mask_288_1:
+mask_288_ff4aa1393f3e21d3888656616098884:
 .byte 1
 .byte 255
 .byte 255
@@ -6466,7 +6467,7 @@ mask_288_1:
 .byte 255
 .byte 255
 
-mask_289_1:
+mask_289_ff4aa1393f3e21d3888656616098884:
 .word 0x20
 .word 0x0
 .word 0x0
@@ -6484,7 +6485,7 @@ mask_289_1:
 .word 0x10
 .word 0x0
 
-mask_290_1:
+mask_290_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6502,7 +6503,7 @@ mask_290_1:
 .word 0x0
 .word 0x0
 
-mask_291_1:
+mask_291_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6520,7 +6521,7 @@ mask_291_1:
 .word 0x0
 .word 0x0
 
-mask_292_1:
+mask_292_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -6554,7 +6555,7 @@ mask_292_1:
 .byte 255
 .byte 255
 
-mask_293_1:
+mask_293_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6572,7 +6573,7 @@ mask_293_1:
 .word 0x0
 .word 0x0
 
-mask_294_1:
+mask_294_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6590,7 +6591,7 @@ mask_294_1:
 .word 0x0
 .word 0x0
 
-mask_295_1:
+mask_295_ff4aa1393f3e21d3888656616098884:
 .byte 1
 .byte 255
 .byte 255
@@ -6624,7 +6625,7 @@ mask_295_1:
 .byte 255
 .byte 255
 
-mask_296_1:
+mask_296_ff4aa1393f3e21d3888656616098884:
 .word 0x10
 .word 0x0
 .word 0x0
@@ -6642,7 +6643,7 @@ mask_296_1:
 .word 0x0
 .word 0x0
 
-mask_297_1:
+mask_297_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6660,7 +6661,7 @@ mask_297_1:
 .word 0x0
 .word 0x0
 
-mask_298_1:
+mask_298_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -6694,7 +6695,7 @@ mask_298_1:
 .byte 255
 .byte 255
 
-mask_299_1:
+mask_299_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6712,7 +6713,7 @@ mask_299_1:
 .word 0x0
 .word 0x0
 
-mask_300_1:
+mask_300_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6730,7 +6731,7 @@ mask_300_1:
 .word 0x0
 .word 0x0
 
-mask_301_1:
+mask_301_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -6764,7 +6765,7 @@ mask_301_1:
 .byte 255
 .byte 255
 
-mask_302_1:
+mask_302_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6782,7 +6783,7 @@ mask_302_1:
 .word 0x0
 .word 0x0
 
-mask_303_1:
+mask_303_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6800,7 +6801,7 @@ mask_303_1:
 .word 0x0
 .word 0x0
 
-mask_304_1:
+mask_304_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6818,7 +6819,7 @@ mask_304_1:
 .word 0x0
 .word 0x0
 
-mask_305_1:
+mask_305_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -6852,7 +6853,7 @@ mask_305_1:
 .byte 255
 .byte 255
 
-mask_306_1:
+mask_306_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6870,7 +6871,7 @@ mask_306_1:
 .word 0x0
 .word 0x0
 
-mask_307_1:
+mask_307_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6888,7 +6889,7 @@ mask_307_1:
 .word 0x0
 .word 0x0
 
-mask_308_1:
+mask_308_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6906,7 +6907,7 @@ mask_308_1:
 .word 0x0
 .word 0x0
 
-mask_309_1:
+mask_309_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -6940,7 +6941,7 @@ mask_309_1:
 .byte 255
 .byte 255
 
-mask_310_1:
+mask_310_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6958,7 +6959,7 @@ mask_310_1:
 .word 0x0
 .word 0x0
 
-mask_311_1:
+mask_311_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6976,7 +6977,7 @@ mask_311_1:
 .word 0x0
 .word 0x0
 
-mask_312_1:
+mask_312_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -6994,7 +6995,7 @@ mask_312_1:
 .word 0x0
 .word 0x0
 
-mask_313_1:
+mask_313_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -7028,7 +7029,7 @@ mask_313_1:
 .byte 255
 .byte 255
 
-mask_314_1:
+mask_314_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7046,7 +7047,7 @@ mask_314_1:
 .word 0x0
 .word 0x0
 
-mask_315_1:
+mask_315_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7064,7 +7065,7 @@ mask_315_1:
 .word 0x0
 .word 0x0
 
-mask_316_1:
+mask_316_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -7098,7 +7099,7 @@ mask_316_1:
 .byte 255
 .byte 255
 
-mask_317_1:
+mask_317_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7116,7 +7117,7 @@ mask_317_1:
 .word 0x0
 .word 0x0
 
-mask_318_1:
+mask_318_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7134,7 +7135,7 @@ mask_318_1:
 .word 0x0
 .word 0x0
 
-mask_319_1:
+mask_319_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x2000
@@ -7152,7 +7153,7 @@ mask_319_1:
 .word 0x0
 .word 0x0
 
-mask_320_1:
+mask_320_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -7186,7 +7187,7 @@ mask_320_1:
 .byte 255
 .byte 255
 
-mask_321_1:
+mask_321_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7204,7 +7205,7 @@ mask_321_1:
 .word 0x0
 .word 0x0
 
-mask_322_1:
+mask_322_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x100
@@ -7222,7 +7223,7 @@ mask_322_1:
 .word 0x0
 .word 0x0
 
-mask_323_1:
+mask_323_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -7256,7 +7257,7 @@ mask_323_1:
 .byte 255
 .byte 255
 
-mask_324_1:
+mask_324_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7274,7 +7275,7 @@ mask_324_1:
 .word 0x0
 .word 0x0
 
-mask_325_1:
+mask_325_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7292,7 +7293,7 @@ mask_325_1:
 .word 0x0
 .word 0x0
 
-mask_326_1:
+mask_326_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x2000
 .word 0x1080
@@ -7310,7 +7311,7 @@ mask_326_1:
 .word 0x0
 .word 0x0
 
-mask_327_1:
+mask_327_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -7344,7 +7345,7 @@ mask_327_1:
 .byte 255
 .byte 255
 
-mask_328_1:
+mask_328_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7362,7 +7363,7 @@ mask_328_1:
 .word 0x0
 .word 0x0
 
-mask_329_1:
+mask_329_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x100
 .word 0x4
@@ -7380,7 +7381,7 @@ mask_329_1:
 .word 0x0
 .word 0x0
 
-mask_330_1:
+mask_330_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 2
@@ -7414,7 +7415,7 @@ mask_330_1:
 .byte 255
 .byte 255
 
-mask_331_1:
+mask_331_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7432,7 +7433,7 @@ mask_331_1:
 .word 0x0
 .word 0x0
 
-mask_332_1:
+mask_332_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7450,7 +7451,7 @@ mask_332_1:
 .word 0x0
 .word 0x0
 
-mask_333_1:
+mask_333_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x8
 .word 0x0
@@ -7468,7 +7469,7 @@ mask_333_1:
 .word 0x0
 .word 0x0
 
-mask_334_1:
+mask_334_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -7502,7 +7503,7 @@ mask_334_1:
 .byte 255
 .byte 255
 
-mask_335_1:
+mask_335_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7520,7 +7521,7 @@ mask_335_1:
 .word 0x0
 .word 0x0
 
-mask_336_1:
+mask_336_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7538,7 +7539,7 @@ mask_336_1:
 .word 0x0
 .word 0x0
 
-mask_337_1:
+mask_337_ff4aa1393f3e21d3888656616098884:
 .byte 12
 .byte 5
 .byte 2
@@ -7572,7 +7573,7 @@ mask_337_1:
 .byte 255
 .byte 3
 
-mask_338_1:
+mask_338_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7590,7 +7591,7 @@ mask_338_1:
 .word 0x0
 .word 0x0
 
-mask_339_1:
+mask_339_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7608,7 +7609,7 @@ mask_339_1:
 .word 0x0
 .word 0x200
 
-mask_340_1:
+mask_340_ff4aa1393f3e21d3888656616098884:
 .word 0x2008
 .word 0x4
 .word 0x0
@@ -7626,7 +7627,7 @@ mask_340_1:
 .word 0x0
 .word 0x0
 
-mask_341_1:
+mask_341_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 9
 .byte 255
@@ -7660,7 +7661,7 @@ mask_341_1:
 .byte 255
 .byte 255
 
-mask_342_1:
+mask_342_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7678,7 +7679,7 @@ mask_342_1:
 .word 0x0
 .word 0x0
 
-mask_343_1:
+mask_343_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7696,7 +7697,7 @@ mask_343_1:
 .word 0x0
 .word 0x0
 
-mask_344_1:
+mask_344_ff4aa1393f3e21d3888656616098884:
 .word 0x100
 .word 0x0
 .word 0x0
@@ -7714,7 +7715,7 @@ mask_344_1:
 .word 0x0
 .word 0x0
 
-mask_345_1:
+mask_345_ff4aa1393f3e21d3888656616098884:
 .byte 255
 .byte 255
 .byte 255
@@ -7748,7 +7749,7 @@ mask_345_1:
 .byte 255
 .byte 15
 
-mask_346_1:
+mask_346_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x0
@@ -7766,7 +7767,7 @@ mask_346_1:
 .word 0x0
 .word 0x0
 
-mask_347_1:
+mask_347_ff4aa1393f3e21d3888656616098884:
 .word 0x0
 .word 0x0
 .word 0x4000
@@ -7785,691 +7786,691 @@ mask_347_1:
 .word 0x4000
 
 .text
-.global crypto_kem_ntruhps2048677_avx2_constbranchindex_square_42_677
-.global _crypto_kem_ntruhps2048677_avx2_constbranchindex_square_42_677
-crypto_kem_ntruhps2048677_avx2_constbranchindex_square_42_677:
-_crypto_kem_ntruhps2048677_avx2_constbranchindex_square_42_677:
+.att_syntax prefix
+.hidden square_42_677
+.global square_42_677
+square_42_677:
 vmovdqa 0(%rsi), %ymm0
-vpshufb mask_0_1(%rip), %ymm0, %ymm5
-vpand mask_1_1(%rip), %ymm5, %ymm1
-vpand mask_2_1(%rip), %ymm5, %ymm2
-vpand mask_3_1(%rip), %ymm5, %ymm3
-vpshufb mask_4_1(%rip), %ymm0, %ymm5
-vpand mask_5_1(%rip), %ymm5, %ymm4
+vpshufb mask_0_ff4aa1393f3e21d3888656616098884(%rip), %ymm0, %ymm5
+vpand mask_1_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm1
+vpand mask_2_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm2
+vpand mask_3_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm3
+vpshufb mask_4_ff4aa1393f3e21d3888656616098884(%rip), %ymm0, %ymm5
+vpand mask_5_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_6_1(%rip), %ymm5, %ymm4
+vpand mask_6_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm0, %ymm8
-vpshufb mask_7_1(%rip), %ymm8, %ymm5
-vpand mask_8_1(%rip), %ymm5, %ymm4
+vpshufb mask_7_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_8_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_9_1(%rip), %ymm5, %ymm4
+vpand mask_9_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_10_1(%rip), %ymm5, %ymm4
+vpand mask_10_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_11_1(%rip), %ymm8, %ymm5
-vpand mask_12_1(%rip), %ymm5, %ymm4
+vpshufb mask_11_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_12_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_13_1(%rip), %ymm5, %ymm4
+vpand mask_13_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_14_1(%rip), %ymm5, %ymm4
+vpand mask_14_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $63, %ymm0, %ymm5
 vpsllq $1, %ymm0, %ymm4
 vpermq $147, %ymm5, %ymm6
 vpxor %ymm4, %ymm6, %ymm6
-vpshufb mask_15_1(%rip), %ymm6, %ymm5
-vpand mask_16_1(%rip), %ymm5, %ymm4
+vpshufb mask_15_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_16_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_17_1(%rip), %ymm5, %ymm4
+vpand mask_17_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_18_1(%rip), %ymm5, %ymm4
+vpand mask_18_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_19_1(%rip), %ymm6, %ymm5
-vpand mask_20_1(%rip), %ymm5, %ymm4
+vpshufb mask_19_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_20_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_21_1(%rip), %ymm5, %ymm4
+vpand mask_21_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_22_1(%rip), %ymm5, %ymm4
+vpand mask_22_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_23_1(%rip), %ymm8, %ymm5
-vpand mask_24_1(%rip), %ymm5, %ymm4
+vpshufb mask_23_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_24_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_25_1(%rip), %ymm5, %ymm4
+vpand mask_25_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_26_1(%rip), %ymm5, %ymm4
+vpand mask_26_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_27_1(%rip), %ymm8, %ymm5
-vpand mask_28_1(%rip), %ymm5, %ymm4
+vpshufb mask_27_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_28_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_29_1(%rip), %ymm5, %ymm4
+vpand mask_29_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_30_1(%rip), %ymm5, %ymm4
+vpand mask_30_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $63, %ymm6, %ymm5
 vpsllq $1, %ymm6, %ymm4
 vpermq $147, %ymm5, %ymm7
 vpxor %ymm4, %ymm7, %ymm7
-vpshufb mask_31_1(%rip), %ymm7, %ymm5
-vpand mask_32_1(%rip), %ymm5, %ymm4
+vpshufb mask_31_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_32_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_33_1(%rip), %ymm5, %ymm4
+vpand mask_33_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_34_1(%rip), %ymm7, %ymm5
-vpand mask_35_1(%rip), %ymm5, %ymm4
+vpshufb mask_34_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_35_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_36_1(%rip), %ymm5, %ymm4
+vpand mask_36_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_37_1(%rip), %ymm8, %ymm5
-vpand mask_38_1(%rip), %ymm5, %ymm4
+vpshufb mask_37_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_38_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_39_1(%rip), %ymm5, %ymm4
+vpand mask_39_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_40_1(%rip), %ymm5, %ymm4
+vpand mask_40_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_41_1(%rip), %ymm8, %ymm5
-vpand mask_42_1(%rip), %ymm5, %ymm4
+vpshufb mask_41_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_42_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_43_1(%rip), %ymm5, %ymm4
+vpand mask_43_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_44_1(%rip), %ymm5, %ymm4
+vpand mask_44_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsllq $1, %ymm7, %ymm6
-vpshufb mask_45_1(%rip), %ymm6, %ymm5
-vpand mask_46_1(%rip), %ymm5, %ymm4
+vpshufb mask_45_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_46_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_47_1(%rip), %ymm5, %ymm4
+vpand mask_47_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_48_1(%rip), %ymm5, %ymm4
+vpand mask_48_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_49_1(%rip), %ymm6, %ymm5
-vpand mask_50_1(%rip), %ymm5, %ymm4
+vpshufb mask_49_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_50_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_51_1(%rip), %ymm5, %ymm4
+vpand mask_51_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_52_1(%rip), %ymm5, %ymm4
+vpand mask_52_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_53_1(%rip), %ymm8, %ymm5
-vpand mask_54_1(%rip), %ymm5, %ymm4
+vpshufb mask_53_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_54_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_55_1(%rip), %ymm5, %ymm4
+vpand mask_55_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpshufb mask_56_1(%rip), %ymm8, %ymm5
-vpand mask_57_1(%rip), %ymm5, %ymm4
+vpshufb mask_56_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_57_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_58_1(%rip), %ymm5, %ymm4
+vpand mask_58_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpsrlq $62, %ymm7, %ymm5
 vpsllq $2, %ymm7, %ymm4
 vpermq $147, %ymm5, %ymm6
 vpxor %ymm4, %ymm6, %ymm6
-vpshufb mask_59_1(%rip), %ymm6, %ymm5
-vpand mask_60_1(%rip), %ymm5, %ymm4
+vpshufb mask_59_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_60_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_61_1(%rip), %ymm5, %ymm4
+vpand mask_61_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_62_1(%rip), %ymm5, %ymm4
+vpand mask_62_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_63_1(%rip), %ymm6, %ymm5
-vpand mask_64_1(%rip), %ymm5, %ymm4
+vpshufb mask_63_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_64_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_65_1(%rip), %ymm5, %ymm4
+vpand mask_65_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_66_1(%rip), %ymm5, %ymm4
+vpand mask_66_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_67_1(%rip), %ymm8, %ymm5
-vpand mask_68_1(%rip), %ymm5, %ymm4
+vpshufb mask_67_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_68_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_69_1(%rip), %ymm5, %ymm4
+vpand mask_69_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpshufb mask_70_1(%rip), %ymm8, %ymm5
-vpand mask_71_1(%rip), %ymm5, %ymm4
+vpshufb mask_70_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_71_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_72_1(%rip), %ymm5, %ymm4
+vpand mask_72_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpsllq $1, %ymm6, %ymm7
-vpshufb mask_73_1(%rip), %ymm7, %ymm5
-vpand mask_74_1(%rip), %ymm5, %ymm4
+vpshufb mask_73_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_74_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_75_1(%rip), %ymm5, %ymm4
+vpand mask_75_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_76_1(%rip), %ymm5, %ymm4
+vpand mask_76_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_77_1(%rip), %ymm7, %ymm5
-vpand mask_78_1(%rip), %ymm5, %ymm4
+vpshufb mask_77_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_78_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_79_1(%rip), %ymm5, %ymm4
+vpand mask_79_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_80_1(%rip), %ymm5, %ymm4
+vpand mask_80_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_81_1(%rip), %ymm8, %ymm5
-vpand mask_82_1(%rip), %ymm5, %ymm4
+vpshufb mask_81_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_82_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_83_1(%rip), %ymm5, %ymm4
+vpand mask_83_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_84_1(%rip), %ymm5, %ymm4
+vpand mask_84_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_85_1(%rip), %ymm8, %ymm5
-vpand mask_86_1(%rip), %ymm5, %ymm4
+vpshufb mask_85_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_86_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_87_1(%rip), %ymm5, %ymm4
+vpand mask_87_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_88_1(%rip), %ymm5, %ymm4
+vpand mask_88_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $62, %ymm6, %ymm5
 vpsllq $2, %ymm6, %ymm4
 vpermq $147, %ymm5, %ymm7
 vpxor %ymm4, %ymm7, %ymm7
-vpshufb mask_89_1(%rip), %ymm7, %ymm5
-vpand mask_90_1(%rip), %ymm5, %ymm4
+vpshufb mask_89_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_90_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_91_1(%rip), %ymm5, %ymm4
+vpand mask_91_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_92_1(%rip), %ymm5, %ymm4
+vpand mask_92_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_93_1(%rip), %ymm7, %ymm5
-vpand mask_94_1(%rip), %ymm5, %ymm4
+vpshufb mask_93_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_94_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_95_1(%rip), %ymm5, %ymm4
+vpand mask_95_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_96_1(%rip), %ymm8, %ymm5
-vpand mask_97_1(%rip), %ymm5, %ymm4
+vpshufb mask_96_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_97_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_98_1(%rip), %ymm5, %ymm4
+vpand mask_98_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_99_1(%rip), %ymm5, %ymm4
+vpand mask_99_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_100_1(%rip), %ymm8, %ymm5
-vpand mask_101_1(%rip), %ymm5, %ymm4
+vpshufb mask_100_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_101_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_102_1(%rip), %ymm5, %ymm4
+vpand mask_102_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_103_1(%rip), %ymm5, %ymm4
+vpand mask_103_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $63, %ymm7, %ymm5
 vpsllq $1, %ymm7, %ymm4
 vpermq $147, %ymm5, %ymm6
 vpxor %ymm4, %ymm6, %ymm6
-vpshufb mask_104_1(%rip), %ymm6, %ymm5
-vpand mask_105_1(%rip), %ymm5, %ymm4
+vpshufb mask_104_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_105_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_106_1(%rip), %ymm5, %ymm4
+vpand mask_106_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_107_1(%rip), %ymm5, %ymm4
+vpand mask_107_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_108_1(%rip), %ymm6, %ymm5
-vpand mask_109_1(%rip), %ymm5, %ymm4
+vpshufb mask_108_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_109_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_110_1(%rip), %ymm5, %ymm4
+vpand mask_110_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_111_1(%rip), %ymm5, %ymm4
+vpand mask_111_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_112_1(%rip), %ymm8, %ymm5
-vpand mask_113_1(%rip), %ymm5, %ymm4
+vpshufb mask_112_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_113_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_114_1(%rip), %ymm5, %ymm4
+vpand mask_114_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_115_1(%rip), %ymm5, %ymm4
+vpand mask_115_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_116_1(%rip), %ymm8, %ymm5
-vpand mask_117_1(%rip), %ymm5, %ymm4
+vpshufb mask_116_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_117_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_118_1(%rip), %ymm5, %ymm4
+vpand mask_118_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_119_1(%rip), %ymm5, %ymm4
+vpand mask_119_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vmovdqa 32(%rsi), %ymm0
-vpshufb mask_120_1(%rip), %ymm0, %ymm5
-vpand mask_121_1(%rip), %ymm5, %ymm4
+vpshufb mask_120_ff4aa1393f3e21d3888656616098884(%rip), %ymm0, %ymm5
+vpand mask_121_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_122_1(%rip), %ymm5, %ymm4
+vpand mask_122_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_123_1(%rip), %ymm5, %ymm4
+vpand mask_123_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_124_1(%rip), %ymm0, %ymm5
-vpand mask_125_1(%rip), %ymm5, %ymm4
+vpshufb mask_124_ff4aa1393f3e21d3888656616098884(%rip), %ymm0, %ymm5
+vpand mask_125_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_126_1(%rip), %ymm5, %ymm4
+vpand mask_126_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm0, %ymm8
-vpshufb mask_127_1(%rip), %ymm8, %ymm5
-vpand mask_128_1(%rip), %ymm5, %ymm4
+vpshufb mask_127_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_128_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_129_1(%rip), %ymm5, %ymm4
+vpand mask_129_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_130_1(%rip), %ymm5, %ymm4
+vpand mask_130_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_131_1(%rip), %ymm8, %ymm5
-vpand mask_132_1(%rip), %ymm5, %ymm4
+vpshufb mask_131_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_132_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_133_1(%rip), %ymm5, %ymm4
+vpand mask_133_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_134_1(%rip), %ymm5, %ymm4
+vpand mask_134_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsllq $1, %ymm0, %ymm6
-vpshufb mask_135_1(%rip), %ymm6, %ymm5
-vpand mask_136_1(%rip), %ymm5, %ymm4
+vpshufb mask_135_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_136_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_137_1(%rip), %ymm5, %ymm4
+vpand mask_137_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_138_1(%rip), %ymm5, %ymm4
+vpand mask_138_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_139_1(%rip), %ymm6, %ymm5
-vpand mask_140_1(%rip), %ymm5, %ymm4
+vpshufb mask_139_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_140_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_141_1(%rip), %ymm5, %ymm4
+vpand mask_141_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_142_1(%rip), %ymm5, %ymm4
+vpand mask_142_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_143_1(%rip), %ymm8, %ymm5
-vpand mask_144_1(%rip), %ymm5, %ymm4
+vpshufb mask_143_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_144_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_145_1(%rip), %ymm5, %ymm4
+vpand mask_145_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpshufb mask_146_1(%rip), %ymm8, %ymm5
-vpand mask_147_1(%rip), %ymm5, %ymm4
+vpshufb mask_146_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_147_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_148_1(%rip), %ymm5, %ymm4
+vpand mask_148_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpsrlq $62, %ymm0, %ymm5
 vpsllq $2, %ymm0, %ymm4
 vpermq $147, %ymm5, %ymm6
 vpxor %ymm4, %ymm6, %ymm6
-vpshufb mask_149_1(%rip), %ymm6, %ymm5
-vpand mask_150_1(%rip), %ymm5, %ymm4
+vpshufb mask_149_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_150_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_151_1(%rip), %ymm5, %ymm4
+vpand mask_151_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_152_1(%rip), %ymm5, %ymm4
+vpand mask_152_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_153_1(%rip), %ymm6, %ymm5
-vpand mask_154_1(%rip), %ymm5, %ymm4
+vpshufb mask_153_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_154_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_155_1(%rip), %ymm5, %ymm4
+vpand mask_155_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_156_1(%rip), %ymm5, %ymm4
+vpand mask_156_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_157_1(%rip), %ymm8, %ymm5
-vpand mask_158_1(%rip), %ymm5, %ymm4
+vpshufb mask_157_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_158_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_159_1(%rip), %ymm5, %ymm4
+vpand mask_159_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpshufb mask_160_1(%rip), %ymm8, %ymm5
-vpand mask_161_1(%rip), %ymm5, %ymm4
+vpshufb mask_160_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_161_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_162_1(%rip), %ymm5, %ymm4
+vpand mask_162_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpsrlq $63, %ymm6, %ymm5
 vpsllq $1, %ymm6, %ymm4
 vpermq $147, %ymm5, %ymm7
 vpxor %ymm4, %ymm7, %ymm7
-vpshufb mask_163_1(%rip), %ymm7, %ymm5
-vpand mask_164_1(%rip), %ymm5, %ymm4
+vpshufb mask_163_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_164_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_165_1(%rip), %ymm5, %ymm4
+vpand mask_165_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_166_1(%rip), %ymm5, %ymm4
+vpand mask_166_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_167_1(%rip), %ymm7, %ymm5
-vpand mask_168_1(%rip), %ymm5, %ymm4
+vpshufb mask_167_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_168_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_169_1(%rip), %ymm5, %ymm4
+vpand mask_169_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_170_1(%rip), %ymm5, %ymm4
+vpand mask_170_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_171_1(%rip), %ymm8, %ymm5
-vpand mask_172_1(%rip), %ymm5, %ymm4
+vpshufb mask_171_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_172_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_173_1(%rip), %ymm5, %ymm4
+vpand mask_173_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_174_1(%rip), %ymm5, %ymm4
+vpand mask_174_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_175_1(%rip), %ymm8, %ymm5
-vpand mask_176_1(%rip), %ymm5, %ymm4
+vpshufb mask_175_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_176_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_177_1(%rip), %ymm5, %ymm4
+vpand mask_177_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_178_1(%rip), %ymm5, %ymm4
+vpand mask_178_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $63, %ymm7, %ymm5
 vpsllq $1, %ymm7, %ymm4
 vpermq $147, %ymm5, %ymm6
 vpxor %ymm4, %ymm6, %ymm6
-vpshufb mask_179_1(%rip), %ymm6, %ymm5
-vpand mask_180_1(%rip), %ymm5, %ymm4
+vpshufb mask_179_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_180_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_181_1(%rip), %ymm5, %ymm4
+vpand mask_181_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_182_1(%rip), %ymm5, %ymm4
+vpand mask_182_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_183_1(%rip), %ymm6, %ymm5
-vpand mask_184_1(%rip), %ymm5, %ymm4
+vpshufb mask_183_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_184_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_185_1(%rip), %ymm5, %ymm4
+vpand mask_185_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_186_1(%rip), %ymm5, %ymm4
+vpand mask_186_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_187_1(%rip), %ymm8, %ymm5
-vpand mask_188_1(%rip), %ymm5, %ymm4
+vpshufb mask_187_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_188_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_189_1(%rip), %ymm5, %ymm4
+vpand mask_189_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_190_1(%rip), %ymm5, %ymm4
+vpand mask_190_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_191_1(%rip), %ymm8, %ymm5
-vpand mask_192_1(%rip), %ymm5, %ymm4
+vpshufb mask_191_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_192_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_193_1(%rip), %ymm5, %ymm4
+vpand mask_193_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_194_1(%rip), %ymm5, %ymm4
+vpand mask_194_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsllq $1, %ymm6, %ymm7
-vpshufb mask_195_1(%rip), %ymm7, %ymm5
-vpand mask_196_1(%rip), %ymm5, %ymm4
+vpshufb mask_195_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_196_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_197_1(%rip), %ymm5, %ymm4
+vpand mask_197_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_198_1(%rip), %ymm5, %ymm4
+vpand mask_198_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_199_1(%rip), %ymm7, %ymm5
-vpand mask_200_1(%rip), %ymm5, %ymm4
+vpshufb mask_199_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_200_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_201_1(%rip), %ymm5, %ymm4
+vpand mask_201_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_202_1(%rip), %ymm5, %ymm4
+vpand mask_202_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_203_1(%rip), %ymm8, %ymm5
-vpand mask_204_1(%rip), %ymm5, %ymm4
+vpshufb mask_203_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_204_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_205_1(%rip), %ymm5, %ymm4
+vpand mask_205_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_206_1(%rip), %ymm5, %ymm4
+vpand mask_206_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_207_1(%rip), %ymm8, %ymm5
-vpand mask_208_1(%rip), %ymm5, %ymm4
+vpshufb mask_207_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_208_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_209_1(%rip), %ymm5, %ymm4
+vpand mask_209_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_210_1(%rip), %ymm5, %ymm4
+vpand mask_210_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $62, %ymm6, %ymm5
 vpsllq $2, %ymm6, %ymm4
 vpermq $147, %ymm5, %ymm7
 vpxor %ymm4, %ymm7, %ymm7
-vpshufb mask_211_1(%rip), %ymm7, %ymm5
-vpand mask_212_1(%rip), %ymm5, %ymm4
+vpshufb mask_211_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_212_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_213_1(%rip), %ymm5, %ymm4
+vpand mask_213_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_214_1(%rip), %ymm5, %ymm4
+vpand mask_214_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_215_1(%rip), %ymm7, %ymm5
-vpand mask_216_1(%rip), %ymm5, %ymm4
+vpshufb mask_215_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_216_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_217_1(%rip), %ymm5, %ymm4
+vpand mask_217_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_218_1(%rip), %ymm8, %ymm5
-vpand mask_219_1(%rip), %ymm5, %ymm4
+vpshufb mask_218_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_219_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_220_1(%rip), %ymm5, %ymm4
+vpand mask_220_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_221_1(%rip), %ymm5, %ymm4
+vpand mask_221_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_222_1(%rip), %ymm8, %ymm5
-vpand mask_223_1(%rip), %ymm5, %ymm4
+vpshufb mask_222_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_223_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_224_1(%rip), %ymm5, %ymm4
+vpand mask_224_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_225_1(%rip), %ymm5, %ymm4
+vpand mask_225_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $63, %ymm7, %ymm5
 vpsllq $1, %ymm7, %ymm4
 vpermq $147, %ymm5, %ymm6
 vpxor %ymm4, %ymm6, %ymm6
-vpshufb mask_226_1(%rip), %ymm6, %ymm5
-vpand mask_227_1(%rip), %ymm5, %ymm4
+vpshufb mask_226_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_227_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_228_1(%rip), %ymm5, %ymm4
+vpand mask_228_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_229_1(%rip), %ymm5, %ymm4
+vpand mask_229_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_230_1(%rip), %ymm6, %ymm5
-vpand mask_231_1(%rip), %ymm5, %ymm4
+vpshufb mask_230_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_231_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_232_1(%rip), %ymm5, %ymm4
+vpand mask_232_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_233_1(%rip), %ymm5, %ymm4
+vpand mask_233_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_234_1(%rip), %ymm8, %ymm5
-vpand mask_235_1(%rip), %ymm5, %ymm4
+vpshufb mask_234_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_235_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_236_1(%rip), %ymm5, %ymm4
+vpand mask_236_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_237_1(%rip), %ymm5, %ymm4
+vpand mask_237_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_238_1(%rip), %ymm8, %ymm5
-vpand mask_239_1(%rip), %ymm5, %ymm4
+vpshufb mask_238_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_239_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_240_1(%rip), %ymm5, %ymm4
+vpand mask_240_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_241_1(%rip), %ymm5, %ymm4
+vpand mask_241_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vmovdqa 64(%rsi), %ymm0
-vpshufb mask_242_1(%rip), %ymm0, %ymm5
-vpand mask_243_1(%rip), %ymm5, %ymm4
+vpshufb mask_242_ff4aa1393f3e21d3888656616098884(%rip), %ymm0, %ymm5
+vpand mask_243_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_244_1(%rip), %ymm5, %ymm4
+vpand mask_244_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpshufb mask_245_1(%rip), %ymm0, %ymm5
-vpand mask_246_1(%rip), %ymm5, %ymm4
+vpshufb mask_245_ff4aa1393f3e21d3888656616098884(%rip), %ymm0, %ymm5
+vpand mask_246_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_247_1(%rip), %ymm5, %ymm4
+vpand mask_247_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpermq $78, %ymm0, %ymm8
-vpshufb mask_248_1(%rip), %ymm8, %ymm5
-vpand mask_249_1(%rip), %ymm5, %ymm4
+vpshufb mask_248_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_249_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_250_1(%rip), %ymm5, %ymm4
+vpand mask_250_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpshufb mask_251_1(%rip), %ymm8, %ymm5
-vpand mask_252_1(%rip), %ymm5, %ymm4
+vpshufb mask_251_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_252_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpsllq $1, %ymm0, %ymm6
-vpshufb mask_253_1(%rip), %ymm6, %ymm5
-vpand mask_254_1(%rip), %ymm5, %ymm4
+vpshufb mask_253_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_254_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_255_1(%rip), %ymm5, %ymm4
+vpand mask_255_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_256_1(%rip), %ymm5, %ymm4
+vpand mask_256_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_257_1(%rip), %ymm6, %ymm5
-vpand mask_258_1(%rip), %ymm5, %ymm4
+vpshufb mask_257_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_258_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_259_1(%rip), %ymm5, %ymm4
+vpand mask_259_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_260_1(%rip), %ymm8, %ymm5
-vpand mask_261_1(%rip), %ymm5, %ymm4
+vpshufb mask_260_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_261_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_262_1(%rip), %ymm5, %ymm4
+vpand mask_262_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_263_1(%rip), %ymm5, %ymm4
+vpand mask_263_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_264_1(%rip), %ymm8, %ymm5
-vpand mask_265_1(%rip), %ymm5, %ymm4
+vpshufb mask_264_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_265_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_266_1(%rip), %ymm5, %ymm4
+vpand mask_266_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsllq $2, %ymm0, %ymm6
-vpshufb mask_267_1(%rip), %ymm6, %ymm5
-vpand mask_268_1(%rip), %ymm5, %ymm4
+vpshufb mask_267_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_268_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_269_1(%rip), %ymm5, %ymm4
+vpand mask_269_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_270_1(%rip), %ymm5, %ymm4
+vpand mask_270_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_271_1(%rip), %ymm6, %ymm5
-vpand mask_272_1(%rip), %ymm5, %ymm4
+vpshufb mask_271_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_272_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_273_1(%rip), %ymm8, %ymm5
-vpand mask_274_1(%rip), %ymm5, %ymm4
+vpshufb mask_273_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_274_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_275_1(%rip), %ymm5, %ymm4
+vpand mask_275_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_276_1(%rip), %ymm5, %ymm4
+vpand mask_276_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_277_1(%rip), %ymm8, %ymm5
-vpand mask_278_1(%rip), %ymm5, %ymm4
+vpshufb mask_277_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_278_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_279_1(%rip), %ymm5, %ymm4
+vpand mask_279_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_280_1(%rip), %ymm5, %ymm4
+vpand mask_280_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $61, %ymm0, %ymm5
 vpsllq $3, %ymm0, %ymm4
 vpermq $147, %ymm5, %ymm6
 vpxor %ymm4, %ymm6, %ymm6
-vpshufb mask_281_1(%rip), %ymm6, %ymm5
-vpand mask_282_1(%rip), %ymm5, %ymm4
+vpshufb mask_281_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_282_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_283_1(%rip), %ymm5, %ymm4
+vpand mask_283_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_284_1(%rip), %ymm5, %ymm4
+vpand mask_284_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_285_1(%rip), %ymm6, %ymm5
-vpand mask_286_1(%rip), %ymm5, %ymm4
+vpshufb mask_285_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_286_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_287_1(%rip), %ymm5, %ymm4
+vpand mask_287_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_288_1(%rip), %ymm8, %ymm5
-vpand mask_289_1(%rip), %ymm5, %ymm4
+vpshufb mask_288_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_289_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_290_1(%rip), %ymm5, %ymm4
+vpand mask_290_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_291_1(%rip), %ymm5, %ymm4
+vpand mask_291_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_292_1(%rip), %ymm8, %ymm5
-vpand mask_293_1(%rip), %ymm5, %ymm4
+vpshufb mask_292_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_293_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_294_1(%rip), %ymm5, %ymm4
+vpand mask_294_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpsllq $1, %ymm6, %ymm7
-vpshufb mask_295_1(%rip), %ymm7, %ymm5
-vpand mask_296_1(%rip), %ymm5, %ymm4
+vpshufb mask_295_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_296_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_297_1(%rip), %ymm5, %ymm4
+vpand mask_297_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_298_1(%rip), %ymm7, %ymm5
-vpand mask_299_1(%rip), %ymm5, %ymm4
+vpshufb mask_298_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_299_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_300_1(%rip), %ymm5, %ymm4
+vpand mask_300_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_301_1(%rip), %ymm8, %ymm5
-vpand mask_302_1(%rip), %ymm5, %ymm4
+vpshufb mask_301_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_302_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_303_1(%rip), %ymm5, %ymm4
+vpand mask_303_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_304_1(%rip), %ymm5, %ymm4
+vpand mask_304_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_305_1(%rip), %ymm8, %ymm5
-vpand mask_306_1(%rip), %ymm5, %ymm4
+vpshufb mask_305_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_306_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_307_1(%rip), %ymm5, %ymm4
+vpand mask_307_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_308_1(%rip), %ymm5, %ymm4
+vpand mask_308_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsllq $2, %ymm6, %ymm7
-vpshufb mask_309_1(%rip), %ymm7, %ymm5
-vpand mask_310_1(%rip), %ymm5, %ymm4
+vpshufb mask_309_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_310_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_311_1(%rip), %ymm5, %ymm4
+vpand mask_311_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_312_1(%rip), %ymm5, %ymm4
+vpand mask_312_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_313_1(%rip), %ymm7, %ymm5
-vpand mask_314_1(%rip), %ymm5, %ymm4
+vpshufb mask_313_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_314_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_315_1(%rip), %ymm5, %ymm4
+vpand mask_315_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_316_1(%rip), %ymm8, %ymm5
-vpand mask_317_1(%rip), %ymm5, %ymm4
+vpshufb mask_316_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_317_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_318_1(%rip), %ymm5, %ymm4
+vpand mask_318_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_319_1(%rip), %ymm5, %ymm4
+vpand mask_319_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_320_1(%rip), %ymm8, %ymm5
-vpand mask_321_1(%rip), %ymm5, %ymm4
+vpshufb mask_320_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_321_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_322_1(%rip), %ymm5, %ymm4
+vpand mask_322_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpsrlq $61, %ymm6, %ymm5
 vpsllq $3, %ymm6, %ymm4
 vpermq $147, %ymm5, %ymm7
 vpxor %ymm4, %ymm7, %ymm7
-vpshufb mask_323_1(%rip), %ymm7, %ymm5
-vpand mask_324_1(%rip), %ymm5, %ymm4
+vpshufb mask_323_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_324_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_325_1(%rip), %ymm5, %ymm4
+vpand mask_325_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_326_1(%rip), %ymm5, %ymm4
+vpand mask_326_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_327_1(%rip), %ymm7, %ymm5
-vpand mask_328_1(%rip), %ymm5, %ymm4
+vpshufb mask_327_ff4aa1393f3e21d3888656616098884(%rip), %ymm7, %ymm5
+vpand mask_328_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_329_1(%rip), %ymm5, %ymm4
+vpand mask_329_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm7, %ymm8
-vpshufb mask_330_1(%rip), %ymm8, %ymm5
-vpand mask_331_1(%rip), %ymm5, %ymm4
+vpshufb mask_330_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_331_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_332_1(%rip), %ymm5, %ymm4
+vpand mask_332_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_333_1(%rip), %ymm5, %ymm4
+vpand mask_333_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_334_1(%rip), %ymm8, %ymm5
-vpand mask_335_1(%rip), %ymm5, %ymm4
+vpshufb mask_334_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_335_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_336_1(%rip), %ymm5, %ymm4
+vpand mask_336_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vpsllq $1, %ymm7, %ymm6
-vpshufb mask_337_1(%rip), %ymm6, %ymm5
-vpand mask_338_1(%rip), %ymm5, %ymm4
+vpshufb mask_337_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_338_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_339_1(%rip), %ymm5, %ymm4
+vpand mask_339_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_340_1(%rip), %ymm5, %ymm4
+vpand mask_340_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
-vpshufb mask_341_1(%rip), %ymm6, %ymm5
-vpand mask_342_1(%rip), %ymm5, %ymm4
+vpshufb mask_341_ff4aa1393f3e21d3888656616098884(%rip), %ymm6, %ymm5
+vpand mask_342_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_343_1(%rip), %ymm5, %ymm4
+vpand mask_343_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
-vpand mask_344_1(%rip), %ymm5, %ymm4
+vpand mask_344_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm3, %ymm3
 vpermq $78, %ymm6, %ymm8
-vpshufb mask_345_1(%rip), %ymm8, %ymm5
-vpand mask_346_1(%rip), %ymm5, %ymm4
+vpshufb mask_345_ff4aa1393f3e21d3888656616098884(%rip), %ymm8, %ymm5
+vpand mask_346_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm1, %ymm1
-vpand mask_347_1(%rip), %ymm5, %ymm4
+vpand mask_347_ff4aa1393f3e21d3888656616098884(%rip), %ymm5, %ymm4
 vpxor %ymm4, %ymm2, %ymm2
 vmovdqa %ymm1, 0(%rdi)
 vmovdqa %ymm2, 32(%rdi)

@@ -1,14 +1,10 @@
 /*
   This file is for Benes network related functions
-
-  For the implementation strategy, see
-  https://eprint.iacr.org/2017/793.pdf
 */
 
 #include "util.h"
 #include "transpose.h"
 #include "params.h"
-#include "benes.h"
 
 /* middle layers of the benes network */
 static void layer_in(uint64_t data[2][64], uint64_t * bits, int lgs)

@@ -1,7 +1,7 @@
 #include <emmintrin.h>
 #include "crypto_hashblocks.h"
 
-#define matrix CRYPTO_NAMESPACE(matrix)
+#define matrix crypto_hashblocks_rfsb509_xmm1reg_matrix
 extern const unsigned char matrix[16384];
 
 int crypto_hashblocks(unsigned char *r,const unsigned char *b,unsigned long long blen)

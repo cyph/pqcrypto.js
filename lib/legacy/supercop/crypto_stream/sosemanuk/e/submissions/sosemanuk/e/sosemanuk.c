@@ -30,15 +30,15 @@
 
 /* ======================================================================== */
 
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 
 /*
- * No local speed testing when using the ECRYPT mode.
+ * No local speed testing when using the crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT mode.
  */
 #undef SOSEMANUK_SPEED
 
 /*
- * If we are using the ECRYPT API, then we rely on the ECRYPT portability
+ * If we are using the crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT API, then we rely on the crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT portability
  * macros and types.
  */
 
@@ -257,17 +257,17 @@ encode32le(unsigned char *dst, unum32 val)
 
 /* ======================================================================== */
 
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 void
-ECRYPT_init(void)
+crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_init(void)
 {
 	return;
 }
 #endif
 
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 void
-ECRYPT_keysetup(ECRYPT_ctx *kc, const u8 *key, u32 keysize, u32 ivsize)
+crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_keysetup(crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ctx *kc, const u8 *key, u32 keysize, u32 ivsize)
 #else
 /* see sosemanuk.h */
 void
@@ -326,7 +326,7 @@ sosemanuk_schedule(sosemanuk_key_context *kc,
 	unsigned char wbuf[32];
 	register unum32 w0, w1, w2, w3, w4, w5, w6, w7;
 	int i = 0;
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 	size_t key_len = keysize / 8;
 
 	kc->ivlen = ivsize / 8;
@@ -431,9 +431,9 @@ sosemanuk_schedule(sosemanuk_key_context *kc,
 #undef WUP1
 }
 
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 void
-ECRYPT_ivsetup(ECRYPT_ctx *ctx, const u8 *iv)
+crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ivsetup(crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ctx *ctx, const u8 *iv)
 #else
 /* see sosemanuk.h */
 void
@@ -442,7 +442,7 @@ sosemanuk_init(sosemanuk_run_context *rc, sosemanuk_key_context *kc,
 #endif
 {
 
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 #define rc       ctx
 #define kc       ctx
 #define iv_len   (ctx->ivlen)
@@ -577,7 +577,7 @@ sosemanuk_init(sosemanuk_run_context *rc, sosemanuk_key_context *kc,
 		(unsigned long)rc->r1, (unsigned long)rc->r2);
 #endif
 
-#ifndef SOSEMANUK_ECRYPT
+#ifndef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 	rc->ptr = sizeof rc->buf;
 #endif
 
@@ -585,7 +585,7 @@ sosemanuk_init(sosemanuk_run_context *rc, sosemanuk_key_context *kc,
 #undef FSS
 #undef FSF
 
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 #undef rc
 #undef kc
 #undef iv_len
@@ -741,13 +741,13 @@ static unum32 mul_ia[] = {
  * 32-bit words, in an "unum32". That sum prevents the compiler from
  * optimizing out part of the computation.
  *
- * If SOSEMANUK_ECRYPT is defined, the input and output buffers are
+ * If SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT is defined, the input and output buffers are
  * provided also, and this function performs the XOR. The input and
  * output buffers are assumed to be 32-bit aligned.
  */
-#if defined SOSEMANUK_ECRYPT
+#if defined SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 static void
-sosemanuk_internal(ECRYPT_ctx *rc, const u32 *src, u32 *dst)
+sosemanuk_internal(crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ctx *rc, const u32 *src, u32 *dst)
 #elif defined SOSEMANUK_SPEED
 static unum32
 sosemanuk_internal(sosemanuk_run_context *rc, unsigned long counter)
@@ -839,7 +839,7 @@ sosemanuk_internal(sosemanuk_run_context *rc)
 
 #else
 
-#ifdef SOSEMANUK_ECRYPT
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 #define SRD(S, x0, x1, x2, x3, ooff)   do { \
 		PSPIN(u0, u1, u2, u3); \
 		S(u0, u1, u2, u3, u4); \
@@ -1000,7 +1000,7 @@ sosemanuk_internal(sosemanuk_run_context *rc)
 #endif
 }
 
-#if !defined SOSEMANUK_ECRYPT && !defined SOSEMANUK_SPEED
+#if !defined SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT && !defined SOSEMANUK_SPEED
 
 /*
  * Combine buffers in1[] and in2[] by XOR, result in out[]. The length
@@ -1053,18 +1053,18 @@ xorbuf(const unsigned char *in1, const unsigned char *in2,
  * External API.
  */
 
-#if defined SOSEMANUK_ECRYPT
+#if defined SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
 
 /* see ecrypt-sync.h */
 void
-ECRYPT_process_bytes(int action, ECRYPT_ctx *ctx,
+crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_process_bytes(int action, crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ctx *ctx,
 	const u8 *input, u8 *output, u32 msglen)
 {
 	(void)action;
 
 	while (msglen > 0) {
-		u32 ibuf[ECRYPT_BLOCKLENGTH / 4];
-		u32 obuf[ECRYPT_BLOCKLENGTH / 4];
+		u32 ibuf[crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH / 4];
+		u32 obuf[crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH / 4];
 		size_t len;
 
 		len = sizeof ibuf;
@@ -1081,18 +1081,18 @@ ECRYPT_process_bytes(int action, ECRYPT_ctx *ctx,
 
 /* see ecrypt-sync.h */
 void
-ECRYPT_keystream_bytes(ECRYPT_ctx *ctx, u8 *keystream, u32 length)
+crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_keystream_bytes(crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ctx *ctx, u8 *keystream, u32 length)
 {
-	static const u32 zb[ECRYPT_BLOCKLENGTH];
+	static const u32 zb[crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH];
 
 	while (length > 0) {
-		u32 tbuf[ECRYPT_BLOCKLENGTH / 4];
+		u32 tbuf[crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH / 4];
 
 		sosemanuk_internal(ctx, zb, tbuf);
-		if (length >= ECRYPT_BLOCKLENGTH) {
-			memcpy(keystream, tbuf, ECRYPT_BLOCKLENGTH);
-			keystream += ECRYPT_BLOCKLENGTH;
-			length -= ECRYPT_BLOCKLENGTH;
+		if (length >= crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH) {
+			memcpy(keystream, tbuf, crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH);
+			keystream += crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH;
+			length -= crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH;
 		} else {
 			memcpy(keystream, tbuf, length);
 			return;
@@ -1102,27 +1102,27 @@ ECRYPT_keystream_bytes(ECRYPT_ctx *ctx, u8 *keystream, u32 length)
 
 /* see ecrypt-sync.h */
 void
-ECRYPT_process_blocks(int action, ECRYPT_ctx *ctx,
+crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_process_blocks(int action, crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ctx *ctx,
 	const u8 *input, u8 *output, u32 blocks)
 {
 	(void)action;
 
 	while (blocks -- > 0) {
 		sosemanuk_internal(ctx, (u32 *)input, (u32 *)output);
-		input += ECRYPT_BLOCKLENGTH;
-		output += ECRYPT_BLOCKLENGTH;
+		input += crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH;
+		output += crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH;
 	}
 }
 
 /* see ecrypt-sync.h */
 void
-ECRYPT_keystream_blocks(ECRYPT_ctx *ctx, u8 *keystream, u32 blocks)
+crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_keystream_blocks(crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ctx *ctx, u8 *keystream, u32 blocks)
 {
-	static const u32 zb[ECRYPT_BLOCKLENGTH / 4];
+	static const u32 zb[crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH / 4];
 
 	while (blocks -- > 0) {
 		sosemanuk_internal(ctx, zb, (u32 *)keystream);
-		keystream += ECRYPT_BLOCKLENGTH;
+		keystream += crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKLENGTH;
 	}
 }
 
@@ -1204,8 +1204,8 @@ static void
 maketest(int tvn, unsigned char *key, size_t key_len,
 	unsigned char *iv, size_t iv_len)
 {
-#ifdef SOSEMANUK_ECRYPT
-	ECRYPT_ctx ctx;
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ctx ctx;
 #else
 	sosemanuk_key_context kc;
 	sosemanuk_run_context rc;
@@ -1216,26 +1216,26 @@ maketest(int tvn, unsigned char *key, size_t key_len,
 	printf("=====================================================\n");
 	printf("Detailed test vector %d:\n", tvn);
 
-#ifdef SOSEMANUK_ECRYPT
-	ECRYPT_init();
-	ECRYPT_keysetup(&ctx, key, key_len * 8, iv_len * 8);
-	ECRYPT_ivsetup(&ctx, iv);
+#ifdef SOSEMANUK_crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_init();
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_keysetup(&ctx, key, key_len * 8, iv_len * 8);
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_ivsetup(&ctx, iv);
 #if defined SOSEMANUK_TEST_ENCRYPT_BYTES
 	memset(tmp, 0, sizeof tmp);
-	ECRYPT_encrypt_bytes(&ctx, tmp, tmp, sizeof tmp);
-#elif defined SOSEMANUK_TEST_DECRYPT_BYTES
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_encrypt_bytes(&ctx, tmp, tmp, sizeof tmp);
+#elif defined SOSEMANUK_TEST_Dcrypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BYTES
 	memset(tmp, 0, sizeof tmp);
-	ECRYPT_decrypt_bytes(&ctx, tmp, tmp, sizeof tmp);
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_decrypt_bytes(&ctx, tmp, tmp, sizeof tmp);
 #elif defined SOSEMANUK_TEST_ENCRYPT_BLOCKS
 	memset(tmp, 0, sizeof tmp);
-	ECRYPT_encrypt_blocks(&ctx, tmp, tmp, 2);
-#elif defined SOSEMANUK_TEST_DECRYPT_BLOCKS
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_encrypt_blocks(&ctx, tmp, tmp, 2);
+#elif defined SOSEMANUK_TEST_Dcrypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_BLOCKS
 	memset(tmp, 0, sizeof tmp);
-	ECRYPT_decrypt_blocks(&ctx, tmp, tmp, 2);
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_decrypt_blocks(&ctx, tmp, tmp, 2);
 #elif defined SOSEMANUK_TEST_KEYSTREAM_BLOCKS
-	ECRYPT_keystream_blocks(&ctx, tmp, 2);
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_keystream_blocks(&ctx, tmp, 2);
 #else
-	ECRYPT_keystream_bytes(&ctx, tmp, sizeof tmp);
+	crypto_stream_sosemanuk_e_submissions_sosemanuk_ECRYPT_keystream_bytes(&ctx, tmp, sizeof tmp);
 #endif
 #else
 	sosemanuk_schedule(&kc, key, key_len);

@@ -1,9 +1,9 @@
 .text
 .align 3
-.globl _CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm)
-.globl CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm)
-_CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm):
-CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm):
+.globl _crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_ivsetup_qhasm
+.globl crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_ivsetup_qhasm
+_crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_ivsetup_qhasm:
+crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_ivsetup_qhasm:
 stwu r1,-384(r1)
 stw r13,0(r1)
 stw r14,4(r1)
@@ -23,8 +23,8 @@ stw r27,56(r1)
 stw r28,60(r1)
 stw r29,64(r1)
 stw r30,68(r1)
-lis r5,hi16(_CRYPTO_NAMESPACE(aes_big_constants))
-ori r5,r5,lo16(_CRYPTO_NAMESPACE(aes_big_constants))
+lis r5,hi16(_aes_big_constants)
+ori r5,r5,lo16(_aes_big_constants)
 mr r6,r5
 addi r6,r6,40
 mr r7,r5

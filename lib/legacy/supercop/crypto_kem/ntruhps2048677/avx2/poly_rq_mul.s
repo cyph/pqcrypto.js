@@ -1,5 +1,6 @@
 .data
-.p2align 5
+.section .rodata
+.align 32
 mask_low9words:
 .word 0xffff
 .word 0xffff
@@ -255,10 +256,10 @@ mask_mod2048:
 .word 2047
 .word 2047
 .text
-.global crypto_kem_ntruhps2048677_avx2_constbranchindex_poly_Rq_mul
-.global _crypto_kem_ntruhps2048677_avx2_constbranchindex_poly_Rq_mul
-crypto_kem_ntruhps2048677_avx2_constbranchindex_poly_Rq_mul:
-_crypto_kem_ntruhps2048677_avx2_constbranchindex_poly_Rq_mul:
+.hidden poly_Rq_mul
+.global poly_Rq_mul
+.att_syntax prefix
+poly_Rq_mul:
 push %r12
 mov %rsp, %r8
 andq $-32, %rsp
@@ -1509,7 +1510,7 @@ vpaddw %ymm0, %ymm1, %ymm0
 vmovdqa %ymm0, 5152(%r11)
 subq $9408, %rsp
 mov $4, %ecx
-karatsuba_loop_1:
+karatsuba_loop_889b048998ff8040e209babec9cb22c:
 mov %rsp, %r9
 mov %rsp, %r10
 subq $32, %rsp
@@ -2086,7 +2087,7 @@ vmovdqa 0(%rsp), %ymm11
 vinserti128 $1, %xmm1, %ymm11, %ymm14
 vmovdqa %ymm14, 2656(%r9)
 addq $32, %rsp
-innerloop_1:
+innerloop_889b048998ff8040e209babec9cb22c:
 vmovdqa 0(%r9), %ymm0
 vmovdqa 1408(%r9), %ymm6
 vmovdqa 32(%r9), %ymm1
@@ -2973,11 +2974,11 @@ vpaddw 6176(%rsp), %ymm0, %ymm0
 vmovdqa %ymm0, 3456(%r10)
 vmovdqa %ymm1, 3808(%r10)
 neg %ecx
-jns done_1
+jns done_889b048998ff8040e209babec9cb22c
 add $704, %r9
 add $1408, %r10
-jmp innerloop_1
-done_1:
+jmp innerloop_889b048998ff8040e209babec9cb22c
+done_889b048998ff8040e209babec9cb22c:
 sub $704, %r9
 sub $1408, %r10
 vmovdqa 0(%r9), %ymm0
@@ -4764,10 +4765,43 @@ add $1536, %rax
 add $1536, %r11
 add $3072, %r12
 dec %ecx
-jnz karatsuba_loop_1
+jnz karatsuba_loop_889b048998ff8040e209babec9cb22c
 sub $12288, %r12
 add $9408, %rsp
-subq $1280, %rsp
+subq $2400, %rsp
+vpxor %ymm0, %ymm0, %ymm0
+vmovdqa %ymm0, 1792(%rsp)
+vmovdqa %ymm0, 1824(%rsp)
+vmovdqa %ymm0, 1856(%rsp)
+vmovdqa %ymm0, 1888(%rsp)
+vmovdqa %ymm0, 1920(%rsp)
+vmovdqa %ymm0, 1952(%rsp)
+vmovdqa %ymm0, 1984(%rsp)
+vmovdqa %ymm0, 2016(%rsp)
+vmovdqa %ymm0, 2048(%rsp)
+vmovdqa %ymm0, 2080(%rsp)
+vmovdqa %ymm0, 2112(%rsp)
+vmovdqa %ymm0, 2144(%rsp)
+vmovdqa %ymm0, 2176(%rsp)
+vmovdqa %ymm0, 2208(%rsp)
+vmovdqa %ymm0, 2240(%rsp)
+vmovdqa %ymm0, 2272(%rsp)
+vmovdqa %ymm0, 2304(%rsp)
+vmovdqa %ymm0, 2336(%rsp)
+vmovdqa %ymm0, 2368(%rsp)
+vmovdqa %ymm0, 2400(%rsp)
+vmovdqa %ymm0, 2432(%rsp)
+vmovdqa %ymm0, 2464(%rsp)
+vmovdqa %ymm0, 2496(%rsp)
+vmovdqa %ymm0, 2528(%rsp)
+vmovdqa %ymm0, 2560(%rsp)
+vmovdqa %ymm0, 2592(%rsp)
+vmovdqa %ymm0, 2624(%rsp)
+vmovdqa %ymm0, 2656(%rsp)
+vmovdqa %ymm0, 2688(%rsp)
+vmovdqa %ymm0, 2720(%rsp)
+vmovdqa %ymm0, 2752(%rsp)
+vmovdqa %ymm0, 2784(%rsp)
 vmovdqa const729(%rip), %ymm15
 vmovdqa const3_inv(%rip), %ymm14
 vmovdqa const5_inv(%rip), %ymm13

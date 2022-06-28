@@ -106,7 +106,7 @@ void calculateQ2(const bitcontainer *T , const bitcontainer *Q1, bitcontainer *Q
 	for (i = 0; i <= VINEGAR_VARS; i++) {
 		// Calculates P_i,1*T
 		for (j = i; j <= VINEGAR_VARS; j++) {
-			bitcontainer r = _mm_loadu_si128(&Q1[col++]);
+			bitcontainer r = Q1[col++];
 			__m256i rr = _mm256_permute2x128_si256(_mm256_loadu_si256((__m256i *)&r),_mm256_setzero_si256(),0);
 			
 			uint8_t *t = (uint8_t *)&T[j];
@@ -129,7 +129,7 @@ void calculateQ2(const bitcontainer *T , const bitcontainer *Q1, bitcontainer *Q
 		}
 		// Add P_i,2
 		for (j = 0; j < OIL_VARS; j++) {
-			bitcontainer r = _mm_loadu_si128(&Q1[col++]);
+			bitcontainer r = Q1[col++];
 			TempMat[i][j] ^= r;
 		}
 	}
@@ -165,9 +165,10 @@ void calculateQ2(const bitcontainer *T , const bitcontainer *Q1, bitcontainer *Q
 	col = 0;
 	for (i = 0; i < OIL_VARS; i++) {
 		for (j = i; j < OIL_VARS; j++) {
-			bitcontainer result = temp[i][j];
-			if (j != i) result ^= temp[j][i];
-			_mm_storeu_si128(&Q2[col],result);
+			Q2[col] = temp[i][j];
+			if (j != i){
+				Q2[col] ^= temp[j][i];
+			}
 			col ++ ;
 		}
 	}
@@ -228,9 +229,7 @@ void TransformQ1(bitcontainer *T , const bitcontainer *Q1 , bitcontainer *P1, bi
 		// go through vinegar x oil columns
 		for(j=0;j<OIL_VARS;j++)
 		{
-			bitcontainer result = _mm_loadu_si128(&L[i*OIL_VARS+j]);
-			result ^= _mm_loadu_si128(&Q1[colQ1++]);
-			_mm_storeu_si128(&L[i*OIL_VARS+j],result);
+			L[i*OIL_VARS+j] ^= Q1[colQ1++];
 		}
 	}
 }
@@ -245,17 +244,13 @@ void TransformQ1(bitcontainer *T , const bitcontainer *Q1 , bitcontainer *P1, bi
 	bitcontainer mask = _mm_set_epi64x(0x3ffffff,0xffffffffffffffff);
 	for (i = 0; i < VINEGAR_VARS+1; i++)
 	{
-		bitcontainer result = _mm_loadu_si128(&T[i]);
-		result &= mask;
-		_mm_storeu_si128(&T[i],result);
+		T[i] &= mask;
 	}
 #elif OIL_VARS == 117
 	bitcontainer mask = _mm_set_epi64x(0x1fffffffffffff,0xffffffffffffffff);
 	for (i = 0; i < VINEGAR_VARS+1; i++)
 	{
-		bitcontainer result = _mm_loadu_si128(&T[i]);
-		result &= mask;
-		_mm_storeu_si128(&T[i],result);
+		T[i] &= mask;
 	}
 #else
 	Error: parameters not supported
@@ -278,8 +273,8 @@ void TransformQ1(bitcontainer *T , const bitcontainer *Q1 , bitcontainer *P1, bi
 		for (j=i; j<= VINEGAR_VARS ; j++)
 		{
 			// copy column to P1
-			bitcontainer r = _mm_loadu_si128(&Q1[colQ1]);
-			_mm_storeu_si128(&P1[colP1++],r); 
+			bitcontainer r = Q1[colQ1];
+			P1[colP1++] = r; 
 			
 			// update L
 			__m256i rr = _mm256_permute2x128_si256(_mm256_loadu_si256((__m256i *)&r),_mm256_setzero_si256(),0);
@@ -323,9 +318,7 @@ void TransformQ1(bitcontainer *T , const bitcontainer *Q1 , bitcontainer *P1, bi
 		// go through vinegar x oil columns
 		for(j=0;j<OIL_VARS;j++)
 		{
-			bitcontainer result = _mm_loadu_si128(&L[i*OIL_VARS+j]);
-			result ^= _mm_loadu_si128(&Q1[colQ1++]);
-			_mm_storeu_si128(&L[i*OIL_VARS+j],result);
+			L[i*OIL_VARS+j] ^= Q1[colQ1++];
 		}
 	}
 }
@@ -416,7 +409,7 @@ void serializeQ2(unsigned char *data, bitcontainer *Q2){
 	for (i = 0; i < Q2_COLS ; i++) {
 
 		alignas (32) uint64_t a[2];
-		_mm_store_si128((__m128i*) a, _mm_loadu_si128(&Q2[i]));
+		_mm_store_si128((__m128i*) a, Q2[i]);
 
 		int bits = 64;
 		// fill up the current byte
@@ -1257,7 +1250,7 @@ void _generateKeyPair(unsigned char *pk, unsigned char *sk, bitcontainer *T, bit
 	squeezeBytes(&sponge, PK_SEED(pk) , 32);
 	
 	// Calculate T
-	_mm_storeu_si128(&T[0],empty); /* makes T linear instead of affine*/
+	T[0]=empty;/* makes T linear instead of affine*/
 	squeezeCols(&sponge , &(T[1]) , VINEGAR_VARS);
 	
 	// Calculate Q1

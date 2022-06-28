@@ -247,17 +247,17 @@
 
 # qhasm: stack64 i29_stack
 
-# qhasm: enter CRYPTO_NAMESPACETOP aix
+# qhasm: enter crypto_hash_cubehash1632_ppc64aix aix
 .csect .text[PR]
 .toc
-.globl CRYPTO_NAMESPACETOP
-.globl .CRYPTO_NAMESPACETOP
-.csect CRYPTO_NAMESPACETOP[DS],3
-CRYPTO_NAMESPACETOP:
-.llong .CRYPTO_NAMESPACETOP, TOC[tc0], 0
+.globl crypto_hash_cubehash1632_ppc64aix
+.globl .crypto_hash_cubehash1632_ppc64aix
+.csect crypto_hash_cubehash1632_ppc64aix[DS],3
+crypto_hash_cubehash1632_ppc64aix:
+.llong .crypto_hash_cubehash1632_ppc64aix, TOC[tc0], 0
 .csect .text[PR]
 .align 3
-.CRYPTO_NAMESPACETOP:
+.crypto_hash_cubehash1632_ppc64aix:
 stwu 1,-400(1)
 
 # qhasm: i12_stack = i12

@@ -1,7 +1,7 @@
-//
-// GNU C for Linux (AMD64) 
-// Parameters are passed in rdi,rsi,rdx,rcx,r8....
-//
+/
+/ GNU C for Linux (AMD64) 
+/ Parameters are passed in rdi,rsi,rdx,rcx,r8....
+/
 
         .file   "mrmuldv.s"
 .text

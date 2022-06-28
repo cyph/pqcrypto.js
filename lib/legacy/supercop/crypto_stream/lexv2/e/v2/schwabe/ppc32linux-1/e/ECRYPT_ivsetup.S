@@ -317,13 +317,13 @@
 
 # qhasm: stack32 i29_stack
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm)
+# qhasm: enter crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_ivsetup_qhasm
 .text
 .align 3
-.globl _CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm)
-.globl CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm)
-_CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm):
-CRYPTO_NAMESPACE(ECRYPT_ivsetup_qhasm):
+.globl _crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_ivsetup_qhasm
+.globl crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_ivsetup_qhasm
+_crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_ivsetup_qhasm:
+crypto_stream_lexv2_e_v2_schwabe_ppc32linux_1_ECRYPT_ivsetup_qhasm:
 stwu 1,-384(1)
 
 # qhasm: i12_stack = i12
@@ -416,15 +416,15 @@ stw 30,64(1)
 # asm 2: stw <i29=31,>i29_stack=68(1)
 stw 31,68(1)
 
-# qhasm: constants = &CRYPTO_NAMESPACE(aes_big_constants) & 0xffff0000
-# asm 1: lis >constants=int32#3,CRYPTO_NAMESPACE(aes_big_constants)@h
-# asm 2: lis >constants=5,CRYPTO_NAMESPACE(aes_big_constants)@h
-lis 5,CRYPTO_NAMESPACE(aes_big_constants)@h
+# qhasm: constants = &aes_big_constants & 0xffff0000
+# asm 1: lis >constants=int32#3,aes_big_constants@h
+# asm 2: lis >constants=5,aes_big_constants@h
+lis 5,aes_big_constants@h
 
-# qhasm: constants |= &CRYPTO_NAMESPACE(aes_big_constants) & 0xffff
-# asm 1: ori >constants=int32#3,<constants=int32#3,CRYPTO_NAMESPACE(aes_big_constants)@l
-# asm 2: ori >constants=5,<constants=5,CRYPTO_NAMESPACE(aes_big_constants)@l
-ori 5,5,CRYPTO_NAMESPACE(aes_big_constants)@l
+# qhasm: constants |= &aes_big_constants & 0xffff
+# asm 1: ori >constants=int32#3,<constants=int32#3,aes_big_constants@l
+# asm 2: ori >constants=5,<constants=5,aes_big_constants@l
+ori 5,5,aes_big_constants@l
 
 # qhasm: table0 = constants
 # asm 1: mr >table0=int32#4,<constants=int32#3

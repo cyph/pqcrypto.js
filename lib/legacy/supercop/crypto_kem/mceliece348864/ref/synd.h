@@ -4,7 +4,6 @@
 
 #ifndef SYND_H
 #define SYND_H
-#define synd CRYPTO_NAMESPACE(synd)
 
 #include "gf.h"
 

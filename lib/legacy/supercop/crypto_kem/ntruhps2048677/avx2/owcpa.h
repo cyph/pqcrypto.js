@@ -1,1 +1,1 @@
-../../ntruhrss701/ref/owcpa.h
+../ref/owcpa.h

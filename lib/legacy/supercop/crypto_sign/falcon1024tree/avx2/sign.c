@@ -638,16 +638,15 @@ ffSampling_fft(samplerZ samp, void *samp_ctx,
 }
 
 /*
- * Compute a signature: the signature contains two vectors, s1 and s2.
- * The s1 vector is not returned. The squared norm of (s1,s2) is
- * computed, and if it is short enough, then s2 is returned into the
- * s2[] buffer, and 1 is returned; otherwise, s2[] is untouched and 0 is
- * returned; the caller should then try again. This function uses an
- * expanded key.
+ * Compute a signature: the signature contains two vectors, s1 and s2;
+ * the caller must still check that they comply with the signature
+ * bound, and try again if that is not the case. The s1 vector is not
+ * returned; instead, its squared norm (saturated) is returned. This
+ * function uses an expanded key.
  *
  * tmp[] must have room for at least six polynomials.
  */
-static int
+static uint32_t
 do_sign_tree(samplerZ samp, void *samp_ctx, int16_t *s2,
 	const fpr *restrict expanded_key,
 	const uint16_t *hm,
@@ -658,7 +657,6 @@ do_sign_tree(samplerZ samp, void *samp_ctx, int16_t *s2,
 	const fpr *b00, *b01, *b10, *b11, *tree;
 	fpr ni;
 	uint32_t sqn, ng;
-	int16_t *s1tmp, *s2tmp;
 
 	n = MKN(logn);
 	t0 = tmp;
@@ -720,7 +718,6 @@ do_sign_tree(samplerZ samp, void *samp_ctx, int16_t *s2,
 	/*
 	 * Compute the signature.
 	 */
-	s1tmp = (int16_t *)tx;
 	sqn = 0;
 	ng = 0;
 	for (u = 0; u < n; u ++) {
@@ -729,41 +726,25 @@ do_sign_tree(samplerZ samp, void *samp_ctx, int16_t *s2,
 		z = (int32_t)hm[u] - (int32_t)fpr_rint(t0[u]);
 		sqn += (uint32_t)(z * z);
 		ng |= sqn;
-		s1tmp[u] = (int16_t)z;
 	}
 	sqn |= -(ng >> 31);
-
-	/*
-	 * With "normal" degrees (e.g. 512 or 1024), it is very
-	 * improbable that the computed vector is not short enough;
-	 * however, it may happen in practice for the very reduced
-	 * versions (e.g. degree 16 or below). In that case, the caller
-	 * will loop, and we must not write anything into s2[] because
-	 * s2[] may overlap with the hashed message hm[] and we need
-	 * hm[] for the next iteration.
-	 */
-	s2tmp = (int16_t *)tmp;
 	for (u = 0; u < n; u ++) {
-		s2tmp[u] = (int16_t)-fpr_rint(t1[u]);
+		s2[u] = (int16_t)-fpr_rint(t1[u]);
 	}
-	if (falcon1024tree_avx2_is_short_half(sqn, s2tmp, logn)) {
-		memcpy(s2, s2tmp, n * sizeof *s2);
-		memcpy(tmp, s1tmp, n * sizeof *s1tmp);
-		return 1;
-	}
-	return 0;
+	return sqn;
 }
 
 /*
- * Compute a signature: the signature contains two vectors, s1 and s2.
- * The s1 vector is not returned. The squared norm of (s1,s2) is
- * computed, and if it is short enough, then s2 is returned into the
- * s2[] buffer, and 1 is returned; otherwise, s2[] is untouched and 0 is
- * returned; the caller should then try again.
+ * Compute a signature: the signature contains two vectors, s1 and s2;
+ * the caller must still check that they comply with the signature
+ * bound, and try again if that is not the case. The s1 vector is not
+ * returned; instead, its squared norm (saturated) is returned. This
+ * function uses a raw key and recomputes the B0 matrix and LDL tree
+ * dynamically.
  *
  * tmp[] must have room for at least nine polynomials.
  */
-static int
+static uint32_t
 do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	const int8_t *restrict f, const int8_t *restrict g,
 	const int8_t *restrict F, const int8_t *restrict G,
@@ -774,7 +755,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	fpr *b00, *b01, *b10, *b11, *g00, *g01, *g11;
 	fpr ni;
 	uint32_t sqn, ng;
-	int16_t *s1tmp, *s2tmp;
 
 	n = MKN(logn);
 
@@ -927,7 +907,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	falcon1024tree_avx2_iFFT(t0, logn);
 	falcon1024tree_avx2_iFFT(t1, logn);
 
-	s1tmp = (int16_t *)tx;
 	sqn = 0;
 	ng = 0;
 	for (u = 0; u < n; u ++) {
@@ -936,29 +915,12 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 		z = (int32_t)hm[u] - (int32_t)fpr_rint(t0[u]);
 		sqn += (uint32_t)(z * z);
 		ng |= sqn;
-		s1tmp[u] = (int16_t)z;
 	}
 	sqn |= -(ng >> 31);
-
-	/*
-	 * With "normal" degrees (e.g. 512 or 1024), it is very
-	 * improbable that the computed vector is not short enough;
-	 * however, it may happen in practice for the very reduced
-	 * versions (e.g. degree 16 or below). In that case, the caller
-	 * will loop, and we must not write anything into s2[] because
-	 * s2[] may overlap with the hashed message hm[] and we need
-	 * hm[] for the next iteration.
-	 */
-	s2tmp = (int16_t *)tmp;
 	for (u = 0; u < n; u ++) {
-		s2tmp[u] = (int16_t)-fpr_rint(t1[u]);
+		s2[u] = (int16_t)-fpr_rint(t1[u]);
 	}
-	if (falcon1024tree_avx2_is_short_half(sqn, s2tmp, logn)) {
-		memcpy(s2, s2tmp, n * sizeof *s2);
-		memcpy(tmp, s1tmp, n * sizeof *s1tmp);
-		return 1;
-	}
-	return 0;
+	return sqn;
 }
 
 /*
@@ -966,8 +928,8 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
  * on zero and standard deviation 1.8205, with a precision of 72 bits.
  */
 TARGET_AVX2
-int
-falcon1024tree_avx2_gaussian0_sampler(prng *p)
+static int
+gaussian0_sampler(prng *p)
 {
 
 	/*
@@ -978,8 +940,8 @@ falcon1024tree_avx2_gaussian0_sampler(prng *p)
 		__m256i ymm[1];
 	} rhi15 = {
 		{
-			0x51FB, 0x2A69, 0x113E, 0x0568,
-			0x014A, 0x003B, 0x0008, 0x0000,
+			0x2E04, 0x2792, 0x192A, 0x0BD6,
+			0x041D, 0x010F, 0x0033, 0x0007,
 			0x0000, 0x0000, 0x0000, 0x0000,
 			0x0000, 0x0000, 0x0000, 0x0000
 		}
@@ -990,16 +952,16 @@ falcon1024tree_avx2_gaussian0_sampler(prng *p)
 		__m256i ymm[5];
 	} rlo57 = {
 		{
-			0x1F42ED3AC391802, 0x12B181F3F7DDB82,
-			0x1CDD0934829C1FF, 0x1754377C7994AE4,
-			0x1846CAEF33F1F6F, 0x14AC754ED74BD5F,
-			0x024DD542B776AE4, 0x1A1FFDC65AD63DA,
-			0x01F80D88A7B6428, 0x001C3FDB2040C69,
-			0x00012CF24D031FB, 0x00000949F8B091F,
-			0x0000003665DA998, 0x00000000EBF6EBB,
-			0x0000000002F5D7E, 0x000000000007098,
-			0x0000000000000C6, 0x000000000000001,
-			0x000000000000000, 0x000000000000000
+			0x00BD12C53C6E7FE, 0x0C916B46CBB3C80,
+			0x15D478BF7541983, 0x0588D1B8090771B,
+			0x1F0D6C8D45A2B75, 0x039A55A05CA6210,
+			0x125EA00C1FD527B, 0x082DD77C5CA070A,
+			0x1827F03DB31FFB2, 0x01DBCDAD87757BF,
+			0x001B12E8D33DA6E, 0x000123A854528DC,
+			0x0000091392D5F87, 0x0000003579E3ADD,
+			0x00000000E90113D, 0x0000000002EECE6,
+			0x000000000006FD2, 0x0000000000000C5,
+			0x000000000000001, 0x000000000000000
 		}
 	};
 
@@ -1108,7 +1070,7 @@ falcon1024tree_avx2_gaussian0_sampler(prng *p)
  */
 TARGET_AVX2
 static int
-BerExp(prng *p, fpr x, fpr ccs)
+BerExp(prng *p, fpr x)
 {
 	int s, i;
 	fpr r;
@@ -1146,7 +1108,7 @@ BerExp(prng *p, fpr x, fpr ccs)
 	 * case). The bias is negligible since fpr_expm_p63() only computes
 	 * with 51 bits of precision or so.
 	 */
-	z = ((fpr_expm_p63(r, ccs) << 1) - 1) >> s;
+	z = ((fpr_expm_p63(r) << 1) - 1) >> s;
 
 	/*
 	 * Sample a bit with probability exp(-x). Since x = s*log(2) + r,
@@ -1162,6 +1124,11 @@ BerExp(prng *p, fpr x, fpr ccs)
 	return (int)(w >> 31);
 }
 
+typedef struct {
+	prng p;
+	fpr sigma_min;
+} sampler_context;
+
 /*
  * The sampler produces a random integer that follows a discrete Gaussian
  * distribution, centered on mu, and with standard deviation sigma. The
@@ -1171,8 +1138,8 @@ BerExp(prng *p, fpr x, fpr ccs)
  * 0.5 and 1); in Falcon, sigma should always be between 1.2 and 1.9.
  */
 TARGET_AVX2
-int
-falcon1024tree_avx2_sampler(void *ctx, fpr mu, fpr isigma)
+static int
+sampler(void *ctx, fpr mu, fpr isigma)
 {
 	sampler_context *spc;
 	int s;
@@ -1215,7 +1182,7 @@ falcon1024tree_avx2_sampler(void *ctx, fpr mu, fpr isigma)
 		 *  - b = 0: z <= 0 and sampled against a Gaussian
 		 *    centered on 0.
 		 */
-		z0 = falcon1024tree_avx2_gaussian0_sampler(&spc->p);
+		z0 = gaussian0_sampler(&spc->p);
 		b = prng_get_u8(&spc->p) & 1;
 		z = b + ((b << 1) - 1) * z0;
 
@@ -1246,7 +1213,8 @@ falcon1024tree_avx2_sampler(void *ctx, fpr mu, fpr isigma)
 		 */
 		x = fpr_mul(fpr_sqr(fpr_sub(fpr_of(z), r)), dss);
 		x = fpr_sub(x, fpr_mul(fpr_of(z0 * z0), fpr_inv_2sqrsigma0));
-		if (BerExp(&spc->p, x, ccs)) {
+		x = fpr_mul(x, ccs);
+		if (BerExp(&spc->p, x)) {
 			/*
 			 * Rejection sampling was centered on r, but the
 			 * actual center is mu = s + r.
@@ -1258,7 +1226,7 @@ falcon1024tree_avx2_sampler(void *ctx, fpr mu, fpr isigma)
 
 /* see inner.h */
 void
-falcon1024tree_avx2_sign_tree(int16_t *sig, inner_shake256_context *rng,
+falcon1024tree_avx2_sign_tree(int16_t *sig, shake256_context *rng,
 	const fpr *restrict expanded_key,
 	const uint16_t *hm, unsigned logn, uint8_t *tmp)
 {
@@ -1279,6 +1247,7 @@ falcon1024tree_avx2_sign_tree(int16_t *sig, inner_shake256_context *rng,
 		sampler_context spc;
 		samplerZ samp;
 		void *samp_ctx;
+		uint32_t sqn;
 
 		/*
 		 * Normal sampling. We use a fast PRNG seeded from our
@@ -1288,15 +1257,23 @@ falcon1024tree_avx2_sign_tree(int16_t *sig, inner_shake256_context *rng,
 			? fpr_sigma_min_10
 			: fpr_sigma_min_9;
 		falcon1024tree_avx2_prng_init(&spc.p, rng);
-		samp = falcon1024tree_avx2_sampler;
+		samp = sampler;
 		samp_ctx = &spc;
 
 		/*
 		 * Do the actual signature.
 		 */
-		if (do_sign_tree(samp, samp_ctx, sig,
-			expanded_key, hm, logn, ftmp))
-		{
+		sqn = do_sign_tree(samp, samp_ctx, sig,
+			expanded_key, hm, logn, ftmp);
+
+		/*
+		 * Check that the norm is correct. With our chosen
+		 * acceptance bound, this should almost always be true.
+		 * With a tighter bound, it may happen sometimes that we
+		 * end up with an invalidly large signature, in which
+		 * case we just loop.
+		 */
+		if (falcon1024tree_avx2_is_short_half(sqn, sig, logn)) {
 			break;
 		}
 	}
@@ -1304,7 +1281,7 @@ falcon1024tree_avx2_sign_tree(int16_t *sig, inner_shake256_context *rng,
 
 /* see inner.h */
 void
-falcon1024tree_avx2_sign_dyn(int16_t *sig, inner_shake256_context *rng,
+falcon1024tree_avx2_sign_dyn(int16_t *sig, shake256_context *rng,
 	const int8_t *restrict f, const int8_t *restrict g,
 	const int8_t *restrict F, const int8_t *restrict G,
 	const uint16_t *hm, unsigned logn, uint8_t *tmp)
@@ -1326,6 +1303,7 @@ falcon1024tree_avx2_sign_dyn(int16_t *sig, inner_shake256_context *rng,
 		sampler_context spc;
 		samplerZ samp;
 		void *samp_ctx;
+		uint32_t sqn;
 
 		/*
 		 * Normal sampling. We use a fast PRNG seeded from our
@@ -1335,15 +1313,23 @@ falcon1024tree_avx2_sign_dyn(int16_t *sig, inner_shake256_context *rng,
 			? fpr_sigma_min_10
 			: fpr_sigma_min_9;
 		falcon1024tree_avx2_prng_init(&spc.p, rng);
-		samp = falcon1024tree_avx2_sampler;
+		samp = sampler;
 		samp_ctx = &spc;
 
 		/*
 		 * Do the actual signature.
 		 */
-		if (do_sign_dyn(samp, samp_ctx, sig,
-			f, g, F, G, hm, logn, ftmp))
-		{
+		sqn = do_sign_dyn(samp, samp_ctx, sig,
+			f, g, F, G, hm, logn, ftmp);
+
+		/*
+		 * Check that the norm is correct. With our chosen
+		 * acceptance bound, this should almost always be true.
+		 * With a tighter bound, it may happen sometimes that we
+		 * end up with an invalidly large signature, in which
+		 * case we just loop.
+		 */
+		if (falcon1024tree_avx2_is_short_half(sqn, sig, logn)) {
 			break;
 		}
 	}

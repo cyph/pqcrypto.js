@@ -1,1 +1,0 @@
-../../kyber512/ref/symmetric-shake.c

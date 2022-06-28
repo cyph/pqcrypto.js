@@ -4,8 +4,6 @@
 
 #ifndef BENES_H
 #define BENES_H
-#define apply_benes CRYPTO_NAMESPACE(apply_benes)
-#define support_gen CRYPTO_NAMESPACE(support_gen)
 
 #include "gf.h"
 

@@ -1,74 +1,66 @@
 #ifndef PARAMS_H
 #define PARAMS_H
 
-#include "config.h"
+#ifndef MODE
+#define MODE 2
+#endif
+
+//#define USE_AES
+//#define RANDOMIZED_SIGNING
 
 #define SEEDBYTES 32
 #define CRHBYTES 48
 #define N 256
 #define Q 8380417
-#define D 13
+#define QBITS 23
 #define ROOT_OF_UNITY 1753
+#define D 14
+#define GAMMA1 ((Q - 1)/16)
+#define GAMMA2 (GAMMA1/2)
+#define ALPHA (2*GAMMA2)
 
-#if DILITHIUM_MODE == 2
+#if MODE == 1
+#define K 3
+#define L 2
+#define ETA 7
+#define SETABITS 4
+#define BETA 375
+#define OMEGA 64
+
+#elif MODE == 2
 #define K 4
-#define L 4
-#define ETA 2
-#define TAU 39
-#define BETA 78
-#define GAMMA1 (1 << 17)
-#define GAMMA2 ((Q-1)/88)
+#define L 3
+#define ETA 6
+#define SETABITS 4
+#define BETA 325
 #define OMEGA 80
 
-#elif DILITHIUM_MODE == 3
+#elif MODE == 3
+#define K 5
+#define L 4
+#define ETA 5
+#define SETABITS 4
+#define BETA 275
+#define OMEGA 96
+
+#elif MODE == 4
 #define K 6
 #define L 5
-#define ETA 4
-#define TAU 49
-#define BETA 196
-#define GAMMA1 (1 << 19)
-#define GAMMA2 ((Q-1)/32)
-#define OMEGA 55
-
-#elif DILITHIUM_MODE == 5
-#define K 8
-#define L 7
-#define ETA 2
-#define TAU 60
-#define BETA 120
-#define GAMMA1 (1 << 19)
-#define GAMMA2 ((Q-1)/32)
-#define OMEGA 75
+#define ETA 3
+#define SETABITS 3
+#define BETA 175
+#define OMEGA 120
 
 #endif
 
-#define POLYT1_PACKEDBYTES  320
-#define POLYT0_PACKEDBYTES  416
-#define POLYVECH_PACKEDBYTES (OMEGA + K)
+#define POLT1_SIZE_PACKED ((N*(QBITS - D))/8)
+#define POLT0_SIZE_PACKED ((N*D)/8)
+#define POLETA_SIZE_PACKED ((N*SETABITS)/8)
+#define POLZ_SIZE_PACKED ((N*(QBITS - 3))/8)
+#define POLW1_SIZE_PACKED ((N*4)/8)
 
-#if GAMMA1 == (1 << 17)
-#define POLYZ_PACKEDBYTES   576
-#elif GAMMA1 == (1 << 19)
-#define POLYZ_PACKEDBYTES   640
-#endif
-
-#if GAMMA2 == (Q-1)/88
-#define POLYW1_PACKEDBYTES  192
-#elif GAMMA2 == (Q-1)/32
-#define POLYW1_PACKEDBYTES  128
-#endif
-
-#if ETA == 2
-#define POLYETA_PACKEDBYTES  96
-#elif ETA == 4
-#define POLYETA_PACKEDBYTES 128
-#endif
-
-#define CRYPTO_PUBLICKEYBYTES (SEEDBYTES + K*POLYT1_PACKEDBYTES)
-#define CRYPTO_SECRETKEYBYTES (2*SEEDBYTES + CRHBYTES \
-                               + L*POLYETA_PACKEDBYTES \
-                               + K*POLYETA_PACKEDBYTES \
-                               + K*POLYT0_PACKEDBYTES)
-#define CRYPTO_BYTES (SEEDBYTES + L*POLYZ_PACKEDBYTES + POLYVECH_PACKEDBYTES)
+#define CRYPTO_PUBLICKEYBYTES (SEEDBYTES + K*POLT1_SIZE_PACKED)
+#define CRYPTO_SECRETKEYBYTES (2*SEEDBYTES + (L + K)*POLETA_SIZE_PACKED + CRHBYTES + K*POLT0_SIZE_PACKED)
+#define CRYPTO_BYTES (L*POLZ_SIZE_PACKED + (OMEGA + K) + (N/8 + 8))
 
 #endif

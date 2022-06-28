@@ -1,5 +1,5 @@
 # 
-#  lex_ultrasparc/CRYPTO_NAMESPACE(ECRYPT_process_bytes).s version 20080315
+#  lex_ultrasparc/crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_process_bytes.s version 20080315
 #  Peter Schwabe
 #  Public domain
 # 
@@ -218,11 +218,11 @@
 
 # qhasm: stack320 tmp
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_process_bytes)
+# qhasm: enter crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_process_bytes
 .section ".text"
 .align 32
-.global CRYPTO_NAMESPACE(ECRYPT_process_bytes)
-CRYPTO_NAMESPACE(ECRYPT_process_bytes):
+.global crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_process_bytes
+crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_process_bytes:
 save %sp,-608,%sp
 
 # qhasm: =? length - 0
@@ -234,25 +234,25 @@ subcc %i4,0,%g0
 be,pt %xcc,._donothing
 nop
 
-# qhasm: constants = (CRYPTO_NAMESPACE(aes_big_constants) & 0xfffffc0000000000) >> 32
-# asm 1: sethi %hh(CRYPTO_NAMESPACE(aes_big_constants)),>constants=int64#1
-# asm 2: sethi %hh(CRYPTO_NAMESPACE(aes_big_constants)),>constants=%i0
-sethi %hh(CRYPTO_NAMESPACE(aes_big_constants)),%i0
+# qhasm: constants = (aes_big_constants & 0xfffffc0000000000) >> 32
+# asm 1: sethi %hh(aes_big_constants),>constants=int64#1
+# asm 2: sethi %hh(aes_big_constants),>constants=%i0
+sethi %hh(aes_big_constants),%i0
 
-# qhasm: constants_low = CRYPTO_NAMESPACE(aes_big_constants) & 0xfffffc00
-# asm 1: sethi %lm(CRYPTO_NAMESPACE(aes_big_constants)),>constants_low=int64#6
-# asm 2: sethi %lm(CRYPTO_NAMESPACE(aes_big_constants)),>constants_low=%i5
-sethi %lm(CRYPTO_NAMESPACE(aes_big_constants)),%i5
+# qhasm: constants_low = aes_big_constants & 0xfffffc00
+# asm 1: sethi %lm(aes_big_constants),>constants_low=int64#6
+# asm 2: sethi %lm(aes_big_constants),>constants_low=%i5
+sethi %lm(aes_big_constants),%i5
 
-# qhasm: constants |= (CRYPTO_NAMESPACE(aes_big_constants) & 0x3ff00000000) >> 32
-# asm 1: or <constants=int64#1,%hm(CRYPTO_NAMESPACE(aes_big_constants)),>constants=int64#1
-# asm 2: or <constants=%i0,%hm(CRYPTO_NAMESPACE(aes_big_constants)),>constants=%i0
-or %i0,%hm(CRYPTO_NAMESPACE(aes_big_constants)),%i0
+# qhasm: constants |= (aes_big_constants & 0x3ff00000000) >> 32
+# asm 1: or <constants=int64#1,%hm(aes_big_constants),>constants=int64#1
+# asm 2: or <constants=%i0,%hm(aes_big_constants),>constants=%i0
+or %i0,%hm(aes_big_constants),%i0
 
-# qhasm: constants_low |= CRYPTO_NAMESPACE(aes_big_constants) & 0x3ff
-# asm 1: or <constants_low=int64#6,%lo(CRYPTO_NAMESPACE(aes_big_constants)),>constants_low=int64#6
-# asm 2: or <constants_low=%i5,%lo(CRYPTO_NAMESPACE(aes_big_constants)),>constants_low=%i5
-or %i5,%lo(CRYPTO_NAMESPACE(aes_big_constants)),%i5
+# qhasm: constants_low |= aes_big_constants & 0x3ff
+# asm 1: or <constants_low=int64#6,%lo(aes_big_constants),>constants_low=int64#6
+# asm 2: or <constants_low=%i5,%lo(aes_big_constants),>constants_low=%i5
+or %i5,%lo(aes_big_constants),%i5
 
 # qhasm: constants <<= 32
 # asm 1: sllx <constants=int64#1,32,>constants=int64#1

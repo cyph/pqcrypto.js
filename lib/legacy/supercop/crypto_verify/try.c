@@ -1,5 +1,5 @@
 /*
- * crypto_verify/try.c version 20200809
+ * crypto_verify/try.c version 20170716
  * D. J. Bernstein
  * Public domain.
  */
@@ -8,14 +8,10 @@
 #include "kernelrandombytes.h"
 #include "try.h"
 
-#ifdef TIMECOP
-#define LOOPS TIMECOP_LOOPS
-#else
 #ifdef SMALL
 #define LOOPS 10000
 #else
 #define LOOPS 1000000
-#endif
 #endif
 
 const char *primitiveimplementation = crypto_verify_IMPLEMENTATION;
@@ -33,18 +29,6 @@ void allocate(void)
   y = alignedcalloc(crypto_verify_BYTES);
 }
 
-void unalign(void)
-{
-  ++x;
-  ++y;
-}
-
-void realign(void)
-{
-  --x;
-  --y;
-}
-
 void predoit(void)
 {
 }
@@ -56,15 +40,7 @@ void doit(void)
 
 static void check(void)
 {
-  int r;
-  
-  poison(x,crypto_verify_BYTES);
-  poison(y,crypto_verify_BYTES);
-  r = crypto_verify(x,y);
-  unpoison(x,crypto_verify_BYTES);
-  unpoison(y,crypto_verify_BYTES);
-  unpoison(&r,sizeof r);
-
+  int r = crypto_verify(x,y);
   if (r == 0) {
     if (memcmp(x,y,crypto_verify_BYTES)) fail("different strings pass verify");
   } else if (r == -1) {

@@ -6,41 +6,34 @@
 #include <stdint.h>
 #include <string.h>
 
-//#ifndef bytes_utiles_printf
-//#define bytes_utiles_printf printf
-//#endif
-#ifndef bytes_utiles_printf
-#define bytes_utiles_printf printf
-#endif
-
 //replace 0 by .
 static void print_diff_byte(uint8_t d, const char *sep){
     unsigned int n=d>>4;
-    if(0==n) bytes_utiles_printf("."); else bytes_utiles_printf("%X",n);
+    if(0==n) printf("."); else printf("%X",n);
     n = d & 0xF;
-    if(0==n) bytes_utiles_printf("."); else bytes_utiles_printf("%X",n);
-    bytes_utiles_printf("%s",sep);
+    if(0==n) printf("."); else printf("%X",n);
+    printf("%s",sep);
 }
 static void print_diff_bytes_sep(const char *msg,const void *vbuf, unsigned int size, const char *m2, const char *sep){
     const uint8_t*const buf = (const uint8_t*const)vbuf;
-    bytes_utiles_printf("%s",msg);
+    printf("%s",msg);
     if(size){
         unsigned int i;
         for(i=0;i<size-1;i++) print_diff_byte(buf[i],sep);
         print_diff_byte(buf[i],"");
     }
-    bytes_utiles_printf("%s", m2);
+    printf("%s", m2);
 }
 
 static void print_bytes_sep(const char *msg,const void *vbuf, unsigned int size, const char *m2, const char *sep){
     const uint8_t*const buf = (const uint8_t*const)vbuf;
-    bytes_utiles_printf("%s",msg);
+    printf("%s",msg);
     if(size){
         unsigned int i;
-        for(i=0;i<size-1;i++) bytes_utiles_printf("%02X%s",buf[i],sep);
-        bytes_utiles_printf("%02X",buf[i]);
+        for(i=0;i<size-1;i++) printf("%02X%s",buf[i],sep);
+        printf("%02X",buf[i]);
     }
-    bytes_utiles_printf("%s", m2);
+    printf("%s", m2);
 }
 static void print_bytes(const char *m,const void *buf, unsigned int size, const char *m2){print_bytes_sep(m,buf,size,m2," ");}
 static void println_bytes(const char *m,const void *buf, unsigned int size){print_bytes(m,buf,size,"\n");}

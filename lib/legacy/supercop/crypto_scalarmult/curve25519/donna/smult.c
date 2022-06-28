@@ -49,24 +49,24 @@ fsum(felem *output, const felem *in) {
 }
 
 // Externs from the .s file.
-extern void CRYPTO_NAMESPACE(fmul)(felem *output, const felem *in1, const felem *in2);
-extern void CRYPTO_NAMESPACE(fsquare)(felem *output, const felem *in1);
-extern void CRYPTO_NAMESPACE(fexpand)(felem *ouptut, const u8 *input);
-extern void CRYPTO_NAMESPACE(fcontract)(u8 *output, const felem *input);
-extern void CRYPTO_NAMESPACE(freduce_coefficients)(felem *inout);
-extern void CRYPTO_NAMESPACE(fscalar)(felem *output, const felem *input);
-extern void CRYPTO_NAMESPACE(fdifference_backwards)(felem *output, const felem *input);
-extern void CRYPTO_NAMESPACE(cmult)(felem *x, felem *z, const u8 *n, const felem *q);
+extern void crypto_scalarmult_curve25519_donna_fmul(felem *output, const felem *in1, const felem *in2);
+extern void crypto_scalarmult_curve25519_donna_fsquare(felem *output, const felem *in1);
+extern void crypto_scalarmult_curve25519_donna_fexpand(felem *ouptut, const u8 *input);
+extern void crypto_scalarmult_curve25519_donna_fcontract(u8 *output, const felem *input);
+extern void crypto_scalarmult_curve25519_donna_freduce_coefficients(felem *inout);
+extern void crypto_scalarmult_curve25519_donna_fscalar(felem *output, const felem *input);
+extern void crypto_scalarmult_curve25519_donna_fdifference_backwards(felem *output, const felem *input);
+extern void crypto_scalarmult_curve25519_donna_cmult(felem *x, felem *z, const u8 *n, const felem *q);
 
-#define fmul CRYPTO_NAMESPACE(fmul)
-#define fmonty CRYPTO_NAMESPACE(fmonty)
-#define fsquare CRYPTO_NAMESPACE(fsquare)
-#define fexpand CRYPTO_NAMESPACE(fexpand)
-#define fcontract CRYPTO_NAMESPACE(fcontract)
-#define freduce_coefficients CRYPTO_NAMESPACE(freduce_coefficients)
-#define fscalar CRYPTO_NAMESPACE(fscalar)
-#define fdifference_backwards CRYPTO_NAMESPACE(fdifference_backwards)
-#define cmult CRYPTO_NAMESPACE(cmult)
+#define fmul crypto_scalarmult_curve25519_donna_fmul
+#define fmonty crypto_scalarmult_curve25519_donna_fmonty
+#define fsquare crypto_scalarmult_curve25519_donna_fsquare
+#define fexpand crypto_scalarmult_curve25519_donna_fexpand
+#define fcontract crypto_scalarmult_curve25519_donna_fcontract
+#define freduce_coefficients crypto_scalarmult_curve25519_donna_freduce_coefficients
+#define fscalar crypto_scalarmult_curve25519_donna_fscalar
+#define fdifference_backwards crypto_scalarmult_curve25519_donna_fdifference_backwards
+#define cmult crypto_scalarmult_curve25519_donna_cmult
 
 /* Input: Q, Q', Q-Q'
  * Output: 2Q, Q+Q'

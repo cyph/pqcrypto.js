@@ -17,8 +17,8 @@ void aegis128_initialization(const unsigned char *key, const unsigned char *iv, 
        int i;
 
         __m128i  tmp;
-        __m128i  keytmp = _mm_loadu_si128((__m128i*)key);
-        __m128i  ivtmp  = _mm_loadu_si128((__m128i*)iv);
+        __m128i  keytmp = _mm_load_si128((__m128i*)key);
+        __m128i  ivtmp  = _mm_load_si128((__m128i*)iv);
 
         state[0] =  ivtmp;
         state[1] = _mm_set_epi8(0xdd,0x28,0xb5,0x73,0x42,0x31,0x11,0x20,0xf1,0x2f,0xc2,0x6d,0x55,0x18,0x3d,0xdb);
@@ -57,7 +57,7 @@ void aegis128_tag_generation(unsigned long long msglen, unsigned long long adlen
 
         ((unsigned long long*)tt)[0] = adlen  << 3;
         ((unsigned long long*)tt)[1] = msglen << 3;
-        msgtmp = _mm_loadu_si128((__m128i*)tt);
+        msgtmp = _mm_load_si128((__m128i*)tt);
 
         msgtmp = _mm_xor_si128(msgtmp, state[3]);
 
@@ -79,7 +79,7 @@ void aegis128_tag_generation(unsigned long long msglen, unsigned long long adlen
         state[4] = _mm_xor_si128(state[4], state[1]);
         state[4] = _mm_xor_si128(state[4], state[0]);
 
-        _mm_storeu_si128((__m128i*)t, state[4]);
+        _mm_store_si128((__m128i*)t, state[4]);
         //in this program, the mac length is assumed to be multiple of bytes
         memcpy(mac,t,maclen);
 }
@@ -90,7 +90,7 @@ inline void aegis128_enc_aut_step(const unsigned char *plaintextblk,
        unsigned char *ciphertextblk, __m128i *state)
 {
         __m128i t, ct;
-        __m128i msg = _mm_loadu_si128((__m128i*)plaintextblk);
+        __m128i msg = _mm_load_si128((__m128i*)plaintextblk);
         __m128i tmp = state[4];
 
         //encryption
@@ -98,7 +98,7 @@ inline void aegis128_enc_aut_step(const unsigned char *plaintextblk,
         ct = _mm_xor_si128(msg, state[4]);
         ct = _mm_xor_si128(ct, state[1]);
         ct = _mm_xor_si128(ct, t);
-    	_mm_storeu_si128((__m128i*)ciphertextblk, ct);
+    	_mm_store_si128((__m128i*)ciphertextblk, ct);
 
         //state update function  
         state[4] = _mm_aesenc_si128(state[3],state[4]);
@@ -116,7 +116,7 @@ inline void aegis128_enc_aut_step(const unsigned char *plaintextblk,
 inline void aegis128_dec_aut_step(unsigned char *plaintextblk,
        const unsigned char *ciphertextblk, __m128i *state)
 {
-        __m128i msg = _mm_loadu_si128((__m128i*)ciphertextblk);
+        __m128i msg = _mm_load_si128((__m128i*)ciphertextblk);
         __m128i tmp = state[4];
                       
         //decryption  
@@ -124,7 +124,7 @@ inline void aegis128_dec_aut_step(unsigned char *plaintextblk,
         msg = _mm_xor_si128(msg, state[4]);
         msg = _mm_xor_si128(msg, state[1]);
 
-        _mm_storeu_si128((__m128i*)plaintextblk, msg);
+        _mm_store_si128((__m128i*)plaintextblk, msg);
 
         //state update function
         state[4] = _mm_aesenc_si128(state[3],state[4]);
@@ -238,7 +238,7 @@ int crypto_aead_decrypt(
 
               //need to modify the state here (because in the last block, keystream is wrongly used to update the state)
               memset(plaintextblock, 0, *mlen & 0xf);
-              aegis128_state[0] = _mm_xor_si128( aegis128_state[0], _mm_loadu_si128((__m128i*)plaintextblock)  ) ;
+              aegis128_state[0] = _mm_xor_si128( aegis128_state[0], _mm_load_si128((__m128i*)plaintextblock)  ) ;
         }     
 
         //we assume that the tag length is multiple of bytes

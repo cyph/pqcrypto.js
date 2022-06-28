@@ -297,13 +297,13 @@
 
 # qhasm: int64 subt1
 
-# qhasm: enter CRYPTO_NAMESPACE(ge25519_nielsadd_p1p1)
+# qhasm: enter crypto_sign_ed25519_amd64_64_ge25519_nielsadd_p1p1
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ge25519_nielsadd_p1p1)
-.globl CRYPTO_NAMESPACE(ge25519_nielsadd_p1p1)
-_CRYPTO_NAMESPACE(ge25519_nielsadd_p1p1):
-CRYPTO_NAMESPACE(ge25519_nielsadd_p1p1):
+.globl _crypto_sign_ed25519_amd64_64_ge25519_nielsadd_p1p1
+.globl crypto_sign_ed25519_amd64_64_ge25519_nielsadd_p1p1
+_crypto_sign_ed25519_amd64_64_ge25519_nielsadd_p1p1:
+crypto_sign_ed25519_amd64_64_ge25519_nielsadd_p1p1:
 mov %rsp,%r11
 and $31,%r11
 add $128,%r11
@@ -1069,8 +1069,8 @@ adc %rdx,%r11
 # asm 2: mov  <mulr4=%r8,>mulrax=%rax
 mov  %r8,%rax
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   mulr4 = mulrax
 # asm 1: mov  <mulrax=int64#7,>mulr4=int64#5
@@ -1087,8 +1087,8 @@ mov  %r9,%rax
 # asm 2: mov  <mulrdx=%rdx,>mulr5=%r9
 mov  %rdx,%r9
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr5 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr5=int64#6
@@ -1110,8 +1110,8 @@ mov  $0,%r10
 # asm 2: adc <mulrdx=%rdx,<mulr6=%r10
 adc %rdx,%r10
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr6 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr6=int64#8
@@ -1133,8 +1133,8 @@ mov  $0,%r11
 # asm 2: adc <mulrdx=%rdx,<mulr7=%r11
 adc %rdx,%r11
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr7 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr7=int64#9
@@ -1751,8 +1751,8 @@ adc %rdx,%r11
 # asm 2: mov  <mulr4=%r8,>mulrax=%rax
 mov  %r8,%rax
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   mulr4 = mulrax
 # asm 1: mov  <mulrax=int64#7,>mulr4=int64#5
@@ -1769,8 +1769,8 @@ mov  %r9,%rax
 # asm 2: mov  <mulrdx=%rdx,>mulr5=%r9
 mov  %rdx,%r9
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr5 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr5=int64#6
@@ -1792,8 +1792,8 @@ mov  $0,%r10
 # asm 2: adc <mulrdx=%rdx,<mulr6=%r10
 adc %rdx,%r10
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr6 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr6=int64#8
@@ -1815,8 +1815,8 @@ mov  $0,%r11
 # asm 2: adc <mulrdx=%rdx,<mulr7=%r11
 adc %rdx,%r11
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr7 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr7=int64#9
@@ -2603,8 +2603,8 @@ adc %rdx,%r11
 # asm 2: mov  <mulr4=%r8,>mulrax=%rax
 mov  %r8,%rax
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   mulr4 = mulrax
 # asm 1: mov  <mulrax=int64#7,>mulr4=int64#4
@@ -2621,8 +2621,8 @@ mov  %r9,%rax
 # asm 2: mov  <mulrdx=%rdx,>mulr5=%r8
 mov  %rdx,%r8
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr5 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr5=int64#5
@@ -2644,8 +2644,8 @@ mov  $0,%r9
 # asm 2: adc <mulrdx=%rdx,<mulr6=%r9
 adc %rdx,%r9
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr6 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr6=int64#6
@@ -2667,8 +2667,8 @@ mov  $0,%r10
 # asm 2: adc <mulrdx=%rdx,<mulr7=%r10
 adc %rdx,%r10
 
-# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) mulrdx mulrax = mulrax * *(uint64 *)&crypto_sign_ed25519_amd64_64_38
+mulq  crypto_sign_ed25519_amd64_64_38
 
 # qhasm:   carry? mulr7 += mulrax
 # asm 1: add  <mulrax=int64#7,<mulr7=int64#8

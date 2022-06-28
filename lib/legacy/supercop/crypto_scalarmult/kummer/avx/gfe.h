@@ -16,30 +16,6 @@ typedef struct
 } __attribute__ ((aligned (32))) gfe4x3limb;
 
 
-#define gfe_mul CRYPTO_NAMESPACE(gfe_mul)
-#define gfe_nsquare CRYPTO_NAMESPACE(gfe_nsquare)
-#define gfe_invert CRYPTO_NAMESPACE(gfe_invert)
-#define gfe_print CRYPTO_NAMESPACE(gfe_print)
-#define gfe_pack CRYPTO_NAMESPACE(gfe_pack)
-#define gfe_unpack CRYPTO_NAMESPACE(gfe_unpack)
-#define gfe4x3limb_freeze CRYPTO_NAMESPACE(gfe4x3limb_freeze)
-#define gfe4x3limb_split CRYPTO_NAMESPACE(gfe4x3limb_split)
-#define gfe4x3limb_unpack CRYPTO_NAMESPACE(gfe4x3limb_unpack)
-#define gfe4x_znegate CRYPTO_NAMESPACE(gfe4x_znegate)
-#define gfe4x_split CRYPTO_NAMESPACE(gfe4x_split)
-#define gfe4x_unpack CRYPTO_NAMESPACE(gfe4x_unpack)
-#define gfe4x_unpack4x CRYPTO_NAMESPACE(gfe4x_unpack4x)
-#define gfe4x_mul CRYPTO_NAMESPACE(gfe4x_mul)
-#define gfe4x_easymul CRYPTO_NAMESPACE(gfe4x_easymul)
-#define gfe4x_square CRYPTO_NAMESPACE(gfe4x_square)
-#define gfe4x_mulconst CRYPTO_NAMESPACE(gfe4x_mulconst)
-#define gfe4x_hadamard CRYPTO_NAMESPACE(gfe4x_hadamard)
-#define gfe4x_negamard CRYPTO_NAMESPACE(gfe4x_negamard)
-#define gfe4x_print CRYPTO_NAMESPACE(gfe4x_print)
-#define gfe4x_cswap CRYPTO_NAMESPACE(gfe4x_cswap)
-#define ladderstep CRYPTO_NAMESPACE(ladderstep)
-#define ladder CRYPTO_NAMESPACE(ladder)
-
 void gfe_mul(gfe *r, const gfe *x, const gfe *y);
 void gfe_nsquare(gfe *r, const gfe *x, unsigned long long);
 //void gfe_square(gfe *r, const gfe *x);

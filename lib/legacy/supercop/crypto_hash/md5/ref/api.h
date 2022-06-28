@@ -1,1 +1,1 @@
-#define CRYPTO_BYTES 16
+#define crypto_hash_md5_ref_BYTES 16

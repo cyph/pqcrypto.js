@@ -1,5 +1,5 @@
 # auto-generated; do not edit
-enter CRYPTO_NAMESPACETOP
+enter crypto_core_salsa2012_armneon2
 
 int32 i
 

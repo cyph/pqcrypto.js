@@ -1,1 +1,0 @@
-../../gemss128/ref/bit.c

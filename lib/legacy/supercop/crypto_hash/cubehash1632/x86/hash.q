@@ -109,7 +109,7 @@ stack32 esi_stack
 stack32 edi_stack
 stack32 ebp_stack
 
-enter CRYPTO_NAMESPACETOP
+enter crypto_hash_cubehash1632_x86
 
   eax_stack = eax
   ebx_stack = ebx

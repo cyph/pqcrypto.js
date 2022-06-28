@@ -1,9 +1,6 @@
 /*
-  This file is for implementing the Gao-Mateer FFT, see 
-  http://www.math.clemson.edu/~sgao/papers/GM10.pdf
-
-  For the implementation strategy, see
-  https://eprint.iacr.org/2017/793.pdf
+  This file is for the Gao-Mateer FFT
+  sse http://www.math.clemson.edu/~sgao/papers/GM10.pdf
 */
 
 #include "fft.h"

@@ -9,9 +9,6 @@
 #define _mm_load_si128 _mm_loadu_si128
 #endif
 
-#define _mm_store_si128 _mm_storeu_si128    
-#define _mm_load_si128 _mm_loadu_si128      
-
 #define n1 5 
 #define n2 31
 #define n3 7

@@ -23,7 +23,7 @@
 
 // Change the algorithm name
 #define CRYPTO_ALGNAME "picnicl3fs"
-#define CRYPTO_VERSION "6.0"
+#define CRYPTO_VERSION "5.0"
 
 int
 crypto_sign_keypair(unsigned char *pk, unsigned char *sk);

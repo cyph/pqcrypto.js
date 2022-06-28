@@ -1,9 +1,0 @@
-#ifndef API_H
-#define API_H
-
-#define CRYPTO_SECRETKEYBYTES  1632
-#define CRYPTO_PUBLICKEYBYTES  800
-#define CRYPTO_CIPHERTEXTBYTES 992
-#define CRYPTO_BYTES 32
-
-#endif

@@ -2,23 +2,23 @@
 	.section	".text"
 	.align 2
 	.p2align 4,,15
-	.globl CRYPTO_NAMESPACE(ECRYPT_init)
-	.type	CRYPTO_NAMESPACE(ECRYPT_init), @function
-CRYPTO_NAMESPACE(ECRYPT_init):
+	.globl crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_init
+	.type	crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_init, @function
+crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_init:
 	stwu 1,-16(1)
 	addi 1,1,16
 	blr
-	.size	CRYPTO_NAMESPACE(ECRYPT_init),.-CRYPTO_NAMESPACE(ECRYPT_init)
+	.size	crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_init,.-crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_init
 	.align 2
 	.p2align 4,,15
-	.globl CRYPTO_NAMESPACE(ECRYPT_keysetup)
-	.type	CRYPTO_NAMESPACE(ECRYPT_keysetup), @function
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+	.globl crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_keysetup
+	.type	crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_keysetup, @function
+crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_keysetup:
 	stwu 1,-48(1)
-	lis 9,CRYPTO_NAMESPACE(aes_big_constants)@ha
+	lis 9,aes_big_constants@ha
 	li 0,10
 	mtctr 0
-	la 9,CRYPTO_NAMESPACE(aes_big_constants)@l(9)
+	la 9,aes_big_constants@l(9)
 	lwz 12,12(4)
 	stw 30,40(1)
 	stw 31,44(1)
@@ -77,12 +77,12 @@ CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	lwz 31,44(1)
 	addi 1,1,48
 	blr
-	.size	CRYPTO_NAMESPACE(ECRYPT_keysetup),.-CRYPTO_NAMESPACE(ECRYPT_keysetup)
+	.size	crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_keysetup,.-crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_keysetup
 	.align 2
 	.p2align 4,,15
-	.globl CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-	.type	CRYPTO_NAMESPACE(ECRYPT_ivsetup), @function
-CRYPTO_NAMESPACE(ECRYPT_ivsetup):
+	.globl crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_ivsetup
+	.type	crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_ivsetup, @function
+crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_ivsetup:
 	lwz 0,0(4)
 	stwu 1,-16(1)
 	stw 0,56(3)
@@ -97,13 +97,13 @@ CRYPTO_NAMESPACE(ECRYPT_ivsetup):
 	lwz 9,12(4)
 	stw 9,68(3)
 	blr
-	.size	CRYPTO_NAMESPACE(ECRYPT_ivsetup),.-CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-	.globl CRYPTO_NAMESPACE(aes_big_constants)
+	.size	crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_ivsetup,.-crypto_stream_aes128estream_e_schwabe_ppc32linux_1_ECRYPT_ivsetup
+	.globl aes_big_constants
 	.section	.rodata
 	.align 2
-	.type	CRYPTO_NAMESPACE(aes_big_constants), @object
-	.size	CRYPTO_NAMESPACE(aes_big_constants), 4136
-CRYPTO_NAMESPACE(aes_big_constants):
+	.type	aes_big_constants, @object
+	.size	aes_big_constants, 4136
+aes_big_constants:
 	.long	16777216
 	.long	33554432
 	.long	67108864

@@ -2,7 +2,6 @@
 #include <string.h>
 #include <inttypes.h>
 #include "crypto_dh.h"
-#include "randombytes.h"
 
 /* #define HAVE_MAIN */
 
@@ -904,7 +903,7 @@ int main()
 
 	for (j=0;j<10;j++)
 	{
-		CRYPTO_NAMESPACE(keypair)(pka,ska);
+		crypto_dh_nist521gs_ref_keypair(pka,ska);
 
 		printf("Alice  private= ");
 		for (i=0;i<104;i++) printf("%02x",ska[i]);
@@ -913,7 +912,7 @@ int main()
 		for (i=0;i<144;i++) printf("%02x",pka[i]);
 		printf("\n");
 
-		if (CRYPTO_NAMESPACE(keypair)(pkb,skb)<0)
+		if (crypto_dh_nist521gs_ref_keypair(pkb,skb)<0)
 		{
 			printf("problem\n");
 			break;
@@ -925,7 +924,7 @@ int main()
 		for (i=0;i<144;i++) printf("%02x",pkb[i]);
 		printf("\n");
 
-		if (CRYPTO_NAMESPACETOP(ssa,pka,skb)<0)
+		if (crypto_dh_nist521gs_ref(ssa,pka,skb)<0)
 		{
 			printf("problem\n");
 			break;
@@ -935,7 +934,7 @@ int main()
 		for (i=0;i<72;i++) printf("%02x",ssa[i]);
 		printf("\n");
 
-		CRYPTO_NAMESPACETOP(ssb,pkb,ska);
+		crypto_dh_nist521gs_ref(ssb,pkb,ska);
 
 		printf("Bob's secret=   ");
 		for (i=0;i<72;i++) printf("%02x",ssb[i]);

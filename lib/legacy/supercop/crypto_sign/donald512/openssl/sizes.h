@@ -1,7 +1,7 @@
 #include "crypto_sign.h"
 
-#define SECRETKEY_BYTES crypto_sign_SECRETKEYBYTES
-#define PUBLICKEY_BYTES crypto_sign_PUBLICKEYBYTES
-#define PRIME_BYTES PUBLICKEY_BYTES
+#define PRIME_BYTES crypto_sign_donald512_openssl_PRIMEBYTES
+#define SECRETKEY_BYTES crypto_sign_donald512_openssl_SECRETKEYBYTES
+#define PUBLICKEY_BYTES crypto_sign_donald512_openssl_PUBLICKEYBYTES
 #define SHORTHASH_BYTES 64
 #define SIGNATURE_BYTES 40

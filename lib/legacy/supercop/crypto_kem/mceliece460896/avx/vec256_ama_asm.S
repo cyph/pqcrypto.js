@@ -1,5 +1,3 @@
-#define vec256_ama_asm CRYPTO_NAMESPACE(vec256_ama_asm)
-#define _vec256_ama_asm _CRYPTO_NAMESPACE(vec256_ama_asm)
 
 # qhasm: int64 input_0
 

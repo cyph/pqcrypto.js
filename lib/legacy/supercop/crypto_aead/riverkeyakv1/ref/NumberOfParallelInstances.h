@@ -1,1 +1,1 @@
-../../lakekeyakv1/ref/NumberOfParallelInstances.h
+/* No NumberOfParallelInstances defined */

@@ -1,4 +1,4 @@
- enter CRYPTO_NAMESPACETOP
+ enter crypto_hashblocks_rfsb509_core2
  int64 rp
  int64 bp
  int64 blen
@@ -6,7 +6,7 @@
  input bp
  input blen
  int64 matrix
- matrix = CRYPTO_NAMESPACE(matrix)
+ matrix = crypto_hashblocks_rfsb509_core2_matrix
  assign 4 to matrix
  int64 c1
  caller c1
@@ -1806,7 +1806,7 @@
  f113 ^= f50
  uint32323232 f111 ^= *(int128 *) (pos111 + 48 + matrix)
  v = f111
- f111 &= CRYPTO_NAMESPACE(MASK125)
+ f111 &= crypto_hashblocks_rfsb509_core2_MASK125
  pos55 = f111
  uint32323232 f112 ^= *(int128 *) (pos111 + 32 + matrix)
  uint6464 v >>= 61

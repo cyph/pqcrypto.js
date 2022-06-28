@@ -20,16 +20,16 @@
 ################################################################################
 .text
 
-.extern CRYPTO_NAMESPACE(fmonty)
+.extern crypto_scalarmult_curve25519_donna_fmonty
 
-.globl CRYPTO_NAMESPACE(fmul)
-.globl CRYPTO_NAMESPACE(fsquare)
-.globl CRYPTO_NAMESPACE(fexpand)
-.globl CRYPTO_NAMESPACE(fcontract)
-.globl CRYPTO_NAMESPACE(freduce_coefficients)
-.globl CRYPTO_NAMESPACE(fscalar)
-.globl CRYPTO_NAMESPACE(fdifference_backwards)
-.globl CRYPTO_NAMESPACE(cmult)
+.globl crypto_scalarmult_curve25519_donna_fmul
+.globl crypto_scalarmult_curve25519_donna_fsquare
+.globl crypto_scalarmult_curve25519_donna_fexpand
+.globl crypto_scalarmult_curve25519_donna_fcontract
+.globl crypto_scalarmult_curve25519_donna_freduce_coefficients
+.globl crypto_scalarmult_curve25519_donna_fscalar
+.globl crypto_scalarmult_curve25519_donna_fdifference_backwards
+.globl crypto_scalarmult_curve25519_donna_cmult
 
 ################################################################################
 # fmul - multiply two 256-bit numbers
@@ -37,7 +37,7 @@
 # RSI (input): uint64_t[5] input 1
 # RDX (input): uint64_t[5] input 2
 ################################################################################
-CRYPTO_NAMESPACE(fmul):
+crypto_scalarmult_curve25519_donna_fmul:
 
 # Input pointers: rdi (output), rsi (in1), rdx (in2)
 # Spill: rdi, rbx, r12..15
@@ -237,7 +237,7 @@ ret
 # save some multiplications and replace them with doublings.
 ################################################################################
 
-CRYPTO_NAMESPACE(fsquare):
+crypto_scalarmult_curve25519_donna_fsquare:
 
 push %rbx
 push %r12
@@ -332,7 +332,7 @@ jmp donna_reduce
 # 439 "curve25519-donna-x86-64.s"
 ################################################################################
 
-CRYPTO_NAMESPACE(fdifference_backwards):
+crypto_scalarmult_curve25519_donna_fdifference_backwards:
 
 mov (%rsi),%rax
 mov 8(%rsi),%r8
@@ -384,7 +384,7 @@ ret
 # Since we only have 13-bits of space at the top of our limbs, this is a full,
 # cascading multiplication.
 ################################################################################
-CRYPTO_NAMESPACE(fscalar):
+crypto_scalarmult_curve25519_donna_fscalar:
 
 mov $121665,%rcx
 
@@ -433,7 +433,7 @@ ret
 
 # Registers: RDI: (in/out) pointer to uint64_t[5]
 ################################################################################
-CRYPTO_NAMESPACE(freduce_coefficients):
+crypto_scalarmult_curve25519_donna_freduce_coefficients:
 
 push %r12
 
@@ -487,7 +487,7 @@ ret
 # Registers: RDI: (output) pointer to uint64_t[5]
 # RSI: (input) pointer to uint8_t[32]
 ################################################################################
-CRYPTO_NAMESPACE(fexpand):
+crypto_scalarmult_curve25519_donna_fexpand:
 
 mov $0x7ffffffffffff,%rdx
 
@@ -523,7 +523,7 @@ ret
 # Registers: RDI: (output) pointer to uint8_t[32]
 # RSI: (input) pointer to uint64_t[5]
 ################################################################################
-CRYPTO_NAMESPACE(fcontract):
+crypto_scalarmult_curve25519_donna_fcontract:
 
 mov (%rsi),%rax
 mov 8(%rsi),%rdx
@@ -564,7 +564,7 @@ ret
 # RCX: (input) q (big-endian)
 # 747 "curve25519-donna-x86-64.s"
 ################################################################################
-CRYPTO_NAMESPACE(cmult):
+crypto_scalarmult_curve25519_donna_cmult:
 
 push %rbp
 push %r13
@@ -696,7 +696,7 @@ add $80,%rdi
 mov %rdx,%rcx
 add $80,%rdx
 mov %r14,%r8
-call CRYPTO_NAMESPACE(fmonty)
+call crypto_scalarmult_curve25519_donna_fmonty
 
 mov %r15,%r8
 sar $63,%r8

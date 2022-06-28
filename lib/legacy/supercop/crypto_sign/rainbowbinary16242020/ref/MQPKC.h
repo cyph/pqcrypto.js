@@ -1,7 +1,6 @@
 #ifndef _MQPKC_H
 #define _MQPKC_H
 
-#include <string.h>
 #include "blas.h"
 
 template < unsigned GF , unsigned N , unsigned M , unsigned P >
@@ -18,19 +17,14 @@ template < unsigned GF , unsigned N , unsigned M , unsigned P >
 class MQPKC
 {
 public:
-	void public_map( gfv<GF,M> & y , const byte * pub_key , const gfv<GF,N-P> x ) const {
-	  quad_poly<GF,M,N-P> poly;
-	  memcpy(&poly,pub_key,sizeof poly);
-	  y=poly.eval(x);
-        }
+	void public_map( gfv<GF,M> & y , const byte * pub_key , const gfv<GF,N-P> x ) const {const quad_poly<GF,M,N-P> *poly=(const quad_poly<GF,M,N-P>*)pub_key; y=poly->eval(x); }
 	void private_map( gfv<GF,N-P> &y , const byte * pri_key , const gfv<GF,M> x) const
 	{
-		private_key<GF,N,M,P> pri;
-		memcpy(&pri,pri_key,sizeof pri);
+		const private_key<GF,N,M,P> * pri = (const private_key<GF,N,M,P>*) pri_key;
 		gfv<GF,M> tmp1; gfv<GF,N> tmp2;
-		tmp1 = pri.t_inv_mat.prod( x + pri.t_vec );
+		tmp1 = pri->t_inv_mat.prod( x + pri->t_vec );
 		ivs_qmap(tmp2,pri_key,tmp1);
-		tmp2=pri.s_inv_mat.prod( tmp2 + pri.s_vec );
+		tmp2=pri->s_inv_mat.prod( tmp2 + pri->s_vec );
 		memcpy( &y , &tmp2 , sizeof(gfv<GF,N-P>));   //////////////////
 	}
 
@@ -65,7 +59,7 @@ template < unsigned GF , unsigned N , unsigned M , unsigned P>
 int MQPKC<GF,N,M,P>::gen_key( byte * pub_key , byte * pri_key )
 {
 	gen_qkey( pri_key );
-	private_key<GF,N,M,P> pri;
+	private_key<GF,N,M,P> & pri = *((private_key<GF,N,M,P> *) pri_key);
 
 	gen_matrix<GF,N>( s_mat , pri.s_inv_mat );
 	gen_matrix<GF,M>( t_mat , pri.t_inv_mat );
@@ -75,11 +69,8 @@ int MQPKC<GF,N,M,P>::gen_key( byte * pub_key , byte * pri_key )
 	pub_map( t_vec ,pri_key, tmp );
 	pri.t_vec = t_vec;
 	
-	quad_poly<GF,M,N-P> pub;
+	quad_poly<GF,M,N-P> & pub = *((quad_poly<GF,M,N-P> *) pub_key);
 	gen_public_key( pub ,pri_key);
-
-	memcpy(pub_key,&pub,sizeof pub);
-	memcpy(pri_key,&pri,sizeof pri);
 	
 	return 0;
 }

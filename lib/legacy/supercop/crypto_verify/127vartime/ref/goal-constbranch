@@ -1,2 +1,0 @@
-This code is _not_ constant time. This is included to automate negative
-testing of TIMECOP.

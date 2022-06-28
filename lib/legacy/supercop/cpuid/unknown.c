@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main()
+main()
 {
   printf("unknown CPU ID\n");
   return 0;

@@ -5,166 +5,15 @@
 #include "pk_gen.h"
 
 #include "controlbits.h"
-#include "uint64_sort.h"
-#include "int32_sort.h"
 #include "params.h"
+#include "benes.h"
 #include "util.h"
 #include "fft.h"
-#include "crypto_declassify.h"
-#include "crypto_uint64.h"
-
-static crypto_uint64 uint64_is_equal_declassify(uint64_t t,uint64_t u)
-{
-  crypto_uint64 mask = crypto_uint64_equal_mask(t,u);
-  crypto_declassify(&mask,sizeof mask);
-  return mask;
-}
-
-static crypto_uint64 uint64_is_zero_declassify(uint64_t t)
-{
-  crypto_uint64 mask = crypto_uint64_zero_mask(t);
-  crypto_declassify(&mask,sizeof mask);
-  return mask;
-}
 
 #include <stdint.h>
 
 #define min(a, b) ((a < b) ? a : b)
 
-#define nBlocks_I ((PK_NROWS + 255) / 256)
-#define par_width 11
-
-/* return number of trailing zeros of in */
-static inline int ctz(uint64_t in)
-{
-	int i, b, m = 0, r = 0;
-
-	for (i = 0; i < 64; i++)
-	{
-		b = (in >> i) & 1;
-		m |= b;
-		r += (m^1) & (b^1);
-	}
-
-	return r;
-}
-
-/* return 11...1 if x = y; return 00...0 otherwise */
-static inline uint16_t same_mask(int16_t x, int16_t y)
-{
-	uint16_t mask;
-
-	mask = x ^ y;
-	mask -= 1;
-	mask >>= 15;
-	mask = -mask;
-
-	return mask;
-}
-
-/* set m to 11...1 if the i-th bit of x is 0 and the i-th bit of y is 1 */
-/* set m to 00...0 otherwise */
-static inline void extract_01_masks(uint16_t *m, uint64_t *x, uint64_t *y, int i)
-{
-	*m = (((~x[ i>>6 ]) & y[ i>>6 ]) >> (i&63)) & 1;
-	*m = -(*m);
-}
-
-/* return a 128-bit vector of which each bits is set to the i-th bit of v */
-static inline vec256 extract_mask256(uint64_t v[], int i)
-{
-	uint32_t mask;
-
-	mask = (v[ i>>6 ] >> (i&63)) & 1;
-	mask = -mask;
-
-	return vec256_set1_32b(mask);
-}
-
-// swap x and y if m = 11...1
-static inline void int16_cswap(int16_t *x, int16_t *y, uint16_t m)
-{
-	int16_t d;
-
-	d = *x ^ *y;
-	d &= m;
-	*x ^= d;
-	*y ^= d;
-}
-
-// swap x and y if m = 11...1
-static inline void uint16_cswap(uint16_t *x, uint16_t *y, uint16_t m)
-{
-	uint16_t d;
-
-	d = *x ^ *y;
-	d &= m;
-	*x ^= d;
-	*y ^= d;
-}
-
-// swap x and y if m = 11...1
-static inline void vec256_cswap(vec256 *x, vec256 *y, vec256 m)
-{
-	vec256 d;
-
-	d = *x ^ *y;
-	d &= m;
-	*x ^= d;
-	*y ^= d;
-}
-
-/* swap   x[i0] and   x[i1]  if x[i1] > x[i0] */
-/* swap mat[i0] and mat[i1]  if x[i1] > x[i0] */
-static inline void minmax_rows(uint16_t *x, vec256 (*mat)[par_width], int i0, int i1)
-{
-	int i;
-	uint16_t m;
-	vec256 mm;
-
-	m = x[i1] - x[i0];
-	m >>= 15;
-	m = -m;
-	mm = vec256_set1_16b(m);
-
-	uint16_cswap(&x[i0], &x[i1], m);
-
-	for (i = 0; i < par_width; i++)
-		vec256_cswap(&mat[i0][i], &mat[i1][i], mm);
-}
-
-/* merge first half of x[0],x[step],...,x[(2*n-1)*step] with second half */
-/* requires n to be a power of 2 */
-static void merge_rows(int n, int bound, uint16_t *x, vec256 (*mat)[par_width], int off, int step)
-{
-	int i;
-
-	if (n == 1) 
-	{
-		if(off + step < bound)
-			minmax_rows(x, mat, off, off + step);
-	}
-	else 
-	{
-		merge_rows(n/2, bound, x, mat, off, step * 2);
-		merge_rows(n/2, bound, x, mat, off + step, step * 2);
-
-		for (i = 1; i < 2*n-1 && off + (i+1) * step < bound; i += 2)
-			minmax_rows(x, mat, off + i*step, off + (i+1)*step);
-	}
-}
-
-/* permute the rows of mat by sorting x */
-static void sort_rows(int n, int bound, uint16_t *x, vec256 (*mat)[par_width], int off)
-{
-	if (n <= 1) return;
-	sort_rows(n/2, bound, x, mat, off);
-	sort_rows(n/2, bound, x, mat, off + n/2);
-	merge_rows(n/2, bound, x, mat, off, 1);
-}
-
-
-/* extract numbers represented in bitsliced form */
 static void de_bitslicing(uint64_t * out, const vec256 in[][GFBITS])
 {
 	int i, j, r;
@@ -174,69 +23,113 @@ static void de_bitslicing(uint64_t * out, const vec256 in[][GFBITS])
 		out[i] = 0 ;
 
 	for (i = 0; i < 32; i++)
-	for (j = GFBITS-1; j >= 0; j--) {
-		u = vec256_extract(in[i][j], 0);
-		for (r = 0; r < 64; r++)
+	{
+		for (j = GFBITS-1; j >= 0; j--)
 		{
-			out[i*256 + 0*64 + r] <<= 1;
-			out[i*256 + 0*64 + r] |= (u >> r) & 1;
-		}
-		u = vec256_extract(in[i][j], 1);
-		for (r = 0; r < 64; r++)
-		{
-			out[i*256 + 1*64 + r] <<= 1;
-			out[i*256 + 1*64 + r] |= (u >> r) & 1;
-		}
-		u = vec256_extract(in[i][j], 2);
-		for (r = 0; r < 64; r++)
-		{
-			out[i*256 + 2*64 + r] <<= 1;
-			out[i*256 + 2*64 + r] |= (u >> r) & 1;
-		}
-		u = vec256_extract(in[i][j], 3);
-		for (r = 0; r < 64; r++)
-		{
-			out[i*256 + 3*64 + r] <<= 1;
-			out[i*256 + 3*64 + r] |= (u >> r) & 1;
+			u = vec256_extract(in[i][j], 0); 
+			for (r = 0; r < 64; r++) { out[i*256 + 0*64 + r] <<= 1; out[i*256 + 0*64 + r] |= (u >> r) & 1;}
+			u = vec256_extract(in[i][j], 1);
+			for (r = 0; r < 64; r++) { out[i*256 + 1*64 + r] <<= 1; out[i*256 + 1*64 + r] |= (u >> r) & 1;}
+			u = vec256_extract(in[i][j], 2); 
+			for (r = 0; r < 64; r++) { out[i*256 + 2*64 + r] <<= 1; out[i*256 + 2*64 + r] |= (u >> r) & 1;}
+			u = vec256_extract(in[i][j], 3);
+			for (r = 0; r < 64; r++) { out[i*256 + 3*64 + r] <<= 1; out[i*256 + 3*64 + r] |= (u >> r) & 1;}
 		}
 	}
 }
 
-/* convert numbers into bitsliced form */
 static void to_bitslicing_2x(vec256 out0[][GFBITS], vec256 out1[][GFBITS], const uint64_t * in)
 {
 	int i, j, k, r;
-	uint64_t u[2][4];
+	uint64_t u[4];
 
 	for (i = 0; i < 32; i++)
-	for (j = GFBITS-1; j >= 0; j--)
 	{
-		for (k = 0; k < 4; k++)
-		for (r = 63; r >= 0; r--)
+		for (j = GFBITS-1; j >= 0; j--)
 		{
-			u[0][k] <<= 1;
-			u[0][k] |= (in[i*256 + k*64 + r] >> (GFBITS-1-j)) & 1;
-
-			u[1][k] <<= 1;
-			u[1][k] |= (in[i*256 + k*64 + r] >> (j + GFBITS)) & 1;
+			for (k = 0; k < 4; k++)
+			for (r = 63; r >= 0; r--)
+			{
+				u[k] <<= 1;
+				u[k] |= (in[i*256 + k*64 + r] >> (j + GFBITS)) & 1;
+			}
+        
+			out1[i][j] = vec256_set4x(u[0], u[1], u[2], u[3]);
 		}
-    
-		out0[i][j] = vec256_set4x(u[0][0], u[0][1], u[0][2], u[0][3]);
-		out1[i][j] = vec256_set4x(u[1][0], u[1][1], u[1][2], u[1][3]);
+
+		for (j = GFBITS-1; j >= 0; j--)
+		{
+			for (k = 0; k < 4; k++)
+			for (r = 63; r >= 0; r--)
+			{
+				u[k] <<= 1;
+				u[k] |= (in[i*256 + k*64 + r] >> j) & 1;
+			}
+        
+			out0[i][GFBITS-1-j] = vec256_set4x(u[0], u[1], u[2], u[3]);
+		}
 	}
 }
 
-/* swap columns on mat based on the pivots in the 32 x 64 matrix */
-/* update permutation pi*/
-/* store the positions of pivots in pivots */
-static int mov_columns(uint64_t mat[][ nBlocks_I * 4 ], int16_t * pi, uint64_t * pivots)
+static void transpose_64x64(uint64_t * out, uint64_t * in)
 {
-	int i, j, pivot_col[32];
-	uint64_t buf[32], t, d, mask, allone = -1, one = 1; 
+	int i, j, s, d;
+
+	uint64_t x, y;
+	uint64_t masks[6][2] = {
+	                        {0x5555555555555555, 0xAAAAAAAAAAAAAAAA},
+	                        {0x3333333333333333, 0xCCCCCCCCCCCCCCCC},
+	                        {0x0F0F0F0F0F0F0F0F, 0xF0F0F0F0F0F0F0F0},
+	                        {0x00FF00FF00FF00FF, 0xFF00FF00FF00FF00},
+	                        {0x0000FFFF0000FFFF, 0xFFFF0000FFFF0000},
+	                        {0x00000000FFFFFFFF, 0xFFFFFFFF00000000}
+	                       };
+
+	for (i = 0; i < 64; i++)
+		out[i] = in[i];
+
+	for (d = 5; d >= 0; d--)
+	{
+		s = 1 << d;
+
+		for (i = 0; i < 64; i += s*2)
+		for (j = i; j < i+s; j++)
+		{
+			x = (out[j] & masks[d][0]) | ((out[j+s] & masks[d][0]) << s);
+			y = ((out[j] & masks[d][1]) >> s) | (out[j+s] & masks[d][1]);
+
+			out[j+0] = x;
+			out[j+s] = y;
+		}
+	}
+}
+
+/* return number of trailing zeros of the non-zero input in */
+static inline int ctz(uint64_t in)
+{
+	return __builtin_ctzll(in);
+}
+
+static inline uint64_t same_mask(uint16_t x, uint16_t y)
+{
+        uint64_t mask;
+
+        mask = x ^ y;
+        mask -= 1;
+        mask >>= 63;
+        mask = -mask;
+
+        return mask;
+}
+
+static int mov_columns(uint64_t mat[][ ((SYS_N + 255) / 256) * 4 ], uint32_t * perm)
+{
+	int i, j, k, s, block_idx, row, tail;
+	uint64_t buf[64], ctz_list[32], t, d, mask; 
        
-	int row = PK_NROWS - 32;
-	int block_idx = row/64;
-	int tail = row % 64;
+	row = GFBITS * SYS_T - 32;
+	block_idx = row/64;
+	tail = row % 64;
 
 	// extract the 32x64 matrix
 
@@ -245,9 +138,7 @@ static int mov_columns(uint64_t mat[][ nBlocks_I * 4 ], int16_t * pi, uint64_t *
 		         (mat[ row + i ][ block_idx + 1 ] << (64-tail));
         
 	// compute the column indices of pivots by Gaussian elimination.
-	// the indices are stored in pivot_col
-
-	*pivots = 0;
+	// the indices are stored in ctz_list
 
 	for (i = 0; i < 32; i++)
 	{
@@ -255,95 +146,72 @@ static int mov_columns(uint64_t mat[][ nBlocks_I * 4 ], int16_t * pi, uint64_t *
 		for (j = i+1; j < 32; j++)
 			t |= buf[j];
 
-		if (uint64_is_zero_declassify(t)) return -1; // return if buf is not full rank
+		if (t == 0) return -1; // return if buf is not full rank
 
-		pivot_col[i] = ctz(t);
-		*pivots |= one << pivot_col[i];
+		ctz_list[i] = s = ctz(t);
 
-		for (j = i+1; j < 32; j++) { mask = (buf[i] >> pivot_col[i]) & 1; mask -= 1;    buf[i] ^= buf[j] & mask; }
-		for (j = i+1; j < 32; j++) { mask = (buf[j] >> pivot_col[i]) & 1; mask = -mask; buf[j] ^= buf[i] & mask; }
+		for (j = i+1; j < 32; j++) { mask = (buf[i] >> s) & 1; mask -= 1;    buf[i] ^= buf[j] & mask; }
+		for (j =   0; j <  i; j++) { mask = (buf[j] >> s) & 1; mask = -mask; buf[j] ^= buf[i] & mask; }
+		for (j = i+1; j < 32; j++) { mask = (buf[j] >> s) & 1; mask = -mask; buf[j] ^= buf[i] & mask; }
 	}
    
 	// updating permutation
   
-	for (i = 0;   i < 32; i++)
-	for (j = i+1; j < 64; j++)
-		int16_cswap(&pi[ row + i ], &pi[ row + j ], same_mask(j, pivot_col[i]));
+	for (j = 0;   j < 32; j++)
+	for (k = j+1; k < 64; k++)
+	{
+			d = perm[ row + j ] ^ perm[ row + k ];
+			d &= same_mask(k, ctz_list[j]);
+			perm[ row + j ] ^= d;
+			perm[ row + k ] ^= d;
+	}
    
 	// moving columns of mat according to the column indices of pivots
 
-	for (i = 0; i < PK_NROWS; i++)
+	for (i = 0; i < GFBITS*SYS_T; i += 64)
 	{
-		t = (mat[ i ][ block_idx + 0 ] >> tail) | 
-		    (mat[ i ][ block_idx + 1 ] << (64-tail));
+
+		for (j = 0; j < min(64, GFBITS*SYS_T - i); j++)
+			buf[j] = (mat[ i+j ][ block_idx + 0 ] >> tail) | 
+		             (mat[ i+j ][ block_idx + 1 ] << (64-tail));
                 
+		transpose_64x64(buf, buf);
+
 		for (j = 0; j < 32; j++)
+		for (k = j+1; k < 64; k++)
 		{
-			d  = t >> j;
-			d ^= t >> pivot_col[j];
-			d &= 1;
-        
-			t ^= d << pivot_col[j];
-			t ^= d << j;
+			d = buf[ j ] ^ buf[ k ];
+			d &= same_mask(k, ctz_list[j]);
+			buf[ j ] ^= d;
+			buf[ k ] ^= d;
 		}
 
-		mat[ i ][ block_idx + 0 ] = (mat[ i ][ block_idx + 0 ] & (allone >> (64-tail))) | (t << tail);
-		mat[ i ][ block_idx + 1 ] = (mat[ i ][ block_idx + 1 ] & (allone << tail)) | (t >> (64-tail));
+		transpose_64x64(buf, buf);
+                
+		for (j = 0; j < min(64, GFBITS*SYS_T - i); j++)
+		{
+			mat[ i+j ][ block_idx + 0 ] = (mat[ i+j ][ block_idx + 0 ] << (64-tail) >> (64-tail)) | (buf[j] << tail);
+			mat[ i+j ][ block_idx + 1 ] = (mat[ i+j ][ block_idx + 1 ] >> tail << tail) | (buf[j] >> (64-tail));
+		}
 	}
 
 	return 0;
 }
 
-/* y[pi[i]] = x[i] */
-/* requires pi to be a permutation */
-static void composeinv(int n, uint16_t y[n], uint16_t x[n], uint16_t pi[n])
+int pk_gen(unsigned char * pk, const unsigned char * irr, uint32_t * perm)
 {
-  int i;
-  int32_t t[n];
+	const int nblocks_H = (SYS_N + 63) / 64;
+	const int nBlocks_H = (SYS_N + 255) / 256;
+	const int nblocks_I = (GFBITS * SYS_T + 63) / 64;
+	const int block_idx = nblocks_I - 1;
+	int tail = (GFBITS * SYS_T) % 64;
 
-  for (i = 0;i < n;++i) 
-  {
-    t[i] = pi[i];
-    t[i] <<= 16;
-    t[i] |= x[i];
-  }
-
-  int32_sort(t,n);
-
-  for (i = 0;i < n;++i)
-    y[i] = t[i] & 0xFFFF;
-}
-
-/* input: irr, an irreducible polynomial */
-/*        perm, a permutation represented as an array of 32-bit numbers */
-/*        pi, same permutation represented as an array of 16-bit numbers */
-/* output: pk, the public key*/
-/*         pivots, positions of pivots in the 32 x 64 matrix */
-/* return: 0 if pk is successfully generated, -1 otherwise */
-int pk_gen(unsigned char * pk, const unsigned char * irr, uint32_t * perm, int16_t * pi, uint64_t * pivots)
-{
-//	const int nBlocks_I = (PK_NROWS + 255) / 256;
-	const int head = PK_NROWS % 64;
-	const int tail = PK_NCOLS % 64;
-	const uint64_t one = 1;
-
-	int i, j, k, b;
+	int i, j, k;
 	int row, c;
 	
-	union
-	{
-		uint64_t w[ PK_NROWS ][ nBlocks_I * 4 ];
-		vec256 v[ PK_NROWS ][ nBlocks_I ];
-	} mat;	
+	uint64_t mat[ GFBITS * SYS_T ][ nBlocks_H * 4 ];
 
-	union 
-	{
-		uint64_t w[ PK_NROWS ][ 44 ];
-		vec256 v[ PK_NROWS ][ 11 ];
-	} par;
-
-	uint16_t m;	
-	vec256 mm;
+	uint64_t mask;	
 
 	vec128 sk_int[ GFBITS ];
 
@@ -353,11 +221,7 @@ int pk_gen(unsigned char * pk, const unsigned char * irr, uint32_t * perm, int16
 	vec256 tmp[ GFBITS ];
 
 	uint64_t list[1 << GFBITS];
-	uint64_t buf[ PK_NROWS ];
-	uint64_t t;
-
-	uint16_t ind[ PK_NROWS ];
-	uint16_t ind_inv[ PK_NROWS ];
+	uint64_t one_row[ nBlocks_H * 4 ];
 
 	// compute the inverses 
 
@@ -391,156 +255,103 @@ int pk_gen(unsigned char * pk, const unsigned char * irr, uint32_t * perm, int16
 		list[i] |= ((uint64_t) perm[i]) << 31;
 	}
 
-	uint64_sort(list, 1 << GFBITS);
-
-	for (i = 1; i < (1 << GFBITS); i++)
-		if (uint64_is_equal_declassify(list[i-1] >> 31,list[i] >> 31))
-			return -1;
+	sort_63b(1 << GFBITS, list);
 
 	to_bitslicing_2x(consts, prod, list);
 
 	for (i = 0; i < (1 << GFBITS); i++)
-		pi[i] = list[i] & GFMASK;
+		perm[i] = list[i] & GFMASK;
 
-	for (j = 0; j < nBlocks_I; j++)
+	for (j = 0; j < nBlocks_H; j++)
 	for (k = 0; k < GFBITS; k++)
-		mat.v[ k ][ j ] = prod[ j ][ k ];
+	{
+		mat[ k ][ 4*j + 0 ] = vec256_extract(prod[ j ][ k ], 0);
+		mat[ k ][ 4*j + 1 ] = vec256_extract(prod[ j ][ k ], 1);
+		mat[ k ][ 4*j + 2 ] = vec256_extract(prod[ j ][ k ], 2);
+		mat[ k ][ 4*j + 3 ] = vec256_extract(prod[ j ][ k ], 3);
+	}
 
 	for (i = 1; i < SYS_T; i++)
-	for (j = 0; j < nBlocks_I; j++)
+	for (j = 0; j < nBlocks_H; j++)
 	{
 		vec256_mul(prod[j], prod[j], consts[j]);
 
 		for (k = 0; k < GFBITS; k++)
-			mat.v[ i*GFBITS + k ][ j ] = prod[ j ][ k ];
+		{
+			mat[ i*GFBITS + k ][ 4*j + 0 ] = vec256_extract(prod[ j ][ k ], 0);
+			mat[ i*GFBITS + k ][ 4*j + 1 ] = vec256_extract(prod[ j ][ k ], 1);
+			mat[ i*GFBITS + k ][ 4*j + 2 ] = vec256_extract(prod[ j ][ k ], 2);
+			mat[ i*GFBITS + k ][ 4*j + 3 ] = vec256_extract(prod[ j ][ k ], 3);
+		}
 	}
 
-	// gaussian elimination to obtain L, U, and P such that LP M = U
-	// L and U are stored in the space of M
-	// P is stored in ind
-
-	for (i = 0; i < PK_NROWS; i++)
-		ind_inv[i] = ind[ i ] = i;
+	// gaussian elimination
 
 	for (row = 0; row < PK_NROWS; row++)
 	{
 		i = row >> 6;
 		j = row & 63;
 
-		if (row == PK_NROWS - 32)
+		if (row == GFBITS * SYS_T - 32)
 		{
-			if (mov_columns(mat.w, pi, pivots))
+			if (mov_columns(mat, perm))
 				return -1;
 		}
 
 		for (k = row + 1; k < PK_NROWS; k++)
 		{
-			extract_01_masks(&m, mat.w[ row ], mat.w[ k ], row);
-			uint16_cswap(&ind[row], &ind[k], m);
+			mask = mat[ row ][ i ] >> j;
+			mask &= 1;
+			mask -= 1;
 
-			mm = vec256_set1_16b(m);
-			for (c = 0; c < nBlocks_I; c++)
-				vec256_cswap(&mat.v[ row ][ c ], &mat.v[ k ][ c ], mm);
+			for (c = 0; c < nblocks_H; c++)
+				mat[ row ][ c ] ^= mat[ k ][ c ] & mask;
 		}
 
-                if ( uint64_is_zero_declassify((mat.w[ row ][ i ] >> j) & 1) ) // return if not systematic
+		if ( ((mat[ row ][ i ] >> j) & 1) == 0 ) // return if not systematic
 		{
 			return -1;
 		}
 
+		for (k = 0; k < row; k++)
+		{
+			mask = mat[ k ][ i ] >> j;
+			mask &= 1;
+			mask = -mask;
+
+			for (c = 0; c < nblocks_H; c++)
+				mat[ k ][ c ] ^= mat[ row ][ c ] & mask;
+		}
+
 		for (k = row+1; k < PK_NROWS; k++)
 		{
-			t = mat.w[ k ][ i ] & (one << j);
-			mm = extract_mask256(mat.w[k], row);
+			mask = mat[ k ][ i ] >> j;
+			mask &= 1;
+			mask = -mask;
 
-			for (c = 0; c < nBlocks_I; c++)
-				mat.v[ k ][ c ] ^= mat.v[ row ][ c ] & mm;
-
-			mat.w[ k ][ i ] |= t;
+			for (c = 0; c < nblocks_H; c++)
+				mat[ k ][ c ] ^= mat[ row ][ c ] & mask;
 		}
 	}
 
-	// apply M^-1 to the remaining columns
-
-	composeinv(PK_NROWS, ind_inv, ind_inv, ind);
-
-	for (j = 6; j < 28; j += 11)
+	for (row = 0; row < PK_NROWS; row++)
 	{
-		for (k = 0; k < GFBITS; k++)
-		for (b = 0; b < 11; b++) 
-			par.v[ k ][ b ] = prod[ j+b ][ k ];
-		      
-		for (i = 1; i < SYS_T; i++)
+		for (k = block_idx; k < nblocks_H; k++)
+			one_row[k] = mat[ row ][k];
+
+		for (k = block_idx; k < nblocks_H - 1; k++)
 		{
-			for (b = 0; b < 11; b++) 
-				vec256_mul(prod[j+b], prod[j+b], consts[j+b]);
-        
-			for (k = 0; k < GFBITS; k++)
-			for (b = 0; b < 11; b++) 
-				par.v[ i*GFBITS + k ][ b ] = prod[ j+b ][ k ];
+			one_row[k] = (one_row[k] >> tail) | (one_row[k+1] << (64-tail));
+			store8(pk, one_row[k]);
+			pk += 8;
 		}
 
-		// apply P
+		one_row[k] >>= tail;
+		store_i(pk, one_row[k], PK_ROW_BYTES % 8);
 
-		for (i = 0; i < PK_NROWS; i++)
-			ind[i] = ind_inv[i];
+		pk[ (PK_ROW_BYTES % 8)-1 ] &= (1 << (PK_NCOLS % 8)) - 1; // removing redundant bits
 
-		sort_rows((1 << GFBITS)/4, PK_NROWS, ind, par.v, 0);
-
-		// apply L
-
-		for (row = PK_NROWS-1; row >= 0; row--)
-		for (i = row-1; i >= 0; i--)
-		{
-			mm = extract_mask256(mat.w[row], i);
-    
-			for (k = 0; k < 11; k++)
-				par.v[ row ][ k ] ^= par.v[ i ][ k ] & mm;
-		}
-    
-		// apply U^-1
-
-		if (j == 6)
-		{
-			for (i = 0; i < PK_NROWS; i++)
-				par.v[i][0] = mat.v[ i ][ nBlocks_I-1 ];
-		}
-
-		for (row = PK_NROWS-1; row >= 0; row--)
-		for (i = PK_NROWS-1; i > row; i--)
-		{
-			mm = extract_mask256(mat.w[row], i);
-    
-			for (k = 0; k < 11; k++)
-				par.v[ row ][ k ] ^= par.v[ i ][ k ] & mm;
-		}
-
-		if (j == 6)
-		{
-			for (row = 0; row < PK_NROWS; row++)
-			{
-				for (i = 0; i < 43; i++)
-					store8(pk + PK_ROW_BYTES * row + i*8, (par.w[row][i] >> head) | (par.w[row][i+1] << (64-head)));
-
-				buf[row] = par.w[row][i] >> head;
-			}
-		}
-		else
-		{
-			for (row = 0; row < PK_NROWS; row++)
-			{
-				store8(pk + PK_ROW_BYTES * row + 43*8, buf[row] | (par.w[row][0] << (64-head)));
-
-				for (i = 0; i < 40; i++)
-					store8(pk + PK_ROW_BYTES * row + (i+44)*8, (par.w[row][i] >> head) | (par.w[row][i+1] << (64-head)));
-
-				par.w[row][i] >>= head;
-				par.w[row][i] &= (one << tail) - 1;
-
-				store_i(pk + PK_ROW_BYTES * row + (i+44)*8, par.w[row][i], (tail + 7)/8);
-			}
-		}
-
+		pk += PK_ROW_BYTES % 8;
 	}
 
 	//

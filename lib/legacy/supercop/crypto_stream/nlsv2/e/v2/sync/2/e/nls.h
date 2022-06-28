@@ -18,7 +18,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _NLS_DEFINED
 #define _NLS_DEFINED 1
 
-#ifndef ECRYPT_API
+#ifndef crypto_stream_nlsv2_e_v2_sync_2_ECRYPT_API
 #include <limits.h>
 #if __STDC_VERSION__ >= 199901
 #include <stdint.h>
@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define NMAC 8
 #define WORDSIZE 32
 
-#ifdef ECRYPT_API
+#ifdef crypto_stream_nlsv2_e_v2_sync_2_ECRYPT_API
 #define WORD u32
 #define UCHAR u8
 #else
@@ -63,7 +63,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif /*NLS_LONG_OUTPUT*/
 #define MACKONST 8
 
-#ifdef ECRYPT_API
+#ifdef crypto_stream_nlsv2_e_v2_sync_2_ECRYPT_API
 #define ROTL ROTL32
 #define ROTR ROTR32
 #else

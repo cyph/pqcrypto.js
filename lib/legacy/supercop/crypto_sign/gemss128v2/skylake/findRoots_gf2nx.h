@@ -1,1 +1,0 @@
-../opt/findRoots_gf2nx.h

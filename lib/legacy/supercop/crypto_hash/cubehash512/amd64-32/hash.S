@@ -183,13 +183,13 @@
 
 # qhasm: stack64 rbp_stack
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hash_cubehash512_amd64_32
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_hash_cubehash512_amd64_32
+.globl crypto_hash_cubehash512_amd64_32
+_crypto_hash_cubehash512_amd64_32:
+crypto_hash_cubehash512_amd64_32:
 mov %rsp,%r11
 and $31,%r11
 add $256,%r11

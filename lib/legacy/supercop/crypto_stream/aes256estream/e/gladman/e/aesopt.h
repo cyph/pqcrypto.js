@@ -158,11 +158,11 @@
 #define BRG_LITTLE_ENDIAN   1234 /* byte 0 is least significant (i386) */
 #define BRG_BIG_ENDIAN      4321 /* byte 0 is most significant (mc68k) */
 
-#ifdef ECRYPT_API
+#ifdef crypto_stream_aes256estream_e_gladman_ECRYPT_API
 
-#if defined(ECRYPT_LITTLE_ENDIAN)
+#if defined(crypto_stream_aes256estream_e_gladman_ECRYPT_LITTLE_ENDIAN)
 #define PLATFORM_BYTE_ORDER BRG_LITTLE_ENDIAN
-#elif defined(ECRYPT_BIG_ENDIAN)
+#elif defined(crypto_stream_aes256estream_e_gladman_ECRYPT_BIG_ENDIAN)
 #define PLATFORM_BYTE_ORDER BRG_BIG_ENDIAN
 #else
 #error Could not detect endianness
@@ -286,9 +286,9 @@
 #define ENCRYPTION_KEY_SCHEDULE
 #endif
 
-#if defined( AES_DECRYPT )
-#define DECRYPTION
-#define DECRYPTION_KEY_SCHEDULE
+#if defined( AES_Dcrypto_stream_aes256estream_e_gladman_ECRYPT )
+#define Dcrypto_stream_aes256estream_e_gladman_ECRYPTION
+#define Dcrypto_stream_aes256estream_e_gladman_ECRYPTION_KEY_SCHEDULE
 #endif
 
 /*  2. ASSEMBLER SUPPORT
@@ -651,7 +651,7 @@
 #endif
 #endif
 
-#if defined(DECRYPTION) || defined(AES_ASM)
+#if defined(Dcrypto_stream_aes256estream_e_gladman_ECRYPTION) || defined(AES_ASM)
 #if DEC_ROUND == ONE_TABLE
 #define IT1_SET
 #elif DEC_ROUND == FOUR_TABLES
@@ -668,7 +668,7 @@
 #endif
 #endif
 
-#if defined(ENCRYPTION_KEY_SCHEDULE) || defined(DECRYPTION_KEY_SCHEDULE)
+#if defined(ENCRYPTION_KEY_SCHEDULE) || defined(Dcrypto_stream_aes256estream_e_gladman_ECRYPTION_KEY_SCHEDULE)
 #if KEY_SCHED == ONE_TABLE
 #define LS1_SET
 #define IM1_SET

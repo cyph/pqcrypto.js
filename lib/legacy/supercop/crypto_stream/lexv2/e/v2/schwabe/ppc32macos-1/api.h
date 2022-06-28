@@ -1,2 +1,2 @@
-#define CRYPTO_KEYBYTES 16
-#define CRYPTO_NONCEBYTES 16
+#define crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_KEYBYTES 16
+#define crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_NONCEBYTES 16

@@ -1,7 +1,6 @@
 #include "namespace.h"
 /** Ring arithmetic implementation */
 #include "ring.h"
-#include "crypto_declassify.h"
 
 /** Multiply and accumulate c += a*b */
 void mac(gf_t c, const gf_t a, const gf_t b) {
@@ -67,10 +66,7 @@ void canon(gf_t c) {
         c[i] = carry & LMASK;
         carry >>= LGX;
     }
-
-    dslimb_t result = carry+scarry;
-    crypto_declassify(&result,sizeof result);
-    assert(result==0);
+    assert(carry+scarry==0);
 }
 
 /** Serialize a gf_t to bytes */

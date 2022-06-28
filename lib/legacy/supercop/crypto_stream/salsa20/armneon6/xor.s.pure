@@ -7,10 +7,10 @@ sigma:
 .word 2036477234
 .word 1797285236
 .align 2
-.global _CRYPTO_NAMESPACE(xor)
-.global CRYPTO_NAMESPACE(xor)
-_CRYPTO_NAMESPACE(xor):
-CRYPTO_NAMESPACE(xor):
+.global _crypto_stream_salsa20_armneon6_xor
+.global crypto_stream_salsa20_armneon6_xor
+_crypto_stream_salsa20_armneon6_xor:
+crypto_stream_salsa20_armneon6_xor:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#352

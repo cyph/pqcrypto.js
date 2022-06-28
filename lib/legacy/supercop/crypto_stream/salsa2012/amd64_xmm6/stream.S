@@ -335,13 +335,13 @@
 
 # qhasm: stack64 counter
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_stream_salsa2012_amd64_xmm6
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_stream_salsa2012_amd64_xmm6
+.globl crypto_stream_salsa2012_amd64_xmm6
+_crypto_stream_salsa2012_amd64_xmm6:
+crypto_stream_salsa2012_amd64_xmm6:
 mov %rsp,%r11
 and $31,%r11
 add $512,%r11
@@ -438,13 +438,13 @@ sub  %r9,%rdi
 # qhasm: goto start
 jmp ._start
 
-# qhasm: enter CRYPTO_NAMESPACE(xor)
+# qhasm: enter crypto_stream_salsa2012_amd64_xmm6_xor
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(xor)
-.globl CRYPTO_NAMESPACE(xor)
-_CRYPTO_NAMESPACE(xor):
-CRYPTO_NAMESPACE(xor):
+.globl _crypto_stream_salsa2012_amd64_xmm6_xor
+.globl crypto_stream_salsa2012_amd64_xmm6_xor
+_crypto_stream_salsa2012_amd64_xmm6_xor:
+crypto_stream_salsa2012_amd64_xmm6_xor:
 mov %rsp,%r11
 and $31,%r11
 add $512,%r11

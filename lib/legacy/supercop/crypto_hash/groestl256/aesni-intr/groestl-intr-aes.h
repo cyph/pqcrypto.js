@@ -11,9 +11,6 @@
 #include <wmmintrin.h>
 #include "hash.h"
 
-#define LOAD(x) _mm_loadu_si128(&x)
-#define STORE(x,y) _mm_storeu_si128(&x,y)
-
 /* global constants  */
 __m128i ROUND_CONST_Lx;
 __m128i ROUND_CONST_L0[ROUNDS512];
@@ -24,6 +21,7 @@ __m128i TRANSP_MASK;
 __m128i SUBSH_MASK[8];
 __m128i ALL_1B;
 __m128i ALL_FF;
+
 
 #define tos(a)    #a
 #define tostr(a)  tos(a)
@@ -391,10 +389,10 @@ void TF512(u64* h, u64* m)
 #endif
 
   /* load message into registers xmm12 - xmm15 */
-  xmm12 = LOAD(message[0]);
-  xmm13 = LOAD(message[1]);
-  xmm14 = LOAD(message[2]);
-  xmm15 = LOAD(message[3]);
+  xmm12 = message[0];
+  xmm13 = message[1];
+  xmm14 = message[2];
+  xmm15 = message[3];
 
   /* transform message M from column ordering into row ordering */
   /* we first put two rows (64 bit) of the message into one 128-bit xmm register */
@@ -812,14 +810,14 @@ void TF1024(u64* h, u64* m)
 #endif
 
   /* load message into registers xmm8 - xmm15 (Q = message) */
-  xmm8 = LOAD(message[0]);
-  xmm9 = LOAD(message[1]);
-  xmm10 = LOAD(message[2]);
-  xmm11 = LOAD(message[3]);
-  xmm12 = LOAD(message[4]);
-  xmm13 = LOAD(message[5]);
-  xmm14 = LOAD(message[6]);
-  xmm15 = LOAD(message[7]);
+  xmm8 = message[0];
+  xmm9 = message[1];
+  xmm10 = message[2];
+  xmm11 = message[3];
+  xmm12 = message[4];
+  xmm13 = message[5];
+  xmm14 = message[6];
+  xmm15 = message[7];
 
   /* transform message M from column ordering into row ordering */
   Matrix_Transpose(xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7);

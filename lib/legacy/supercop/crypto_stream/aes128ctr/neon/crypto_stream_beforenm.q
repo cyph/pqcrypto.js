@@ -76,7 +76,7 @@ reg128 u5
 reg128 u6
 reg128 u7
 
-qpushenter CRYPTO_NAMESPACE(beforenm)
+qpushenter crypto_stream_aes128ctr_neon_beforenm
 
   #BEGIN MACRO bitslicekey0
   xmm0 = mem128[input_1]

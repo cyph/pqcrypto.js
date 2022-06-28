@@ -1,1 +1,1 @@
-../../dilithium2/avx2/polyvec.c
+../../dilithium3/avx2/polyvec.c

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+tgpp -file drygascon128_nofunc.tgpp.v
+
+FILES="tb_drygascon128.v drygascon128_nofunc.v"
+
+FLAGS="+interp +dump2fst +fst+parallel2=on"
+
+#cvc64 +xprop2 +dump2fst +fst+parallel2=on tb_data_path.v ctrl.v gf2m_alu.v gf2m_mul.v
+cvc64 $FLAGS $FILES

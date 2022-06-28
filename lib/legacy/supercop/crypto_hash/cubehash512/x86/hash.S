@@ -199,13 +199,13 @@
 
 # qhasm: stack32 ebp_stack
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hash_cubehash512_x86
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_hash_cubehash512_x86
+.globl crypto_hash_cubehash512_x86
+_crypto_hash_cubehash512_x86:
+crypto_hash_cubehash512_x86:
 mov %esp,%eax
 and $31,%eax
 add $192,%eax

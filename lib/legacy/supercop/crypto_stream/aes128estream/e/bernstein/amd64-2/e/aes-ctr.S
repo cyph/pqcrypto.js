@@ -279,13 +279,13 @@
 
 # qhasm: int64 b3
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_init)
+# qhasm: enter crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_init
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_init)
-.globl CRYPTO_NAMESPACE(ECRYPT_init)
-_CRYPTO_NAMESPACE(ECRYPT_init):
-CRYPTO_NAMESPACE(ECRYPT_init):
+.globl _crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_init
+.globl crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_init
+_crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_init:
+crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_init:
 mov %rsp,%r11
 and $31,%r11
 add $448,%r11
@@ -297,13 +297,13 @@ mov %rdi,%rax
 mov %rsi,%rdx
 ret
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_ivsetup)
+# qhasm: enter crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_ivsetup
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-_CRYPTO_NAMESPACE(ECRYPT_ivsetup):
-CRYPTO_NAMESPACE(ECRYPT_ivsetup):
+.globl _crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_ivsetup
+.globl crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_ivsetup
+_crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_ivsetup:
+crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_ivsetup:
 mov %rsp,%r11
 and $31,%r11
 add $448,%r11
@@ -365,13 +365,13 @@ mov %rdi,%rax
 mov %rsi,%rdx
 ret
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_keysetup)
+# qhasm: enter crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_keysetup
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_keysetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_keysetup)
-_CRYPTO_NAMESPACE(ECRYPT_keysetup):
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+.globl _crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_keysetup
+.globl crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_keysetup
+_crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_keysetup:
+crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_keysetup:
 mov %rsp,%r11
 and $31,%r11
 add $448,%r11
@@ -1543,13 +1543,13 @@ mov %rdi,%rax
 mov %rsi,%rdx
 ret
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_process_bytes) stackaligned4096 aes_constants
+# qhasm: enter crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_process_bytes stackaligned4096 aes_constants
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_process_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_process_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_process_bytes):
-CRYPTO_NAMESPACE(ECRYPT_process_bytes):
+.globl _crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_process_bytes
+.globl crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_process_bytes
+_crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_process_bytes:
+crypto_stream_aes128estream_e_bernstein_amd64_2_ECRYPT_process_bytes:
 mov %rsp,%r11
 sub $aes_constants,%r11
 and $4095,%r11

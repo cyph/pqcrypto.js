@@ -1,1 +1,1 @@
-../../kyber512/avx2/basemul.S
+../../kyber768/avx2/basemul.S

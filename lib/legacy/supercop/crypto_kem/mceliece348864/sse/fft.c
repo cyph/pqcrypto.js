@@ -1,9 +1,6 @@
 /*
-  This file is for implementing the Gao-Mateer FFT, see 
-  http://www.math.clemson.edu/~sgao/papers/GM10.pdf
-
-  For the implementation strategy, see
-  https://eprint.iacr.org/2017/793.pdf
+  This file is for the Gao-Mateer FFT
+  sse http://www.math.clemson.edu/~sgao/papers/GM10.pdf
 */
 
 #include "fft.h"
@@ -13,7 +10,7 @@
 
 /* input: in, polynomial in bitsliced form */
 /* output: in, result of applying the radix conversions on in */
-static void radix_conversions(uint64_t *in)
+void radix_conversions(uint64_t *in)
 {
 	int i, j, k;
 
@@ -48,7 +45,7 @@ static void radix_conversions(uint64_t *in)
 
 /* input: in, result of applying the radix conversions to the input polynomial */
 /* output: out, evaluation results (by applying the FFT butterflies) */
-static void butterflies(vec128 out[][ GFBITS ], uint64_t *in)
+void butterflies(vec128 out[][ GFBITS ], uint64_t *in)
 {
 	int i, j, k, s, b;
 

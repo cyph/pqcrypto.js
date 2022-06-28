@@ -91,7 +91,7 @@ int check_keys(
     {
         if (grec[i]!=g[i])
         {
-            fprintf(stderr,"checking keys error for %dth coefficients: %d %d\n", i, grec[i], g[i]);
+            printf("checking keys error for %dth coefficients: %d %d\n", i, grec[i], g[i]);
             return -1;
         }
     }
@@ -111,7 +111,7 @@ check_m (
     {
         if(m[i]!=1 && m[i]!=65535 && m[i]!=0)
         {
-            fprintf(stderr,"checking message error for %dth coefficients: %d \n", i, m[i]);
+            printf("checking message error for %dth coefficients: %d \n", i, m[i]);
             return -1;
         }
     }
@@ -132,7 +132,7 @@ int encrypt_kem(
 {
     if (check_m(m, param->N) == -1 )
     {
-        fprintf(stderr,"error message\n");
+        printf("error message\n");
         return -1;
     }
     uint16_t    i;
@@ -231,7 +231,7 @@ pad_msg(
 {
     if (msg_len > param->max_msg_len)
     {
-        fprintf(stderr,"error: message too long");
+        printf("error: message too long");
         return -1;
     }
     uint16_t    *pad;
@@ -287,7 +287,7 @@ recover_msg(
 
     if (msg_len > param->max_msg_len)
     {
-        fprintf(stderr,"error: message too long");
+        printf("error: message too long");
         return -1;
     }
 
@@ -322,7 +322,7 @@ generate_r(
     {
         if (msg[i]!=0 && msg[i]!=1 && (msg[i]%param->q)!=param->q-1)
         {
-            fprintf(stderr,"invalid messages\n");
+            printf("invalid messages\n");
             return -1;
         }
     }
@@ -532,27 +532,27 @@ int decrypt_cca(
     {
         if (((param->p*t_rec[i] - t[i]) & (param->q-1)) !=0)
         {
-            fprintf(stderr,"error: \n");
-            fprintf(stderr,"r: \n");
+            printf("error: \n");
+            printf("r: \n");
             for (i=0;i<param->padN;i++)
-                fprintf(stderr,"%d, ", r[i]);
-            fprintf(stderr,"\n");
-            fprintf(stderr,"h: \n");
+                printf("%d, ", r[i]);
+            printf("\n");
+            printf("h: \n");
             for (i=0;i<param->padN;i++)
-                fprintf(stderr,"%d, ", h[i]);
-            fprintf(stderr,"\n");
-            fprintf(stderr,"t_rec: \n");
+                printf("%d, ", h[i]);
+            printf("\n");
+            printf("t_rec: \n");
             for (i=0;i<param->padN;i++)
-                fprintf(stderr,"%d, ", t_rec[i]);
-            fprintf(stderr,"\n");
-            fprintf(stderr,"t: \n");
+                printf("%d, ", t_rec[i]);
+            printf("\n");
+            printf("t: \n");
             for (i=0;i<param->padN;i++)
-                fprintf(stderr,"%d, ", t[i]);
-            fprintf(stderr,"\n");
-            fprintf(stderr,"c: \n");
+                printf("%d, ", t[i]);
+            printf("\n");
+            printf("c: \n");
             for (i=0;i<param->padN;i++)
-                fprintf(stderr,"%d, ", c[i]);
-            fprintf(stderr,"\n");
+                printf("%d, ", c[i]);
+            printf("\n");
 
             memset(buf,0, sizeof(uint16_t)*param->padN*8);
             return -1;

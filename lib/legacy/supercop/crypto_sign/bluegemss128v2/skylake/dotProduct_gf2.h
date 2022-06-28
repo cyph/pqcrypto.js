@@ -1,1 +1,0 @@
-../../gemss128v2/opt/dotProduct_gf2.h

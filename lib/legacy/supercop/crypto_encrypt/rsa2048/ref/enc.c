@@ -1,5 +1,3 @@
-#include <string.h>
-
 #include "crypto_kem_rsa2048.h"
 #define crypto_kem_enc crypto_kem_rsa2048_enc
 #define crypto_kem_BYTES crypto_kem_rsa2048_BYTES
@@ -29,12 +27,11 @@ int crypto_encrypt(
   const unsigned char *pk
 )
 {
-  unsigned char c2[crypto_kem_CIPHERTEXTBYTES];
   unsigned char k[crypto_kem_BYTES];
 
-  if (crypto_kem_enc(c2,k,pk) < 0) goto error;
-  crypto_aead_encrypt(c,clen,m,mlen,ad,0,nsec,nonce,k);
-  memcpy(c + *clen,c2,sizeof c2);
+  if (crypto_kem_enc(c,k,pk) < 0) goto error;
+  crypto_aead_encrypt(c + crypto_kem_CIPHERTEXTBYTES,clen,m,mlen,ad,0,nsec,nonce,k);
+
   *clen += crypto_kem_CIPHERTEXTBYTES;
   return 0;
 

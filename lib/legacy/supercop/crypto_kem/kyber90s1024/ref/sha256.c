@@ -1,1 +1,1 @@
-../../kyber90s512/ref/sha256.c
+../../kyber90s768/ref/sha256.c

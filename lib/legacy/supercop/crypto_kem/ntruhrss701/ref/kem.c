@@ -1,11 +1,10 @@
-#include "api.h"
-#include "cmov.h"
-#include "crypto_hash_sha3256.h"
-#include "kem.h"
-#include "owcpa.h"
-#include "params.h"
+#include "crypto_kem.h"
+
 #include "randombytes.h"
-#include "sample.h"
+#include "crypto_hash_sha3256.h"
+#include "params.h"
+#include "verify.h"
+#include "owcpa.h"
 
 // API FUNCTIONS 
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
@@ -22,20 +21,15 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
 
 int crypto_kem_enc(unsigned char *c, unsigned char *k, const unsigned char *pk)
 {
-  poly r, m;
   unsigned char rm[NTRU_OWCPA_MSGBYTES];
   unsigned char rm_seed[NTRU_SAMPLE_RM_BYTES];
 
   randombytes(rm_seed, NTRU_SAMPLE_RM_BYTES);
+  owcpa_samplemsg(rm, rm_seed);
 
-  sample_rm(&r, &m, rm_seed);
-
-  poly_S3_tobytes(rm, &r);
-  poly_S3_tobytes(rm+NTRU_PACK_TRINARY_BYTES, &m);
   crypto_hash_sha3256(k, rm, NTRU_OWCPA_MSGBYTES);
 
-  poly_Z3_to_Zq(&r);
-  owcpa_enc(c, &r, &m, pk);
+  owcpa_enc(c, rm, pk);
 
   return 0;
 }
@@ -47,7 +41,7 @@ int crypto_kem_dec(unsigned char *k, const unsigned char *c, const unsigned char
   unsigned char buf[NTRU_PRFKEYBYTES+NTRU_CIPHERTEXTBYTES];
 
   fail = owcpa_dec(rm, c, sk);
-  /* If fail = 0 then c = Enc(h, rm). There is no need to re-encapsulate. */
+  /* If fail = 0 then c = Enc(h, rm), there is no need to re-encapsulate. */
   /* See comment in owcpa_dec for details.                                */
 
   crypto_hash_sha3256(k, rm, NTRU_OWCPA_MSGBYTES);
@@ -59,7 +53,7 @@ int crypto_kem_dec(unsigned char *k, const unsigned char *c, const unsigned char
     buf[NTRU_PRFKEYBYTES + i] = c[i];
   crypto_hash_sha3256(rm, buf, NTRU_PRFKEYBYTES+NTRU_CIPHERTEXTBYTES);
 
-  cmov(k, rm, NTRU_SHAREDKEYBYTES, (unsigned char) fail);
+  cmov(k, rm, NTRU_SHAREDKEYBYTES, fail);
 
   return 0;
 }

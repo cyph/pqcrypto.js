@@ -251,15 +251,15 @@
 
 # qhasm: stack32 i29_stack
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hash_cubehash1632_ppc32
 .text
 .align 3
-.globl .CRYPTO_NAMESPACETOP
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-.CRYPTO_NAMESPACETOP:
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl .crypto_hash_cubehash1632_ppc32
+.globl _crypto_hash_cubehash1632_ppc32
+.globl crypto_hash_cubehash1632_ppc32
+.crypto_hash_cubehash1632_ppc32:
+_crypto_hash_cubehash1632_ppc32:
+crypto_hash_cubehash1632_ppc32:
 stwu 1,-320(1)
 
 # qhasm: i12_stack = i12

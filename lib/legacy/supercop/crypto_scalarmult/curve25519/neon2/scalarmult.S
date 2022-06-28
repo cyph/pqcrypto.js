@@ -489,18 +489,18 @@
 
 # qhasm: reg128 one
 
-# qhasm: qpushenter CRYPTO_NAMESPACETOP
+# qhasm: qpushenter crypto_scalarmult_curve25519_neon2
 .align 4
-.global _CRYPTO_NAMESPACETOP
-.global CRYPTO_NAMESPACETOP
-.type _CRYPTO_NAMESPACETOP STT_FUNC
-.type CRYPTO_NAMESPACETOP STT_FUNC
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.global _crypto_scalarmult_curve25519_neon2
+.global crypto_scalarmult_curve25519_neon2
+.type _crypto_scalarmult_curve25519_neon2 STT_FUNC
+.type crypto_scalarmult_curve25519_neon2 STT_FUNC
+_crypto_scalarmult_curve25519_neon2:
+crypto_scalarmult_curve25519_neon2:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#736
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm: stack64 stack_r45
 

@@ -2941,10 +2941,10 @@ blake512_final:                         @ @blake512_final
 .Ltmp10:
 	.size	blake512_final, .Ltmp10-blake512_final
 
-	.globl	CRYPTO_NAMESPACETOP
+	.globl	crypto_hash_blake512_vect128_neon
 	.align	4
-	.type	CRYPTO_NAMESPACETOP,%function
-CRYPTO_NAMESPACETOP:      @ @CRYPTO_NAMESPACETOP
+	.type	crypto_hash_blake512_vect128_neon,%function
+crypto_hash_blake512_vect128_neon:      @ @crypto_hash_blake512_vect128_neon
 @ BB#0:
 	push	{r4, r5, r6, r7, r8, r9, r10, lr}
 	sub	sp, sp, #280
@@ -2968,7 +2968,7 @@ CRYPTO_NAMESPACETOP:      @ @CRYPTO_NAMESPACETOP
 	add	sp, sp, #280
 	pop	{r4, r5, r6, r7, r8, r9, r10, pc}
 .Ltmp11:
-	.size	CRYPTO_NAMESPACETOP, .Ltmp11-CRYPTO_NAMESPACETOP
+	.size	crypto_hash_blake512_vect128_neon, .Ltmp11-crypto_hash_blake512_vect128_neon
 
 	.type	round512.SConst,%object @ @round512.SConst
 	.section	.rodata,"a",%progbits

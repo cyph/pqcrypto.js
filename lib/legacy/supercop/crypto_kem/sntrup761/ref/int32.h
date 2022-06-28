@@ -1,10 +1,6 @@
 #ifndef INT32_H
 #define INT32_H
 
-#define int32_div_uint14 CRYPTO_NAMESPACE(int32_div_uint14)
-#define int32_mod_uint14 CRYPTO_NAMESPACE(int32_mod_uint14)
-#define int32_divmod_uint14 CRYPTO_NAMESPACE(int32_divmod_uint14)
-
 #include "uint16.h"
 
 typedef int32_t int32;

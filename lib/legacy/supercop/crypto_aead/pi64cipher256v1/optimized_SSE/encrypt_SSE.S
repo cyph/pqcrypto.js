@@ -1,5 +1,5 @@
-#define crypto_aead_encrypt CRYPTO_NAMESPACE(encrypt)
-#define crypto_aead_decrypt CRYPTO_NAMESPACE(decrypt)
+#define crypto_aead_encrypt crypto_aead_pi64cipher256v1_optimized_SSE_encrypt
+#define crypto_aead_decrypt crypto_aead_pi64cipher256v1_optimized_SSE_decrypt
 
 # SSE2 version made by Rune E. Jensen
 # Version 1

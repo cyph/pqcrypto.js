@@ -1,5 +1,5 @@
 # 
-#  lex_ultrasparc/ECRYPT_process_bytes.q version 20080315
+#  lex_ultrasparc/crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_process_bytes.q version 20080315
 #  Peter Schwabe
 #  Public domain
 # 
@@ -120,7 +120,7 @@ stack64 length_stack
 stack320 tmp
 
 # Enter the function
-enter ECRYPT_process_bytes
+enter crypto_stream_lexv2_e_v2_schwabe_sparc_1_ECRYPT_process_bytes
 
 =? length - 0
 goto donothing if =

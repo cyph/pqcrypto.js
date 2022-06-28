@@ -18,7 +18,7 @@ int shortciphertext(
 
   r->n = BN_new(); if (!r->n) goto error;
   if (!BN_bin2bn(pk,MODULUS_BYTES,r->n)) goto error;
-  r->e = BN_new(); if (!r->e) goto error;
+  r->e = BN_new(); if (!r->n) goto error;
   if (!BN_set_word(r->e,3)) goto error;
   if (RSA_size(r) > MODULUS_BYTES) goto error;
 

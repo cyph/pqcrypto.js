@@ -76,7 +76,6 @@ static const u8 padding[] =
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-#define blake256_compress CRYPTO_NAMESPACE(blake256_compress)
 extern int blake256_compress( state * state, const u8 * datablock );
 
 static void blake256_init( state *S ) 

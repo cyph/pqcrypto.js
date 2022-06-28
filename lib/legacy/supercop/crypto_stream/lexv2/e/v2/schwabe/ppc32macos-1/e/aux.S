@@ -1,10 +1,10 @@
 	.section __TEXT,__text,regular,pure_instructions
 	.section __TEXT,__picsymbolstub1,symbol_stubs,pure_instructions,32
 	.machine ppc
-	.globl _CRYPTO_NAMESPACE(aes_big_constants)
+	.globl _aes_big_constants
 	.const
 	.align 2
-_CRYPTO_NAMESPACE(aes_big_constants):
+_aes_big_constants:
 	.long	16777216
 	.long	33554432
 	.long	67108864
@@ -1041,8 +1041,8 @@ _CRYPTO_NAMESPACE(aes_big_constants):
 	.long	370555436
 	.text
 	.align 2
-	.globl _CRYPTO_NAMESPACE(ECRYPT_init)
-_CRYPTO_NAMESPACE(ECRYPT_init):
+	.globl _crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_init
+_crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_init:
 	stmw r30,-8(r1)
 	stwu r1,-48(r1)
 	mr r30,r1
@@ -1050,8 +1050,8 @@ _CRYPTO_NAMESPACE(ECRYPT_init):
 	lmw r30,-8(r1)
 	blr
 	.align 2
-	.globl _CRYPTO_NAMESPACE(ECRYPT_keysetup)
-_CRYPTO_NAMESPACE(ECRYPT_keysetup):
+	.globl _crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_keysetup
+_crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_keysetup:
 	stmw r30,-8(r1)
 	stwu r1,-80(r1)
 	mr r30,r1
@@ -1099,8 +1099,8 @@ _CRYPTO_NAMESPACE(ECRYPT_keysetup):
 	b L4
 L5:
 	lwz r0,40(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000001$pb")
+	la r2,lo16(_aes_big_constants-"L00000000001$pb")(r2)
 	slwi r0,r0,2
 	add r2,r0,r2
 	lwz r0,0(r2)
@@ -1132,32 +1132,32 @@ L5:
 	rlwinm r2,r2,0,20,27
 	stw r2,24(r30)
 	lwz r9,36(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000001$pb")
+	la r2,lo16(_aes_big_constants-"L00000000001$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,36(r30)
 	lwz r9,32(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000001$pb")
+	la r2,lo16(_aes_big_constants-"L00000000001$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,32(r30)
 	lwz r9,28(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000001$pb")
+	la r2,lo16(_aes_big_constants-"L00000000001$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,28(r30)
 	lwz r9,24(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000001$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000001$pb")
+	la r2,lo16(_aes_big_constants-"L00000000001$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0
@@ -1221,8 +1221,8 @@ L4:
 	lmw r30,-8(r1)
 	blr
 	.align 2
-	.globl _CRYPTO_NAMESPACE(ECRYPT_process_bytes_C)
-_CRYPTO_NAMESPACE(ECRYPT_process_bytes_C):
+	.globl _crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_process_bytes_C
+_crypto_stream_lexv2_e_v2_schwabe_ppc32macos_1_ECRYPT_process_bytes_C:
 	stmw r30,-8(r1)
 	stwu r1,-368(r1)
 	mr r30,r1
@@ -1450,32 +1450,32 @@ L15:
 	rlwinm r2,r2,0,20,27
 	stw r2,280(r30)
 	lwz r9,292(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,292(r30)
 	lwz r9,288(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,288(r30)
 	lwz r9,284(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,284(r30)
 	lwz r9,280(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
@@ -1522,32 +1522,32 @@ L15:
 	rlwinm r9,r9,0,20,27
 	stw r9,264(r30)
 	lwz r9,276(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,276(r30)
 	lwz r9,272(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,272(r30)
 	lwz r9,268(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,268(r30)
 	lwz r9,264(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
@@ -1594,32 +1594,32 @@ L15:
 	rlwinm r0,r0,0,20,27
 	stw r0,248(r30)
 	lwz r9,260(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,260(r30)
 	lwz r9,256(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,256(r30)
 	lwz r9,252(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,252(r30)
 	lwz r9,248(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
@@ -1666,32 +1666,32 @@ L15:
 	rlwinm r2,r2,0,20,27
 	stw r2,244(r30)
 	lwz r9,240(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,240(r30)
 	lwz r9,236(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,236(r30)
 	lwz r9,232(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,232(r30)
 	lwz r9,244(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
@@ -1776,32 +1776,32 @@ L14:
 	rlwinm r2,r2,0,20,27
 	stw r2,280(r30)
 	lwz r9,292(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,292(r30)
 	lwz r9,288(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,288(r30)
 	lwz r9,284(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,284(r30)
 	lwz r9,280(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0
@@ -1860,32 +1860,32 @@ L14:
 	rlwinm r0,r0,0,20,27
 	stw r0,264(r30)
 	lwz r9,276(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,276(r30)
 	lwz r9,272(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,272(r30)
 	lwz r9,268(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,268(r30)
 	lwz r9,264(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0
@@ -1944,32 +1944,32 @@ L14:
 	rlwinm r9,r9,0,20,27
 	stw r9,248(r30)
 	lwz r9,260(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,260(r30)
 	lwz r9,256(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,256(r30)
 	lwz r9,252(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,252(r30)
 	lwz r9,248(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0
@@ -2028,32 +2028,32 @@ L14:
 	rlwinm r2,r2,0,20,27
 	stw r2,244(r30)
 	lwz r9,244(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,44
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,244(r30)
 	lwz r9,240(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,52
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,240(r30)
 	lwz r9,236(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,40
 	add r0,r9,r0
 	mr r2,r0
 	lwz r2,0(r2)
 	stw r2,236(r30)
 	lwz r9,232(r30)
-	addis r2,r10,ha16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")
-	la r2,lo16(_CRYPTO_NAMESPACE(aes_big_constants)-"L00000000002$pb")(r2)
+	addis r2,r10,ha16(_aes_big_constants-"L00000000002$pb")
+	la r2,lo16(_aes_big_constants-"L00000000002$pb")(r2)
 	addi r0,r2,48
 	add r0,r9,r0
 	mr r2,r0

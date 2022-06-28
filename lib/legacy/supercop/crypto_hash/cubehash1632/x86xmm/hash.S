@@ -91,13 +91,13 @@
 
 # qhasm: int32 constants
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hash_cubehash1632_x86xmm
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_hash_cubehash1632_x86xmm
+.globl crypto_hash_cubehash1632_x86xmm
+_crypto_hash_cubehash1632_x86xmm:
+crypto_hash_cubehash1632_x86xmm:
 mov %esp,%eax
 and $31,%eax
 add $128,%eax
@@ -148,10 +148,10 @@ pxor   %xmm0,%xmm0
 # asm 2: movdqa <y0=%xmm0,>tmp=32(%esp)
 movdqa %xmm0,32(%esp)
 
-# qhasm:   constants = &CRYPTO_NAMESPACE(constants)
-# asm 1: lea  CRYPTO_NAMESPACE(constants),>constants=int32#3
-# asm 2: lea  CRYPTO_NAMESPACE(constants),>constants=%edx
-lea  CRYPTO_NAMESPACE(constants),%edx
+# qhasm:   constants = &crypto_hash_cubehash1632_x86xmm_constants
+# asm 1: lea  crypto_hash_cubehash1632_x86xmm_constants,>constants=int32#3
+# asm 2: lea  crypto_hash_cubehash1632_x86xmm_constants,>constants=%edx
+lea  crypto_hash_cubehash1632_x86xmm_constants,%edx
 
 # qhasm:   x5 = *(int128 *) (constants + 80)
 # asm 1: movdqa 80(<constants=int32#3),>x5=int6464#1

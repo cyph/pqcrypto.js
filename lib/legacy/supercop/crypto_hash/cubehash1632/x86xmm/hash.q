@@ -55,7 +55,7 @@ stack128 x7_stack
 
 int32 constants
 
-enter CRYPTO_NAMESPACETOP
+enter crypto_hash_cubehash1632_x86xmm
 
   eax_stack = eax
   ebx_stack = ebx
@@ -69,7 +69,7 @@ enter CRYPTO_NAMESPACETOP
   y0 = 0
   tmp = y0
 
-  constants = &CRYPTO_NAMESPACE(constants)
+  constants = &crypto_hash_cubehash1632_x86xmm_constants
   x5 = *(int128 *) (constants + 80)
   x7 = *(int128 *) (constants + 112)
   x4 = *(int128 *) (constants + 64)

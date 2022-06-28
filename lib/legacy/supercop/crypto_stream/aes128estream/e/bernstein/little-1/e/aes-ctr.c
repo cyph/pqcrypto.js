@@ -1,12 +1,12 @@
 #include "ecrypt-sync.h"
 #include "table.h"
 
-void ECRYPT_init(void)
+void crypto_stream_aes128estream_e_bernstein_little_1_ECRYPT_init(void)
 { 
   ;
 }
 
-void ECRYPT_keysetup(ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
+void crypto_stream_aes128estream_e_bernstein_little_1_ECRYPT_keysetup(crypto_stream_aes128estream_e_bernstein_little_1_ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
 { 
   register u32 x0;
   register u32 x1;
@@ -56,7 +56,7 @@ void ECRYPT_keysetup(ECRYPT_ctx *c,const u8 *k,u32 keysize,u32 ivsize)
   }
 }
 
-void ECRYPT_ivsetup(ECRYPT_ctx *c,const u8 *iv)
+void crypto_stream_aes128estream_e_bernstein_little_1_ECRYPT_ivsetup(crypto_stream_aes128estream_e_bernstein_little_1_ECRYPT_ctx *c,const u8 *iv)
 {
   c->ctr[0] = U8TO32_LITTLE(iv);
   c->ctr[1] = U8TO32_LITTLE(iv + 4);
@@ -64,7 +64,7 @@ void ECRYPT_ivsetup(ECRYPT_ctx *c,const u8 *iv)
   c->ctr[3] = U8TO32_LITTLE(iv + 12);
 }
 
-void ECRYPT_process_bytes(int action,ECRYPT_ctx *c,const u8 *input,u8 *output,u32 len)
+void crypto_stream_aes128estream_e_bernstein_little_1_ECRYPT_process_bytes(int action,crypto_stream_aes128estream_e_bernstein_little_1_ECRYPT_ctx *c,const u8 *input,u8 *output,u32 len)
 {
   u32 x[44];
   u32 n[4];

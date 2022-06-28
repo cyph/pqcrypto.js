@@ -22,12 +22,12 @@
 inline __attribute__((always_inline)) int Encrypt(unsigned char *out, u64 nonce[], u128 rk[], u64 key[], int numbytes);
 inline __attribute__((always_inline)) int Encrypt_Xor(unsigned char *out, const unsigned char *in, u64 nonce[], u128 rk[], u64 key[], int numbytes);
 int ExpandKey(u64 K[], u128 rk[], u64 key[]);
-int CRYPTO_NAMESPACETOP(unsigned char *out, unsigned long long outlen, const unsigned char *n, const unsigned char *k);
-int CRYPTO_NAMESPACE(xor)(unsigned char *out, const unsigned char *in, unsigned long long inlen, const unsigned char *n, const unsigned char *k);
+int crypto_stream_speck128128ctr_neon(unsigned char *out, unsigned long long outlen, const unsigned char *n, const unsigned char *k);
+int crypto_stream_speck128128ctr_neon_xor(unsigned char *out, const unsigned char *in, unsigned long long inlen, const unsigned char *n, const unsigned char *k);
 
 
 
-int CRYPTO_NAMESPACETOP(
+int crypto_stream_speck128128ctr_neon(
   unsigned char *out,
   unsigned long long outlen,
   const unsigned char *n,
@@ -135,7 +135,7 @@ inline __attribute__((always_inline)) int Encrypt(unsigned char *out, u64 nonce[
 
 
 
-int CRYPTO_NAMESPACE(xor)(
+int crypto_stream_speck128128ctr_neon_xor(
   unsigned char *out,
   const unsigned char *in,
   unsigned long long inlen,
@@ -143,7 +143,7 @@ int CRYPTO_NAMESPACE(xor)(
   const unsigned char *k
 )
 {
-  u32 i;
+  int i;
   u64 nonce[2],K[4],key[34],A,B,x,y;
   unsigned char block[16];
   u64 *const block64=(u64 *)block;
@@ -159,9 +159,38 @@ int CRYPTO_NAMESPACE(xor)(
   if (inlen<=16){
     B=K[1]; A=K[0];
     x=nonce[1]; y=nonce[0]; nonce[0]++;
-    for(i=0;i<numrounds;i++){
-      Rx1b(x,y,A); Rx1b(B,A,i);
-    }
+    Rx1b(x,y,A); Rx1b(B,A,0);
+    Rx1b(x,y,A); Rx1b(B,A,1);
+    Rx1b(x,y,A); Rx1b(B,A,2);
+    Rx1b(x,y,A); Rx1b(B,A,3);
+    Rx1b(x,y,A); Rx1b(B,A,4);
+    Rx1b(x,y,A); Rx1b(B,A,5);
+    Rx1b(x,y,A); Rx1b(B,A,6);
+    Rx1b(x,y,A); Rx1b(B,A,7);
+    Rx1b(x,y,A); Rx1b(B,A,8);
+    Rx1b(x,y,A); Rx1b(B,A,9);
+    Rx1b(x,y,A); Rx1b(B,A,10);
+    Rx1b(x,y,A); Rx1b(B,A,11);
+    Rx1b(x,y,A); Rx1b(B,A,12);
+    Rx1b(x,y,A); Rx1b(B,A,13);
+    Rx1b(x,y,A); Rx1b(B,A,14);
+    Rx1b(x,y,A); Rx1b(B,A,15);
+    Rx1b(x,y,A); Rx1b(B,A,16);
+    Rx1b(x,y,A); Rx1b(B,A,17);
+    Rx1b(x,y,A); Rx1b(B,A,18);
+    Rx1b(x,y,A); Rx1b(B,A,19);
+    Rx1b(x,y,A); Rx1b(B,A,20);
+    Rx1b(x,y,A); Rx1b(B,A,21);
+    Rx1b(x,y,A); Rx1b(B,A,22);
+    Rx1b(x,y,A); Rx1b(B,A,23);
+    Rx1b(x,y,A); Rx1b(B,A,24);
+    Rx1b(x,y,A); Rx1b(B,A,25);
+    Rx1b(x,y,A); Rx1b(B,A,26);
+    Rx1b(x,y,A); Rx1b(B,A,27);
+    Rx1b(x,y,A); Rx1b(B,A,28);
+    Rx1b(x,y,A); Rx1b(B,A,29);
+    Rx1b(x,y,A); Rx1b(B,A,30);
+    Rx1b(x,y,A); Rx1b(B,A,31);
     block64[1]=x; block64[0]=y;
     for(i=0;i<inlen;i++) out[i]=block[i]^in[i];
 

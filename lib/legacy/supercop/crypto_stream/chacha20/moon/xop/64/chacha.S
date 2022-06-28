@@ -2,14 +2,14 @@
 
 SECTION_TEXT
 
-GLOBAL_HIDDEN_FN CRYPTO_NAMESPACE(blocks_xop)
-CRYPTO_NAMESPACE(blocks_xop_local):
+GLOBAL_HIDDEN_FN chacha_blocks_xop
+chacha_blocks_xop_local:
 pushq %rbx
 pushq %rbp
 movq %rsp, %rbp
 andq $~63, %rsp
 subq $512, %rsp
-LOAD_VAR_PIC CRYPTO_NAMESPACE(constants), %rax
+LOAD_VAR_PIC chacha_constants, %rax
 vmovdqa 0(%rax), %xmm8
 vmovdqa 0(%rdi), %xmm9
 vmovdqa 16(%rdi), %xmm10
@@ -22,7 +22,7 @@ vmovdqa %xmm10, 32(%rsp)
 vmovdqa %xmm11, 48(%rsp)
 movq %rax, 64(%rsp)
 cmpq $256, %rcx
-jb CRYPTO_NAMESPACE(blocks_xop_below256)
+jb chacha_blocks_xop_below256
 vpshufd $0x00, %xmm8, %xmm0
 vpshufd $0x55, %xmm8, %xmm1
 vpshufd $0xaa, %xmm8, %xmm2
@@ -51,9 +51,9 @@ vpshufd $0xaa, %xmm11, %xmm0
 vpshufd $0xff, %xmm11, %xmm1
 vmovdqa %xmm0, 352(%rsp)
 vmovdqa %xmm1, 368(%rsp)
-jmp CRYPTO_NAMESPACE(blocks_xop_atleast256)
+jmp chacha_blocks_xop_atleast256
 .p2align 6,,63
-CRYPTO_NAMESPACE(blocks_xop_atleast256):
+chacha_blocks_xop_atleast256:
 movq 48(%rsp), %rax
 leaq 1(%rax), %r8
 leaq 2(%rax), %r9
@@ -89,7 +89,7 @@ vmovdqa 320(%rsp), %xmm12
 vmovdqa 336(%rsp), %xmm13
 vmovdqa 352(%rsp), %xmm14
 vmovdqa 368(%rsp), %xmm15
-CRYPTO_NAMESPACE(blocks_xop_mainloop1):
+chacha_blocks_xop_mainloop1:
 vpaddd %xmm0, %xmm4, %xmm0
 vpaddd %xmm1, %xmm5, %xmm1
 vpaddd %xmm2, %xmm6, %xmm2
@@ -187,7 +187,7 @@ vprotd $7, %xmm6, %xmm6
 vprotd $7, %xmm7, %xmm7
 vprotd $7, %xmm4, %xmm4
 subq $2, %rax
-jnz CRYPTO_NAMESPACE(blocks_xop_mainloop1)
+jnz chacha_blocks_xop_mainloop1
 vpaddd 128(%rsp), %xmm0, %xmm0
 vpaddd 144(%rsp), %xmm1, %xmm1
 vpaddd 160(%rsp), %xmm2, %xmm2
@@ -229,7 +229,7 @@ vpunpcklqdq %xmm15, %xmm14, %xmm5
 vpunpckhqdq %xmm13, %xmm12, %xmm6
 vpunpckhqdq %xmm15, %xmm14, %xmm7
 andq %rsi, %rsi
-jz CRYPTO_NAMESPACE(blocks_xop_noinput1)
+jz chacha_blocks_xop_noinput1
 vpxor 0(%rsi), %xmm0, %xmm0
 vpxor 16(%rsi), %xmm1, %xmm1
 vpxor 64(%rsi), %xmm2, %xmm2
@@ -287,8 +287,8 @@ vmovdqu %xmm5, 176(%rdx)
 vmovdqu %xmm6, 224(%rdx)
 vmovdqu %xmm7, 240(%rdx)
 addq $256, %rsi
-jmp CRYPTO_NAMESPACE(blocks_xop_mainloop_cont)
-CRYPTO_NAMESPACE(blocks_xop_noinput1):
+jmp chacha_blocks_xop_mainloop_cont
+chacha_blocks_xop_noinput1:
 vmovdqu %xmm0, 0(%rdx)
 vmovdqu %xmm1, 16(%rdx)
 vmovdqu %xmm2, 64(%rdx)
@@ -329,45 +329,45 @@ vmovdqu %xmm4, 160(%rdx)
 vmovdqu %xmm5, 176(%rdx)
 vmovdqu %xmm6, 224(%rdx)
 vmovdqu %xmm7, 240(%rdx)
-CRYPTO_NAMESPACE(blocks_xop_mainloop_cont):
+chacha_blocks_xop_mainloop_cont:
 addq $256, %rdx
 subq $256, %rcx
 cmp $256, %rcx
-jae CRYPTO_NAMESPACE(blocks_xop_atleast256)
+jae chacha_blocks_xop_atleast256
 vmovdqa 0(%rsp), %xmm8
 vmovdqa 16(%rsp), %xmm9
 vmovdqa 32(%rsp), %xmm10
 vmovdqa 48(%rsp), %xmm11
 movq $1, %r9
-CRYPTO_NAMESPACE(blocks_xop_below256):
+chacha_blocks_xop_below256:
 vmovq %r9, %xmm5
 andq %rcx, %rcx
-jz CRYPTO_NAMESPACE(blocks_xop_done)
+jz chacha_blocks_xop_done
 cmpq $64, %rcx
-jae CRYPTO_NAMESPACE(blocks_xop_above63)
+jae chacha_blocks_xop_above63
 movq %rdx, %r9
 andq %rsi, %rsi
-jz CRYPTO_NAMESPACE(blocks_xop_noinput2)
+jz chacha_blocks_xop_noinput2
 movq %rcx, %r10
 movq %rsp, %rdx
 addq %r10, %rsi
 addq %r10, %rdx
 negq %r10
-CRYPTO_NAMESPACE(blocks_xop_copyinput):
+chacha_blocks_xop_copyinput:
 movb (%rsi, %r10), %al
 movb %al, (%rdx, %r10)
 incq %r10
-jnz CRYPTO_NAMESPACE(blocks_xop_copyinput)
+jnz chacha_blocks_xop_copyinput
 movq %rsp, %rsi
-CRYPTO_NAMESPACE(blocks_xop_noinput2):
+chacha_blocks_xop_noinput2:
 movq %rsp, %rdx
-CRYPTO_NAMESPACE(blocks_xop_above63):
+chacha_blocks_xop_above63:
 vmovdqa %xmm8, %xmm0
 vmovdqa %xmm9, %xmm1
 vmovdqa %xmm10, %xmm2
 vmovdqa %xmm11, %xmm3
 movq 64(%rsp), %rax
-CRYPTO_NAMESPACE(blocks_xop_mainloop2):
+chacha_blocks_xop_mainloop2:
 vpaddd %xmm0, %xmm1, %xmm0
 vpxor %xmm3, %xmm0, %xmm3
 vprotd $16, %xmm3, %xmm3
@@ -399,56 +399,56 @@ vprotd $7, %xmm1, %xmm1
 vpshufd $0x4e, %xmm3, %xmm3
 vpshufd $0x93, %xmm2, %xmm2
 subq $2, %rax
-jnz CRYPTO_NAMESPACE(blocks_xop_mainloop2)
+jnz chacha_blocks_xop_mainloop2
 vpaddd %xmm0, %xmm8, %xmm0
 vpaddd %xmm1, %xmm9, %xmm1
 vpaddd %xmm2, %xmm10, %xmm2
 vpaddd %xmm3, %xmm11, %xmm3
 andq %rsi, %rsi
-jz CRYPTO_NAMESPACE(blocks_xop_noinput3)
+jz chacha_blocks_xop_noinput3
 vpxor 0(%rsi), %xmm0, %xmm0
 vpxor 16(%rsi), %xmm1, %xmm1
 vpxor 32(%rsi), %xmm2, %xmm2
 vpxor 48(%rsi), %xmm3, %xmm3
 addq $64, %rsi
-CRYPTO_NAMESPACE(blocks_xop_noinput3):
+chacha_blocks_xop_noinput3:
 vmovdqu %xmm0, 0(%rdx)
 vmovdqu %xmm1, 16(%rdx)
 vmovdqu %xmm2, 32(%rdx)
 vmovdqu %xmm3, 48(%rdx)
 vpaddq %xmm11, %xmm5, %xmm11
 cmpq $64, %rcx
-jbe CRYPTO_NAMESPACE(blocks_xop_mainloop2_finishup)
+jbe chacha_blocks_xop_mainloop2_finishup
 addq $64, %rdx
 subq $64, %rcx
-jmp CRYPTO_NAMESPACE(blocks_xop_below256)
-CRYPTO_NAMESPACE(blocks_xop_mainloop2_finishup):
+jmp chacha_blocks_xop_below256
+chacha_blocks_xop_mainloop2_finishup:
 cmpq $64, %rcx
-je CRYPTO_NAMESPACE(blocks_xop_done)
+je chacha_blocks_xop_done
 addq %rcx, %r9
 addq %rcx, %rdx
 negq %rcx
-CRYPTO_NAMESPACE(blocks_xop_copyoutput):
+chacha_blocks_xop_copyoutput:
 movb (%rdx, %rcx), %al
 movb %al, (%r9, %rcx)
 incq %rcx
-jnz CRYPTO_NAMESPACE(blocks_xop_copyoutput)
-CRYPTO_NAMESPACE(blocks_xop_done):
+jnz chacha_blocks_xop_copyoutput
+chacha_blocks_xop_done:
 vmovdqa %xmm11, 32(%rdi)
 movq %rbp, %rsp
 popq %rbp
 popq %rbx
 ret
-FN_END CRYPTO_NAMESPACE(blocks_xop)
+FN_END chacha_blocks_xop
 
-GLOBAL_HIDDEN_FN CRYPTO_NAMESPACE(hchacha)
-hcrypto_local:
-LOAD_VAR_PIC CRYPTO_NAMESPACE(constants), %rax
+GLOBAL_HIDDEN_FN hchacha_xop
+hchacha_xop_local:
+LOAD_VAR_PIC chacha_constants, %rax
 vmovdqa 0(%rax), %xmm0
 vmovdqu 0(%rdi), %xmm1
 vmovdqu 16(%rdi), %xmm2
 vmovdqu 0(%rsi), %xmm3
-hcrypto_mainloop_xop:
+hchacha_mainloop_xop:
 vpaddd %xmm0, %xmm1, %xmm0
 vpxor %xmm3, %xmm0, %xmm3
 vprotd $16, %xmm3, %xmm3
@@ -480,13 +480,13 @@ vprotd $7, %xmm1, %xmm1
 vpshufd $0x4e, %xmm3, %xmm3
 vpshufd $0x93, %xmm2, %xmm2
 subl $2, %ecx
-jne hcrypto_mainloop_xop
+jne hchacha_mainloop_xop
 vmovdqu %xmm0, (%rdx)
 vmovdqu %xmm3, 16(%rdx)
 ret
-FN_END CRYPTO_NAMESPACE(hchacha)
+FN_END hchacha_xop
 
-GLOBAL_HIDDEN_FN_EXT CRYPTO_NAMESPACE(chacha), 6, 16
+GLOBAL_HIDDEN_FN_EXT chacha_xop, 6, 16
 pushq %rbp
 movq %rsp, %rbp
 subq $64, %rsp
@@ -504,7 +504,7 @@ movq %rsp, %rdi
 movq %rdx, %rsi
 movq %rcx, %rdx
 movq %r8, %rcx
-call CRYPTO_NAMESPACE(blocks_xop_local)
+call chacha_blocks_xop_local
 vpxor %xmm0, %xmm0, %xmm0
 vmovdqa %xmm0, 0(%rsp)
 vmovdqa %xmm0, 16(%rsp)
@@ -512,9 +512,9 @@ vmovdqa %xmm0, 32(%rsp)
 movq %rbp, %rsp
 popq %rbp
 ret
-FN_END CRYPTO_NAMESPACE(chacha)
+FN_END chacha_xop
 
-GLOBAL_HIDDEN_FN_EXT CRYPTO_NAMESPACE(xchacha), 6, 16
+GLOBAL_HIDDEN_FN_EXT xchacha_xop, 6, 16
 pushq %rbp
 pushq %rbx
 movq %rsp, %rbp
@@ -531,12 +531,12 @@ pushq %rcx
 pushq %r8
 movq %rbx, %rdx
 movq %r9, %rcx
-call hcrypto_local
+call hchacha_xop_local
 movq %rbx, %rdi
 popq %rcx
 popq %rdx
 popq %rsi
-call CRYPTO_NAMESPACE(blocks_xop_local)
+call chacha_blocks_xop_local
 vpxor %xmm0, %xmm0, %xmm0
 vmovdqa %xmm0, 0(%rbx)
 vmovdqa %xmm0, 16(%rbx)
@@ -545,12 +545,12 @@ movq %rbp, %rsp
 popq %rbx
 popq %rbp
 ret
-FN_END CRYPTO_NAMESPACE(xchacha)
+FN_END xchacha_xop
 
 SECTION_RODATA
 
 .p2align 4,,15
-CRYPTO_NAMESPACE(constants):
+chacha_constants:
 .long 0x61707865,0x3320646e,0x79622d32,0x6b206574 /* "expand 32-byte k" */
 .byte 2,3,0,1,6,7,4,5,10,11,8,9,14,15,12,13       /* pshufb rotate by 16 */
 .byte 3,0,1,2,7,4,5,6,11,8,9,10,15,12,13,14       /* pshufb rotate by 8 */

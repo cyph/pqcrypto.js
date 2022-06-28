@@ -1,1 +1,5 @@
-../../threebears624r2cca/opt/api.h
+#define CRYPTO_SECRETKEYBYTES 40
+#define CRYPTO_PUBLICKEYBYTES 804
+#define CRYPTO_BYTES 32
+#define CRYPTO_CIPHERTEXTBYTES 917
+

@@ -27,8 +27,6 @@ okabi | (
             && killafter 1 ./test \
             && mkdir -p lib/$abi \
             && cp impl.o lib/$abi/kernelrandombytes.o \
-            && okar-$abi cr lib/$abi/libkernelrandombytes.a lib/$abi/kernelrandombytes.o \
-            && ( ranlib lib/$abi/libkernelrandombytes.a || exit 0) \
             && touch done \
 	    && echo "=== `date` === Success. Using $impl." >&2
           done

@@ -1,1 +1,1 @@
-../../ntruhps2048509/ref/sample.c
+../ref/sample.c

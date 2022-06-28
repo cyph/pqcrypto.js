@@ -111,12 +111,12 @@ sub %r11,%rsp
 # qhasm: rotate8 = mem256[_rotate8]
 # asm 1: vmovupd _rotate8,>rotate8=reg256#1
 # asm 2: vmovupd _rotate8,>rotate8=%ymm0
-vmovupd _rotate8(%rip),%ymm0
+vmovupd _rotate8,%ymm0
 
 # qhasm: rotate16 = mem256[_rotate16]
 # asm 1: vmovupd _rotate16,>rotate16=reg256#2
 # asm 2: vmovupd _rotate16,>rotate16=%ymm1
-vmovupd _rotate16(%rip),%ymm1
+vmovupd _rotate16,%ymm1
 
 # qhasm: mask = mem256[input_4 + 0]
 # asm 1: vmovupd   0(<input_4=int64#5),>mask=reg256#3

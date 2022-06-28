@@ -67,13 +67,13 @@
 
 # qhasm: int64 inlen
 
-# qhasm: enter CRYPTO_NAMESPACETOP
+# qhasm: enter crypto_hashblocks_md5_amd64_1
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACETOP
-.globl CRYPTO_NAMESPACETOP
-_CRYPTO_NAMESPACETOP:
-CRYPTO_NAMESPACETOP:
+.globl _crypto_hashblocks_md5_amd64_1
+.globl crypto_hashblocks_md5_amd64_1
+_crypto_hashblocks_md5_amd64_1:
+crypto_hashblocks_md5_amd64_1:
 mov %rsp,%r11
 and $31,%r11
 add $64,%r11
@@ -185,7 +185,7 @@ mov  %rcx,%r12
 # qhasm:   a += loader + 0xd76aa478
 # asm 1: lea  0xd76aa478(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xd76aa478(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x28955b88(%rcx,%r10),%rcx
+lea  0xd76aa478(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -235,7 +235,7 @@ mov  %rax,%r13
 # qhasm:     d += loader + 0xe8c7b756
 # asm 1: lea  0xe8c7b756(<d=int64#7,<loader=int64#9),>d=int64#7
 # asm 2: lea  0xe8c7b756(<d=%rax,<loader=%r11),>d=%rax
-lea -0x173848aa(%rax,%r11),%rax
+lea  0xe8c7b756(%rax,%r11),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#8,<d=int64#7
@@ -335,7 +335,7 @@ mov  %r8,%r15
 # qhasm:     b += loader + 0xc1bdceee
 # asm 1: lea  0xc1bdceee(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xc1bdceee(<b=%r8,<loader=%r10),>b=%r8
-lea -0x3e423112(%r8,%r10),%r8
+lea  0xc1bdceee(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -380,7 +380,7 @@ xor  %rax,%r11
 # qhasm:   a += loader + 0xf57c0faf
 # asm 1: lea  0xf57c0faf(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xf57c0faf(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x0a83f051(%rcx,%r10),%rcx
+lea  0xf57c0faf(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -470,7 +470,7 @@ xor  %r8,%r11
 # qhasm:   c += loader + 0xa8304613
 # asm 1: lea  0xa8304613(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xa8304613(<c=%r9,<loader=%r10),>c=%r9
-lea -0x57cfb9ed(%r9,%r10),%r9
+lea  0xa8304613(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -515,7 +515,7 @@ xor  %rcx,%r11
 # qhasm:     b += loader + 0xfd469501
 # asm 1: lea  0xfd469501(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xfd469501(<b=%r8,<loader=%r10),>b=%r8
-lea -0x02b96aff(%r8,%r10),%r8
+lea  0xfd469501(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -605,7 +605,7 @@ xor  %r9,%r11
 # qhasm:     d += loader + 0x8b44f7af
 # asm 1: lea  0x8b44f7af(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0x8b44f7af(<d=%rax,<loader=%r10),>d=%rax
-lea -0x74bb0851(%rax,%r10),%rax
+lea  0x8b44f7af(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -650,7 +650,7 @@ xor  %r8,%r11
 # qhasm:   c += loader + 0xffff5bb1
 # asm 1: lea  0xffff5bb1(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xffff5bb1(<c=%r9,<loader=%r10),>c=%r9
-lea -0x0000a44f(%r9,%r10),%r9
+lea  0xffff5bb1(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -695,7 +695,7 @@ xor  %rcx,%r11
 # qhasm:     b += loader + 0x895cd7be
 # asm 1: lea  0x895cd7be(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0x895cd7be(<b=%r8,<loader=%r10),>b=%r8
-lea -0x76a32842(%r8,%r10),%r8
+lea  0x895cd7be(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -785,7 +785,7 @@ xor  %r9,%r11
 # qhasm:     d += loader + 0xfd987193
 # asm 1: lea  0xfd987193(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0xfd987193(<d=%rax,<loader=%r10),>d=%rax
-lea -0x02678e6d(%rax,%r10),%rax
+lea  0xfd987193(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -830,7 +830,7 @@ xor  %r8,%r11
 # qhasm:   c += loader + 0xa679438e
 # asm 1: lea  0xa679438e(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xa679438e(<c=%r9,<loader=%r10),>c=%r9
-lea -0x5986bc72(%r9,%r10),%r9
+lea  0xa679438e(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -920,7 +920,7 @@ xor  %r9,%r11
 # qhasm:   a += loader + 0xf61e2562
 # asm 1: lea  0xf61e2562(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xf61e2562(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x09e1da9e(%rcx,%r10),%rcx
+lea  0xf61e2562(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -965,7 +965,7 @@ xor  %r8,%r11
 # qhasm:     d += loader + 0xc040b340
 # asm 1: lea  0xc040b340(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0xc040b340(<d=%rax,<loader=%r10),>d=%rax
-lea -0x3fbf4cc0(%rax,%r10),%rax
+lea  0xc040b340(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -1055,7 +1055,7 @@ xor  %rax,%r11
 # qhasm:     b += loader + 0xe9b6c7aa
 # asm 1: lea  0xe9b6c7aa(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xe9b6c7aa(<b=%r8,<loader=%r10),>b=%r8
-lea -0x16493856(%r8,%r10),%r8
+lea  0xe9b6c7aa(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -1100,7 +1100,7 @@ xor  %r9,%r11
 # qhasm:   a += loader + 0xd62f105d
 # asm 1: lea  0xd62f105d(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xd62f105d(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x29d0efa3(%rcx,%r10),%rcx
+lea  0xd62f105d(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -1190,7 +1190,7 @@ xor  %rcx,%r11
 # qhasm:   c += loader + 0xd8a1e681
 # asm 1: lea  0xd8a1e681(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xd8a1e681(<c=%r9,<loader=%r10),>c=%r9
-lea -0x275e197f(%r9,%r10),%r9
+lea  0xd8a1e681(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -1235,7 +1235,7 @@ xor  %rax,%r11
 # qhasm:     b += loader + 0xe7d3fbc8
 # asm 1: lea  0xe7d3fbc8(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xe7d3fbc8(<b=%r8,<loader=%r10),>b=%r8
-lea -0x182c0438(%r8,%r10),%r8
+lea  0xe7d3fbc8(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -1325,7 +1325,7 @@ xor  %r8,%r11
 # qhasm:     d += loader + 0xc33707d6
 # asm 1: lea  0xc33707d6(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0xc33707d6(<d=%rax,<loader=%r10),>d=%rax
-lea -0x3cc8f82a(%rax,%r10),%rax
+lea  0xc33707d6(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -1370,7 +1370,7 @@ xor  %rcx,%r11
 # qhasm:   c += loader + 0xf4d50d87
 # asm 1: lea  0xf4d50d87(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xf4d50d87(<c=%r9,<loader=%r10),>c=%r9
-lea -0x0b2af279(%r9,%r10),%r9
+lea  0xf4d50d87(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -1460,7 +1460,7 @@ xor  %r9,%r11
 # qhasm:   a += loader + 0xa9e3e905
 # asm 1: lea  0xa9e3e905(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xa9e3e905(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x561c16fb(%rcx,%r10),%rcx
+lea  0xa9e3e905(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -1505,7 +1505,7 @@ xor  %r8,%r11
 # qhasm:     d += loader + 0xfcefa3f8
 # asm 1: lea  0xfcefa3f8(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0xfcefa3f8(<d=%rax,<loader=%r10),>d=%rax
-lea -0x03105c08(%rax,%r10),%rax
+lea  0xfcefa3f8(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -1595,7 +1595,7 @@ xor  %rax,%r11
 # qhasm:     b += loader + 0x8d2a4c8a
 # asm 1: lea  0x8d2a4c8a(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0x8d2a4c8a(<b=%r8,<loader=%r10),>b=%r8
-lea -0x72d5b376(%r8,%r10),%r8
+lea  0x8d2a4c8a(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -1635,7 +1635,7 @@ xor  %r8,%r11
 # qhasm:   a += loader + 0xfffa3942
 # asm 1: lea  0xfffa3942(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xfffa3942(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x0005c6be(%rcx,%r10),%rcx
+lea  0xfffa3942(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -1675,7 +1675,7 @@ xor  %rcx,%r11
 # qhasm:     d += loader + 0x8771f681
 # asm 1: lea  0x8771f681(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0x8771f681(<d=%rax,<loader=%r10),>d=%rax
-lea -0x788e097f(%rax,%r10),%rax
+lea  0x8771f681(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -1755,7 +1755,7 @@ xor  %r9,%r11
 # qhasm:     b += loader + 0xfde5380c
 # asm 1: lea  0xfde5380c(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xfde5380c(<b=%r8,<loader=%r10),>b=%r8
-lea -0x021ac7f4(%r8,%r10),%r8
+lea  0xfde5380c(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -1795,7 +1795,7 @@ xor  %r8,%r11
 # qhasm:   a += loader + 0xa4beea44
 # asm 1: lea  0xa4beea44(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xa4beea44(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x5b4115bc(%rcx,%r10),%rcx
+lea  0xa4beea44(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -1875,7 +1875,7 @@ xor  %rax,%r11
 # qhasm:   c += loader + 0xf6bb4b60
 # asm 1: lea  0xf6bb4b60(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xf6bb4b60(<c=%r9,<loader=%r10),>c=%r9
-lea -0x0944b4a0(%r9,%r10),%r9
+lea  0xf6bb4b60(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -1915,7 +1915,7 @@ xor  %r9,%r11
 # qhasm:     b += loader + 0xbebfbc70
 # asm 1: lea  0xbebfbc70(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xbebfbc70(<b=%r8,<loader=%r10),>b=%r8
-lea -0x41404390(%r8,%r10),%r8
+lea  0xbebfbc70(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -1995,7 +1995,7 @@ xor  %rcx,%r11
 # qhasm:     d += loader + 0xeaa127fa
 # asm 1: lea  0xeaa127fa(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0xeaa127fa(<d=%rax,<loader=%r10),>d=%rax
-lea -0x155ed806(%rax,%r10),%rax
+lea  0xeaa127fa(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -2035,7 +2035,7 @@ xor  %rax,%r11
 # qhasm:   c += loader + 0xd4ef3085
 # asm 1: lea  0xd4ef3085(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xd4ef3085(<c=%r9,<loader=%r10),>c=%r9
-lea -0x2b10cf7b(%r9,%r10),%r9
+lea  0xd4ef3085(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -2115,7 +2115,7 @@ xor  %r8,%r11
 # qhasm:   a += loader + 0xd9d4d039
 # asm 1: lea  0xd9d4d039(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xd9d4d039(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x262b2fc7(%rcx,%r10),%rcx
+lea  0xd9d4d039(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -2155,7 +2155,7 @@ xor  %rcx,%r11
 # qhasm:     d += loader + 0xe6db99e5
 # asm 1: lea  0xe6db99e5(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0xe6db99e5(<d=%rax,<loader=%r10),>d=%rax
-lea -0x1924661b(%rax,%r10),%rax
+lea  0xe6db99e5(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -2235,7 +2235,7 @@ xor  %r9,%r11
 # qhasm:     b += loader + 0xc4ac5665
 # asm 1: lea  0xc4ac5665(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xc4ac5665(<b=%r8,<loader=%r10),>b=%r8
-lea -0x3b53a99b(%r8,%r10),%r8
+lea  0xc4ac5665(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -2280,7 +2280,7 @@ xor  %r9,%r11
 # qhasm:   a += loader + 0xf4292244
 # asm 1: lea  0xf4292244(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xf4292244(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x0bd6ddbc(%rcx,%r10),%rcx
+lea  0xf4292244(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -2370,7 +2370,7 @@ xor  %rcx,%r11
 # qhasm:   c += loader + 0xab9423a7
 # asm 1: lea  0xab9423a7(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xab9423a7(<c=%r9,<loader=%r10),>c=%r9
-lea -0x546bdc59(%r9,%r10),%r9
+lea  0xab9423a7(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -2415,7 +2415,7 @@ xor  %rax,%r11
 # qhasm:     b += loader + 0xfc93a039
 # asm 1: lea  0xfc93a039(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xfc93a039(<b=%r8,<loader=%r10),>b=%r8
-lea -0x036c5fc7(%r8,%r10),%r8
+lea  0xfc93a039(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -2505,7 +2505,7 @@ xor  %r8,%r11
 # qhasm:     d += loader + 0x8f0ccc92
 # asm 1: lea  0x8f0ccc92(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0x8f0ccc92(<d=%rax,<loader=%r10),>d=%rax
-lea -0x70f3336e(%rax,%r10),%rax
+lea  0x8f0ccc92(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -2550,7 +2550,7 @@ xor  %rcx,%r11
 # qhasm:   c += loader + 0xffeff47d
 # asm 1: lea  0xffeff47d(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xffeff47d(<c=%r9,<loader=%r10),>c=%r9
-lea -0x00100b83(%r9,%r10),%r9
+lea  0xffeff47d(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -2595,7 +2595,7 @@ xor  %rax,%r11
 # qhasm:     b += loader + 0x85845dd1
 # asm 1: lea  0x85845dd1(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0x85845dd1(<b=%r8,<loader=%r10),>b=%r8
-lea -0x7a7ba22f(%r8,%r10),%r8
+lea  0x85845dd1(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5
@@ -2685,7 +2685,7 @@ xor  %r8,%r11
 # qhasm:     d += loader + 0xfe2ce6e0
 # asm 1: lea  0xfe2ce6e0(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0xfe2ce6e0(<d=%rax,<loader=%r10),>d=%rax
-lea -0x01d31920(%rax,%r10),%rax
+lea  0xfe2ce6e0(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -2730,7 +2730,7 @@ xor  %rcx,%r11
 # qhasm:   c += loader + 0xa3014314
 # asm 1: lea  0xa3014314(<c=int64#6,<loader=int64#8),>c=int64#6
 # asm 2: lea  0xa3014314(<c=%r9,<loader=%r10),>c=%r9
-lea -0x5cfebcec(%r9,%r10),%r9
+lea  0xa3014314(%r9,%r10),%r9
 
 # qhasm:   c += arith
 # asm 1: add  <arith=int64#9,<c=int64#6
@@ -2820,7 +2820,7 @@ xor  %r9,%r11
 # qhasm:   a += loader + 0xf7537e82
 # asm 1: lea  0xf7537e82(<a=int64#4,<loader=int64#8),>a=int64#4
 # asm 2: lea  0xf7537e82(<a=%rcx,<loader=%r10),>a=%rcx
-lea -0x08ac817e(%rcx,%r10),%rcx
+lea  0xf7537e82(%rcx,%r10),%rcx
 
 # qhasm:   a += arith
 # asm 1: add  <arith=int64#9,<a=int64#4
@@ -2865,7 +2865,7 @@ xor  %r8,%r11
 # qhasm:     d += loader + 0xbd3af235
 # asm 1: lea  0xbd3af235(<d=int64#7,<loader=int64#8),>d=int64#7
 # asm 2: lea  0xbd3af235(<d=%rax,<loader=%r10),>d=%rax
-lea -0x42c50dcb(%rax,%r10),%rax
+lea  0xbd3af235(%rax,%r10),%rax
 
 # qhasm:     d += arith
 # asm 1: add  <arith=int64#9,<d=int64#7
@@ -2955,7 +2955,7 @@ xor  %rax,%r11
 # qhasm:     b += loader + 0xeb86d391
 # asm 1: lea  0xeb86d391(<b=int64#5,<loader=int64#8),>b=int64#5
 # asm 2: lea  0xeb86d391(<b=%r8,<loader=%r10),>b=%r8
-lea -0x14792c6f(%r8,%r10),%r8
+lea  0xeb86d391(%r8,%r10),%r8
 
 # qhasm:     b += arith
 # asm 1: add  <arith=int64#9,<b=int64#5

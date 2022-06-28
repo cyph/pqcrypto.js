@@ -9,15 +9,6 @@
 #include "params.h"
 #include "util.h"
 #include "gf.h"
-#include "crypto_declassify.h"
-#include "crypto_uint16.h"
-
-static inline crypto_uint16 gf_is_zero_declassify(gf t)
-{
-  crypto_uint16 mask = crypto_uint16_zero_mask(t);
-  crypto_declassify(&mask,sizeof mask);
-  return mask;
-}
 
 /* input: f, element in GF((2^m)^t) */
 /* output: out, minimal polynomial of f */
@@ -55,7 +46,7 @@ int genpoly_gen(gf *out, gf *f)
 
 		}
 
-		if ( gf_is_zero_declassify(mat[ j ][ j ]) ) // return if not systematic
+		if ( mat[ j ][ j ] == 0 ) // return if not systematic
 		{
 			return -1;
 		}
@@ -79,6 +70,26 @@ int genpoly_gen(gf *out, gf *f)
 
 	for (i = 0; i < SYS_T; i++)
 		out[i] = mat[ SYS_T ][ i ];
+
+	return 0;
+}
+
+/* input: permutation p represented as a list of 32-bit intergers */
+/* output: -1 if some interger repeats in p */
+/*          0 otherwise */
+int perm_check(uint32_t *p)
+{
+	int i;
+	uint64_t list[1 << GFBITS];
+
+	for (i = 0; i < (1 << GFBITS); i++)
+		list[i] = p[i];
+        
+	sort_63b(1 << GFBITS, list);
+        
+	for (i = 1; i < (1 << GFBITS); i++)
+		if (list[i-1] == list[i])
+			return -1;
 
 	return 0;
 }

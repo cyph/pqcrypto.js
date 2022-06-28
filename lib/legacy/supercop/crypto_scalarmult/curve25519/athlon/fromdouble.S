@@ -1,9 +1,9 @@
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(fromdouble)
-.globl CRYPTO_NAMESPACE(fromdouble)
-_CRYPTO_NAMESPACE(fromdouble):
-CRYPTO_NAMESPACE(fromdouble):
+.globl _crypto_scalarmult_curve25519_athlon_fromdouble
+.globl crypto_scalarmult_curve25519_athlon_fromdouble
+_crypto_scalarmult_curve25519_athlon_fromdouble:
+crypto_scalarmult_curve25519_athlon_fromdouble:
 mov %esp,%eax
 and $31,%eax
 add $192,%eax
@@ -11,34 +11,34 @@ sub %eax,%esp
 movl %ebp,0(%esp)
 movl 8(%esp,%eax),%ecx
 fldl 0(%ecx)
-faddl CRYPTO_NAMESPACE(out0offset)
+faddl crypto_scalarmult_curve25519_athlon_out0offset
 fstpl 96(%esp)
 fldl 8(%ecx)
-faddl CRYPTO_NAMESPACE(out1offset)
+faddl crypto_scalarmult_curve25519_athlon_out1offset
 fstpl 104(%esp)
 fldl 16(%ecx)
-faddl CRYPTO_NAMESPACE(out2offset)
+faddl crypto_scalarmult_curve25519_athlon_out2offset
 fstpl 112(%esp)
 fldl 24(%ecx)
-faddl CRYPTO_NAMESPACE(out3offset)
+faddl crypto_scalarmult_curve25519_athlon_out3offset
 fstpl 120(%esp)
 fldl 32(%ecx)
-faddl CRYPTO_NAMESPACE(out4offset)
+faddl crypto_scalarmult_curve25519_athlon_out4offset
 fstpl 128(%esp)
 fldl 40(%ecx)
-faddl CRYPTO_NAMESPACE(out5offset)
+faddl crypto_scalarmult_curve25519_athlon_out5offset
 fstpl 136(%esp)
 fldl 48(%ecx)
-faddl CRYPTO_NAMESPACE(out6offset)
+faddl crypto_scalarmult_curve25519_athlon_out6offset
 fstpl 144(%esp)
 fldl 56(%ecx)
-faddl CRYPTO_NAMESPACE(out7offset)
+faddl crypto_scalarmult_curve25519_athlon_out7offset
 fstpl 152(%esp)
 fldl 64(%ecx)
-faddl CRYPTO_NAMESPACE(out8offset)
+faddl crypto_scalarmult_curve25519_athlon_out8offset
 fstpl 160(%esp)
 fldl 72(%ecx)
-faddl CRYPTO_NAMESPACE(out9offset)
+faddl crypto_scalarmult_curve25519_athlon_out9offset
 fstpl 168(%esp)
 movl 96(%esp),%ecx
 movl %ecx,4(%esp)

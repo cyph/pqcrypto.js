@@ -1,5 +1,5 @@
 #include <openssl/rand.h>
 #include <stddef.h>
 #include <openssl/opensslv.h>
-#define CRYPTO_VERSION OPENSSL_VERSION_TEXT
-#define CRYPTO_BYTES 48
+#define crypto_hash_sha384_openssl_VERSION OPENSSL_VERSION_TEXT
+#define crypto_hash_sha384_openssl_BYTES 48

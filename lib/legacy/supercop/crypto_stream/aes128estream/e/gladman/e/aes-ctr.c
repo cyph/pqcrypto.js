@@ -3,7 +3,7 @@
 /* 
  * AES in CTR mode.  
  *
- * ECRYPT wrapper around Brian Gladman's code
+ * crypto_stream_aes128estream_e_gladman_ECRYPT wrapper around Brian Gladman's code
  * see http://fp.gladman.plus.com/AES/
  *
  * Author: Christophe De Canni\`ere, K.U.Leuven.
@@ -22,15 +22,15 @@
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_init(void)
+void crypto_stream_aes128estream_e_gladman_ECRYPT_init(void)
 { 
   gen_tabs();
 }
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_keysetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_aes128estream_e_gladman_ECRYPT_keysetup(
+  crypto_stream_aes128estream_e_gladman_ECRYPT_ctx* ctx, 
   const u8* key, 
   u32 keysize,
   u32 ivsize)
@@ -40,8 +40,8 @@ void ECRYPT_keysetup(
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_ivsetup(
-  ECRYPT_ctx* ctx, 
+void crypto_stream_aes128estream_e_gladman_ECRYPT_ivsetup(
+  crypto_stream_aes128estream_e_gladman_ECRYPT_ctx* ctx, 
   const u8* iv)
 { 
   memcpy(ctx->in, iv, 16);
@@ -49,9 +49,9 @@ void ECRYPT_ivsetup(
 
 /* ------------------------------------------------------------------------- */
 
-void ECRYPT_process_bytes(
+void crypto_stream_aes128estream_e_gladman_ECRYPT_process_bytes(
   int action,
-  ECRYPT_ctx* ctx, 
+  crypto_stream_aes128estream_e_gladman_ECRYPT_ctx* ctx, 
   const u8* input, 
   u8* output, 
   u32 msglen)

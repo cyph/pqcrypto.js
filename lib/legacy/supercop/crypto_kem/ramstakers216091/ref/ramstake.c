@@ -498,33 +498,33 @@ int ramstake_decaps( unsigned char * key, ramstake_ciphertext c, ramstake_secret
     }
     if( mpz_cmp(rec.d, c.d) != 0 )
     {
-        fprintf(stderr,"recovered d =/= ciphertext d\n");
+        printf("recovered d =/= ciphertext d\n");
         if( kat >= 3 )
         {
-            fprintf(stderr,"recovered: "); mpz_out_str(stderr, 10, rec.d); fprintf(stderr,"\n");
-            fprintf(stderr,"ciphertext: "); mpz_out_str(stderr, 10, c.d); fprintf(stderr,"\n");
+            printf("recovered: "); mpz_out_str(stdout, 10, rec.d); printf("\n");
+            printf("ciphertext: "); mpz_out_str(stdout, 10, c.d); printf("\n");
         }
     }
     if( strncmp((const char*)rec.e, (const char*)c.e, RAMSTAKE_SEEDENC_LENGTH) != 0 )
     {
-        fprintf(stderr,"recovered e =/= ciphertext e\n");
+        printf("recovered e =/= ciphertext e\n");
     }
     if( strncmp((const char*)rec.h, (const char*)c.h, RAMSTAKE_SEED_LENGTH) != 0 )
     {
-        fprintf(stderr,"recovered h =/= ciphertext h\n");
+        printf("recovered h =/= ciphertext h\n");
         for( i = 0 ; i < RAMSTAKE_SEED_LENGTH ; ++i )
-            fprintf(stderr,"%02x", rec.h[i]);
-        fprintf(stderr,"\n");
+            printf("%02x", rec.h[i]);
+        printf("\n");
         for( i = 0 ; i < RAMSTAKE_SEED_LENGTH ; ++i )
-            fprintf(stderr,"%02x", c.h[i]);
-        fprintf(stderr,"\n");
+            printf("%02x", c.h[i]);
+        printf("\n");
     }
-    fprintf(stderr,"received seed: ");
+    printf("received seed: ");
     for( i = 0 ; i < RAMSTAKE_SEED_LENGTH ; ++i )
     {
-        fprintf(stderr,"%02x", decoded[i]);
+        printf("%02x", decoded[i]);
     }
-    fprintf(stderr,"\n");
+    printf("\n");
 
     mpz_clear(g);
     mpz_clear(p);

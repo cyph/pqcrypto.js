@@ -1,1 +1,0 @@
-../../../picnic3l3/optimizedct/c/lowmc_192_192_4.c

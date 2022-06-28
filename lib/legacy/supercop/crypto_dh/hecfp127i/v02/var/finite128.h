@@ -111,20 +111,20 @@ void ec_fp_smul_127e(uni X1, uni Y1, uni Z1, uni kn, uni X2, uni Y2);
 void ec_fp_smulbase_127e(uni X1, uni Y1, uni Z1, CONST uni kn, CONST uni *xn0, CONST uni *yn0, CONST uni *tn0);
 
 
-void hec_fp_dbl_2e127m1_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni CNS);
-void hec_fp_add_2e127m1_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
-void hec_fp_madd_2e127m1_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
+inline void hec_fp_dbl_2e127m1_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni CNS);
+inline void hec_fp_add_2e127m1_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
+inline void hec_fp_madd_2e127m1_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
 
 void hec_fp_smul_2e127m1_g2i(DIV_hec_fp_2e127m1 d1, const uni kn,  DIV_hec_fp_2e127m1 d2, CNS_hec_fp_2e127m1 cn);
 void hec_fp_smulcached_2e127m1_g2i(DIV_hec_fp_2e127m1 d1, const uni kn, unsigned char *d2, CNS_hec_fp_2e127m1 cn, int slice, int window, int csize);
 
 
-void kum_fp_dbl_2e127m1_g_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
-void kum_fp_dbladd_2e127m1_g_fixed_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
-void kum_fp_dbladd_2e127m1_g_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
+inline void kum_fp_dbl_2e127m1_g_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
+inline void kum_fp_dbladd_2e127m1_g_fixed_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
+inline void kum_fp_dbladd_2e127m1_g_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
 
-void kum_fp_dbl_2e127m1_g_ym_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
-void kum_fp_dbladd_2e127m1_g_ym_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
+inline void kum_fp_dbl_2e127m1_g_ym_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
+inline void kum_fp_dbladd_2e127m1_g_ym_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
 
 void kum_fp_smul_2e127m1_g(DIV_kum_fp_2e127m1_g d1, CONST uni kn, DIV_kum_fp_2e127m1_g d2, CNS_kum_fp_2e127m1_g cn);
 void kum_fp_smul_ym_2e127m1_g(DIV_kum_fp_2e127m1_g d1, CONST uni kn, DIV_kum_fp_2e127m1_g d2, CNS_kum_fp_2e127m1_g cn);
@@ -252,11 +252,11 @@ typedef struct{
 	uni_t n12[FP_LEN];
 } TEMP_hec_fp_2e128mc_t[1], *TEMP_hec_fp_2e128mc;
 
-void hec_fp_dbl_2e128mc_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni CNS);
-void hec_fp_dbl_2e128mc_g2i_a2is0_a3is0_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni CNS);
-void hec_fp_add_2e128mc_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
-void hec_fp_madd_2e128mc_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
-void hec_fp_aadd_2e128mc_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
+inline void hec_fp_dbl_2e128mc_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni CNS);
+inline void hec_fp_dbl_2e128mc_g2i_a2is0_a3is0_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni CNS);
+inline void hec_fp_add_2e128mc_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
+inline void hec_fp_madd_2e128mc_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
+inline void hec_fp_aadd_2e128mc_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
 
 void hec_fp_cpy_2e128mc_g2i(DIV_hec_fp_2e128mc_t D3, DIV_hec_fp_2e128mc_t d1);
 void hec_fp_neg_2e128mc_g2i(DIV_hec_fp_2e128mc_t D3, DIV_hec_fp_2e128mc_t d1, CNS_hec_fp_2e128mc cn);
@@ -266,9 +266,9 @@ void hec_fp_add_2e128mc_g2i(DIV_hec_fp_2e128mc d3, CONST DIV_hec_fp_2e128mc d1, 
 void hec_fp_madd_2e128mc_g2i(DIV_hec_fp_2e128mc d3, CONST DIV_hec_fp_2e128mc d1, CONST DIV_hec_fp_2e128mc d2, CNS_hec_fp_2e128mc cn);
 void hec_fp_aadd_2e128mc_g2i(DIV_hec_fp_2e128mc d3, CONST DIV_hec_fp_2e128mc d1, CONST DIV_hec_fp_2e128mc d2, CNS_hec_fp_2e128mc cn);
 
-void kum_fp_dbl_2e128mc_g_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
-void kum_fp_dbladd_2e128mc_g_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
-void kum_fp_dbladd_2e128mc_g_fixed_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
+inline void kum_fp_dbl_2e128mc_g_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
+inline void kum_fp_dbladd_2e128mc_g_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
+inline void kum_fp_dbladd_2e128mc_g_fixed_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
 
 void kum_fp_smul_2e128mc_g(DIV_kum_fp_2e128mc d1, CONST uni kn, DIV_kum_fp_2e128mc d2, CNS_kum_fp_2e128mc cns);
 void kum_fp_smul_2e128mc_g_fixed(DIV_kum_fp_2e128mc d2, CONST uni kn, CONST DIV_kum_fp_2e128mc d0, CNS_kum_fp_2e128mc cn);
@@ -499,11 +499,11 @@ typedef struct{
 	uni_t n12[FP_LEN];
 } TEMP_hec_fp_2e61m1e2_t[1], *TEMP_hec_fp_2e61m1e2;
 
-void hec_fp_dbl_2e61m1e2_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni CNS);
-void hec_fp_dbl_2e61m1e2_g2i_a2is0_a3is0_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni CNS);
-void hec_fp_add_2e61m1e2_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
-void hec_fp_madd_2e61m1e2_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
-void hec_fp_aadd_2e61m1e2_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
+inline void hec_fp_dbl_2e61m1e2_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni CNS);
+inline void hec_fp_dbl_2e61m1e2_g2i_a2is0_a3is0_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni CNS);
+inline void hec_fp_add_2e61m1e2_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
+inline void hec_fp_madd_2e61m1e2_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
+inline void hec_fp_aadd_2e61m1e2_g2i_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni D3, uni d1, uni d2);
 
 void hec_fp_cpy_2e61m1e2_g2i(DIV_hec_fp_2e61m1e2_t D3, DIV_hec_fp_2e61m1e2_t d1);
 void hec_fp_neg_2e61m1e2_g2i(DIV_hec_fp_2e61m1e2_t D3, DIV_hec_fp_2e61m1e2_t d1);
@@ -522,8 +522,8 @@ void hec_fp_smul_2e61m1e2_glv8_edirne_s1(DIV_hec_fp_2e61m1e2 d1, CONST uni kn,  
 void hec_fp_smul_2e61m1e2_glv8_edirne_s2(DIV_hec_fp_2e61m1e2 d1, CONST uni kn,  DIV_hec_fp_2e61m1e2 d2, CNS_hec_fp_2e61m1e2_glv8_s2 cn);
 
 
-void kum_fp_dbl_2e61m1e2_g_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
-void kum_fp_dbladd_2e61m1e2_g_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
+inline void kum_fp_dbl_2e61m1e2_g_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
+inline void kum_fp_dbladd_2e61m1e2_g_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
 
 void kum_fp_smul_2e61m1e2_g(DIV_kum_fp_2e61m1e2_g d2, const uni kn, const DIV_kum_fp_2e61m1e2_g d0, CNS_kum_fp_2e61m1e2_g cn);
 
@@ -766,11 +766,11 @@ typedef struct{
 	uni_t n12[FP_LEN];
 } TEMP_hec_fp_2e64mce2_t[1], *TEMP_hec_fp_2e64mce2;
 
-void hec_fp_dbl_2e64mce2_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni CNS);
-void hec_fp_dbl_2e64mce2_g2i_a2is0_a3is0_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni CNS);
-void hec_fp_add_2e64mce2_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
-void hec_fp_madd_2e64mce2_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
-void hec_fp_aadd_2e64mce2_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
+inline void hec_fp_dbl_2e64mce2_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni CNS);
+inline void hec_fp_dbl_2e64mce2_g2i_a2is0_a3is0_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni CNS);
+inline void hec_fp_add_2e64mce2_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
+inline void hec_fp_madd_2e64mce2_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
+inline void hec_fp_aadd_2e64mce2_g2i_x8664_asm(uni TMP, uni_t prm, void *NOPARAM, uni D3, uni d1, uni d2);
 
 void hec_fp_cpy_2e64mce2_g2i(DIV_hec_fp_2e64mce2_t D3, DIV_hec_fp_2e64mce2_t d1);
 void hec_fp_neg_2e64mce2_g2i(DIV_hec_fp_2e64mce2_t D3, DIV_hec_fp_2e64mce2_t d1, CNS_hec_fp_2e64mce2 cn);
@@ -793,8 +793,8 @@ void hec_fp_smul_2e64mce2_glv8_a2is0_a3is0_aydin_s2(DIV_hec_fp_2e64mce2 d1, cons
 
 
 
-void kum_fp_dbl_2e64mce2_g_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
-void kum_fp_dbladd_2e64mce2_g_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
+inline void kum_fp_dbl_2e64mce2_g_x8664_asm(uni TMP, void *NOPARAM1, void *NOPARAM2, uni d1, void *NOPARAM3, uni CNS);
+inline void kum_fp_dbladd_2e64mce2_g_x8664_asm(uni TMP, uni kn, uni_t i, uni d1, uni d2, uni CNS);
 
 void kum_fp_smul_2e64mce2_g(DIV_kum_fp_2e64mce2_g d2, const uni kn, const DIV_kum_fp_2e64mce2_g d0, CNS_kum_fp_2e64mce2_g cn);
 

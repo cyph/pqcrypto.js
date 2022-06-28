@@ -1,1 +1,1 @@
-../../dilithium2/ref/polyvec.h
+../../dilithium3/ref/polyvec.h

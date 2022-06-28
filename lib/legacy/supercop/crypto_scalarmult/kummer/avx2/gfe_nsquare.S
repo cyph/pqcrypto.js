@@ -1,4 +1,3 @@
-#include "consts.h"
 # block pos: 0 32 uops: 6
 
 # qhasm: int64 input_0
@@ -55,12 +54,12 @@
 
 # qhasm: int64 count
 
-# qhasm: enter CRYPTO_NAMESPACE(gfe_nsquare)
+# qhasm: enter gfe_nsquare
 .p2align 5
-.global _CRYPTO_NAMESPACE(gfe_nsquare)
-.global CRYPTO_NAMESPACE(gfe_nsquare)
-_CRYPTO_NAMESPACE(gfe_nsquare):
-CRYPTO_NAMESPACE(gfe_nsquare):
+.global _gfe_nsquare
+.global gfe_nsquare
+_gfe_nsquare:
+gfe_nsquare:
 # bytes: 6 uops: 1
 .byte 0x3e
 .byte 0x3e
@@ -110,7 +109,7 @@ movq   8(%rsi),%rsi
 # asm 1: movq mask63,>mask=int64#6
 # asm 2: movq mask63,>mask=%r9
 # bytes: 8 uops: 1
-movq mask63(%rip),%r9
+movq mask63,%r9
 
 # qhasm: loop:
 ._loop:

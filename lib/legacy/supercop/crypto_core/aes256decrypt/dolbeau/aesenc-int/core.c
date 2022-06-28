@@ -10,8 +10,8 @@
 
 
 static inline void aes256ni_setkey_encrypt(const unsigned char* key, __m128i rkeys[15]) {
-  __m128i key0 = _mm_loadu_si128((const __m128i *)(key+0));
-  __m128i key1 = _mm_loadu_si128((const __m128i *)(key+16));
+  __m128i key0 = _mm_loadu_si128((const unsigned int *)(key+0));
+  __m128i key1 = _mm_loadu_si128((const unsigned int *)(key+16));
   __m128i temp0, temp1, temp2, temp4;
   int idx = 0;
 
@@ -74,7 +74,7 @@ static inline void aes256ni_setkey_decrypt(const unsigned char* key, __m128i rke
   rkeys[14] = tkeys[0];
 }
 static inline void aes256ni_decrypt(const __m128i rkeys[15], const unsigned char *n, unsigned char *out) {
-  __m128i nv = _mm_loadu_si128((const __m128i *)n);
+  __m128i nv = _mm_load_si128((const __m128i *)n);
   int i;
   __m128i temp = _mm_xor_si128(nv, rkeys[0]);
 #pragma unroll(13)
@@ -82,7 +82,7 @@ static inline void aes256ni_decrypt(const __m128i rkeys[15], const unsigned char
     temp = _mm_aesdec_si128(temp, rkeys[i]);
   }
   temp = _mm_aesdeclast_si128(temp, rkeys[14]);
-  _mm_storeu_si128((__m128i*)(out), temp);
+  _mm_store_si128((__m128i*)(out), temp);
 }
 
 int crypto_core(

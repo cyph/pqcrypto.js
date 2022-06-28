@@ -4,11 +4,10 @@
 
 #ifndef PK_GEN_H
 #define PK_GEN_H
-#define pk_gen CRYPTO_NAMESPACE(pk_gen)
 
 #include "gf.h"
 
-int pk_gen(unsigned char *, unsigned char *, uint32_t *, int16_t *, uint64_t *);
+int pk_gen(unsigned char *, unsigned char *, uint32_t *);
 
 #endif
 

@@ -83,13 +83,13 @@
 
 # qhasm: int64 squarei38
 
-# qhasm: enter CRYPTO_NAMESPACE(fe25519_square)
+# qhasm: enter crypto_scalarmult_curve25519_amd64_64_fe25519_square
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(fe25519_square)
-.globl CRYPTO_NAMESPACE(fe25519_square)
-_CRYPTO_NAMESPACE(fe25519_square):
-CRYPTO_NAMESPACE(fe25519_square):
+.globl _crypto_scalarmult_curve25519_amd64_64_fe25519_square
+.globl crypto_scalarmult_curve25519_amd64_64_fe25519_square
+_crypto_scalarmult_curve25519_amd64_64_fe25519_square:
+crypto_scalarmult_curve25519_amd64_64_fe25519_square:
 mov %rsp,%r11
 and $31,%r11
 add $64,%r11
@@ -425,8 +425,8 @@ adc %rdx,%rcx
 # asm 2: mov  <squarer4=%r11,>squarerax=%rax
 mov  %r11,%rax
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq  CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_scalarmult_curve25519_amd64_64_38
+mulq  crypto_scalarmult_curve25519_amd64_64_38(%rip)
 
 # qhasm:   squarer4 = squarerax
 # asm 1: mov  <squarerax=int64#7,>squarer4=int64#2
@@ -443,8 +443,8 @@ mov  %r12,%rax
 # asm 2: mov  <squarerdx=%rdx,>squarer5=%r11
 mov  %rdx,%r11
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq  CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_scalarmult_curve25519_amd64_64_38
+mulq  crypto_scalarmult_curve25519_amd64_64_38(%rip)
 
 # qhasm:   carry? squarer5 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer5=int64#9
@@ -466,8 +466,8 @@ mov  $0,%r12
 # asm 2: adc <squarerdx=%rdx,<squarer6=%r12
 adc %rdx,%r12
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq  CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_scalarmult_curve25519_amd64_64_38
+mulq  crypto_scalarmult_curve25519_amd64_64_38(%rip)
 
 # qhasm:   carry? squarer6 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer6=int64#10
@@ -489,8 +489,8 @@ mov  $0,%rcx
 # asm 2: adc <squarerdx=%rdx,<squarer7=%rcx
 adc %rdx,%rcx
 
-# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&CRYPTO_NAMESPACE(38)
-mulq  CRYPTO_NAMESPACE(38)(%rip)
+# qhasm:   (uint128) squarerdx squarerax = squarerax * *(uint64 *)&crypto_scalarmult_curve25519_amd64_64_38
+mulq  crypto_scalarmult_curve25519_amd64_64_38(%rip)
 
 # qhasm:   carry? squarer7 += squarerax
 # asm 1: add  <squarerax=int64#7,<squarer7=int64#4

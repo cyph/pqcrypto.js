@@ -37,23 +37,6 @@
 #ifndef SPH_BLAKE_H__
 #define SPH_BLAKE_H__
 
-#define sph_blake224_init CRYPTO_NAMESPACE(sph_blake224_init)
-#define sph_blake224 CRYPTO_NAMESPACE(sph_blake224)
-#define sph_blake224_close CRYPTO_NAMESPACE(sph_blake224_close)
-#define sph_blake224_addbits_and_close CRYPTO_NAMESPACE(sph_blake224_addbits_and_close)
-#define sph_blake256_init CRYPTO_NAMESPACE(sph_blake256_init)
-#define sph_blake256 CRYPTO_NAMESPACE(sph_blake256)
-#define sph_blake256_close CRYPTO_NAMESPACE(sph_blake256_close)
-#define sph_blake256_addbits_and_close CRYPTO_NAMESPACE(sph_blake256_addbits_and_close)
-#define sph_blake384_init CRYPTO_NAMESPACE(sph_blake384_init)
-#define sph_blake384 CRYPTO_NAMESPACE(sph_blake384)
-#define sph_blake384_close CRYPTO_NAMESPACE(sph_blake384_close)
-#define sph_blake384_addbits_and_close CRYPTO_NAMESPACE(sph_blake384_addbits_and_close)
-#define sph_blake512_init CRYPTO_NAMESPACE(sph_blake512_init)
-#define sph_blake512 CRYPTO_NAMESPACE(sph_blake512)
-#define sph_blake512_close CRYPTO_NAMESPACE(sph_blake512_close)
-#define sph_blake512_addbits_and_close CRYPTO_NAMESPACE(sph_blake512_addbits_and_close)
-
 #include <stddef.h>
 #include "sph_types.h"
 

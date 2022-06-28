@@ -1,1 +1,1 @@
-../../iscream14v1/ref/params.h
+#define nSteps 14

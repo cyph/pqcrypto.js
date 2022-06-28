@@ -283,13 +283,13 @@
 
 # qhasm: stack128 tmpin
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_init)
+# qhasm: enter crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_init
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_init)
-.globl CRYPTO_NAMESPACE(ECRYPT_init)
-_CRYPTO_NAMESPACE(ECRYPT_init):
-CRYPTO_NAMESPACE(ECRYPT_init):
+.globl _crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_init
+.globl crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_init
+_crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_init:
+crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_init:
 mov %esp,%eax
 and $31,%eax
 add $288,%eax
@@ -299,13 +299,13 @@ sub %eax,%esp
 add %eax,%esp
 ret
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_ivsetup)
+# qhasm: enter crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_ivsetup
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_ivsetup)
-_CRYPTO_NAMESPACE(ECRYPT_ivsetup):
-CRYPTO_NAMESPACE(ECRYPT_ivsetup):
+.globl _crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_ivsetup
+.globl crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_ivsetup
+_crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_ivsetup:
+crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_ivsetup:
 mov %esp,%eax
 and $31,%eax
 add $288,%eax
@@ -415,13 +415,13 @@ movl 48(%esp),%ebp
 add %eax,%esp
 ret
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_keysetup)
+# qhasm: enter crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_keysetup
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_keysetup)
-.globl CRYPTO_NAMESPACE(ECRYPT_keysetup)
-_CRYPTO_NAMESPACE(ECRYPT_keysetup):
-CRYPTO_NAMESPACE(ECRYPT_keysetup):
+.globl _crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_keysetup
+.globl crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_keysetup
+_crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_keysetup:
+crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_keysetup:
 mov %esp,%eax
 and $31,%eax
 add $288,%eax
@@ -1566,13 +1566,13 @@ movl 48(%esp),%ebp
 add %eax,%esp
 ret
 
-# qhasm: enter CRYPTO_NAMESPACE(ECRYPT_process_bytes) stackaligned4096 aes_constants
+# qhasm: enter crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_process_bytes stackaligned4096 aes_constants
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(ECRYPT_process_bytes)
-.globl CRYPTO_NAMESPACE(ECRYPT_process_bytes)
-_CRYPTO_NAMESPACE(ECRYPT_process_bytes):
-CRYPTO_NAMESPACE(ECRYPT_process_bytes):
+.globl _crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_process_bytes
+.globl crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_process_bytes
+_crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_process_bytes:
+crypto_stream_aes128estream_e_schwabe_pentium4_1_ECRYPT_process_bytes:
 mov %esp,%eax
 sub $aes_constants,%eax
 and $4095,%eax

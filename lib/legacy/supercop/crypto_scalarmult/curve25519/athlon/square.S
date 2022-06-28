@@ -1,9 +1,9 @@
 .text
 .p2align 5
-.globl _CRYPTO_NAMESPACE(square)
-.globl CRYPTO_NAMESPACE(square)
-_CRYPTO_NAMESPACE(square):
-CRYPTO_NAMESPACE(square):
+.globl _crypto_scalarmult_curve25519_athlon_square
+.globl crypto_scalarmult_curve25519_athlon_square
+_crypto_scalarmult_curve25519_athlon_square:
+crypto_scalarmult_curve25519_athlon_square:
 mov %esp,%eax
 and $31,%eax
 add $64,%eax
@@ -20,7 +20,7 @@ fldl 16(%edx)
 fadd %st(0),%st(0)
 fldl 56(%edx)
 fxch %st(4)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fldl 72(%edx)
 fmul %st(4),%st(0)
 fldl 64(%edx)
@@ -66,9 +66,9 @@ fstpl 40(%esp)
 fldl 32(%edx)
 fmul %st(0),%st(0)
 faddp %st(0),%st(1)
-fldl CRYPTO_NAMESPACE(alpha230)
+fldl crypto_scalarmult_curve25519_athlon_alpha230
 fadd %st(1),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha230)
+fsubl crypto_scalarmult_curve25519_athlon_alpha230
 fsubr %st(0),%st(1)
 fldl 8(%esp)
 fldl 72(%edx)
@@ -90,9 +90,9 @@ fmull 40(%edx)
 faddp %st(0),%st(6)
 fxch %st(3)
 faddp %st(0),%st(5)
-fldl CRYPTO_NAMESPACE(alpha255)
+fldl crypto_scalarmult_curve25519_athlon_alpha255
 fadd %st(5),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha255)
+fsubl crypto_scalarmult_curve25519_athlon_alpha255
 fsubr %st(0),%st(5)
 fldl 56(%edx)
 fmul %st(0),%st(4)
@@ -115,11 +115,11 @@ fldl 40(%edx)
 fmul %st(0),%st(0)
 faddp %st(0),%st(1)
 fxch %st(2)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fxch %st(3)
 fstpl 72(%ecx)
 faddp %st(0),%st(1)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fldl 24(%esp)
 fmull 72(%edx)
 fldl 0(%edx)
@@ -134,20 +134,20 @@ faddp %st(0),%st(3)
 fldl 40(%esp)
 fmull 56(%edx)
 faddp %st(0),%st(1)
-fldl CRYPTO_NAMESPACE(alpha26)
+fldl crypto_scalarmult_curve25519_athlon_alpha26
 fadd %st(2),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha26)
+fsubl crypto_scalarmult_curve25519_athlon_alpha26
 fsubr %st(0),%st(2)
 faddp %st(0),%st(3)
-fldl CRYPTO_NAMESPACE(alpha51)
+fldl crypto_scalarmult_curve25519_athlon_alpha51
 fadd %st(3),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha51)
+fsubl crypto_scalarmult_curve25519_athlon_alpha51
 fsubr %st(0),%st(3)
 fldl 48(%edx)
 fmul %st(0),%st(0)
 faddp %st(0),%st(2)
 fxch %st(1)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fldl 0(%esp)
 fmull 16(%edx)
 faddp %st(0),%st(1)
@@ -155,9 +155,9 @@ fldl 8(%edx)
 fmul %st(0),%st(0)
 faddp %st(0),%st(1)
 faddp %st(0),%st(1)
-fldl CRYPTO_NAMESPACE(alpha77)
+fldl crypto_scalarmult_curve25519_athlon_alpha77
 fadd %st(1),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha77)
+fsubl crypto_scalarmult_curve25519_athlon_alpha77
 fsubr %st(0),%st(1)
 fxch %st(2)
 fstpl 0(%ecx)
@@ -169,7 +169,7 @@ faddp %st(0),%st(1)
 fldl 48(%esp)
 fmull 56(%edx)
 faddp %st(0),%st(1)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fldl 0(%esp)
 fmull 24(%edx)
 faddp %st(0),%st(1)
@@ -177,9 +177,9 @@ fldl 8(%esp)
 fmull 16(%edx)
 faddp %st(0),%st(1)
 faddp %st(0),%st(2)
-fldl CRYPTO_NAMESPACE(alpha102)
+fldl crypto_scalarmult_curve25519_athlon_alpha102
 fadd %st(2),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha102)
+fsubl crypto_scalarmult_curve25519_athlon_alpha102
 fsubr %st(0),%st(2)
 fxch %st(3)
 fstpl 8(%ecx)
@@ -191,7 +191,7 @@ faddp %st(0),%st(1)
 fldl 56(%edx)
 fmul %st(0),%st(0)
 faddp %st(0),%st(1)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fldl 0(%esp)
 fmull 32(%edx)
 faddp %st(0),%st(1)
@@ -202,9 +202,9 @@ fldl 16(%edx)
 fmul %st(0),%st(0)
 faddp %st(0),%st(1)
 faddp %st(0),%st(3)
-fldl CRYPTO_NAMESPACE(alpha128)
+fldl crypto_scalarmult_curve25519_athlon_alpha128
 fadd %st(3),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha128)
+fsubl crypto_scalarmult_curve25519_athlon_alpha128
 fsubr %st(0),%st(3)
 fxch %st(1)
 fstpl 16(%ecx)
@@ -215,7 +215,7 @@ fmul %st(5),%st(0)
 fxch %st(5)
 fmull 64(%edx)
 faddp %st(0),%st(1)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fldl 0(%esp)
 fmull 40(%edx)
 faddp %st(0),%st(1)
@@ -226,9 +226,9 @@ fldl 16(%esp)
 fmull 24(%edx)
 faddp %st(0),%st(1)
 faddp %st(0),%st(1)
-fldl CRYPTO_NAMESPACE(alpha153)
+fldl crypto_scalarmult_curve25519_athlon_alpha153
 fadd %st(1),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha153)
+fsubl crypto_scalarmult_curve25519_athlon_alpha153
 fsubr %st(0),%st(1)
 fxch %st(2)
 fstpl 24(%ecx)
@@ -236,7 +236,7 @@ fldl 64(%edx)
 fmul %st(0),%st(0)
 faddp %st(0),%st(4)
 fxch %st(3)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fldl 0(%esp)
 fmull 48(%edx)
 faddp %st(0),%st(1)
@@ -250,14 +250,14 @@ fldl 24(%edx)
 fmul %st(0),%st(0)
 faddp %st(0),%st(1)
 faddp %st(0),%st(1)
-fldl CRYPTO_NAMESPACE(alpha179)
+fldl crypto_scalarmult_curve25519_athlon_alpha179
 fadd %st(1),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha179)
+fsubl crypto_scalarmult_curve25519_athlon_alpha179
 fsubr %st(0),%st(1)
 fldl 64(%edx)
 fadd %st(0),%st(0)
 fmull 72(%edx)
-fmull CRYPTO_NAMESPACE(scale)
+fmull crypto_scalarmult_curve25519_athlon_scale
 fldl 0(%esp)
 fmull 56(%edx)
 faddp %st(0),%st(1)
@@ -271,17 +271,17 @@ fldl 24(%esp)
 fmull 32(%edx)
 faddp %st(0),%st(1)
 faddp %st(0),%st(1)
-fldl CRYPTO_NAMESPACE(alpha204)
+fldl crypto_scalarmult_curve25519_athlon_alpha204
 fadd %st(1),%st(0)
-fsubl CRYPTO_NAMESPACE(alpha204)
+fsubl crypto_scalarmult_curve25519_athlon_alpha204
 fsubr %st(0),%st(1)
 fldl 64(%ecx)
 faddp %st(0),%st(1)
-fldl CRYPTO_NAMESPACE(alpha230)
+fldl crypto_scalarmult_curve25519_athlon_alpha230
 fadd %st(1),%st(0)
 fldl 72(%ecx)
 fxch %st(1)
-fsubl CRYPTO_NAMESPACE(alpha230)
+fsubl crypto_scalarmult_curve25519_athlon_alpha230
 fsubr %st(0),%st(2)
 faddp %st(0),%st(1)
 fxch %st(4)

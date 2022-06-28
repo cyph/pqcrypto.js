@@ -1,1 +1,0 @@
-../opt_arm_cortex-m/internal-drysponge.h

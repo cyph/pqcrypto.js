@@ -154,8 +154,7 @@ DRYSPONGE_FUNC void gascon_sboxes(uint64_t * const x, unsigned int nw){
 }
 
 DRYSPONGE_FUNC uint64_t gascon_rotr64_interleaved(uint64_t in, unsigned int shift){
-    uint32_t i[2];
-    memcpy(i,&in,sizeof(i));
+    uint32_t *i = (uint32_t*)&in;
     unsigned int shift2 = shift/2;
     if(shift & 1){
         uint32_t tmp = DRYSPONGE_ROTR32(i[1],shift2);
@@ -165,9 +164,7 @@ DRYSPONGE_FUNC uint64_t gascon_rotr64_interleaved(uint64_t in, unsigned int shif
         i[0] = DRYSPONGE_ROTR32(i[0],shift2);
         i[1] = DRYSPONGE_ROTR32(i[1],shift2);
     }
-    uint64_t out;
-    memcpy(&out,i,sizeof(i));
-    return out;
+    return in;
 }
 DRYSPONGE_FUNC void gascon_add_cst(uint64_t* x, unsigned int round) {
     const unsigned int mid = DRYSPONGE_CAPACITYSIZE64 / 2;

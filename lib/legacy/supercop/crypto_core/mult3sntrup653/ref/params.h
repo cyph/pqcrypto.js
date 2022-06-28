@@ -1,1 +1,6 @@
-../../inv3sntrup653/ref/params.h
+#ifndef params_H
+#define params_H
+
+#define p 653
+
+#endif

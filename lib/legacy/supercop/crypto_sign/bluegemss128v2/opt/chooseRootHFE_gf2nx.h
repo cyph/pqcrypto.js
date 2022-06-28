@@ -1,1 +1,0 @@
-../../gemss128v2/opt/chooseRootHFE_gf2nx.h

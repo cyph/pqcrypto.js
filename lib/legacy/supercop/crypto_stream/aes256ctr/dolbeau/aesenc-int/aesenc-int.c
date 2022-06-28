@@ -174,7 +174,7 @@ static inline void incle(unsigned char n[16]) {
     long long nl = *(long long*)&n[8];                                  \
     MAKEN(NVxV_DEC);                                                    \
     /* check for nonce wraparound */                                    \
-    if ((nl < 0) && (nl + N) >= 0) {                                \
+    if ((nl < 0) && (nl + (N-1)) >= 0) {                                \
       int wrapnumber = (int)(N - (nl+N));                               \
       MAKEN(NVxV_WRAP);                                                 \
       _mm_storeu_si128((__m128i*)n, _mm_add_epi64(nv0i, _mm_set_epi64x(N,1))); \

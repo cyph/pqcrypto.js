@@ -2,12 +2,12 @@
 
 SECTION_TEXT
 
-GLOBAL_HIDDEN_FN_EXT CRYPTO_NAMESPACE(block_size_avx2), 0, 0
+GLOBAL_HIDDEN_FN_EXT poly1305_block_size_avx2, 0, 0
 movl $64, %eax
 ret
-FN_END CRYPTO_NAMESPACE(block_size_avx2)
+FN_END poly1305_block_size_avx2
 
-GLOBAL_HIDDEN_FN CRYPTO_NAMESPACETOP
+GLOBAL_HIDDEN_FN poly1305_auth_avx2
 pushq %rbp
 movq %rsp, %rbp
 andq $-64, %rsp
@@ -21,26 +21,26 @@ movq %rdi, %rbx
 lea (%rsp), %rdi
 movq %rcx, %rsi
 movq %rdx, %r12
-call CRYPTO_NAMESPACE(init_ext_avx2_local)
-CRYPTO_NAMESPACE(auth_avx2_2):
+call poly1305_init_ext_avx2_local
+poly1305_auth_avx2_2:
 movq %r12, %r15
 andq $-64, %r15
-je CRYPTO_NAMESPACE(auth_avx2_5)
-CRYPTO_NAMESPACE(auth_avx2_3):
+je poly1305_auth_avx2_5
+poly1305_auth_avx2_3:
 movq %r14, %rsi
 lea (%rsp), %rdi
 movq %r15, %rdx
-call CRYPTO_NAMESPACE(blocks_avx2_local)
-CRYPTO_NAMESPACE(auth_avx2_4):
+call poly1305_blocks_avx2_local
+poly1305_auth_avx2_4:
 addq %r15, %r14
 subq %r15, %r12
-CRYPTO_NAMESPACE(auth_avx2_5):
+poly1305_auth_avx2_5:
 movq %r14, %rsi
 lea (%rsp), %rdi
 movq %r12, %rdx
 movq %rbx, %rcx
-call CRYPTO_NAMESPACE(finish_ext_avx2_local)
-CRYPTO_NAMESPACE(auth_avx2_6):
+call poly1305_finish_ext_avx2_local
+poly1305_auth_avx2_6:
 addq $224, %rsp
 popq %rbx
 popq %r15
@@ -48,13 +48,12 @@ popq %r14
 popq %r12
 movq %rbp, %rsp
 popq %rbp
-xor %rax,%rax
 ret
-FN_END CRYPTO_NAMESPACETOP
+FN_END poly1305_auth_avx2
 
 
-GLOBAL_HIDDEN_FN CRYPTO_NAMESPACE(finish_ext_avx2)
-CRYPTO_NAMESPACE(finish_ext_avx2_local):
+GLOBAL_HIDDEN_FN poly1305_finish_ext_avx2
+poly1305_finish_ext_avx2_local:
 pushq %rbp
 movq %rsp, %rbp
 andq $-64, %rsp
@@ -66,130 +65,130 @@ movq %rdx, %r13
 movq %rcx, %r14
 movq %rdi, %r12
 testq %r13, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_29)
-CRYPTO_NAMESPACE(finish_ext_avx2_2):
+je poly1305_finish_ext_avx2_29
+poly1305_finish_ext_avx2_2:
 lea (%rsp), %rax
 vpxor %ymm0, %ymm0, %ymm0
 subq %rax, %rsi
 vmovdqu %ymm0, (%rsp)
 vmovdqu %ymm0, 32(%rsp)
 testq $32, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_4)
-CRYPTO_NAMESPACE(finish_ext_avx2_3):
+je poly1305_finish_ext_avx2_4
+poly1305_finish_ext_avx2_3:
 vmovdqu (%rsp,%rsi), %ymm0
 lea 32(%rsp), %rax
 vmovdqu %ymm0, (%rsp)
-CRYPTO_NAMESPACE(finish_ext_avx2_4):
+poly1305_finish_ext_avx2_4:
 testq $16, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_6)
-CRYPTO_NAMESPACE(finish_ext_avx2_5):
+je poly1305_finish_ext_avx2_6
+poly1305_finish_ext_avx2_5:
 vmovdqu (%rax,%rsi), %xmm0
 vmovdqu %xmm0, (%rax)
 addq $16, %rax
-CRYPTO_NAMESPACE(finish_ext_avx2_6):
+poly1305_finish_ext_avx2_6:
 testq $8, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_8)
-CRYPTO_NAMESPACE(finish_ext_avx2_7):
+je poly1305_finish_ext_avx2_8
+poly1305_finish_ext_avx2_7:
 movq (%rax,%rsi), %rdx
 movq %rdx, (%rax)
 addq $8, %rax
-CRYPTO_NAMESPACE(finish_ext_avx2_8):
+poly1305_finish_ext_avx2_8:
 testq $4, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_10)
-CRYPTO_NAMESPACE(finish_ext_avx2_9):
+je poly1305_finish_ext_avx2_10
+poly1305_finish_ext_avx2_9:
 movl (%rax,%rsi), %edx
 movl %edx, (%rax)
 addq $4, %rax
-CRYPTO_NAMESPACE(finish_ext_avx2_10):
+poly1305_finish_ext_avx2_10:
 testq $2, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_12)
-CRYPTO_NAMESPACE(finish_ext_avx2_11):
+je poly1305_finish_ext_avx2_12
+poly1305_finish_ext_avx2_11:
 movzwl (%rax,%rsi), %edx
 movw %dx, (%rax)
 addq $2, %rax
-CRYPTO_NAMESPACE(finish_ext_avx2_12):
+poly1305_finish_ext_avx2_12:
 testq $1, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_14)
-CRYPTO_NAMESPACE(finish_ext_avx2_13):
+je poly1305_finish_ext_avx2_14
+poly1305_finish_ext_avx2_13:
 movb (%rax,%rsi), %dl
 movb %dl, (%rax)
-CRYPTO_NAMESPACE(finish_ext_avx2_14):
+poly1305_finish_ext_avx2_14:
 testq $15, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_16)
-CRYPTO_NAMESPACE(finish_ext_avx2_15):
+je poly1305_finish_ext_avx2_16
+poly1305_finish_ext_avx2_15:
 movb $1, (%rsp,%r13)
-CRYPTO_NAMESPACE(finish_ext_avx2_16):
+poly1305_finish_ext_avx2_16:
 movq 176(%r12), %rdx
 andq $-8125, %rdx
 cmpq $48, %r13
-jb CRYPTO_NAMESPACE(finish_ext_avx2_18)
-CRYPTO_NAMESPACE(finish_ext_avx2_17):
+jb poly1305_finish_ext_avx2_18
+poly1305_finish_ext_avx2_17:
 orq $4, %rdx
-jmp CRYPTO_NAMESPACE(finish_ext_avx2_21)
-CRYPTO_NAMESPACE(finish_ext_avx2_18):
+jmp poly1305_finish_ext_avx2_21
+poly1305_finish_ext_avx2_18:
 cmpq $32, %r13
-jb CRYPTO_NAMESPACE(finish_ext_avx2_20)
-CRYPTO_NAMESPACE(finish_ext_avx2_19):
+jb poly1305_finish_ext_avx2_20
+poly1305_finish_ext_avx2_19:
 orq $8, %rdx
-jmp CRYPTO_NAMESPACE(finish_ext_avx2_21)
-CRYPTO_NAMESPACE(finish_ext_avx2_20):
+jmp poly1305_finish_ext_avx2_21
+poly1305_finish_ext_avx2_20:
 movq %rdx, %rax
 orq $32, %rdx
 orq $16, %rax
 cmpq $16, %r13
 cmovae %rax, %rdx
-CRYPTO_NAMESPACE(finish_ext_avx2_21):
+poly1305_finish_ext_avx2_21:
 testq $1, %rdx
-je CRYPTO_NAMESPACE(finish_ext_avx2_27)
-CRYPTO_NAMESPACE(finish_ext_avx2_22):
+je poly1305_finish_ext_avx2_27
+poly1305_finish_ext_avx2_22:
 cmpq $16, %r13
-ja CRYPTO_NAMESPACE(finish_ext_avx2_24)
-CRYPTO_NAMESPACE(finish_ext_avx2_23):
+ja poly1305_finish_ext_avx2_24
+poly1305_finish_ext_avx2_23:
 orq $256, %rdx
 movq %rdx, 176(%r12)
-jmp CRYPTO_NAMESPACE(finish_ext_avx2_28)
-CRYPTO_NAMESPACE(finish_ext_avx2_24):
+jmp poly1305_finish_ext_avx2_28
+poly1305_finish_ext_avx2_24:
 cmpq $32, %r13
-ja CRYPTO_NAMESPACE(finish_ext_avx2_27)
-CRYPTO_NAMESPACE(finish_ext_avx2_25):
+ja poly1305_finish_ext_avx2_27
+poly1305_finish_ext_avx2_25:
 orq $128, %rdx
 movq %rdx, 176(%r12)
-jmp CRYPTO_NAMESPACE(finish_ext_avx2_28)
-CRYPTO_NAMESPACE(finish_ext_avx2_27):
+jmp poly1305_finish_ext_avx2_28
+poly1305_finish_ext_avx2_27:
 movq %rdx, 176(%r12)
-CRYPTO_NAMESPACE(finish_ext_avx2_28):
+poly1305_finish_ext_avx2_28:
 movq %r12, %rdi
 lea (%rsp), %rsi
 movl $64, %edx
 vzeroupper
-call CRYPTO_NAMESPACE(blocks_avx2_local)
-CRYPTO_NAMESPACE(finish_ext_avx2_29):
+call poly1305_blocks_avx2_local
+poly1305_finish_ext_avx2_29:
 movq 176(%r12), %rdx
 testq $1, %rdx
-je CRYPTO_NAMESPACE(finish_ext_avx2_37)
-CRYPTO_NAMESPACE(finish_ext_avx2_30):
+je poly1305_finish_ext_avx2_37
+poly1305_finish_ext_avx2_30:
 andq $-8125, %rdx
 testq %r13, %r13
-je CRYPTO_NAMESPACE(finish_ext_avx2_32)
-CRYPTO_NAMESPACE(finish_ext_avx2_31):
+je poly1305_finish_ext_avx2_32
+poly1305_finish_ext_avx2_31:
 cmpq $48, %r13
-jbe CRYPTO_NAMESPACE(finish_ext_avx2_33)
-CRYPTO_NAMESPACE(finish_ext_avx2_32):
+jbe poly1305_finish_ext_avx2_33
+poly1305_finish_ext_avx2_32:
 orq $512, %rdx
-jmp CRYPTO_NAMESPACE(finish_ext_avx2_36)
-CRYPTO_NAMESPACE(finish_ext_avx2_33):
+jmp poly1305_finish_ext_avx2_36
+poly1305_finish_ext_avx2_33:
 cmpq $32, %r13
-jbe CRYPTO_NAMESPACE(finish_ext_avx2_35)
-CRYPTO_NAMESPACE(finish_ext_avx2_34):
+jbe poly1305_finish_ext_avx2_35
+poly1305_finish_ext_avx2_34:
 orq $1024, %rdx
-jmp CRYPTO_NAMESPACE(finish_ext_avx2_36)
-CRYPTO_NAMESPACE(finish_ext_avx2_35):
+jmp poly1305_finish_ext_avx2_36
+poly1305_finish_ext_avx2_35:
 movq %rdx, %rax
 orq $4096, %rdx
 orq $2048, %rax
 cmpq $16, %r13
 cmova %rax, %rdx
-CRYPTO_NAMESPACE(finish_ext_avx2_36):
+poly1305_finish_ext_avx2_36:
 orq $96, %rdx
 movq %r12, %rdi
 vpxor %ymm0, %ymm0, %ymm0
@@ -199,8 +198,8 @@ movl $64, %edx
 vmovdqu %ymm0, (%rsp)
 vmovdqu %ymm0, 32(%rsp)
 vzeroupper
-call CRYPTO_NAMESPACE(blocks_avx2_local)
-CRYPTO_NAMESPACE(finish_ext_avx2_37):
+call poly1305_blocks_avx2_local
+poly1305_finish_ext_avx2_37:
 movq 8(%r12), %r8
 movq %r8, %rsi
 movq 16(%r12), %rax
@@ -230,10 +229,10 @@ popq %r12
 movq %rbp, %rsp
 popq %rbp
 ret
-FN_END CRYPTO_NAMESPACE(finish_ext_avx2)
+FN_END poly1305_finish_ext_avx2
 
-GLOBAL_HIDDEN_FN CRYPTO_NAMESPACE(blocks_avx2)
-CRYPTO_NAMESPACE(blocks_avx2_local):
+GLOBAL_HIDDEN_FN poly1305_blocks_avx2
+poly1305_blocks_avx2_local:
 pushq %rbp
 movq %rsp, %rbp
 andq $-64, %rsp
@@ -249,35 +248,35 @@ vpbroadcastq %xmm1, %ymm1
 vpbroadcastq %xmm10, %ymm10
 vpbroadcastq %xmm0, %ymm11
 testq $60, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_11)
-CRYPTO_NAMESPACE(blocks_avx2_2):
+je poly1305_blocks_avx2_11
+poly1305_blocks_avx2_2:
 vpsrldq $8, %ymm1, %ymm15
 testq $4, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_4)
-CRYPTO_NAMESPACE(blocks_avx2_3):
+je poly1305_blocks_avx2_4
+poly1305_blocks_avx2_3:
 vpermq $192, %ymm15, %ymm15
-CRYPTO_NAMESPACE(blocks_avx2_4):
+poly1305_blocks_avx2_4:
 testq $8, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_6)
-CRYPTO_NAMESPACE(blocks_avx2_5):
+je poly1305_blocks_avx2_6
+poly1305_blocks_avx2_5:
 vpermq $240, %ymm15, %ymm15
-CRYPTO_NAMESPACE(blocks_avx2_6):
+poly1305_blocks_avx2_6:
 testq $16, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_8)
-CRYPTO_NAMESPACE(blocks_avx2_7):
+je poly1305_blocks_avx2_8
+poly1305_blocks_avx2_7:
 vpermq $252, %ymm15, %ymm15
-CRYPTO_NAMESPACE(blocks_avx2_8):
+poly1305_blocks_avx2_8:
 testq $32, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_10)
-CRYPTO_NAMESPACE(blocks_avx2_9):
+je poly1305_blocks_avx2_10
+poly1305_blocks_avx2_9:
 vpxor %ymm15, %ymm15, %ymm15
-CRYPTO_NAMESPACE(blocks_avx2_10):
+poly1305_blocks_avx2_10:
 vmovdqa %ymm15, %ymm1
-CRYPTO_NAMESPACE(blocks_avx2_11):
+poly1305_blocks_avx2_11:
 movq %rax, %rcx
 btsq $0, %rcx
-jc CRYPTO_NAMESPACE(blocks_avx2_13)
-CRYPTO_NAMESPACE(blocks_avx2_12):
+jc poly1305_blocks_avx2_13
+poly1305_blocks_avx2_12:
 vmovdqu (%rsi), %ymm3
 movq %rcx, %rax
 vmovdqu 32(%rsi), %ymm5
@@ -299,8 +298,8 @@ vpsrlq $26, %ymm7, %ymm2
 vpand %ymm7, %ymm10, %ymm5
 vpand %ymm2, %ymm10, %ymm7
 movq %rax, 176(%rdi)
-jmp CRYPTO_NAMESPACE(blocks_avx2_14)
-CRYPTO_NAMESPACE(blocks_avx2_13):
+jmp poly1305_blocks_avx2_14
+poly1305_blocks_avx2_13:
 vpermq $216, (%rdi), %ymm15
 vpxor %ymm0, %ymm0, %ymm0
 vpermq $216, 32(%rdi), %ymm14
@@ -310,76 +309,76 @@ vpunpckhdq %ymm0, %ymm15, %ymm3
 vpunpckldq %ymm0, %ymm14, %ymm5
 vpunpckhdq %ymm0, %ymm14, %ymm7
 vpunpckldq %ymm0, %ymm13, %ymm9
-CRYPTO_NAMESPACE(blocks_avx2_14):
+poly1305_blocks_avx2_14:
 cmpq $64, %rdx
-jb CRYPTO_NAMESPACE(blocks_avx2_34)
-CRYPTO_NAMESPACE(blocks_avx2_15):
+jb poly1305_blocks_avx2_34
+poly1305_blocks_avx2_15:
 vmovdqu 140(%rdi), %ymm0
 testq $8064, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_29)
-CRYPTO_NAMESPACE(blocks_avx2_16):
+je poly1305_blocks_avx2_29
+poly1305_blocks_avx2_16:
 vpermq $216, 80(%rdi), %ymm6
 vpermq $216, 100(%rdi), %ymm2
 vpermq $216, 120(%rdi), %ymm8
 vpermq $216, %ymm0, %ymm0
 testq $128, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_18)
-CRYPTO_NAMESPACE(blocks_avx2_17):
+je poly1305_blocks_avx2_18
+poly1305_blocks_avx2_17:
 vmovdqa %ymm0, %ymm15
 vmovdqa %ymm0, %ymm14
 vmovdqa %ymm0, %ymm13
 vmovdqa %ymm8, %ymm12
-jmp CRYPTO_NAMESPACE(blocks_avx2_28)
-CRYPTO_NAMESPACE(blocks_avx2_18):
+jmp poly1305_blocks_avx2_28
+poly1305_blocks_avx2_18:
 testq $256, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_20)
-CRYPTO_NAMESPACE(blocks_avx2_19):
+je poly1305_blocks_avx2_20
+poly1305_blocks_avx2_19:
 vmovdqa %ymm0, %ymm15
 vmovdqa %ymm0, %ymm14
 vmovdqa %ymm8, %ymm13
 vmovdqa %ymm2, %ymm12
-jmp CRYPTO_NAMESPACE(blocks_avx2_28)
-CRYPTO_NAMESPACE(blocks_avx2_20):
+jmp poly1305_blocks_avx2_28
+poly1305_blocks_avx2_20:
 testq $512, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_22)
-CRYPTO_NAMESPACE(blocks_avx2_21):
+je poly1305_blocks_avx2_22
+poly1305_blocks_avx2_21:
 vmovdqa %ymm0, %ymm15
 vmovdqa %ymm8, %ymm14
 vmovdqa %ymm2, %ymm13
 vmovdqa %ymm6, %ymm12
-jmp CRYPTO_NAMESPACE(blocks_avx2_28)
-CRYPTO_NAMESPACE(blocks_avx2_22):
+jmp poly1305_blocks_avx2_28
+poly1305_blocks_avx2_22:
 testq $1024, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_24)
-CRYPTO_NAMESPACE(blocks_avx2_23):
+je poly1305_blocks_avx2_24
+poly1305_blocks_avx2_23:
 vpxor %ymm12, %ymm12, %ymm12
 movl $1, %r8d
 vmovdqa %ymm8, %ymm15
 vmovdqa %ymm2, %ymm14
 vmovdqa %ymm6, %ymm13
 vmovd %r8d, %xmm12
-jmp CRYPTO_NAMESPACE(blocks_avx2_28)
-CRYPTO_NAMESPACE(blocks_avx2_24):
+jmp poly1305_blocks_avx2_28
+poly1305_blocks_avx2_24:
 testq $2048, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_26)
-CRYPTO_NAMESPACE(blocks_avx2_25):
+je poly1305_blocks_avx2_26
+poly1305_blocks_avx2_25:
 vpxor %ymm12, %ymm12, %ymm12
 movl $1, %r8d
 vmovd %r8d, %xmm13
 vmovdqa %ymm2, %ymm15
 vmovdqa %ymm6, %ymm14
 vmovdqa %ymm13, %ymm12
-jmp CRYPTO_NAMESPACE(blocks_avx2_28)
-CRYPTO_NAMESPACE(blocks_avx2_26):
+jmp poly1305_blocks_avx2_28
+poly1305_blocks_avx2_26:
 testq $4096, %rax
-je CRYPTO_NAMESPACE(blocks_avx2_28)
-CRYPTO_NAMESPACE(blocks_avx2_27):
+je poly1305_blocks_avx2_28
+poly1305_blocks_avx2_27:
 movl $1, %r8d
 vmovd %r8d, %xmm14
 vmovdqa %ymm6, %ymm15
 vmovdqa %ymm14, %ymm13
 vmovdqa %ymm14, %ymm12
-CRYPTO_NAMESPACE(blocks_avx2_28):
+poly1305_blocks_avx2_28:
 vpunpcklqdq %ymm14, %ymm15, %ymm6
 vpunpcklqdq %ymm12, %ymm13, %ymm8
 vpunpckhqdq %ymm14, %ymm15, %ymm14
@@ -391,8 +390,8 @@ vpsrlq $32, %ymm2, %ymm8
 vmovdqu %ymm0, 352(%rsp)
 vperm2i128 $32, %ymm12, %ymm14, %ymm13
 vmovdqu %ymm13, 320(%rsp)
-jmp CRYPTO_NAMESPACE(blocks_avx2_30)
-CRYPTO_NAMESPACE(blocks_avx2_29):
+jmp poly1305_blocks_avx2_30
+poly1305_blocks_avx2_29:
 vpsrlq $32, %ymm0, %ymm12
 vpermq $0, %ymm0, %ymm2
 vpermq $85, %ymm0, %ymm6
@@ -401,7 +400,7 @@ vpermq $170, %ymm0, %ymm0
 vpermq $0, %ymm12, %ymm8
 vmovdqu %ymm13, 352(%rsp)
 vmovdqu %ymm0, 320(%rsp)
-CRYPTO_NAMESPACE(blocks_avx2_30):
+poly1305_blocks_avx2_30:
 vmovdqu (%rsi), %ymm12
 movq %rdx, %r9
 vmovdqu 352(%rsp), %ymm15
@@ -516,8 +515,8 @@ shrq $58, %r9
 addq %rdx, %r9
 sarq $6, %r9
 cmpq $2, %r9
-jl CRYPTO_NAMESPACE(blocks_avx2_34)
-CRYPTO_NAMESPACE(blocks_avx2_31):
+jl poly1305_blocks_avx2_34
+poly1305_blocks_avx2_31:
 vmovdqu %ymm6, 32(%rsp)
 lea -64(%rdx), %r9
 vmovdqu %ymm8, 64(%rsp)
@@ -529,7 +528,7 @@ sarq $5, %r9
 shrq $58, %r9
 lea -64(%rdx,%r9), %rdx
 sarq $6, %rdx
-CRYPTO_NAMESPACE(blocks_avx2_32):
+poly1305_blocks_avx2_32:
 vmovdqu 256(%rsp), %ymm15
 incq %r8
 vmovdqu 64(%rcx,%rsi), %ymm11
@@ -624,11 +623,11 @@ vpand %ymm9, %ymm15, %ymm4
 vpaddq %ymm3, %ymm1, %ymm3
 vpaddq %ymm0, %ymm14, %ymm9
 cmpq %rdx, %r8
-jb CRYPTO_NAMESPACE(blocks_avx2_32)
-CRYPTO_NAMESPACE(blocks_avx2_34):
+jb poly1305_blocks_avx2_32
+poly1305_blocks_avx2_34:
 testq $64, %rax
-jne CRYPTO_NAMESPACE(blocks_avx2_36)
-CRYPTO_NAMESPACE(blocks_avx2_35):
+jne poly1305_blocks_avx2_36
+poly1305_blocks_avx2_35:
 vpshufd $8, %ymm4, %ymm0
 vpshufd $8, %ymm3, %ymm3
 vpshufd $8, %ymm5, %ymm5
@@ -644,8 +643,8 @@ vperm2i128 $32, %ymm6, %ymm4, %ymm10
 vmovdqu %ymm8, (%rdi)
 vmovdqu %ymm10, 32(%rdi)
 vmovdqu %xmm11, 64(%rdi)
-jmp CRYPTO_NAMESPACE(blocks_avx2_37)
-CRYPTO_NAMESPACE(blocks_avx2_36):
+jmp poly1305_blocks_avx2_37
+poly1305_blocks_avx2_36:
 vpermq $245, %ymm4, %ymm0
 vpaddq %ymm0, %ymm4, %ymm4
 vpermq $245, %ymm3, %ymm1
@@ -750,15 +749,15 @@ orq %rax, %rsi
 movq %rcx, (%rdi)
 movq %rdx, 8(%rdi)
 movq %rsi, 16(%rdi)
-CRYPTO_NAMESPACE(blocks_avx2_37):
+poly1305_blocks_avx2_37:
 vzeroupper
 movq %rbp, %rsp
 popq %rbp
 ret
-FN_END CRYPTO_NAMESPACE(blocks_avx2)
+FN_END poly1305_blocks_avx2
 
-GLOBAL_HIDDEN_FN CRYPTO_NAMESPACE(init_ext_avx2)
-CRYPTO_NAMESPACE(init_ext_avx2_local):
+GLOBAL_HIDDEN_FN poly1305_init_ext_avx2
+poly1305_init_ext_avx2_local:
 pushq %r12
 pushq %r13
 pushq %r14
@@ -816,8 +815,8 @@ andl $67108863, %ecx
 movl %ecx, 92(%r10)
 movl %edx, 96(%r10)
 cmpq $16, %r12
-jbe CRYPTO_NAMESPACE(init_ext_avx2_7)
-CRYPTO_NAMESPACE(init_ext_avx2_2):
+jbe poly1305_init_ext_avx2_7
+poly1305_init_ext_avx2_2:
 movq %r9, %rax
 lea (%rdi,%rdi,4), %r14
 mulq %r9
@@ -900,8 +899,8 @@ movl %r11d, 104(%r10)
 movl %r14d, 108(%r10)
 movl %edx, 116(%r10)
 cmpq $48, %r12
-jbe CRYPTO_NAMESPACE(init_ext_avx2_4)
-CRYPTO_NAMESPACE(init_ext_avx2_3):
+jbe poly1305_init_ext_avx2_4
+poly1305_init_ext_avx2_3:
 movq %rsi, %rax
 lea (%rbx,%rbx,4), %r15
 mulq %rsi
@@ -982,14 +981,14 @@ movl %r12d, 144(%r10)
 movl %r13d, 148(%r10)
 movl %r15d, 156(%r10)
 movq -16(%rsp), %r11
-jmp CRYPTO_NAMESPACE(init_ext_avx2_6)
-CRYPTO_NAMESPACE(init_ext_avx2_4):
+jmp poly1305_init_ext_avx2_6
+poly1305_init_ext_avx2_4:
 cmpq $32, %r12
-jbe CRYPTO_NAMESPACE(init_ext_avx2_7)
-CRYPTO_NAMESPACE(init_ext_avx2_5):
+jbe poly1305_init_ext_avx2_7
+poly1305_init_ext_avx2_5:
 lea (%rbx,%rbx,4), %r11
 shlq $2, %r11
-CRYPTO_NAMESPACE(init_ext_avx2_6):
+poly1305_init_ext_avx2_6:
 movq %r9, %rax
 lea (%rcx,%rcx,4), %r13
 mulq %rsi
@@ -1079,7 +1078,7 @@ movl %edx, 124(%r10)
 movl %ecx, 128(%r10)
 movl %r9d, 132(%r10)
 movl %esi, 136(%r10)
-CRYPTO_NAMESPACE(init_ext_avx2_7):
+poly1305_init_ext_avx2_7:
 movq $0, 176(%r10)
 vzeroupper
 popq %rbx
@@ -1088,5 +1087,5 @@ popq %r14
 popq %r13
 popq %r12
 ret
-FN_END CRYPTO_NAMESPACE(init_ext_avx2)
+FN_END poly1305_init_ext_avx2
 

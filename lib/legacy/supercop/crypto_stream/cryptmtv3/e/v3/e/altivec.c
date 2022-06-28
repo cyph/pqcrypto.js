@@ -2,9 +2,9 @@
  * This file is included by cryptmt3.c
  * altivec code for Power PC
  */
-static __inline__ void vec_genrand_block(ECRYPT_ctx * ctx);
+static __inline__ void vec_genrand_block(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx);
 
-static __inline__ void vec_genrand_block(ECRYPT_ctx * ctx)
+static __inline__ void vec_genrand_block(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx)
 {
     int i;
     vector unsigned int *sfmt;
@@ -54,24 +54,24 @@ static __inline__ void vec_genrand_block(ECRYPT_ctx * ctx)
     }
 }
 
-static __inline__ void fast_genrand_block_first(ECRYPT_ctx * ctx, u8 cipher[], 
+static __inline__ void fast_genrand_block_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], 
 					    const u8 plain[]) {
     genrand_block_first(ctx, cipher, plain);
 }
 
-static __inline__ void fast_genrand_block(ECRYPT_ctx * ctx, u8 cipher[], 
+static __inline__ void fast_genrand_block(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[], 
 					  const u8 plain[])
 {
     vec_genrand_block(ctx);
     filter_16bytes(ctx->psfmt, ctx->accum, cipher, plain, N / 2);
 }
 
-static __inline__ void fast_genrand_bytes_first(ECRYPT_ctx * ctx, u8 cipher[],
+static __inline__ void fast_genrand_bytes_first(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx * ctx, u8 cipher[],
 					    const u8 plain[], u32 len) {
     genrand_bytes_first(ctx, cipher, plain, len);
 }
 
-static __inline__ void fast_genrand_bytes(ECRYPT_ctx *ctx, u8 cipher[],
+static __inline__ void fast_genrand_bytes(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx *ctx, u8 cipher[],
 					  const u8 plain[], u32 len)
 {
     vector unsigned int *sfmt;
@@ -135,7 +135,7 @@ static __inline__ void fast_genrand_bytes(ECRYPT_ctx *ctx, u8 cipher[],
     }
 }
 
-static __inline__ void fast_boot_up(ECRYPT_ctx *ctx, s32 length) {
+static __inline__ void fast_boot_up(crypto_stream_cryptmtv3_e_v3_ECRYPT_ctx *ctx, s32 length) {
     boot_up(ctx, length);
 }
 

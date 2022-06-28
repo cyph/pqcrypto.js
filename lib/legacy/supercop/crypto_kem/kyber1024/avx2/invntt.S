@@ -1,1 +1,1 @@
-../../kyber512/avx2/invntt.S
+../../kyber768/avx2/invntt.s

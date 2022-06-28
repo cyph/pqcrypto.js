@@ -1,1 +1,0 @@
-../opt/genCanonicalBasis_gf2n.c

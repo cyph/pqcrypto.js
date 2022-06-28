@@ -85,7 +85,7 @@ int64 mask
 stack128 tmp
 
 # Enter the function
-enter ECRYPT_process_bytes
+enter crypto_stream_aes128estream_e_schwabe_ultrasparc3_1_ECRYPT_process_bytes
 
 =? length - 0
 goto donothing if =

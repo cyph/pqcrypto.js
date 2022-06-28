@@ -1,16 +1,16 @@
 #ifndef FE51_NAMESPACE_H
 #define FE51_NAMESPACE_H
 
-#define  fe51              CRYPTO_NAMESPACE(fe51)
-#define _fe51             _CRYPTO_NAMESPACE(fe51)
-#define  fe51_pack         CRYPTO_NAMESPACE(fe51_pack)
-#define _fe51_pack        _CRYPTO_NAMESPACE(fe51_pack)
-#define  fe51_mul          CRYPTO_NAMESPACE(fe51_mul)
-#define _fe51_mul         _CRYPTO_NAMESPACE(fe51_mul)
-#define  fe51_nsquare      CRYPTO_NAMESPACE(fe51_nsquare)
-#define _fe51_nsquare     _CRYPTO_NAMESPACE(fe51_nsquare)
+#define  fe51              crypto_scalarmult_curve25519_sandy2x_fe51
+#define _fe51             _crypto_scalarmult_curve25519_sandy2x_fe51
+#define  fe51_pack         crypto_scalarmult_curve25519_sandy2x_fe51_pack
+#define _fe51_pack        _crypto_scalarmult_curve25519_sandy2x_fe51_pack
+#define  fe51_mul          crypto_scalarmult_curve25519_sandy2x_fe51_mul
+#define _fe51_mul         _crypto_scalarmult_curve25519_sandy2x_fe51_mul
+#define  fe51_nsquare      crypto_scalarmult_curve25519_sandy2x_fe51_nsquare
+#define _fe51_nsquare     _crypto_scalarmult_curve25519_sandy2x_fe51_nsquare
 
-#define  fe51_invert       CRYPTO_NAMESPACE(fe51_invert)
+#define  fe51_invert       crypto_scalarmult_curve25519_sandy2x_fe51_invert
 
 #endif //ifndef FE51_NAMESPACE_H
 

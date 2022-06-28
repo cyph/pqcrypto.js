@@ -162,7 +162,7 @@ invert:
 vpush {q4,q5,q6,q7}
 mov r12,sp
 sub sp,sp,#448
-bic sp,sp,#15
+and sp,sp,#0xffffffe0
 
 # qhasm: stack32 stack_r4
 
@@ -3710,7 +3710,7 @@ vmov q5,q5
 # qhasm: ctr = 5
 # asm 1: ldr >ctr=int32#4,=5
 # asm 2: ldr >ctr=r3,=5
-mov r3,#5
+ldr r3,=5
 
 # qhasm: loop5:
 ._loop5:
@@ -4821,7 +4821,7 @@ vmov q5,q5
 # qhasm: ctr = 10
 # asm 1: ldr >ctr=int32#4,=10
 # asm 2: ldr >ctr=r3,=10
-mov r3,#10
+ldr r3,=10
 
 # qhasm: loop10:
 ._loop10:
@@ -5922,7 +5922,7 @@ vmov q5,q5
 # qhasm: ctr = 20
 # asm 1: ldr >ctr=int32#4,=20
 # asm 2: ldr >ctr=r3,=20
-mov r3,#20
+ldr r3,=20
 
 # qhasm: loop20:
 ._loop20:
@@ -7023,7 +7023,7 @@ vmov q5,q5
 # qhasm: ctr = 40
 # asm 1: ldr >ctr=int32#4,=40
 # asm 2: ldr >ctr=r3,=40
-mov r3,#40
+ldr r3,=40
 
 # qhasm: loop40:
 ._loop40:
@@ -8124,7 +8124,7 @@ vmov q5,q5
 # qhasm: ctr = 40
 # asm 1: ldr >ctr=int32#4,=40
 # asm 2: ldr >ctr=r3,=40
-mov r3,#40
+ldr r3,=40
 
 # qhasm: loop40_:
 ._loop40_:
@@ -9225,7 +9225,7 @@ vmov q5,q5
 # qhasm: ctr = 5
 # asm 1: ldr >ctr=int32#4,=5
 # asm 2: ldr >ctr=r3,=5
-mov r3,#5
+ldr r3,=5
 
 # qhasm: loop5_:
 ._loop5_:

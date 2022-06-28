@@ -1,1 +1,2 @@
-../../iscream12v1/sse/params.h
+#define NSTEPS 12
+#define TWEAKEY_SIZE 4

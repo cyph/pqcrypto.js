@@ -1,1 +1,0 @@
-../../sikep434/arm/ec_isogeny.inc

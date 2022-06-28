@@ -26,68 +26,68 @@ Compress256:
         movl      %esi, -816(%ebp)                              #269.1
         movl      8(%ebx), %eax                                 #268.6
         movl      16(%ebx), %edx                                #268.6
-        movdqu    16(%edx), %xmm0                               #365.49
-        movdqu    32(%edx), %xmm1                               #369.29
-        movdqu    48(%edx), %xmm2                               #371.29
-        movdqu    64(%edx), %xmm3                               #373.29
+        movdqa    16(%edx), %xmm0                               #365.49
+        movdqa    32(%edx), %xmm1                               #369.29
+        movdqa    48(%edx), %xmm2                               #371.29
+        movdqa    64(%edx), %xmm3                               #373.29
         movdqa    48+consts256, %xmm4                           #907.54
         movdqa    32+consts256, %xmm5                           #925.54
         movl      %eax, -132(%ebp)                              #268.6
-        movdqu    %xmm0, -760(%ebp)                             #366.19
-        movdqu    %xmm1, -744(%ebp)                             #370.19
-        movdqu    %xmm2, -728(%ebp)                             #372.19
-        movdqu    %xmm3, -712(%ebp)                             #374.19
-        movdqu    %xmm4, -792(%ebp)                             #907.54
-        movdqu    %xmm5, -808(%ebp)                             #925.54
+        movdqa    %xmm0, -760(%ebp)                             #366.19
+        movdqa    %xmm1, -744(%ebp)                             #370.19
+        movdqa    %xmm2, -728(%ebp)                             #372.19
+        movdqa    %xmm3, -712(%ebp)                             #374.19
+        movdqa    %xmm4, -792(%ebp)                             #907.54
+        movdqa    %xmm5, -808(%ebp)                             #925.54
                                 # LOE
 ..B1.2:                         # Preds ..B1.7 ..B1.1
-        movdqu    -760(%ebp), %xmm0                             #407.53
+        movdqa    -760(%ebp), %xmm0                             #407.53
         movl      -132(%ebp), %eax                              #407.80
-        movdqu    -728(%ebp), %xmm3                             #418.53
-        movdqu    -712(%ebp), %xmm7                             #421.53
-        movdqu    (%eax), %xmm6                                 #407.80
-        movdqu    16(%eax), %xmm2                               #414.80
-        movdqu    32(%eax), %xmm1                               #418.80
-        movdqu    48(%eax), %xmm4                               #421.80
+        movdqa    -728(%ebp), %xmm3                             #418.53
+        movdqa    -712(%ebp), %xmm7                             #421.53
+        movdqa    (%eax), %xmm6                                 #407.80
+        movdqa    16(%eax), %xmm2                               #414.80
+        movdqa    32(%eax), %xmm1                               #418.80
+        movdqa    48(%eax), %xmm4                               #421.80
         movl      (%eax), %edx                                  #476.3
         movl      4(%eax), %ecx                                 #476.3
         movl      8(%eax), %esi                                 #476.3
         movl      12(%eax), %edi                                #476.3
-        movdqu    %xmm0, -600(%ebp)                             #407.53
+        movdqa    %xmm0, -600(%ebp)                             #407.53
         pxor      %xmm0, %xmm6                                  #407.23
-        movdqu    -744(%ebp), %xmm0                             #414.53
-        movdqu    %xmm0, -664(%ebp)                             #414.53
+        movdqa    -744(%ebp), %xmm0                             #414.53
+        movdqa    %xmm0, -664(%ebp)                             #414.53
         pxor      %xmm0, %xmm2                                  #414.23
         movdqa    %xmm2, %xmm5                                  #429.23
         palignr   $4, %xmm6, %xmm5                              #429.23
-        movdqu    %xmm3, -680(%ebp)                             #418.53
+        movdqa    %xmm3, -680(%ebp)                             #418.53
         pxor      %xmm1, %xmm3                                  #418.23
-        movdqu    %xmm1, -776(%ebp)                             #418.80
+        movdqa    %xmm1, -776(%ebp)                             #418.80
         movdqa    %xmm2, %xmm1                                  #436.23
         palignr   $8, %xmm6, %xmm1                              #436.23
-        movdqu    %xmm7, -648(%ebp)                             #421.53
+        movdqa    %xmm7, -648(%ebp)                             #421.53
         pxor      %xmm4, %xmm7                                  #421.23
         movdqa    %xmm7, %xmm0                                  #432.23
         palignr   $4, %xmm3, %xmm0                              #432.23
-        movdqu    %xmm4, -696(%ebp)                             #421.80
+        movdqa    %xmm4, -696(%ebp)                             #421.80
         movdqa    %xmm3, %xmm4                                  #437.23
         palignr   $8, %xmm2, %xmm4                              #437.23
-        movdqu    %xmm5, -568(%ebp)                             #429.23
+        movdqa    %xmm5, -568(%ebp)                             #429.23
         movdqa    %xmm3, %xmm5                                  #431.23
         palignr   $4, %xmm2, %xmm5                              #431.23
-        movdqu    %xmm0, -552(%ebp)                             #432.23
+        movdqa    %xmm0, -552(%ebp)                             #432.23
         movdqa    %xmm6, %xmm0                                  #433.23
         palignr   $4, %xmm7, %xmm0                              #433.23
-        movdqu    %xmm1, -536(%ebp)                             #436.23
+        movdqa    %xmm1, -536(%ebp)                             #436.23
         movdqa    %xmm7, %xmm1                                  #438.23
         palignr   $8, %xmm3, %xmm1                              #438.23
-        movdqu    %xmm4, -520(%ebp)                             #437.23
+        movdqa    %xmm4, -520(%ebp)                             #437.23
         movdqa    %xmm6, %xmm4                                  #439.23
         palignr   $8, %xmm7, %xmm4                              #439.23
-        movdqu    %xmm4, -504(%ebp)                             #439.23
+        movdqa    %xmm4, -504(%ebp)                             #439.23
         movdqa    %xmm2, %xmm4                                  #441.23
         palignr   $12, %xmm6, %xmm4                             #441.23
-        movdqu    %xmm4, -488(%ebp)                             #441.23
+        movdqa    %xmm4, -488(%ebp)                             #441.23
         movdqa    %xmm3, %xmm4                                  #442.23
         palignr   $12, %xmm2, %xmm4                             #442.23
         movdqa    %xmm7, %xmm2                                  #443.23
@@ -106,13 +106,13 @@ Compress256:
         movl      %ecx, -224(%ebp)                              #476.3
         roll      $2, %ecx                                      #476.12
         paddd     %xmm4, %xmm7                                  #505.11
-        movdqu    -552(%ebp), %xmm4                             #524.33
+        movdqa    -552(%ebp), %xmm4                             #524.33
         psignd    _2il0floatpacket.53, %xmm4                    #524.33
         movl      %ecx, -884(%ebp)                              #476.3
         movl      20(%eax), %ecx                                #476.3
         psubd     %xmm1, %xmm7                                  #506.11
         psignd    %xmm3, %xmm2                                  #524.73
-        movdqu    -568(%ebp), %xmm3                             #526.32
+        movdqa    -568(%ebp), %xmm3                             #526.32
         movl      %esi, -228(%ebp)                              #476.3
         roll      $3, %esi                                      #476.12
         paddd     %xmm2, %xmm4                                  #524.19
@@ -160,15 +160,15 @@ Compress256:
         movl      %edx, -836(%ebp)                              #476.3
         movl      %ecx, -832(%ebp)                              #476.3
         movl      %eax, -828(%ebp)                              #476.3
-        movdqu    %xmm1, -472(%ebp)                             #506.32
-        movdqu    -504(%ebp), %xmm1                             #507.26
+        movdqa    %xmm1, -472(%ebp)                             #506.32
+        movdqa    -504(%ebp), %xmm1                             #507.26
         psignd    _2il0floatpacket.52, %xmm1                    #507.26
         paddd     %xmm1, %xmm7                                  #508.11
         movaps    %xmm7, -456(%ebp)                             #508.11
         psubd     %xmm1, %xmm4                                  #525.11
         movdqa    _2il0floatpacket.55, %xmm1                    #527.32
         paddd     %xmm3, %xmm4                                  #526.11
-        movdqu    -536(%ebp), %xmm3                             #527.32
+        movdqa    -536(%ebp), %xmm3                             #527.32
         movdqa    %xmm3, %xmm7                                  #527.32
         psignd    %xmm1, %xmm7                                  #527.32
         paddd     %xmm7, %xmm4                                  #527.11
@@ -178,18 +178,18 @@ Compress256:
         psignd    %xmm2, %xmm3                                  #540.32
         movdqa    _2il0floatpacket.53, %xmm2                    #542.32
         paddd     %xmm3, %xmm0                                  #540.11
-        movdqu    -520(%ebp), %xmm3                             #542.32
+        movdqa    -520(%ebp), %xmm3                             #542.32
         psignd    %xmm7, %xmm5                                  #541.32
         psubd     %xmm5, %xmm0                                  #541.11
-        movdqu    -488(%ebp), %xmm5                             #553.74
+        movdqa    -488(%ebp), %xmm5                             #553.74
         movdqa    %xmm3, %xmm6                                  #542.32
         psignd    _2il0floatpacket.57, %xmm3                    #554.32
         psignd    %xmm2, %xmm6                                  #542.32
         psubd     %xmm6, %xmm0                                  #542.11
-        movdqu    -568(%ebp), %xmm6                             #553.33
+        movdqa    -568(%ebp), %xmm6                             #553.33
         psignd    %xmm1, %xmm6                                  #553.33
         psignd    %xmm2, %xmm5                                  #553.74
-        movdqu    -552(%ebp), %xmm2                             #555.32
+        movdqa    -552(%ebp), %xmm2                             #555.32
         paddd     %xmm5, %xmm6                                  #553.19
         paddd     %xmm3, %xmm6                                  #554.11
         psignd    %xmm7, %xmm2                                  #555.32
@@ -263,7 +263,7 @@ Compress256:
         pxor      %xmm6, %xmm1                                  #642.15
         pslld     $14, %xmm5                                    #642.15
         pxor      %xmm5, %xmm1                                  #642.15
-        movdqu    -760(%ebp), %xmm5                             #730.27
+        movdqa    -760(%ebp), %xmm5                             #730.27
         psrld     $14, %xmm6                                    #642.15
         pxor      %xmm6, %xmm1                                  #642.15
         movaps    %xmm4, %xmm6                                  #651.15
@@ -274,20 +274,20 @@ Compress256:
         shufps    $197, %xmm6, %xmm0                            #659.23
         shufps    $238, %xmm6, %xmm1                            #660.23
         shufps    $255, %xmm3, %xmm6                            #661.23
-        movdqu    -712(%ebp), %xmm3                             #730.27
+        movdqa    -712(%ebp), %xmm3                             #730.27
         shufps    $210, %xmm2, %xmm0                            #664.23
         shufps    $136, %xmm4, %xmm2                            #665.11
         shufps    $40, %xmm7, %xmm1                             #666.11
         movdqa    %xmm5, %xmm7                                  #730.27
         palignr   $4, %xmm3, %xmm7                              #730.27
-        movdqu    %xmm7, -440(%ebp)                             #730.27
-        movdqu    -728(%ebp), %xmm7                             #731.23
+        movdqa    %xmm7, -440(%ebp)                             #730.27
+        movdqa    -728(%ebp), %xmm7                             #731.23
         shufps    $141, %xmm6, %xmm4                            #667.11
-        movdqu    -744(%ebp), %xmm6                             #732.23
+        movdqa    -744(%ebp), %xmm6                             #732.23
         paddd     -440(%ebp), %xmm4                             #739.22
         palignr   $4, %xmm7, %xmm3                              #731.23
         paddd     %xmm3, %xmm1                                  #738.22
-        movdqu    %xmm1, -984(%ebp)                             #751.20
+        movdqa    %xmm1, -984(%ebp)                             #751.20
         shufps    $120, %xmm0, %xmm0                            #668.11
         palignr   $4, %xmm6, %xmm7                              #732.23
         movd      %xmm1, -160(%ebp)                             #752.12
@@ -296,7 +296,7 @@ Compress256:
         psrldq    $4, %xmm7                                     #745.20
         palignr   $4, %xmm5, %xmm6                              #733.23
         paddd     %xmm6, %xmm2                                  #736.22
-        movdqu    %xmm2, -1016(%ebp)                            #741.20
+        movdqa    %xmm2, -1016(%ebp)                            #741.20
         movaps    %xmm2, %xmm3                                  #741.20
         psrldq    $12, %xmm3                                    #741.20
         movaps    %xmm2, %xmm5                                  #741.20
@@ -304,7 +304,7 @@ Compress256:
         movaps    %xmm0, %xmm3                                  #745.20
         psrldq    $8, %xmm5                                     #741.20
         movd      %xmm5, %edx                                   #742.12
-        movdqu    %xmm0, -1000(%ebp)                            #745.20
+        movdqa    %xmm0, -1000(%ebp)                            #745.20
         movaps    %xmm0, %xmm5                                  #745.20
         movaps    %xmm1, %xmm6                                  #751.20
         psrldq    $12, %xmm5                                    #745.20
@@ -326,7 +326,7 @@ Compress256:
         movaps    %xmm4, %xmm7                                  #757.20
         movd      %xmm6, -184(%ebp)                             #755.12
         psrldq    $8, %xmm5                                     #757.20
-        movdqu    %xmm4, -968(%ebp)                             #757.20
+        movdqa    %xmm4, -968(%ebp)                             #757.20
         psrldq    $4, %xmm7                                     #757.20
         movd      %xmm4, -208(%ebp)                             #758.12
         movd      %xmm7, -180(%ebp)                             #759.12
@@ -455,7 +455,7 @@ Compress256:
         addl      %esi, %eax                                    #1087.3
         movaps    %xmm1, %xmm6                                  #833.22
         palignr   $4, %xmm0, %xmm6                              #833.22
-        movdqu    %xmm6, -360(%ebp)                             #833.22
+        movdqa    %xmm6, -360(%ebp)                             #833.22
         movdqa    %xmm5, %xmm2                                  #834.26
         punpcklqdq %xmm6, %xmm2                                 #834.26
         movdqa    %xmm2, %xmm0                                  #835.46
@@ -505,11 +505,11 @@ Compress256:
         pxor      %xmm1, %xmm0                                  #844.46
         pslld     $13, %xmm4                                    #844.46
         pxor      %xmm4, %xmm0                                  #844.46
-        movdqu    -872(%ebp), %xmm4                             #893.39
+        movdqa    -872(%ebp), %xmm4                             #893.39
         psrld     $13, %xmm1                                    #844.46
         pxor      %xmm1, %xmm0                                  #844.46
         paddd     %xmm0, %xmm3                                  #844.18
-        movdqu    -840(%ebp), %xmm0                             #895.39
+        movdqa    -840(%ebp), %xmm0                             #895.39
         movdqa    %xmm6, %xmm2                                  #845.24
         punpckhqdq %xmm5, %xmm2                                 #845.24
         movdqa    %xmm2, %xmm7                                  #846.46
@@ -525,13 +525,13 @@ Compress256:
         pxor      %xmm7, %xmm1                                  #846.46
         psrld     $15, %xmm2                                    #846.46
         pxor      %xmm2, %xmm1                                  #846.46
-        movdqu    -888(%ebp), %xmm2                             #892.39
+        movdqa    -888(%ebp), %xmm2                             #892.39
         paddd     %xmm1, %xmm3                                  #846.18
         pshufd    $120, %xmm3, %xmm1                            #852.26
         pxor      %xmm3, %xmm3                                  #853.23
         phaddd    %xmm3, %xmm1                                  #853.23
-        movdqu    -856(%ebp), %xmm3                             #899.23
-        movdqu    %xmm1, -344(%ebp)                             #853.23
+        movdqa    -856(%ebp), %xmm3                             #899.23
+        movdqa    %xmm1, -344(%ebp)                             #853.23
         movdqa    %xmm2, %xmm7                                  #897.23
         palignr   $12, %xmm0, %xmm7                             #897.23
         movdqa    %xmm4, %xmm5                                  #898.23
@@ -539,19 +539,19 @@ Compress256:
         paddd     %xmm0, %xmm7                                  #906.14
         paddd     -792(%ebp), %xmm7                             #907.14
         palignr   $12, %xmm2, %xmm5                             #898.23
-        movdqu    %xmm5, -328(%ebp)                             #898.23
+        movdqa    %xmm5, -328(%ebp)                             #898.23
         movdqa    %xmm3, %xmm5                                  #901.23
         palignr   $12, %xmm4, %xmm1                             #899.23
-        movdqu    %xmm1, -312(%ebp)                             #899.23
-        movdqu    -600(%ebp), %xmm1                             #914.24
+        movdqa    %xmm1, -312(%ebp)                             #899.23
+        movdqa    -600(%ebp), %xmm1                             #914.24
         palignr   $8, %xmm4, %xmm5                              #901.23
         psubd     %xmm5, %xmm7                                  #910.14
-        movdqu    -664(%ebp), %xmm5                             #914.24
+        movdqa    -664(%ebp), %xmm5                             #914.24
         palignr   $12, %xmm1, %xmm5                             #914.24
         pxor      %xmm5, %xmm7                                  #915.14
-        movdqu    -648(%ebp), %xmm5                             #931.24
-        movdqu    %xmm7, -584(%ebp)                             #915.14
-        movdqu    %xmm7, -904(%ebp)                             #916.20
+        movdqa    -648(%ebp), %xmm5                             #931.24
+        movdqa    %xmm7, -584(%ebp)                             #915.14
+        movdqa    %xmm7, -904(%ebp)                             #916.20
         palignr   $12, %xmm3, %xmm0                             #918.23
         paddd     %xmm3, %xmm0                                  #924.14
         paddd     -808(%ebp), %xmm0                             #925.14
@@ -569,27 +569,27 @@ Compress256:
         movaps    -408(%ebp), %xmm1                             #936.22
         paddd     %xmm3, %xmm0                                  #935.14
         palignr   $12, %xmm1, %xmm7                             #936.22
-        movdqu    %xmm7, -296(%ebp)                             #936.22
+        movdqa    %xmm7, -296(%ebp)                             #936.22
         movdqa    %xmm7, %xmm3                                  #938.38
         psrld     $25, %xmm3                                    #938.38
         pslld     $7, %xmm7                                     #938.38
         por       %xmm7, %xmm3                                  #938.38
         paddd     %xmm3, %xmm0                                  #938.14
-        movdqu    -328(%ebp), %xmm3                             #946.14
+        movdqa    -328(%ebp), %xmm3                             #946.14
         paddd     %xmm2, %xmm3                                  #946.14
-        movdqu    -680(%ebp), %xmm2                             #957.24
+        movdqa    -680(%ebp), %xmm2                             #957.24
         paddd     _2il0floatpacket.49, %xmm3                    #948.14
-        movdqu    %xmm0, -280(%ebp)                             #938.14
+        movdqa    %xmm0, -280(%ebp)                             #938.14
         movdqa    %xmm2, %xmm7                                  #957.24
         palignr   $12, -664(%ebp), %xmm7                        #957.24
-        movdqu    %xmm0, -920(%ebp)                             #939.20
+        movdqa    %xmm0, -920(%ebp)                             #939.20
         movq      -848(%ebp), %xmm0                             #952.57
         movhpd    -840(%ebp), %xmm0                             #952.38
         psubd     %xmm0, %xmm3                                  #952.14
         pxor      %xmm7, %xmm3                                  #958.14
         paddd     -344(%ebp), %xmm3                             #961.14
-        movdqu    -312(%ebp), %xmm7                             #982.14
-        movdqu    %xmm3, -952(%ebp)                             #962.20
+        movdqa    -312(%ebp), %xmm7                             #982.14
+        movdqa    %xmm3, -952(%ebp)                             #962.20
         movdqa    %xmm3, %xmm0                                  #962.20
         psrldq    $4, %xmm0                                     #962.20
         paddd     %xmm4, %xmm7                                  #982.14
@@ -597,7 +597,7 @@ Compress256:
         palignr   $12, %xmm2, %xmm5                             #992.24
         movq      -832(%ebp), %xmm4                             #988.57
         movhpd    -888(%ebp), %xmm4                             #988.38
-        movdqu    -360(%ebp), %xmm2                             #997.38
+        movdqa    -360(%ebp), %xmm2                             #997.38
         psubd     %xmm4, %xmm7                                  #988.14
         pxor      %xmm5, %xmm7                                  #993.14
         movdqa    %xmm2, %xmm5                                  #997.38
@@ -624,7 +624,7 @@ Compress256:
         psrld     $19, %xmm2                                    #1002.38
         pslld     $13, %xmm6                                    #1002.38
         por       %xmm6, %xmm2                                  #1002.38
-        movdqu    -296(%ebp), %xmm6                             #1004.38
+        movdqa    -296(%ebp), %xmm6                             #1004.38
         pshufb    _2il0floatpacket.58, %xmm6                    #1004.38
         paddd     %xmm2, %xmm7                                  #1002.14
         movl      %eax, -216(%ebp)                              #1088.12
@@ -632,7 +632,7 @@ Compress256:
         movdqa    %xmm7, %xmm2                                  #1006.20
         xorl      %ecx, %eax                                    #1088.12
         xorl      %esi, %eax                                    #1088.12
-        movdqu    %xmm7, -936(%ebp)                             #1006.20
+        movdqa    %xmm7, -936(%ebp)                             #1006.20
         psrldq    $8, %xmm2                                     #1006.20
         movl      %ecx, -68(%ebp)                               #1088.12
         roll      $17, %ecx                                     #1088.12
@@ -978,7 +978,7 @@ Compress256:
         movl      -584(%ebp), %edx                              #1308.13
         addl      %ecx, %edx                                    #1298.3
         movl      %eax, -908(%ebp)                              #1294.3
-        movdqu    -920(%ebp), %xmm0                             #1406.30
+        movdqa    -920(%ebp), %xmm0                             #1406.30
         pxor      %xmm0, %xmm2                                  #1408.16
         pxor      -776(%ebp), %xmm0                             #1468.24
         movl      %ecx, -160(%ebp)                              #1296.29
@@ -1126,7 +1126,7 @@ Compress256:
         xorl      -188(%ebp), %ecx                              #1413.53
         xorl      -220(%ebp), %ecx                              #1413.69
         movl      %esi, -892(%ebp)                              #1365.3
-        movdqu    -904(%ebp), %xmm3                             #1407.30
+        movdqa    -904(%ebp), %xmm3                             #1407.30
         pxor      -696(%ebp), %xmm3                             #1472.24
         movd      %xmm2, %esi                                   #1413.3
         addl      %ecx, %esi                                    #1413.3
@@ -1134,9 +1134,9 @@ Compress256:
         movl      %edx, -248(%ebp)                              #1367.3
         movq      -248(%ebp), %xmm6                             #1368.21
         pshufd    $0, %xmm6, %xmm5                              #1369.13
-        movdqu    -936(%ebp), %xmm6                             #1457.30
-        movdqu    %xmm2, -760(%ebp)                             #1409.20
-        movdqu    -952(%ebp), %xmm2                             #1456.30
+        movdqa    -936(%ebp), %xmm6                             #1457.30
+        movdqa    %xmm2, -760(%ebp)                             #1409.20
+        movdqa    -952(%ebp), %xmm2                             #1456.30
         movl      %esi, -40(%ebp)                               #1413.3
         movl      %edx, %ecx                                    #1414.38
         shrl      $7, %ecx                                      #1414.38
@@ -1219,14 +1219,14 @@ Compress256:
         xorl      %edi, %edx                                    #1420.52
         xorl      -240(%ebp), %edx                              #1420.68
         movl      -124(%ebp), %edi                              #1508.15
-        movdqu    %xmm4, -712(%ebp)                             #1476.20
+        movdqa    %xmm4, -712(%ebp)                             #1476.20
         addl      %edx, %ecx                                    #1420.106
         movl      -44(%ebp), %edx                               #1508.15
         movl      %ecx, -732(%ebp)                              #1420.3
         roll      $9, %edx                                      #1508.15
         addl      %edx, %eax                                    #1508.3
         movl      -32(%ebp), %edx                               #1512.15
-        movdqu    %xmm1, -728(%ebp)                             #1477.20
+        movdqa    %xmm1, -728(%ebp)                             #1477.20
         addl      %esi, -720(%ebp)                              #1508.3
         roll      $10, %edi                                     #1508.15
         addl      %edi, -724(%ebp)                              #1508.3
@@ -1253,17 +1253,17 @@ Compress256:
         jb        ..B1.2        # Prob 82%                      #1521.18
                                 # LOE
 ..B1.4:                         # Preds ..B1.7
-        movdqu    -760(%ebp), %xmm0                             #1526.29
-        movdqu    -744(%ebp), %xmm1                             #1528.29
-        movdqu    -728(%ebp), %xmm2                             #1530.29
-        movdqu    -712(%ebp), %xmm3                             #1532.29
+        movdqa    -760(%ebp), %xmm0                             #1526.29
+        movdqa    -744(%ebp), %xmm1                             #1528.29
+        movdqa    -728(%ebp), %xmm2                             #1530.29
+        movdqa    -712(%ebp), %xmm3                             #1532.29
         movl      -816(%ebp), %esi                              #1556.1
         movl      -812(%ebp), %edi                              #1556.1
         movl      16(%ebx), %eax                                #1527.19
-        movdqu    %xmm0, 16(%eax)                               #1527.19
-        movdqu    %xmm1, 32(%eax)                               #1529.19
-        movdqu    %xmm2, 48(%eax)                               #1531.19
-        movdqu    %xmm3, 64(%eax)                               #1533.19
+        movdqa    %xmm0, 16(%eax)                               #1527.19
+        movdqa    %xmm1, 32(%eax)                               #1529.19
+        movdqa    %xmm2, 48(%eax)                               #1531.19
+        movdqa    %xmm3, 64(%eax)                               #1533.19
         movl      %ebp, %esp                                    #1556.1
         popl      %ebp                                          #1556.1
         movl      %ebx, %esp                                    #1556.1

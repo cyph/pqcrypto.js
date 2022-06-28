@@ -1,2 +1,2 @@
-#define CRYPTO_BYTES 16
-#define CRYPTO_KEYBYTES 32
+#define crypto_auth_hmacmd5_ref_BYTES 16
+#define crypto_auth_hmacmd5_ref_KEYBYTES 32

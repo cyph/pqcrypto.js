@@ -1,0 +1,8 @@
+#!/bin/sh
+
+FILES="tb_drygascon128.v drygascon128.v"
+
+FLAGS="+interp +dump2fst +fst+parallel2=on"
+
+#cvc64 +xprop2 +dump2fst +fst+parallel2=on tb_data_path.v ctrl.v gf2m_alu.v gf2m_mul.v
+cvc64 $FLAGS $FILES

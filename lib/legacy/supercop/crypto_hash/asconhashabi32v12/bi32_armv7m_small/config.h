@@ -1,1 +1,0 @@
-../bi32_lowsize/config.h

@@ -74,8 +74,8 @@ int crypto_sign_keypair(unsigned char *pk,unsigned char *sk)
 	priv.Initialize(s_rng, s_p, s_q, s_g);
 	GDSA<SHA256>::PublicKey pub;
 	pub.AssignFrom(priv);
-	pub.GetPublicElement().Encode(pk, CRYPTO_NAMESPACE(PUBLICKEYBYTES));
-	priv.GetPrivateExponent().Encode(sk, CRYPTO_NAMESPACE(SECRETKEYBYTES));
+	pub.GetPublicElement().Encode(pk, crypto_sign_donald2048_cryptopp_PUBLICKEYBYTES);
+	priv.GetPrivateExponent().Encode(sk, crypto_sign_donald2048_cryptopp_SECRETKEYBYTES);
 	return 0;
 	} catch (...)
 	{
@@ -91,11 +91,11 @@ int crypto_sign(
 {
 	try {
 	GDSA<SHA256>::Signer signer;
-	Integer x(sk, CRYPTO_NAMESPACE(SECRETKEYBYTES));
+	Integer x(sk, crypto_sign_donald2048_cryptopp_SECRETKEYBYTES);
 	signer.AccessKey().Initialize(s_p, s_q, s_g, x);
 	signer.SignMessage(s_rng, m, mlen, sm);
-	memmove(sm + CRYPTO_NAMESPACE(BYTES), m, mlen);
-	*smlen = mlen + CRYPTO_NAMESPACE(BYTES);
+	memcpy(sm + crypto_sign_donald2048_cryptopp_BYTES, m, mlen);
+	*smlen = mlen + crypto_sign_donald2048_cryptopp_BYTES;
 	return 0;
 	} catch (...)
 	{
@@ -111,12 +111,11 @@ int crypto_sign_open(
 {
 	try {
 	GDSA<SHA256>::Verifier verifier;
-	Integer y(pk, CRYPTO_NAMESPACE(PUBLICKEYBYTES));
+	Integer y(pk, crypto_sign_donald2048_cryptopp_PUBLICKEYBYTES);
 	verifier.AccessKey().Initialize(s_p, s_q, s_g, y);
-	*mlen = smlen - CRYPTO_NAMESPACE(BYTES);
-	bool v = verifier.VerifyMessage(sm + CRYPTO_NAMESPACE(BYTES), (size_t)*mlen, sm, CRYPTO_NAMESPACE(BYTES));
-	memmove(m, sm + CRYPTO_NAMESPACE(BYTES), *mlen);
-	return v ? 0 : -1;
+	*mlen = smlen - crypto_sign_donald2048_cryptopp_BYTES;
+	memcpy(m, sm + crypto_sign_donald2048_cryptopp_BYTES, *mlen);
+	return verifier.VerifyMessage(m, (size_t)*mlen, sm, crypto_sign_donald2048_cryptopp_BYTES) ? 0 : -1;
 	} catch (...)
 	{
 		return -2;

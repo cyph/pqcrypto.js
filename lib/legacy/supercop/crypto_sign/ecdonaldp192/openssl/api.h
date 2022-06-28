@@ -1,3 +1,5 @@
-#define CRYPTO_SECRETKEYBYTES 72
-#define CRYPTO_PUBLICKEYBYTES 48
-#define CRYPTO_BYTES 48
+#include <openssl/rand.h>
+#define crypto_sign_ecdonaldp192_openssl_PRIMEBYTES 24
+#define crypto_sign_ecdonaldp192_openssl_SECRETKEYBYTES (crypto_sign_ecdonaldp192_openssl_PRIMEBYTES * 3)
+#define crypto_sign_ecdonaldp192_openssl_PUBLICKEYBYTES (crypto_sign_ecdonaldp192_openssl_PRIMEBYTES * 2)
+#define crypto_sign_ecdonaldp192_openssl_BYTES (crypto_sign_ecdonaldp192_openssl_PRIMEBYTES * 2)

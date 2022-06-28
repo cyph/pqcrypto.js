@@ -29,24 +29,20 @@ int crypto_encrypt(
   const unsigned char *pk
 )
 {
-  unsigned char c2[crypto_kem_CIPHERTEXTBYTES];
   unsigned char k[crypto_kem_BYTES];
   unsigned char nonce[crypto_aead_NPUBBYTES];
 
-  if (crypto_kem_enc(c2,k,pk) < 0) goto error;
+  if (crypto_kem_enc(c,k,pk) < 0) goto error;
+  c += crypto_kem_CIPHERTEXTBYTES;
+
   randombytes(nonce,sizeof nonce);
-
-  crypto_aead_encrypt(c,clen,m,mlen,ad,0,nsec,nonce,k);
-  c += *clen;
-
   memcpy(c,nonce,sizeof nonce);
   c += sizeof nonce;
-  *clen += sizeof nonce;
 
-  memcpy(c,c2,sizeof c2);
-  c += crypto_kem_CIPHERTEXTBYTES;
+  crypto_aead_encrypt(c,clen,m,mlen,ad,0,nsec,nonce,k);
+
+  *clen += sizeof nonce;
   *clen += crypto_kem_CIPHERTEXTBYTES;
-  
   return 0;
 
   error:

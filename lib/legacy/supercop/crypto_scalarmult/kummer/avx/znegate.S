@@ -1,4 +1,3 @@
-#include "consts.h"
 # block pos: 0 32 uops: 6
 
 # qhasm: int64 input_0
@@ -45,12 +44,12 @@
 
 # qhasm: reg256 s
 
-# qhasm: enter CRYPTO_NAMESPACE(gfe4x_znegate)
+# qhasm: enter gfe4x_znegate
 .p2align 5
-.global _CRYPTO_NAMESPACE(gfe4x_znegate)
-.global CRYPTO_NAMESPACE(gfe4x_znegate)
-_CRYPTO_NAMESPACE(gfe4x_znegate):
-CRYPTO_NAMESPACE(gfe4x_znegate):
+.global _gfe4x_znegate
+.global gfe4x_znegate
+_gfe4x_znegate:
+gfe4x_znegate:
 # bytes: 5 uops: 1
 .byte 0x3e
 .byte 0x3e
@@ -69,7 +68,7 @@ sub %r11,%rsp
 # asm 1: vmovapd minusz,>s=reg256#1
 # asm 2: vmovapd minusz,>s=%ymm0
 # bytes: 9 uops: 1
-vmovapd minusz(%rip),%ymm0
+vmovapd minusz,%ymm0
 
 # qhasm: 4x r0 = approx s * mem256[input_0 + 0]
 # asm 1: vmulpd 0(<input_0=int64#1),<s=reg256#1,>r0=reg256#2

@@ -5,7 +5,6 @@
 
 #include "params.h"
 #include "gf.h"
-#include "bm.h"
 
 #define min(a, b) ((a < b) ? a : b)
 
