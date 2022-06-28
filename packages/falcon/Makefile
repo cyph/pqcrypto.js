@@ -13,11 +13,11 @@ all:
 	sed -i 's|crypto_hash_blake512_ref.h|crypto_hash.h|g' c_src/crypto_hash/blake512/ref/hash.c
 	sed -i 's|cst|cst_blake512_ref|g' c_src/crypto_hash/blake512/ref/hash.c
 
-	sed -i 's|crypto_sign|crypto_sign_sphincs|g' c_src/crypto_sign/sphincs256/ref/sign.c
-	sed -i 's|crypto_sign_sphincs.h|crypto_sign.h|g' c_src/crypto_sign/sphincs256/ref/sign.c
+	sed -i 's|crypto_sign|crypto_sign_falcon|g' c_src/crypto_sign/falcon256/ref/sign.c
+	sed -i 's|crypto_sign_falcon.h|crypto_sign.h|g' c_src/crypto_sign/falcon256/ref/sign.c
 
-	cp -f ../../lib/legacy/sphincs-erlang-binding/c_src/crypto_core/include/* c_src/include/
-	cp ../../lib/legacy/sphincs-erlang-binding/c_src/crypto_stream/chacha12/ref/api.c c_src/crypto_stream/chacha12/e/ref/stream.c
+	cp -f ../../lib/legacy/falcon-erlang-binding/c_src/crypto_core/include/* c_src/include/
+	cp ../../lib/legacy/falcon-erlang-binding/c_src/crypto_stream/chacha12/ref/api.c c_src/crypto_stream/chacha12/e/ref/stream.c
 
 	bash -c ' \
 		args="$$(echo " \
@@ -39,7 +39,7 @@ all:
 			c_src/crypto_hash/blake512/ref/hash.c \
 			c_src/crypto_stream/chacha12/e/ref/stream.c \
 			c_src/crypto_stream/chacha12/e/ref/chacha.c \
-			$$(find c_src/crypto_sign/sphincs256/ref -name '"'"'*.c'"'"' -type f) \
+			$$(find c_src/crypto_sign/falcon256/ref -name '"'"'*.c'"'"' -type f) \
 			main.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
@@ -47,13 +47,13 @@ all:
 			-s EXPORTED_FUNCTIONS=\"[ \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
-				'"'"'_sphincsjs_init'"'"', \
-				'"'"'_sphincsjs_keypair'"'"', \
-				'"'"'_sphincsjs_sign'"'"', \
-				'"'"'_sphincsjs_open'"'"', \
-				'"'"'_sphincsjs_public_key_bytes'"'"', \
-				'"'"'_sphincsjs_secret_key_bytes'"'"', \
-				'"'"'_sphincsjs_signature_bytes'"'"' \
+				'"'"'_falconjs_init'"'"', \
+				'"'"'_falconjs_keypair'"'"', \
+				'"'"'_falconjs_sign'"'"', \
+				'"'"'_falconjs_open'"'"', \
+				'"'"'_falconjs_public_key_bytes'"'"', \
+				'"'"'_falconjs_secret_key_bytes'"'"', \
+				'"'"'_falconjs_signature_bytes'"'"' \
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
@@ -69,7 +69,7 @@ all:
 			Module.onAbort = reject; \
 			Module.onRuntimeInitialized = function () { \
 				try { \
-					Module._sphincsjs_public_key_bytes(); \
+					Module._falconjs_public_key_bytes(); \
 					resolve(Module); \
 				} \
 				catch (err) { \

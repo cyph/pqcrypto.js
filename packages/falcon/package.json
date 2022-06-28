@@ -1,7 +1,7 @@
 {
-	"name": "sphincs",
+	"name": "falcon",
 	"version": "2.4.1",
-	"description": "JavaScript wrapper for a WebAssembly build of SPHINCS",
+	"description": "JavaScript wrapper for a WebAssembly build of FALCON",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",
 	"repository": {
@@ -11,7 +11,7 @@
 	"keywords": [
 		"cryptography",
 		"post-quantum",
-		"sphincs",
+		"falcon",
 		"asm.js",
 		"webassembly"
 	],

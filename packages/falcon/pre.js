@@ -1,3 +1,3 @@
-var sphincs	= (function () { 
+var falcon	= (function () { 
 
-var getSphincsModule	= function () {
+var getFalconModule	= function () {

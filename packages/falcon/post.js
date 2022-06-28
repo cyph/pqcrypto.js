@@ -3,17 +3,17 @@ return Module;
 };
 
 var initiated, Module, publicKeyBytes, privateKeyBytes, bytes;
-function resetSphincsModule () {
-	Module		= getSphincsModule();
+function resetFalconModule () {
+	Module		= getFalconModule();
 	initiated	= Module.ready.then(function () {
-		Module._sphincsjs_init();
+		Module._falconjs_init();
 
-		publicKeyBytes	= Module._sphincsjs_public_key_bytes();
-		privateKeyBytes	= Module._sphincsjs_secret_key_bytes();
-		bytes			= Module._sphincsjs_signature_bytes();
+		publicKeyBytes	= Module._falconjs_public_key_bytes();
+		privateKeyBytes	= Module._falconjs_secret_key_bytes();
+		bytes			= Module._falconjs_signature_bytes();
 	});
 }
-resetSphincsModule();
+resetFalconModule();
 
 
 function dataReturn (returnValue, result) {
@@ -21,7 +21,7 @@ function dataReturn (returnValue, result) {
 		return result;
 	}
 	else {
-		throw new Error('SPHINCS error: ' + returnValue);
+		throw new Error('FALCON error: ' + returnValue);
 	}
 }
 
@@ -38,13 +38,13 @@ function dataFree (buffer) {
 		}
 	}
 	catch (err) {
-		resetSphincsModule();
-		console.error('Re-initializing SPHINCS due to _free failure:', err);
+		resetFalconModule();
+		console.error('Re-initializing FALCON due to _free failure:', err);
 	}
 }
 
 
-var sphincs	= {
+var falcon	= {
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
 	bytes: initiated.then(function () { return bytes; }),
@@ -56,7 +56,7 @@ var sphincs	= {
 			var publicKeyBuffer		= Module._malloc(publicKeyBytes);
 			var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 
-			var returnValue	= Module._sphincsjs_keypair(
+			var returnValue	= Module._falconjs_keypair(
 				publicKeyBuffer,
 				privateKeyBuffer
 			);
@@ -72,9 +72,9 @@ var sphincs	= {
 				throw err;
 			}
 
-			console.error('Ignoring error and retrying sphincs.keyPair:', err);
-			resetSphincsModule();
-			return sphincs.keyPair(retries + 1);
+			console.error('Ignoring error and retrying falcon.keyPair:', err);
+			resetFalconModule();
+			return falcon.keyPair(retries + 1);
 		}
 		finally {
 			dataFree(publicKeyBuffer);
@@ -96,7 +96,7 @@ var sphincs	= {
 			Module.writeArrayToMemory(message, messageBuffer);
 			Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
-			var returnValue	= Module._sphincsjs_sign(
+			var returnValue	= Module._falconjs_sign(
 				signedBuffer,
 				signedLengthBuffer,
 				messageBuffer,
@@ -112,9 +112,9 @@ var sphincs	= {
 				throw err;
 			}
 
-			console.error('Ignoring error and retrying sphincs.sign:', err);
-			resetSphincsModule();
-			return sphincs.sign(message, privateKey, retries + 1);
+			console.error('Ignoring error and retrying falcon.sign:', err);
+			resetFalconModule();
+			return falcon.sign(message, privateKey, retries + 1);
 		}
 		finally {
 			dataFree(signedBuffer);
@@ -125,7 +125,7 @@ var sphincs	= {
 	}); },
 
 	signDetached: function (message, privateKey) {
-		return sphincs.sign(message, privateKey).then(function (signed) {
+		return falcon.sign(message, privateKey).then(function (signed) {
 			return new Uint8Array(
 				signed.buffer,
 				0,
@@ -146,7 +146,7 @@ var sphincs	= {
 			Module.writeArrayToMemory(signed, signedBuffer);
 			Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 
-			var returnValue	= Module._sphincsjs_open(
+			var returnValue	= Module._falconjs_open(
 				openedBuffer,
 				openedLengthBuffer,
 				signedBuffer,
@@ -162,9 +162,9 @@ var sphincs	= {
 				throw err;
 			}
 
-			console.error('Ignoring error and retrying sphincs.open:', err);
-			resetSphincsModule();
-			return sphincs.open(signed, publicKey, retries + 1);
+			console.error('Ignoring error and retrying falcon.open:', err);
+			resetFalconModule();
+			return falcon.open(signed, publicKey, retries + 1);
 		}
 		finally {
 			dataFree(openedBuffer);
@@ -180,7 +180,7 @@ var sphincs	= {
 			signed.set(signature);
 			signed.set(message, bytes);
 
-			return sphincs.open(
+			return falcon.open(
 				signed,
 				publicKey
 			).catch(function () {}).then(function (opened) {
@@ -203,15 +203,15 @@ var sphincs	= {
 
 
 
-return sphincs;
+return falcon;
 
 }());
 
 
 if (typeof module !== 'undefined' && module.exports) {
-	sphincs.sphincs	= sphincs;
-	module.exports	= sphincs;
+	falcon.falcon	= falcon;
+	module.exports	= falcon;
 }
 else {
-	self.sphincs	= sphincs;
+	self.falcon	= falcon;
 }

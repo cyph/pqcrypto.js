@@ -1,5 +1,5 @@
-declare module 'sphincs' {
-	interface ISPHINCS {
+declare module 'falcon' {
+	interface IFALCON {
 		/** Signature length. */
 		bytes: Promise<number>;
 
@@ -29,5 +29,5 @@ declare module 'sphincs' {
 		) : Promise<boolean>;
 	}
 
-	const sphincs: ISPHINCS;
+	const falcon: IFALCON;
 }

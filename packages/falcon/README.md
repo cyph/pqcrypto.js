@@ -1,20 +1,20 @@
-# sphincs
+# falcon
 
 ## Overview
 
-The [SPHINCS](https://sphincs.cr.yp.to) post-quantum cryptographic signing scheme
+The [FALCON](https://falcon.cr.yp.to) post-quantum cryptographic signing scheme
 compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
-A simple JavaScript wrapper is provided to make SPHINCS easy to use in Web applications.
+A simple JavaScript wrapper is provided to make FALCON easy to use in Web applications.
 
-N.B. Unless interoperability with other SPHINCS implementations is a hard requirement,
-it is recommended to use [supersphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/supersphincs)
+N.B. Unless interoperability with other FALCON implementations is a hard requirement,
+it is recommended to use [superfalcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/superfalcon)
 instead.
 
 ## Example Usage
 
 	(async () => {
 		const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await sphincs.keyPair()
+			await falcon.keyPair()
 		;
 
 		const message /*: Uint8Array */ =
@@ -24,21 +24,21 @@ instead.
 		/* Combined signatures */
 
 		const signed /*: Uint8Array */ =
-			await sphincs.sign(message, keyPair.privateKey)
+			await falcon.sign(message, keyPair.privateKey)
 		;
 
 		const verified /*: Uint8Array */ =
-			await sphincs.open(signed, keyPair.publicKey) // same as message
+			await falcon.open(signed, keyPair.publicKey) // same as message
 		;
 
 		/* Detached signatures */
 		
 		const signature /*: Uint8Array */ =
-			await sphincs.signDetached(message, keyPair.privateKey)
+			await falcon.signDetached(message, keyPair.privateKey)
 		;
 
 		const isValid /*: boolean */ =
-			await sphincs.verifyDetached(signature, message, keyPair.publicKey) // true
+			await falcon.verifyDetached(signature, message, keyPair.publicKey) // true
 		;
 
 		console.log(keyPair);
