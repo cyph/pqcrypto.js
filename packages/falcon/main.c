@@ -1,24 +1,5 @@
-#include "crypto_sign/falcon256/ref/api.h"
+#include "pqclean/crypto_sign/falcon-1024/clean/api.h"
 #include "randombytes.h"
-
-
-int crypto_sign_falcon_keypair (unsigned char *pk, unsigned char *sk);
-
-int crypto_sign_falcon (
-	unsigned char *sm,
-	unsigned long long *smlen,
-	const unsigned char *m,
-	unsigned long long mlen,
-	const unsigned char *sk
-);
-
-int crypto_sign_falcon_open(
-	unsigned char *m,
-	unsigned long long *mlen,
-	const unsigned char *sm,
-	unsigned long long smlen,
-	const unsigned char *pk
-);
 
 
 void falconjs_init () {
@@ -26,40 +7,63 @@ void falconjs_init () {
 }
 
 long falconjs_public_key_bytes () {
-	return CRYPTO_PUBLICKEYBYTES;
+	return PQCLEAN_FALCON1024_CLEAN_CRYPTO_PUBLICKEYBYTES;
 }
 
 long falconjs_secret_key_bytes () {
-	return CRYPTO_SECRETKEYBYTES;
+	return PQCLEAN_FALCON1024_CLEAN_CRYPTO_SECRETKEYBYTES;
 }
 
 long falconjs_signature_bytes () {
-	return CRYPTO_BYTES;
+	return PQCLEAN_FALCON1024_CLEAN_CRYPTO_BYTES + sizeof(unsigned short);
 }
 
 long falconjs_keypair (
 	uint8_t* public_key,
 	uint8_t* private_key
 ) {
-	return crypto_sign_falcon_keypair(public_key, private_key);
-}
-
-long falconjs_open (
-	uint8_t *m,
-	unsigned long long *mlen,
-	const uint8_t *sm,
-	unsigned long smlen,
-	const uint8_t *pk
-) {
-	return crypto_sign_falcon_open(m, mlen, sm, smlen, pk);
+	return PQCLEAN_FALCON1024_CLEAN_crypto_sign_keypair(
+		public_key,
+		private_key
+	);
 }
 
 long falconjs_sign (
-	uint8_t *sm,
-	unsigned long long *smlen,
+	uint8_t *sig,
 	const uint8_t *m,
 	unsigned long mlen,
 	const uint8_t *sk
 ) {
-	return crypto_sign_falcon(sm, smlen, m, mlen, sk);
+	size_t siglen;
+
+	int status	= PQCLEAN_FALCON1024_CLEAN_crypto_sign_signature(
+		sig + sizeof(unsigned short),
+		&siglen,
+		m,
+		mlen,
+		sk
+	);
+
+	if (status == 0) {
+		*((unsigned short*) sig)	= (unsigned short) siglen;
+	}
+
+	return status;
+}
+
+long falconjs_verify (
+	const uint8_t *m,
+	unsigned long mlen,
+	const uint8_t *sig,
+	const uint8_t *pk
+) {
+	size_t siglen	= (size_t) *((unsigned short*) sig);
+
+	return PQCLEAN_FALCON1024_CLEAN_crypto_sign_verify(
+		sig + sizeof(unsigned short),
+		siglen,
+		m,
+		mlen,
+		pk
+	);
 }

@@ -1,24 +1,6 @@
 all:
 	make clean
 
-	cp -a ../../lib/legacy/supercop c_src
-
-	sed -i 's|crypto_hash|crypto_hash_blake256_ref|g' c_src/crypto_hash/blake256/ref/hash.c
-	sed -i 's|sigma|sigma_blake256_ref|g' c_src/crypto_hash/blake256/ref/hash.c
-	sed -i 's|crypto_hash_blake256_ref.h|crypto_hash.h|g' c_src/crypto_hash/blake256/ref/hash.c
-	sed -i 's|cst|cst_blake256_ref|g' c_src/crypto_hash/blake256/ref/hash.c
-
-	sed -i 's|crypto_hash|crypto_hash_blake512_ref|g' c_src/crypto_hash/blake512/ref/hash.c
-	sed -i 's|sigma|sigma_blake512_ref|g' c_src/crypto_hash/blake512/ref/hash.c
-	sed -i 's|crypto_hash_blake512_ref.h|crypto_hash.h|g' c_src/crypto_hash/blake512/ref/hash.c
-	sed -i 's|cst|cst_blake512_ref|g' c_src/crypto_hash/blake512/ref/hash.c
-
-	sed -i 's|crypto_sign|crypto_sign_falcon|g' c_src/crypto_sign/falcon256/ref/sign.c
-	sed -i 's|crypto_sign_falcon.h|crypto_sign.h|g' c_src/crypto_sign/falcon256/ref/sign.c
-
-	cp -f ../../lib/legacy/falcon-erlang-binding/c_src/crypto_core/include/* c_src/include/
-	cp ../../lib/legacy/falcon-erlang-binding/c_src/crypto_stream/chacha12/ref/api.c c_src/crypto_stream/chacha12/e/ref/stream.c
-
 	bash -c ' \
 		args="$$(echo " \
 			--memory-init-file 0 \
@@ -31,17 +13,21 @@ all:
 			-s NO_FILESYSTEM=1 \
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include/sodium \
-			-Iopenssl/include \
-			-Ic_src -Ic_src/include -Ic_src/crypto_stream/chacha12/e/ref \
-			-include c_src/crypto_stream/chacha12/e/ref/namespace.h \
+			-Ipqclean/common \
+			-Ipqclean/crypto_sign/falcon-1024/clean \
 			libsodium/src/libsodium/randombytes/randombytes.c \
-			c_src/crypto_hash/blake256/ref/hash.c \
-			c_src/crypto_hash/blake512/ref/hash.c \
-			c_src/crypto_stream/chacha12/e/ref/stream.c \
-			c_src/crypto_stream/chacha12/e/ref/chacha.c \
-			$$(find c_src/crypto_sign/falcon256/ref -name '"'"'*.c'"'"' -type f) \
+			$$( \
+				find \
+					pqclean/common \
+					pqclean/crypto_sign/falcon-1024/clean \
+				-name '"'"'*.c'"'"' -type f \
+				-not \( \
+					-path '*/keccak4x/*' -or \
+					-name randombytes.c \
+				\) \
+			) \
 			main.c \
-			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
+			-s EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \
@@ -50,14 +36,14 @@ all:
 				'"'"'_falconjs_init'"'"', \
 				'"'"'_falconjs_keypair'"'"', \
 				'"'"'_falconjs_sign'"'"', \
-				'"'"'_falconjs_open'"'"', \
+				'"'"'_falconjs_verify'"'"', \
 				'"'"'_falconjs_public_key_bytes'"'"', \
 				'"'"'_falconjs_secret_key_bytes'"'"', \
 				'"'"'_falconjs_signature_bytes'"'"' \
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/index.asm.js"; \
+		bash -c "emcc -Oz -s WASM=0 $$args -o dist/index.asm.js"; \
 		bash -c "emcc -O3 -s WASM=1 $$args -o dist/index.wasm.js"; \
 	'
 
@@ -99,9 +85,9 @@ all:
 	sed -i 's|use asm||g' dist/index.js
 	sed -i 's|require(|eval("require")(|g' dist/index.js
 
-	rm -rf c_src dist/index.*.js
+	rm -rf dist/index.*.js
 	chmod -R 777 dist
 
 clean:
-	rm -rf dist c_src 2> /dev/null
+	rm -rf dist 2> /dev/null
 	mkdir dist
