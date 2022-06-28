@@ -23,5 +23,10 @@
 		"generate-rsa-keypair": "*",
 		"pem-jwk-norecompute": "*",
 		"sodiumutil": "*"
+	},
+	"devDependencies": {
+		"vm-browserify": "*",
+		"webpack": "*",
+		"webpack-cli": "*"
 	}
 }

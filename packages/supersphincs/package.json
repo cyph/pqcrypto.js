@@ -25,5 +25,10 @@
 		"rsasign": "*",
 		"sodiumutil": "*",
 		"sphincs": "*"
+	},
+	"devDependencies": {
+		"vm-browserify": "*",
+		"webpack": "*",
+		"webpack-cli": "*"
 	}
 }

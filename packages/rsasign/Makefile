@@ -59,7 +59,7 @@ all:
 	sed -i 's|eval("require")(.pem-jwk-norecompute.)|require("pem-jwk-norecompute")|g' dist/index.module.js
 	sed -i 's|eval("require")(.sodiumutil.)|require("sodiumutil")|g' dist/index.module.js
 
-	webpack --mode none --output-library-target var --output-library rsaSign dist/index.module.js -o dist/index.js
+	npx webpack --config webpack.js
 
 	terser dist/index.module.js -cmo dist/index.module.js
 	terser dist/index.js -cmo dist/index.js
