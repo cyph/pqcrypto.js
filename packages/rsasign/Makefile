@@ -15,7 +15,6 @@ all:
 			-DRSASIGNJS_PRIVLEN=$(RSASIGNJS_PRIVLEN) \
 			-DRSASIGNJS_SIGLEN=$(RSASIGNJS_SIGLEN) \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
-			-s RUNNING_JS_OPTS=1 \
 			-s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 \
 			-s ALIASING_FUNCTION_POINTERS=1 \
@@ -27,7 +26,7 @@ all:
 			openssl/crypto/rand/rand_err.o \
 			$$(find openssl/crypto -type f -name "*.o" -not -path "openssl/crypto/rand/*" | tr "\n" " ") \
 			main.c \
-			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
+			-s EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \

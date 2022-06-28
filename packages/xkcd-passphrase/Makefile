@@ -21,7 +21,7 @@ all:
 			-s NO_FILESYSTEM=1 \
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			main.c \
-			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
+			-s EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'UTF8ToString'"'"', \
 				'"'"'writeAsciiToMemory'"'"' \
 			]\" \
@@ -33,7 +33,7 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o tmp/xkcd-passphrase.asm.js"; \
+		bash -c "emcc -Oz -s WASM=0 $$args -o tmp/xkcd-passphrase.asm.js"; \
 		bash -c "emcc -O3 -s WASM=1 $$args -o tmp/xkcd-passphrase.wasm.js"; \
 	'
 

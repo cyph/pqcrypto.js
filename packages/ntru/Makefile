@@ -17,7 +17,7 @@ all:
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$(ls ntru/src/*.c | grep -v _simd.c | grep -v _32.c | grep -v _64.c) \
 			main.c \
-			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
+			-s EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \
@@ -34,7 +34,7 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/index.asm.js"; \
+		bash -c "emcc -Oz -s WASM=0 $$args -o dist/index.asm.js"; \
 		bash -c "emcc -O3 -s WASM=1 $$args -o dist/index.wasm.js"; \
 	'
 
