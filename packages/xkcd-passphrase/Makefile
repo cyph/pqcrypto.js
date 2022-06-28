@@ -7,7 +7,8 @@ all:
 
 	cat ../../lib/sodiumutil/dist/sodiumutil.js >> tmp/pre.js
 
-	node -e 'fs.writeFileSync("tmp/post.js", fs.readFileSync("post.js").toString().replace("DEFAULT_WORD_LIST", JSON.stringify(fs.readFileSync("word-list.txt").toString().trim().split("\n"))))'
+	# Temporarily using /usr/bin/node as workaround for emscripten
+	/usr/bin/node -e 'fs.writeFileSync("tmp/post.js", fs.readFileSync("post.js").toString().replace("DEFAULT_WORD_LIST", JSON.stringify(fs.readFileSync("word-list.txt").toString().trim().split("\n"))))'
 
 	bash -c ' \
 		args="$$(echo " \
