@@ -3,8 +3,8 @@
 ## Overview
 
 SuperSPHINCS combines the post-quantum [SPHINCS](https://sphincs.cr.yp.to) with the more conventional [RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
-SPHINCS is provided by [sphincs.js](https://github.com/cyph/sphincs.js) and RSA signing is performed
-using [rsasign.js](https://github.com/cyph/rsasign.js).
+SPHINCS is provided by [sphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs) and RSA signing is performed
+using [rsasign](https://github.com/cyph/pqcrypto.js/tree/master/packages/rsasign).
 
 Before signing, a SHA-512 hash is performed, using the current platform's native implementation
 where available or an efficient JavaScript implementation from
@@ -21,7 +21,7 @@ where available or an efficient JavaScript implementation from
 			new Uint8Array([104, 101, 108, 108, 111]) // "hello"
 		;
 
-		// Optional additional data argument, similar conceptually to what AEAD ciphers support.
+		// Optional additional data argument, similar conceptually to what AEAD cyphers support.
 		// If specified, must be the same when signing and verifying. For more information and
 		// usage advice, see: https://download.libsodium.org/doc/secret-key_cryptography/aead.html
 		const additionalData /*: Uint8Array */ =

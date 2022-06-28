@@ -1,13 +1,13 @@
-# ntru.js
+# ntru
 
 ## Overview
 
-The [NTRU](https://en.wikipedia.org/wiki/NTRUEncrypt) post-quantum asymmetric
-cipher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
+The [NTRU](https://ntru.org) post-quantum asymmetric
+cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
 A simple JavaScript wrapper is provided to make NTRU easy to use in web applications.
 
 The default parameter set is EES743EP1 (roughly 256-bit strength, as per
-[NTRU's documentation](https://github.com/NTRUOpenSourceProject/NTRUEncrypt/blob/master/doc/UserNotes-NTRUEncrypt.pdf)).
+[NTRU's documentation](https://github.com/buu700/NTRUEncrypt-Archive/blob/master/doc/UserNotes-NTRUEncrypt.pdf)).
 To change this, modify line 13 of Makefile and rebuild with `make`.
 
 ## Example Usage
@@ -37,7 +37,7 @@ To change this, modify line 13 of Makefile and rebuild with `make`.
 
 Note: NTRU is a low-level cryptographic primitive, not a high-level construct like libsodium's
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
-This module can be combined with a symmetric cipher and a MAC to provide such a construct, but you
+This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
 should avoid using ntru.js directly for anything important if you lack the experience to do so.
 
 ## Changelog

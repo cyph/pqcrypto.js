@@ -1,9 +1,9 @@
-# rlwe.js
+# rlwe
 
 ## Overview
 
 The [RLWE](https://en.wikipedia.org/wiki/Ring_learning_with_errors_key_exchange) post-quantum asymmetric
-cipher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
+cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
 The specific implementation in use is [from Microsoft Research](https://research.microsoft.com/en-us/projects/latticecrypto).
 A simple JavaScript wrapper is provided to make RLWE easy to use in web applications.
 

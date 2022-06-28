@@ -1,10 +1,10 @@
-# sidh.js
+# sidh
 
 ## Overview
 
 The [SIDH](https://en.wikipedia.org/wiki/Supersingular_isogeny_key_exchange) post-quantum asymmetric
-cipher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
-The specific implementation in use is [from Microsoft Research](https://www.microsoft.com/en-us/research/project/sidh-library).
+cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
+The specific implementation in use is [from Microsoft Research](https://github.com/Microsoft/PQCrypto-SIDH).
 A simple JavaScript wrapper is provided to make SIDH easy to use in web applications.
 
 The parameters are configured to 128-bit strength (SIKEp503).
@@ -36,7 +36,7 @@ The parameters are configured to 128-bit strength (SIKEp503).
 
 Note: SIDH is a low-level cryptographic primitive, not a high-level construct like libsodium's
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
-This module can be combined with a symmetric cipher and a MAC to provide such a construct, but you
+This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
 should avoid using sidh.js directly for anything important if you lack the experience to do so.
 
 ## Changelog

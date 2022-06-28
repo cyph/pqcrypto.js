@@ -1,14 +1,14 @@
-# mceliece.js
+# mceliece
 
 ## Overview
 
 The [McEliece](https://en.wikipedia.org/wiki/McEliece_cryptosystem) post-quantum asymmetric
-cipher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
+cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
 A simple JavaScript wrapper is provided to make McEliece easy to use in web applications.
 
 The parameters are configured to slightly above 128-bit strength.
 
-The underlying cipher implementation in use is [McBits](https://tungchou.github.io/mcbits).
+The underlying cypher implementation in use is [McBits](https://tungchou.github.io/mcbits).
 
 ## Example Usage
 
@@ -37,7 +37,7 @@ The underlying cipher implementation in use is [McBits](https://tungchou.github.
 
 Note: McEliece is a low-level cryptographic primitive, not a high-level construct like libsodium's
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
-This module can be combined with a symmetric cipher and a MAC to provide such a construct, but you
+This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
 should avoid using mceliece.js directly for anything important if you lack the experience to do so.
 
 ## Changelog

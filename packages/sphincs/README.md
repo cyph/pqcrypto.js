@@ -1,4 +1,4 @@
-# sphincs.js
+# sphincs
 
 ## Overview
 
@@ -7,8 +7,8 @@ compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten
 A simple JavaScript wrapper is provided to make SPHINCS easy to use in Web applications.
 
 N.B. Unless interoperability with other SPHINCS implementations is a hard requirement,
-it is recommended to use [supersphincs](https://github.com/cyph/supersphincs)
-instead of this.
+it is recommended to use [supersphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/supersphincs)
+instead.
 
 ## Example Usage
 
