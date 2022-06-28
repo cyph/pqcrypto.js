@@ -1,7 +1,7 @@
 all:
 	make clean
 
-	webpack --mode none --output-library-target var --output-library superSphincs supersphincs.js -o dist/index.js
+	webpack --mode none --output-library-target var --output-library superSphincs index.js -o dist/index.js
 
 	echo " \
 		if (typeof module !== 'undefined' && module.exports) { \

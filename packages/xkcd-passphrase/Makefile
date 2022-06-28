@@ -33,11 +33,11 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 $$args -o tmp/xkcd-passphrase.asm.js"; \
-		bash -c "emcc -O3 -s WASM=1 $$args -o tmp/xkcd-passphrase.wasm.js"; \
+		bash -c "emcc -Oz -s WASM=0 $$args -o tmp/index.asm.js"; \
+		bash -c "emcc -O3 -s WASM=1 $$args -o tmp/index.wasm.js"; \
 	'
 
-	cp tmp/pre.js tmp/xkcd-passphrase.js
+	cp tmp/pre.js tmp/index.js
 	echo " \
 		var Module = {}; \
 		Module.ready = new Promise(function (resolve, reject) { \
@@ -52,13 +52,13 @@ all:
 					reject(err); \
 				} \
 			}; \
-	" >> tmp/xkcd-passphrase.js
-	cat tmp/xkcd-passphrase.wasm.js >> tmp/xkcd-passphrase.js
+	" >> tmp/index.js
+	cat tmp/index.wasm.js >> tmp/index.js
 	echo " \
 		}).catch(function () { \
 			var Module = {}; \
-	" >> tmp/xkcd-passphrase.js
-	cat tmp/xkcd-passphrase.asm.js >> tmp/xkcd-passphrase.js
+	" >> tmp/index.js
+	cat tmp/index.asm.js >> tmp/index.js
 	echo " \
 			return new Promise(function (resolve, reject) { \
 				Module.onAbort = reject; \
@@ -67,10 +67,10 @@ all:
 		}).then(function (m) { \
 			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
-	" >> tmp/xkcd-passphrase.js
-	cat tmp/post.js >> tmp/xkcd-passphrase.js
+	" >> tmp/index.js
+	cat tmp/post.js >> tmp/index.js
 
-	terser tmp/xkcd-passphrase.js -cmo dist/index.js
+	terser tmp/index.js -cmo dist/index.js
 
 	sed -i 's|use asm||g' dist/index.js
 	sed -i 's|require(|eval("require")(|g' dist/index.js
