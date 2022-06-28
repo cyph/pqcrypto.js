@@ -25,9 +25,9 @@ function dataReturn (returnValue, result) {
 	}
 }
 
-function dataResult (buffer, bytes) {
+function dataResult (buffer, byteLength) {
 	return new Uint8Array(
-		new Uint8Array(Module.HEAPU8.buffer, buffer, bytes)
+		new Uint8Array(Module.HEAPU8.buffer, buffer, byteLength)
 	);
 }
 
