@@ -1,11 +1,5 @@
 all:
-	rm -rf dist SIDH libsodium 2> /dev/null
-	mkdir dist
-
-	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
-	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
-
-	git clone -b v3.0 --depth 1 https://github.com/Microsoft/PQCrypto-SIDH SIDH
+	make clean
 
 	bash -c ' \
 		args="$$(echo " \
@@ -22,11 +16,11 @@ all:
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include \
 			-Ilibsodium/src/libsodium/include/sodium \
-			-ISIDH/src/P503 \
+			-Isidh/src/P503 \
 			$$(find libsodium/src/libsodium -type f -name '\\*.c') \
-			SIDH/src/sha3/*.c \
-			SIDH/src/P503/generic/*.c \
-			SIDH/src/P503/P503.c \
+			sidh/src/sha3/*.c \
+			sidh/src/P503/generic/*.c \
+			sidh/src/P503/P503.c \
 			sidh.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
@@ -88,7 +82,9 @@ all:
 	sed -i 's|use asm||g' dist/sidh.js
 	sed -i 's|require(|eval("require")(|g' dist/sidh.js
 
-	rm -rf SIDH libsodium dist/sidh.*.js
+	rm -rf dist/sidh.*.js
+	chmod -R 777 dist
 
 clean:
-	rm -rf dist SIDH libsodium
+	rm -rf dist 2> /dev/null
+	mkdir dist

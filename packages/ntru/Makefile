@@ -1,11 +1,5 @@
 all:
-	rm -rf dist NTRUEncrypt libsodium 2> /dev/null
-	mkdir dist
-
-	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
-	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
-
-	git clone --depth 1 https://github.com/NTRUOpenSourceProject/NTRUEncrypt
+	make clean
 
 	bash -c ' \
 		args="$$(echo " \
@@ -19,9 +13,9 @@ all:
 			-s DISABLE_EXCEPTION_CATCHING=1 \
 			-s NO_FILESYSTEM=1 \
 			-Ilibsodium/src/libsodium/include/sodium \
-			-INTRUEncrypt/include -INTRUEncrypt/src \
+			-Intru/include -Intru/src \
 			libsodium/src/libsodium/randombytes/randombytes.c \
-			$$(ls NTRUEncrypt/src/*.c | grep -v _simd.c | grep -v _32.c | grep -v _64.c) \
+			$$(ls ntru/src/*.c | grep -v _simd.c | grep -v _32.c | grep -v _64.c) \
 			ntru.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
@@ -82,7 +76,9 @@ all:
 	sed -i 's|use asm||g' dist/ntru.js
 	sed -i 's|require(|eval("require")(|g' dist/ntru.js
 
-	rm -rf NTRUEncrypt libsodium dist/ntru.*.js
+	rm -rf dist/ntru.*.js
+	chmod -R 777 dist
 
 clean:
-	rm -rf dist NTRUEncrypt libsodium
+	rm -rf dist 2> /dev/null
+	mkdir dist

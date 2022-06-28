@@ -4,16 +4,7 @@ RSASIGNJS_PRIVLEN = 1700
 RSASIGNJS_SIGLEN = 256
 
 all:
-	rm -rf dist libsodium node_modules openssl package-lock.json 2> /dev/null
-	mkdir dist node_modules
-
-	npm install
-
-	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
-	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
-
-	git clone --depth 1 -b OpenSSL_1_1_0-stable https://github.com/openssl/openssl
-	cd openssl ; emconfigure perl Configure -static no-afalgeng no-asan no-asm no-async no-autoalginit no-autoerrinit no-bf no-blake2 no-camellia no-capieng no-cast no-chacha no-cmac no-cms no-comp no-crypto-mdebug no-crypto-mdebug-backtrace no-ct no-deprecated no-des no-dgram no-dh no-dsa no-dso no-dtls no-dynamic-engine no-ec no-ec2m no-ecdh no-ecdsa no-ec_nistp_64_gcc_128 no-egd no-engine no-err no-filenames no-fuzz-libfuzzer no-fuzz-afl no-gost no-heartbeats no-hw no-idea no-makedepend no-md2 no-md4 no-mdc2 no-msan no-multiblock no-nextprotoneg no-ocb no-ocsp no-pic no-poly1305 no-posix-io no-psk no-rc2 no-rc4 no-rc5 no-rdrand no-rfc3779 no-rmd160 no-scrypt no-sctp no-seed no-shared no-sock no-srp no-srtp no-sse2 no-ssl no-ssl-trace no-static-engine no-stdio no-threads no-tls no-ts no-ubsan no-ui no-unit-test no-whirlpool no-weak-ssl-ciphers no-zlib no-zlib-dynamic linux-generic32 ; sed -i 's|$$(CROSS_COMPILE)/home/|/home/|g' Makefile ; sed -i 's|$$(CROSS_COMPILE)python|python|g' Makefile ; make build_libs
+	make clean
 
 	bash -c ' \
 		args="$$(echo " \
@@ -73,7 +64,9 @@ all:
 	terser dist/rsasign.module.js -cmo dist/rsasign.module.js
 	terser dist/rsasign.js -cmo dist/rsasign.js
 
-	rm -rf dist/rsasign.tmp.js libsodium node_modules openssl package-lock.json
+	rm -rf dist/rsasign.tmp.js
+	chmod -R 777 dist
 
 clean:
-	rm -rf dist libsodium node_modules openssl
+	rm -rf dist 2> /dev/null
+	mkdir dist

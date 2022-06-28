@@ -1,8 +1,5 @@
 all:
-	rm -rf dist node_modules package-lock.json 2> /dev/null
-	mkdir dist node_modules
-
-	npm install
+	make clean
 
 	webpack --mode none --output-library-target var --output-library superSphincs supersphincs.js -o dist/supersphincs.js
 
@@ -16,7 +13,8 @@ all:
 	" >> dist/supersphincs.js
 	terser dist/supersphincs.js -cmo dist/supersphincs.js
 
-	rm -rf node_modules package-lock.json
+	chmod -R 777 dist
 
 clean:
-	rm -rf dist node_modules package-lock.json
+	rm -rf dist 2> /dev/null
+	mkdir dist

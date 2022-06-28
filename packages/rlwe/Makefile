@@ -1,14 +1,8 @@
 all:
-	rm -rf dist LatticeCrypto_v1.0 libsodium 2> /dev/null
-	mkdir dist
+	make clean
 
-	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
-	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
-
-	wget https://download.microsoft.com/download/7/3/3/733A6839-E6F3-4E6D-A91E-CC6E9F4EAACA/LatticeCrypto_v1.0.zip
-	unzip LatticeCrypto_v1.0.zip
-	rm LatticeCrypto_v1.0.zip
-	cd LatticeCrypto_v1.0 ; mv kex.c tmp ; echo '#include <stdlib.h>' > kex.c ; cat tmp >> kex.c ; rm tmp
+	cp -a ../../lib/legacy/rlwe ./
+	cd rlwe ; mv kex.c tmp ; echo '#include <stdlib.h>' > kex.c ; cat tmp >> kex.c ; rm tmp
 
 	bash -c ' \
 		args="$$(echo " \
@@ -23,13 +17,13 @@ all:
 			-s NO_FILESYSTEM=1 \
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include/sodium \
-			-ILatticeCrypto_v1.0 \
+			-Irlwe \
 			libsodium/src/libsodium/sodium/utils.c \
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$(ls libsodium/src/libsodium/crypto_stream/*.c) \
 			$$(ls libsodium/src/libsodium/crypto_stream/chacha20/*.c) \
 			$$(ls libsodium/src/libsodium/crypto_stream/chacha20/ref/*.c) \
-			$$(ls LatticeCrypto_v1.0/*.c LatticeCrypto_v1.0/generic/*.c) \
+			$$(ls rlwe/*.c rlwe/generic/*.c) \
 			rlwe.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
@@ -89,7 +83,9 @@ all:
 	sed -i 's|use asm||g' dist/rlwe.js
 	sed -i 's|require(|eval("require")(|g' dist/rlwe.js
 
-	rm -rf LatticeCrypto_v1.0 libsodium dist/rlwe.*.js
+	rm -rf rlwe dist/rlwe.*.js
+	chmod -R 777 dist
 
 clean:
-	rm -rf dist LatticeCrypto_v1.0 libsodium
+	rm -rf dist rlwe 2> /dev/null
+	mkdir dist

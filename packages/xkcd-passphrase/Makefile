@@ -1,11 +1,11 @@
 all:
-	rm -rf dist tmp 2> /dev/null
-	mkdir dist tmp
+	make clean
+	mkdir tmp
 
 	cp pre.js tmp/pre.js
 	echo >> tmp/pre.js
 
-	curl -s https://raw.githubusercontent.com/cyph/sodiumutil/master/dist/sodiumutil.js >> tmp/pre.js
+	cat ../../lib/sodiumutil/dist/sodiumutil.js >> tmp/pre.js
 
 	node -e 'fs.writeFileSync("tmp/post.js", fs.readFileSync("post.js").toString().replace("DEFAULT_WORD_LIST", JSON.stringify(fs.readFileSync("word-list.txt").toString().trim().split("\n"))))'
 
@@ -79,6 +79,8 @@ all:
 		> dist/xkcd-passphrase.slim.js
 
 	rm -rf tmp
+	chmod -R 777 dist
 
 clean:
-	rm -rf dist tmp
+	rm -rf dist tmp 2> /dev/null
+	mkdir dist

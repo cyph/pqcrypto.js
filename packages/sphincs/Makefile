@@ -1,17 +1,7 @@
 all:
-	rm -rf dist c_src erlang-binding libsodium openssl supercop* 2> /dev/null
-	mkdir dist
+	make clean
 
-	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
-	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
-
-	git clone --depth 1 -b OpenSSL_1_0_2-stable https://github.com/openssl/openssl
-	cd openssl ; emconfigure ./config no-asm no-threads no-shared no-dso no-sse2
-
-	wget https://bench.cr.yp.to/supercop/supercop-20191221.tar.xz
-	unxz < supercop-20191221.tar.xz | tar -xf -
-	mv supercop-20191221 c_src
-	rm supercop-20191221.tar.xz
+	cp -a ../../lib/legacy/supercop c_src
 
 	sed -i 's|crypto_hash|crypto_hash_blake256_ref|g' c_src/crypto_hash/blake256/ref/hash.c
 	sed -i 's|sigma|sigma_blake256_ref|g' c_src/crypto_hash/blake256/ref/hash.c
@@ -26,10 +16,8 @@ all:
 	sed -i 's|crypto_sign|crypto_sign_sphincs|g' c_src/crypto_sign/sphincs256/ref/sign.c
 	sed -i 's|crypto_sign_sphincs.h|crypto_sign.h|g' c_src/crypto_sign/sphincs256/ref/sign.c
 
-	git clone --depth 1 https://github.com/ahf/sphincs erlang-binding
-	mv erlang-binding/c_src/crypto_core/include/* c_src/include/
-	mv erlang-binding/c_src/crypto_stream/chacha12/ref/api.c c_src/crypto_stream/chacha12/e/ref/stream.c
-	rm -rf erlang-binding
+	cp -f ../../lib/legacy/sphincs-erlang-binding/c_src/crypto_core/include/* c_src/include/
+	cp ../../lib/legacy/sphincs-erlang-binding/c_src/crypto_stream/chacha12/ref/api.c c_src/crypto_stream/chacha12/e/ref/stream.c
 
 	bash -c ' \
 		args="$$(echo " \
@@ -111,7 +99,9 @@ all:
 	sed -i 's|use asm||g' dist/sphincs.js
 	sed -i 's|require(|eval("require")(|g' dist/sphincs.js
 
-	rm -rf c_src libsodium openssl dist/sphincs.*.js
+	rm -rf c_src dist/sphincs.*.js
+	chmod -R 777 dist
 
 clean:
-	rm -rf dist c_src erlang-binding libsodium openssl supercop*
+	rm -rf dist c_src 2> /dev/null
+	mkdir dist

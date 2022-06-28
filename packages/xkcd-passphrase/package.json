@@ -7,7 +7,7 @@
 	"bin": "cli.js",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/cyph/xkcd-passphrase.git"
+		"url": "git://github.com/cyph/pqcrypto.js.git"
 	},
 	"keywords": [
 		"cryptography",
@@ -18,9 +18,9 @@
 		"asm.js",
 		"webassembly"
 	],
-	"author": "Cyph, Inc. <xkcd-passphrase@cyph.com> (https://github.com/cyph)",
-	"license": "BSD-2-Clause",
+	"author": "Cyph, Inc. <pqcrypto.js@cyph.com> (https://github.com/cyph)",
+	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/cyph/xkcd-passphrase/issues"
+		"url": "https://github.com/cyph/pqcrypto.js/issues"
 	}
 }

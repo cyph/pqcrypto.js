@@ -6,7 +6,7 @@
 	"types": "./sphincs.d.ts",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/cyph/sphincs.js.git"
+		"url": "git://github.com/cyph/pqcrypto.js.git"
 	},
 	"keywords": [
 		"cryptography",
@@ -15,9 +15,9 @@
 		"asm.js",
 		"webassembly"
 	],
-	"author": "Cyph, Inc. <sphincs@cyph.com> (https://github.com/cyph)",
-	"license": "BSD-2-Clause",
+	"author": "Cyph, Inc. <pqcrypto.js@cyph.com> (https://github.com/cyph)",
+	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/cyph/sphincs.js/issues"
+		"url": "https://github.com/cyph/pqcrypto.js/issues"
 	}
 }

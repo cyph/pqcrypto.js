@@ -1,29 +1,18 @@
 all:
-	rm -rf dist libsodium mcbits sodiumutil 2> /dev/null
-	mkdir dist
+	make clean
 
-	git clone --depth 1 -b stable https://github.com/jedisct1/libsodium
-	cd libsodium ; emconfigure ./configure --enable-minimal --disable-shared
-
-	git clone --depth 1 https://github.com/cyph/sodiumutil
 	cp pre.js dist/mceliece.tmp.js
-	cat sodiumutil/dist/sodiumutil.js | \
+	cat ../../lib/sodiumutil/dist/sodiumutil.js | \
 		perl -pe 's/if\(typeof module!=="undefined".*//g' >> dist/mceliece.tmp.js
 
-	wget https://tungchou.github.io/code/mcbits_new_2.0.tar.gz
-	tar xzf mcbits_new_2.0.tar.gz
-	mv mcbits_new/m12_t62_simple mcbits
-	rm -rf mcbits_new mcbits_new_2.0.tar.gz
+	cp -a ../../lib/mcbits/m12_t62_simple mcbits
 	grep -rl crypt mcbits | xargs -I% sed -i 's|crypt(|crypt_mcbits(|g' %
 	sed -i 's|crypto_encrypt_mcbits|crypto_encrypt|g' mcbits/operations.c
 	sed -i 's|_keccakc1024||g' mcbits/operations.c
 	sed -i 's|salsa20_ref|salsa20|g' mcbits/operations.c
 	sed -i 's|salsa20|chacha20|g' mcbits/operations.c
 
-	wget https://bench.cr.yp.to/supercop/supercop-20190816.tar.xz
-	unxz < supercop-20190816.tar.xz | tar -xf -
-	mv supercop-20190816/crypto_hash/keccakc1024/simple/Keccak-simple* mcbits/
-	rm -rf supercop*
+	cp ../../lib/legacy/supercop/crypto_hash/keccakc1024/simple/Keccak-simple* mcbits/
 
 	bash -c ' \
 		args="$$(echo " \
@@ -107,7 +96,9 @@ all:
 	sed -i 's|use asm||g' dist/mceliece.js
 	sed -i 's|require(|eval("require")(|g' dist/mceliece.js
 
-	rm -rf libsodium mcbits sodiumutil dist/mceliece.*.js
+	rm -rf mcbits dist/mceliece.*.js
+	chmod -R 777 dist
 
 clean:
-	rm -rf dist libsodium mcbits sodiumutil
+	rm -rf dist mcbits 2> /dev/null
+	mkdir dist
