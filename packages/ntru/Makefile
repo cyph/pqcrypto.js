@@ -16,7 +16,7 @@ all:
 			-Intru/include -Intru/src \
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$(ls ntru/src/*.c | grep -v _simd.c | grep -v _32.c | grep -v _64.c) \
-			ntru.c \
+			main.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
@@ -34,11 +34,11 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/ntru.asm.js"; \
-		bash -c "emcc -O3 -s WASM=1 $$args -o dist/ntru.wasm.js"; \
+		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/index.asm.js"; \
+		bash -c "emcc -O3 -s WASM=1 $$args -o dist/index.wasm.js"; \
 	'
 
-	cp pre.js dist/ntru.tmp.js
+	cp pre.js dist/index.tmp.js
 	echo " \
 		var Module = {}; \
 		Module.ready = new Promise(function (resolve, reject) { \
@@ -53,13 +53,13 @@ all:
 					reject(err); \
 				} \
 			}; \
-	" >> dist/ntru.tmp.js
-	cat dist/ntru.wasm.js >> dist/ntru.tmp.js
+	" >> dist/index.tmp.js
+	cat dist/index.wasm.js >> dist/index.tmp.js
 	echo " \
 		}).catch(function () { \
 			var Module = {}; \
-	" >> dist/ntru.tmp.js
-	cat dist/ntru.asm.js >> dist/ntru.tmp.js
+	" >> dist/index.tmp.js
+	cat dist/index.asm.js >> dist/index.tmp.js
 	echo " \
 			return new Promise(function (resolve, reject) { \
 				Module.onAbort = reject; \
@@ -68,15 +68,15 @@ all:
 		}).then(function (m) { \
 			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
-	" >> dist/ntru.tmp.js
-	cat post.js >> dist/ntru.tmp.js
+	" >> dist/index.tmp.js
+	cat post.js >> dist/index.tmp.js
 
-	terser dist/ntru.tmp.js -cmo dist/ntru.js
+	terser dist/index.tmp.js -cmo dist/index.js
 
-	sed -i 's|use asm||g' dist/ntru.js
-	sed -i 's|require(|eval("require")(|g' dist/ntru.js
+	sed -i 's|use asm||g' dist/index.js
+	sed -i 's|require(|eval("require")(|g' dist/index.js
 
-	rm -rf dist/ntru.*.js
+	rm -rf dist/index.*.js
 	chmod -R 777 dist
 
 clean:

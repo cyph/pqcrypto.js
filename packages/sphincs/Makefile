@@ -40,7 +40,7 @@ all:
 			c_src/crypto_stream/chacha12/e/ref/stream.c \
 			c_src/crypto_stream/chacha12/e/ref/chacha.c \
 			$$(find c_src/crypto_sign/sphincs256/ref -name '"'"'*.c'"'"' -type f) \
-			sphincs.c \
+			main.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
@@ -57,11 +57,11 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/sphincs.asm.js"; \
-		bash -c "emcc -O3 -s WASM=1 $$args -o dist/sphincs.wasm.js"; \
+		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/index.asm.js"; \
+		bash -c "emcc -O3 -s WASM=1 $$args -o dist/index.wasm.js"; \
 	'
 
-	cp pre.js dist/sphincs.tmp.js
+	cp pre.js dist/index.tmp.js
 	echo " \
 		var Module = {}; \
 		Module.ready = new Promise(function (resolve, reject) { \
@@ -76,13 +76,13 @@ all:
 					reject(err); \
 				} \
 			}; \
-	" >> dist/sphincs.tmp.js
-	cat dist/sphincs.wasm.js >> dist/sphincs.tmp.js
+	" >> dist/index.tmp.js
+	cat dist/index.wasm.js >> dist/index.tmp.js
 	echo " \
 		}).catch(function () { \
 			var Module = {}; \
-	" >> dist/sphincs.tmp.js
-	cat dist/sphincs.asm.js >> dist/sphincs.tmp.js
+	" >> dist/index.tmp.js
+	cat dist/index.asm.js >> dist/index.tmp.js
 	echo " \
 			return new Promise(function (resolve, reject) { \
 				Module.onAbort = reject; \
@@ -91,15 +91,15 @@ all:
 		}).then(function (m) { \
 			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
-	" >> dist/sphincs.tmp.js
-	cat post.js >> dist/sphincs.tmp.js
+	" >> dist/index.tmp.js
+	cat post.js >> dist/index.tmp.js
 
-	terser dist/sphincs.tmp.js -cmo dist/sphincs.js
+	terser dist/index.tmp.js -cmo dist/index.js
 
-	sed -i 's|use asm||g' dist/sphincs.js
-	sed -i 's|require(|eval("require")(|g' dist/sphincs.js
+	sed -i 's|use asm||g' dist/index.js
+	sed -i 's|require(|eval("require")(|g' dist/index.js
 
-	rm -rf c_src dist/sphincs.*.js
+	rm -rf c_src dist/index.*.js
 	chmod -R 777 dist
 
 clean:

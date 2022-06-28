@@ -1,9 +1,9 @@
 all:
 	make clean
 
-	cp pre.js dist/mceliece.tmp.js
+	cp pre.js dist/index.tmp.js
 	cat ../../lib/sodiumutil/dist/sodiumutil.js | \
-		perl -pe 's/if\(typeof module!=="undefined".*//g' >> dist/mceliece.tmp.js
+		perl -pe 's/if\(typeof module!=="undefined".*//g' >> dist/index.tmp.js
 
 	cp -a ../../lib/mcbits/m12_t62_simple mcbits
 	grep -rl crypt mcbits | xargs -I% sed -i 's|crypt(|crypt_mcbits(|g' %
@@ -36,7 +36,7 @@ all:
 			$$(find libsodium/src/libsodium/crypto_stream/chacha20 -type f -name "*.c" | tr "\n" " ") \
 			$$(find libsodium/src/libsodium/crypto_verify -type f -name "*.c" | tr "\n" " ") \
 			$$(ls mcbits/*.c) \
-			mceliece.c \
+			main.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
@@ -55,8 +55,8 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/mceliece.asm.js"; \
-		bash -c "emcc -O3 -s WASM=1 $$args -o dist/mceliece.wasm.js"; \
+		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/index.asm.js"; \
+		bash -c "emcc -O3 -s WASM=1 $$args -o dist/index.wasm.js"; \
 	'
 
 	echo " \
@@ -73,13 +73,13 @@ all:
 					reject(err); \
 				} \
 			}; \
-	" >> dist/mceliece.tmp.js
-	cat dist/mceliece.wasm.js >> dist/mceliece.tmp.js
+	" >> dist/index.tmp.js
+	cat dist/index.wasm.js >> dist/index.tmp.js
 	echo " \
 		}).catch(function () { \
 			var Module = {}; \
-	" >> dist/mceliece.tmp.js
-	cat dist/mceliece.asm.js >> dist/mceliece.tmp.js
+	" >> dist/index.tmp.js
+	cat dist/index.asm.js >> dist/index.tmp.js
 	echo " \
 			return new Promise(function (resolve, reject) { \
 				Module.onAbort = reject; \
@@ -88,15 +88,15 @@ all:
 		}).then(function (m) { \
 			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
-	" >> dist/mceliece.tmp.js
-	cat post.js >> dist/mceliece.tmp.js
+	" >> dist/index.tmp.js
+	cat post.js >> dist/index.tmp.js
 
-	terser dist/mceliece.tmp.js -cmo dist/mceliece.js
+	terser dist/index.tmp.js -cmo dist/index.js
 
-	sed -i 's|use asm||g' dist/mceliece.js
-	sed -i 's|require(|eval("require")(|g' dist/mceliece.js
+	sed -i 's|use asm||g' dist/index.js
+	sed -i 's|require(|eval("require")(|g' dist/index.js
 
-	rm -rf mcbits dist/mceliece.*.js
+	rm -rf mcbits dist/index.*.js
 	chmod -R 777 dist
 
 clean:

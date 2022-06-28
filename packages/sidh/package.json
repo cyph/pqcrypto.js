@@ -2,8 +2,8 @@
 	"name": "sidh",
 	"version": "5.1.4",
 	"description": "JavaScript wrapper for a WebAssembly build of SIDH",
-	"main": "dist/sidh.js",
-	"types": "./sidh.d.ts",
+	"main": "dist/index.js",
+	"types": "./index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/cyph/pqcrypto.js.git"

@@ -26,7 +26,7 @@ all:
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			openssl/crypto/rand/rand_err.o \
 			$$(find openssl/crypto -type f -name "*.o" -not -path "openssl/crypto/rand/*" | tr "\n" " ") \
-			rsasign.c \
+			main.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
@@ -43,28 +43,28 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 $$args -o dist/rsasign.tmp.js"; \
+		bash -c "emcc -Oz -s WASM=0 $$args -o dist/index.tmp.js"; \
 	'
 
-	cp pre.js dist/rsasign.module.js
-	cat dist/rsasign.tmp.js >> dist/rsasign.module.js
+	cp pre.js dist/index.module.js
+	cat dist/index.tmp.js >> dist/index.module.js
 	cat post.js | \
 		sed "s|RSASIGNJS_PUBLEN|$(RSASIGNJS_PUBLEN)|g" | \
 		sed "s|RSASIGNJS_PRIVLEN|$(RSASIGNJS_PRIVLEN)|g" | \
 		sed "s|RSASIGNJS_SIGLEN|$(RSASIGNJS_SIGLEN)|g" \
-	>> dist/rsasign.module.js
+	>> dist/index.module.js
 
-	sed -i 's|use asm||g' dist/rsasign.module.js
-	sed -i 's|require(|eval("require")(|g' dist/rsasign.module.js
-	sed -i 's|eval("require")(.pem-jwk-norecompute.)|require("pem-jwk-norecompute")|g' dist/rsasign.module.js
-	sed -i 's|eval("require")(.sodiumutil.)|require("sodiumutil")|g' dist/rsasign.module.js
+	sed -i 's|use asm||g' dist/index.module.js
+	sed -i 's|require(|eval("require")(|g' dist/index.module.js
+	sed -i 's|eval("require")(.pem-jwk-norecompute.)|require("pem-jwk-norecompute")|g' dist/index.module.js
+	sed -i 's|eval("require")(.sodiumutil.)|require("sodiumutil")|g' dist/index.module.js
 
-	webpack --mode none --output-library-target var --output-library rsaSign dist/rsasign.module.js -o dist/rsasign.js
+	webpack --mode none --output-library-target var --output-library rsaSign dist/index.module.js -o dist/index.js
 
-	terser dist/rsasign.module.js -cmo dist/rsasign.module.js
-	terser dist/rsasign.js -cmo dist/rsasign.js
+	terser dist/index.module.js -cmo dist/index.module.js
+	terser dist/index.js -cmo dist/index.js
 
-	rm -rf dist/rsasign.tmp.js
+	rm -rf dist/index.tmp.js
 	chmod -R 777 dist
 
 clean:

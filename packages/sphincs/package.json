@@ -2,8 +2,8 @@
 	"name": "sphincs",
 	"version": "2.4.1",
 	"description": "JavaScript wrapper for a WebAssembly build of SPHINCS",
-	"main": "dist/sphincs.js",
-	"types": "./sphincs.d.ts",
+	"main": "dist/index.js",
+	"types": "./index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/cyph/pqcrypto.js.git"

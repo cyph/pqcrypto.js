@@ -2,8 +2,8 @@
 	"name": "rsasign",
 	"version": "1.3.3",
 	"description": "JavaScript wrapper for native RSASSA-PKCS1-v1_5",
-	"main": "dist/rsasign.module.js",
-	"types": "./rsasign.d.ts",
+	"main": "dist/index.module.js",
+	"types": "./index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/cyph/pqcrypto.js.git"

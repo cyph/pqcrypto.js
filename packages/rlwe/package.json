@@ -2,8 +2,8 @@
 	"name": "rlwe",
 	"version": "3.2.2",
 	"description": "JavaScript wrapper for a WebAssembly build of RLWE",
-	"main": "dist/rlwe.js",
-	"types": "./rlwe.d.ts",
+	"main": "dist/index.js",
+	"types": "./index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/cyph/pqcrypto.js.git"

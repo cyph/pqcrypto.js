@@ -20,7 +20,7 @@ all:
 			-s DISABLE_EXCEPTION_CATCHING=1 \
 			-s NO_FILESYSTEM=1 \
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
-			xkcd-passphrase.c \
+			main.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'UTF8ToString'"'"', \
 				'"'"'writeAsciiToMemory'"'"' \
@@ -70,13 +70,13 @@ all:
 	" >> tmp/xkcd-passphrase.js
 	cat tmp/post.js >> tmp/xkcd-passphrase.js
 
-	terser tmp/xkcd-passphrase.js -cmo dist/xkcd-passphrase.js
+	terser tmp/xkcd-passphrase.js -cmo dist/index.js
 
-	sed -i 's|use asm||g' dist/xkcd-passphrase.js
-	sed -i 's|require(|eval("require")(|g' dist/xkcd-passphrase.js
+	sed -i 's|use asm||g' dist/index.js
+	sed -i 's|require(|eval("require")(|g' dist/index.js
 
-	cat dist/xkcd-passphrase.js | perl -pe 's/defaultWordList:.*?],/defaultWordList:\[\],/g' \
-		> dist/xkcd-passphrase.slim.js
+	cat dist/index.js | perl -pe 's/defaultWordList:.*?],/defaultWordList:\[\],/g' \
+		> dist/index.slim.js
 
 	rm -rf tmp
 	chmod -R 777 dist

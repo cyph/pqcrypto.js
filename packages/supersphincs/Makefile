@@ -1,7 +1,7 @@
 all:
 	make clean
 
-	webpack --mode none --output-library-target var --output-library superSphincs supersphincs.js -o dist/supersphincs.js
+	webpack --mode none --output-library-target var --output-library superSphincs supersphincs.js -o dist/index.js
 
 	echo " \
 		if (typeof module !== 'undefined' && module.exports) { \
@@ -10,8 +10,8 @@ all:
 		else { \
 			self.superSphincs	= superSphincs; \
 		} \
-	" >> dist/supersphincs.js
-	terser dist/supersphincs.js -cmo dist/supersphincs.js
+	" >> dist/index.js
+	terser dist/index.js -cmo dist/index.js
 
 	chmod -R 777 dist
 

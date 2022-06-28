@@ -24,7 +24,7 @@ all:
 			$$(ls libsodium/src/libsodium/crypto_stream/chacha20/*.c) \
 			$$(ls libsodium/src/libsodium/crypto_stream/chacha20/ref/*.c) \
 			$$(ls rlwe/*.c rlwe/generic/*.c) \
-			rlwe.c \
+			main.c \
 			-s EXTRA_EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
@@ -41,11 +41,11 @@ all:
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
-		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/rlwe.asm.js"; \
-		bash -c "emcc -O3 -s WASM=1 $$args -o dist/rlwe.wasm.js"; \
+		bash -c "emcc -Oz -s WASM=0 -s RUNNING_JS_OPTS=1 $$args -o dist/index.asm.js"; \
+		bash -c "emcc -O3 -s WASM=1 $$args -o dist/index.wasm.js"; \
 	'
 
-	cp pre.js dist/rlwe.tmp.js
+	cp pre.js dist/index.tmp.js
 	echo " \
 		var Module = {}; \
 		Module.ready = new Promise(function (resolve, reject) { \
@@ -60,13 +60,13 @@ all:
 					reject(err); \
 				} \
 			}; \
-	" >> dist/rlwe.tmp.js
-	cat dist/rlwe.wasm.js >> dist/rlwe.tmp.js
+	" >> dist/index.tmp.js
+	cat dist/index.wasm.js >> dist/index.tmp.js
 	echo " \
 		}).catch(function () { \
 			var Module = {}; \
-	" >> dist/rlwe.tmp.js
-	cat dist/rlwe.asm.js >> dist/rlwe.tmp.js
+	" >> dist/index.tmp.js
+	cat dist/index.asm.js >> dist/index.tmp.js
 	echo " \
 			return new Promise(function (resolve, reject) { \
 				Module.onAbort = reject; \
@@ -75,15 +75,15 @@ all:
 		}).then(function (m) { \
 			Object.keys(m).forEach(function (k) { Module[k] = m[k]; }); \
 		}); \
-	" >> dist/rlwe.tmp.js
-	cat post.js >> dist/rlwe.tmp.js
+	" >> dist/index.tmp.js
+	cat post.js >> dist/index.tmp.js
 
-	terser dist/rlwe.tmp.js -cmo dist/rlwe.js
+	terser dist/index.tmp.js -cmo dist/index.js
 
-	sed -i 's|use asm||g' dist/rlwe.js
-	sed -i 's|require(|eval("require")(|g' dist/rlwe.js
+	sed -i 's|use asm||g' dist/index.js
+	sed -i 's|require(|eval("require")(|g' dist/index.js
 
-	rm -rf rlwe dist/rlwe.*.js
+	rm -rf rlwe dist/index.*.js
 	chmod -R 777 dist
 
 clean:

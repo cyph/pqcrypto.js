@@ -2,8 +2,8 @@
 	"name": "supersphincs",
 	"version": "6.3.2",
 	"description": "SPHINCS and RSASSA-PKCS1-v1_5 paired together as a single signing scheme",
-	"main": "supersphincs.js",
-	"types": "./supersphincs.d.ts",
+	"main": "index.js",
+	"types": "./index.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/cyph/pqcrypto.js.git"
