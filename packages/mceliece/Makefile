@@ -5,7 +5,7 @@ all:
 	cat ../../lib/sodiumutil/dist/sodiumutil.js | \
 		perl -pe 's/if\(typeof module!=="undefined".*//g' >> dist/index.tmp.js
 
-	cp -a ../../lib/mcbits/m12_t62_simple mcbits
+	cp -a ../../lib/legacy/mcbits/m12_t62_simple mcbits
 	grep -rl crypt mcbits | xargs -I% sed -i 's|crypt(|crypt_mcbits(|g' %
 	sed -i 's|crypto_encrypt_mcbits|crypto_encrypt|g' mcbits/operations.c
 	sed -i 's|_keccakc1024||g' mcbits/operations.c
