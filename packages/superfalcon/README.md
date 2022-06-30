@@ -1,10 +1,10 @@
-# supersphincs
+# superfalcon
 
 ## Overview
 
-SuperSPHINCS combines the post-quantum [SPHINCS](https://sphincs.cr.yp.to) with the more conventional
+SuperFALCON combines the post-quantum [FALCON](https://falcon.cr.yp.to) with the more conventional
 [RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
-SPHINCS is provided by [sphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs)
+FALCON is provided by [falcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/falcon)
 and RSA signing is performed using
 [rsasign](https://github.com/cyph/pqcrypto.js/tree/master/packages/rsasign).
 
@@ -16,7 +16,7 @@ where available or an efficient JavaScript implementation from
 
 	(async () => {
 		const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await superSphincs.keyPair()
+			await superFalcon.keyPair()
 		;
 
 		const message /*: Uint8Array */ =
@@ -33,21 +33,21 @@ where available or an efficient JavaScript implementation from
 		/* Combined signatures */
 
 		const signed /*: Uint8Array */ =
-			await superSphincs.sign(message, keyPair.privateKey, additionalData)
+			await superFalcon.sign(message, keyPair.privateKey, additionalData)
 		;
 
 		const verified /*: Uint8Array */ =
-			await superSphincs.open(signed, keyPair.publicKey, additionalData) // same as message
+			await superFalcon.open(signed, keyPair.publicKey, additionalData) // same as message
 		;
 
 		/* Detached signatures */
 
 		const signature /*: Uint8Array */ =
-			await superSphincs.signDetached(message, keyPair.privateKey, additionalData)
+			await superFalcon.signDetached(message, keyPair.privateKey, additionalData)
 		;
 
 		const isValid /*: boolean */ =
-			await superSphincs.verifyDetached(
+			await superFalcon.verifyDetached(
 				signature,
 				message,
 				keyPair.publicKey,
@@ -60,16 +60,16 @@ where available or an efficient JavaScript implementation from
 		const keyData /*: {
 			private: {
 				rsa: string;
-				sphincs: string;
-				superSphincs: string;
+				falcon: string;
+				superFalcon: string;
 			};
 			public: {
 				rsa: string;
-				sphincs: string;
-				superSphincs: string;
+				falcon: string;
+				superFalcon: string;
 			};
 		} */ =
-			await superSphincs.exportKeys(keyPair, 'secret passphrase')
+			await superFalcon.exportKeys(keyPair, 'secret passphrase')
 		;
 
 		if (typeof localStorage === 'undefined') {
@@ -77,21 +77,21 @@ where available or an efficient JavaScript implementation from
 		}
 
 		// May now save exported keys to disk (or whatever)
-		localStorage.superSphincsPrivateKey = keyData.private.superSphincs;
-		localStorage.sphincsPrivateKey      = keyData.private.sphincs;
+		localStorage.superFalconPrivateKey = keyData.private.superFalcon;
+		localStorage.falconPrivateKey      = keyData.private.falcon;
 		localStorage.rsaPrivateKey          = keyData.private.rsa;
-		localStorage.superSphincsPublicKey  = keyData.public.superSphincs;
-		localStorage.sphincsPublicKey       = keyData.public.sphincs;
+		localStorage.superFalconPublicKey  = keyData.public.superFalcon;
+		localStorage.falconPublicKey       = keyData.public.falcon;
 		localStorage.rsaPublicKey           = keyData.public.rsa;
 
 
-		/* Reconstruct an exported key using either the superSphincs
-			value or any pair of valid sphincs and rsa values */
+		/* Reconstruct an exported key using either the superFalcon
+			value or any pair of valid falcon and rsa values */
 
-		const keyPair1 = await superSphincs.importKeys({
+		const keyPair1 = await superFalcon.importKeys({
 			public: {
 				rsa: localStorage.rsaPublicKey,
-				sphincs: localStorage.sphincsPublicKey
+				falcon: localStorage.falconPublicKey
 			}
 		});
 
@@ -99,10 +99,10 @@ where available or an efficient JavaScript implementation from
 		console.log('Import #1:');
 		console.log(keyPair1);
 
-		const keyPair2 = await superSphincs.importKeys(
+		const keyPair2 = await superFalcon.importKeys(
 			{
 				private: {
-					superSphincs: localStorage.superSphincsPrivateKey
+					superFalcon: localStorage.superFalconPrivateKey
 				}
 			},
 			'secret passphrase'
@@ -112,23 +112,23 @@ where available or an efficient JavaScript implementation from
 		console.log('Import #2:');
 		console.log(keyPair2);
 
-		// Constructing an entirely new SuperSPHINCS key pair from
-		// the original SPHINCS key pair and a new RSA key pair
-		const keyPair3 = await superSphincs.importKeys(
+		// Constructing an entirely new SuperFALCON key pair from
+		// the original FALCON key pair and a new RSA key pair
+		const keyPair3 = await superFalcon.importKeys(
 			{
 				private: {
 					rsa: (
-						await superSphincs.exportKeys(
-							await superSphincs.keyPair(),
+						await superFalcon.exportKeys(
+							await superFalcon.keyPair(),
 							'hunter2'
 						)
 					).private.rsa,
-					sphincs: localStorage.sphincsPrivateKey
+					falcon: localStorage.falconPrivateKey
 				}
 			},
 			{
 				rsa: 'hunter2',
-				sphincs: 'secret passphrase'
+				falcon: 'secret passphrase'
 			}
 		);
 
@@ -160,4 +160,4 @@ the API is fully asynchronous.
 
 2.0.0:
 
-* Split into module (supersphincs.js) and standalone pre-bundled version (dist/supersphincs.js).
+* Split into module (superfalcon.js) and standalone pre-bundled version (dist/superfalcon.js).

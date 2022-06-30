@@ -5,7 +5,7 @@ module.exports = {
 	mode: 'none',
 	output: {
 		filename: 'index.js',
-		library: 'superSphincs',
+		library: 'superFalcon',
 		libraryTarget: 'var'
 	},
 	resolve: {

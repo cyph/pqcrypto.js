@@ -5,10 +5,10 @@ all:
 
 	echo " \
 		if (typeof module !== 'undefined' && module.exports) { \
-			module.exports		= superSphincs; \
+			module.exports		= superFalcon; \
 		} \
 		else { \
-			self.superSphincs	= superSphincs; \
+			self.superFalcon	= superFalcon; \
 		} \
 	" >> dist/index.js
 	terser dist/index.js -cmo dist/index.js

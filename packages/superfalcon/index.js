@@ -9,7 +9,7 @@ var isNode	=
 var sha512		= require('./nacl-sha512');
 var rsaSign		= require('rsasign');
 var sodiumUtil	= require('sodiumutil');
-var sphincs		= require('sphincs');
+var falcon		= require('falcon');
 
 
 var nodeCrypto, Buffer;
@@ -312,26 +312,26 @@ var aes	= {
 };
 
 
-var publicKeyBytes, privateKeyBytes, bytes, sphincsBytes;
+var publicKeyBytes, privateKeyBytes, bytes, falconBytes;
 
 var initiated	= Promise.all([
-	sphincs.publicKeyBytes,
-	sphincs.privateKeyBytes,
-	sphincs.bytes
+	falcon.publicKeyBytes,
+	falcon.privateKeyBytes,
+	falcon.bytes
 ]).then(function (results) {
-	sphincsBytes	= {
+	falconBytes	= {
 		publicKeyBytes: results[0],
 		privateKeyBytes: results[1],
 		bytes: results[2]
 	};
 
-	publicKeyBytes	= rsaSign.publicKeyBytes + sphincsBytes.publicKeyBytes;
-	privateKeyBytes	= rsaSign.privateKeyBytes + sphincsBytes.privateKeyBytes;
-	bytes			= rsaSign.bytes + sphincsBytes.bytes;
+	publicKeyBytes	= rsaSign.publicKeyBytes + falconBytes.publicKeyBytes;
+	privateKeyBytes	= rsaSign.privateKeyBytes + falconBytes.privateKeyBytes;
+	bytes			= rsaSign.bytes + falconBytes.bytes;
 });
 
 
-var superSphincs	= {
+var superFalcon	= {
 	_sodiumUtil: sodiumUtil,
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
@@ -354,25 +354,25 @@ var superSphincs	= {
 	keyPair: function () { return initiated.then(function () {
 		return Promise.all([
 			rsaSign.keyPair(),
-			sphincs.keyPair()
+			falcon.keyPair()
 		]).then(function (results) {
 			var rsaKeyPair		= results[0];
-			var sphincsKeyPair	= results[1];
+			var falconKeyPair	= results[1];
 
 			var keyPair	= {
-				keyType: 'supersphincs',
+				keyType: 'superfalcon',
 				publicKey: new Uint8Array(publicKeyBytes),
 				privateKey: new Uint8Array(privateKeyBytes)
 			};
 
 			keyPair.publicKey.set(rsaKeyPair.publicKey);
 			keyPair.privateKey.set(rsaKeyPair.privateKey);
-			keyPair.publicKey.set(sphincsKeyPair.publicKey, rsaSign.publicKeyBytes);
-			keyPair.privateKey.set(sphincsKeyPair.privateKey, rsaSign.privateKeyBytes);
+			keyPair.publicKey.set(falconKeyPair.publicKey, rsaSign.publicKeyBytes);
+			keyPair.privateKey.set(falconKeyPair.privateKey, rsaSign.privateKeyBytes);
 
-			sodiumUtil.memzero(sphincsKeyPair.privateKey);
+			sodiumUtil.memzero(falconKeyPair.privateKey);
 			sodiumUtil.memzero(rsaKeyPair.privateKey);
-			sodiumUtil.memzero(sphincsKeyPair.publicKey);
+			sodiumUtil.memzero(falconKeyPair.publicKey);
 			sodiumUtil.memzero(rsaKeyPair.publicKey);
 
 			return keyPair;
@@ -382,7 +382,7 @@ var superSphincs	= {
 	sign: function (message, privateKey, additionalData) { return initiated.then(function () {
 		var shouldClearMessage	= typeof message === 'string';
 
-		return superSphincs.signDetached(
+		return superFalcon.signDetached(
 			message,
 			privateKey,
 			additionalData
@@ -413,7 +413,7 @@ var superSphincs	= {
 	}); },
 
 	signBase64: function (message, privateKey, additionalData) { return initiated.then(function () {
-		return superSphincs.sign(message, privateKey, additionalData).then(function (signed) {
+		return superFalcon.sign(message, privateKey, additionalData).then(function (signed) {
 			var s	= sodiumUtil.to_base64(signed);
 			sodiumUtil.memzero(signed);
 			return s;
@@ -437,7 +437,7 @@ var superSphincs	= {
 						rsaSign.privateKeyBytes
 					)
 				),
-				sphincs.signDetached(
+				falcon.signDetached(
 					hash,
 					new Uint8Array(
 						privateKey.buffer,
@@ -448,15 +448,15 @@ var superSphincs	= {
 		}).then(function (results) {
 			var hash				= results[0];
 			var rsaSignature		= results[1];
-			var sphincsSignature	= results[2];
+			var falconSignature	= results[2];
 
 			var signature	= new Uint8Array(bytes);
 
 			signature.set(rsaSignature);
-			signature.set(sphincsSignature, rsaSign.bytes);
+			signature.set(falconSignature, rsaSign.bytes);
 
 			sodiumUtil.memzero(hash);
-			sodiumUtil.memzero(sphincsSignature);
+			sodiumUtil.memzero(falconSignature);
 			sodiumUtil.memzero(rsaSignature);
 
 			return signature;
@@ -469,7 +469,7 @@ var superSphincs	= {
 		additionalData,
 		preHashed
 	) { return initiated.then(function () {
-			return superSphincs.signDetached(
+			return superFalcon.signDetached(
 				message,
 				privateKey,
 				additionalData,
@@ -505,7 +505,7 @@ var superSphincs	= {
 				signed.byteOffset + bytes
 			);
 
-			return Promise.all([message, superSphincs.verifyDetached(
+			return Promise.all([message, superFalcon.verifyDetached(
 				signature,
 				message,
 				publicKey,
@@ -526,7 +526,7 @@ var superSphincs	= {
 				return includeHash ? {hash: hash, message: message} : message;
 			}
 			else {
-				throw new Error('Failed to open SuperSPHINCS signed message.');
+				throw new Error('Failed to open SuperFALCON signed message.');
 			}
 		}).catch(function (err) {
 			if (shouldClearSigned) {
@@ -544,7 +544,7 @@ var superSphincs	= {
 		knownGoodHash,
 		includeHash
 	) { return initiated.then(function () {
-		return superSphincs.open(
+		return superFalcon.open(
 			signed,
 			publicKey,
 			additionalData,
@@ -598,7 +598,7 @@ var superSphincs	= {
 					undefined :
 				publicKey instanceof Uint8Array ?
 					Promise.resolve(publicKey) :
-					superSphincs.importKeys(publicKey).then(function (kp) {
+					superFalcon.importKeys(publicKey).then(function (kp) {
 						return kp.publicKey;
 					})
 			;
@@ -613,11 +613,11 @@ var superSphincs	= {
 					);
 				}),
 				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
-					return sphincs.verifyDetached(
+					return falcon.verifyDetached(
 						new Uint8Array(
 							signature.buffer,
 							signature.byteOffset + rsaSign.bytes,
-							sphincsBytes.bytes
+							falconBytes.bytes
 						),
 						hash,
 						new Uint8Array(pk.buffer, pk.byteOffset + rsaSign.publicKeyBytes)
@@ -627,8 +627,8 @@ var superSphincs	= {
 		}).then(function (results) {
 			var hash			= results[0];
 			var rsaIsValid		= results[1];
-			var sphincsIsValid	= results[2];
-			var valid			= rsaIsValid && sphincsIsValid;
+			var falconIsValid	= results[2];
+			var valid			= rsaIsValid && falconIsValid;
 
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
@@ -661,12 +661,12 @@ var superSphincs	= {
 				rsaSign.privateKeyBytes
 			);
 
-			var sphincsPrivateKey		= new Uint8Array(
-				sphincsBytes.publicKeyBytes +
-				sphincsBytes.privateKeyBytes
+			var falconPrivateKey		= new Uint8Array(
+				falconBytes.publicKeyBytes +
+				falconBytes.privateKeyBytes
 			);
 
-			var superSphincsPrivateKey	= new Uint8Array(
+			var superFalconPrivateKey	= new Uint8Array(
 				publicKeyBytes +
 				privateKeyBytes
 			);
@@ -685,29 +685,29 @@ var superSphincs	= {
 				rsaSign.publicKeyBytes
 			);
 
-			sphincsPrivateKey.set(new Uint8Array(
+			falconPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
 				keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
 			));
-			sphincsPrivateKey.set(
+			falconPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
 					keyPair.privateKey.byteOffset + rsaSign.privateKeyBytes
 				),
-				sphincsBytes.publicKeyBytes
+				falconBytes.publicKeyBytes
 			);
 
-			superSphincsPrivateKey.set(keyPair.publicKey);
-			superSphincsPrivateKey.set(keyPair.privateKey, publicKeyBytes);
+			superFalconPrivateKey.set(keyPair.publicKey);
+			superFalconPrivateKey.set(keyPair.privateKey, publicKeyBytes);
 
 			if (password) {
 				return Promise.all([
 					encrypt(rsaPrivateKey, password),
-					encrypt(sphincsPrivateKey, password),
-					encrypt(superSphincsPrivateKey, password)
+					encrypt(falconPrivateKey, password),
+					encrypt(superFalconPrivateKey, password)
 				]).then(function (results) {
-					sodiumUtil.memzero(superSphincsPrivateKey);
-					sodiumUtil.memzero(sphincsPrivateKey);
+					sodiumUtil.memzero(superFalconPrivateKey);
+					sodiumUtil.memzero(falconPrivateKey);
 					sodiumUtil.memzero(rsaPrivateKey);
 
 					return results;
@@ -716,31 +716,31 @@ var superSphincs	= {
 			else {
 				return [
 					rsaPrivateKey,
-					sphincsPrivateKey,
-					superSphincsPrivateKey
+					falconPrivateKey,
+					superFalconPrivateKey
 				];
 			}
 		}).then(function (results) {
 			if (!results) {
 				return {
 					rsa: null,
-					sphincs: null,
-					superSphincs: null
+					falcon: null,
+					superFalcon: null
 				};
 			}
 
 			var rsaPrivateKey			= results[0];
-			var sphincsPrivateKey		= results[1];
-			var superSphincsPrivateKey	= results[2];
+			var falconPrivateKey		= results[1];
+			var superFalconPrivateKey	= results[2];
 
 			var privateKeyData	= {
 				rsa: sodiumUtil.to_base64(rsaPrivateKey),
-				sphincs: sodiumUtil.to_base64(sphincsPrivateKey),
-				superSphincs: sodiumUtil.to_base64(superSphincsPrivateKey)
+				falcon: sodiumUtil.to_base64(falconPrivateKey),
+				superFalcon: sodiumUtil.to_base64(superFalconPrivateKey)
 			};
 
-			sodiumUtil.memzero(superSphincsPrivateKey);
-			sodiumUtil.memzero(sphincsPrivateKey);
+			sodiumUtil.memzero(superFalconPrivateKey);
+			sodiumUtil.memzero(falconPrivateKey);
 			sodiumUtil.memzero(rsaPrivateKey);
 
 			return privateKeyData;
@@ -753,11 +753,11 @@ var superSphincs	= {
 						keyPair.publicKey.byteOffset,
 						rsaSign.publicKeyBytes
 					)),
-					sphincs: sodiumUtil.to_base64(new Uint8Array(
+					falcon: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
 					)),
-					superSphincs: sodiumUtil.to_base64(keyPair.publicKey)
+					superFalcon: sodiumUtil.to_base64(keyPair.publicKey)
 				}
 			};
 		});
@@ -765,23 +765,23 @@ var superSphincs	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private && typeof keyData.private.superSphincs === 'string') {
-				var superSphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.superSphincs);
+			if (keyData.private && typeof keyData.private.superFalcon === 'string') {
+				var superFalconPrivateKey	= sodiumUtil.from_base64(keyData.private.superFalcon);
 
 				if (password) {
-					return Promise.all([decrypt(superSphincsPrivateKey, password)]);
+					return Promise.all([decrypt(superFalconPrivateKey, password)]);
 				}
 				else {
-					return [superSphincsPrivateKey];
+					return [superFalconPrivateKey];
 				}
 			}
 			else if (
 				keyData.private &&
 				typeof keyData.private.rsa === 'string' &&
-				typeof keyData.private.sphincs === 'string'
+				typeof keyData.private.falcon === 'string'
 			) {
 				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
-				var sphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.sphincs);
+				var falconPrivateKey	= sodiumUtil.from_base64(keyData.private.falcon);
 
 				if (password) {
 					return Promise.all([
@@ -790,13 +790,13 @@ var superSphincs	= {
 							typeof password === 'string' ? password : password.rsa
 						),
 						decrypt(
-							sphincsPrivateKey,
-							typeof password === 'string' ? password : password.sphincs
+							falconPrivateKey,
+							typeof password === 'string' ? password : password.falcon
 						)
 					]);
 				}
 				else {
-					return [rsaPrivateKey, sphincsPrivateKey];
+					return [rsaPrivateKey, falconPrivateKey];
 				}
 
 				return null;
@@ -814,22 +814,22 @@ var superSphincs	= {
 			keyPair.privateKey	= new Uint8Array(privateKeyBytes);
 
 			if (results.length === 1) {
-				var superSphincsPrivateKey	= results[0];
+				var superFalconPrivateKey	= results[0];
 
 				keyPair.publicKey.set(new Uint8Array(
-					superSphincsPrivateKey.buffer,
-					superSphincsPrivateKey.byteOffset,
+					superFalconPrivateKey.buffer,
+					superFalconPrivateKey.byteOffset,
 					publicKeyBytes
 				));
 
 				keyPair.privateKey.set(new Uint8Array(
-					superSphincsPrivateKey.buffer,
-					superSphincsPrivateKey.byteOffset + publicKeyBytes
+					superFalconPrivateKey.buffer,
+					superFalconPrivateKey.byteOffset + publicKeyBytes
 				));
 			}
 			else {
 				var rsaPrivateKey		= results[0];
-				var sphincsPrivateKey	= results[1];
+				var falconPrivateKey	= results[1];
 
 				keyPair.publicKey.set(
 					new Uint8Array(
@@ -840,9 +840,9 @@ var superSphincs	= {
 				);
 				keyPair.publicKey.set(
 					new Uint8Array(
-						sphincsPrivateKey.buffer,
-						sphincsPrivateKey.byteOffset,
-						sphincsBytes.publicKeyBytes
+						falconPrivateKey.buffer,
+						falconPrivateKey.byteOffset,
+						falconBytes.publicKeyBytes
 					),
 					rsaSign.publicKeyBytes
 				);
@@ -855,8 +855,8 @@ var superSphincs	= {
 				);
 				keyPair.privateKey.set(
 					new Uint8Array(
-						sphincsPrivateKey.buffer,
-						sphincsPrivateKey.byteOffset + sphincsBytes.publicKeyBytes
+						falconPrivateKey.buffer,
+						falconPrivateKey.byteOffset + falconBytes.publicKeyBytes
 					),
 					rsaSign.privateKeyBytes
 				);
@@ -865,13 +865,13 @@ var superSphincs	= {
 			return keyPair;
 		}).then(function (keyPair) {
 			if (!keyPair.privateKey) {
-				if (keyData.public.superSphincs) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superSphincs));
+				if (keyData.public.superFalcon) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superFalcon));
 				}
-				else if (keyData.public.rsa && keyData.public.sphincs) {
+				else if (keyData.public.rsa && keyData.public.falcon) {
 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.rsa));
 					keyPair.publicKey.set(
-						sodiumUtil.from_base64(keyData.public.sphincs),
+						sodiumUtil.from_base64(keyData.public.falcon),
 						rsaSign.publicKeyBytes
 					);
 				}
@@ -884,5 +884,5 @@ var superSphincs	= {
 
 
 
-superSphincs.superSphincs	= superSphincs;
-module.exports				= superSphincs;
+superFalcon.superFalcon	= superFalcon;
+module.exports				= superFalcon;
