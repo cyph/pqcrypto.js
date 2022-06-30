@@ -1,7 +1,7 @@
 {
 	"name": "superfalcon",
 	"version": "6.3.2",
-	"description": "FALCON and RSASSA-PKCS1-v1_5 paired together as a single signing scheme",
+	"description": "FALCON and ECCSSA-PKCS1-v1_5 paired together as a single signing scheme",
 	"main": "index.js",
 	"types": "./index.d.ts",
 	"repository": {
@@ -12,7 +12,7 @@
 		"cryptography",
 		"post-quantum",
 		"falcon",
-		"rsa",
+		"ecc",
 		"asm.js",
 		"webassembly"
 	],
@@ -22,7 +22,7 @@
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
 	},
 	"dependencies": {
-		"rsasign": "*",
+		"eccsign": "*",
 		"sodiumutil": "*",
 		"falcon": "*"
 	},

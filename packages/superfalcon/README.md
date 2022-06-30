@@ -3,10 +3,10 @@
 ## Overview
 
 SuperFALCON combines the post-quantum [FALCON](https://falcon.cr.yp.to) with the more conventional
-[RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
+[ECCSSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
 FALCON is provided by [falcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/falcon)
-and RSA signing is performed using
-[rsasign](https://github.com/cyph/pqcrypto.js/tree/master/packages/rsasign).
+and ECC signing is performed using
+[eccsign](https://github.com/cyph/pqcrypto.js/tree/master/packages/eccsign).
 
 Before signing, a SHA-512 hash is performed, using the current platform's native implementation
 where available or an efficient JavaScript implementation from
@@ -59,12 +59,12 @@ where available or an efficient JavaScript implementation from
 
 		const keyData /*: {
 			private: {
-				rsa: string;
+				ecc: string;
 				falcon: string;
 				superFalcon: string;
 			};
 			public: {
-				rsa: string;
+				ecc: string;
 				falcon: string;
 				superFalcon: string;
 			};
@@ -79,18 +79,18 @@ where available or an efficient JavaScript implementation from
 		// May now save exported keys to disk (or whatever)
 		localStorage.superFalconPrivateKey = keyData.private.superFalcon;
 		localStorage.falconPrivateKey      = keyData.private.falcon;
-		localStorage.rsaPrivateKey          = keyData.private.rsa;
+		localStorage.eccPrivateKey          = keyData.private.ecc;
 		localStorage.superFalconPublicKey  = keyData.public.superFalcon;
 		localStorage.falconPublicKey       = keyData.public.falcon;
-		localStorage.rsaPublicKey           = keyData.public.rsa;
+		localStorage.eccPublicKey           = keyData.public.ecc;
 
 
 		/* Reconstruct an exported key using either the superFalcon
-			value or any pair of valid falcon and rsa values */
+			value or any pair of valid falcon and ecc values */
 
 		const keyPair1 = await superFalcon.importKeys({
 			public: {
-				rsa: localStorage.rsaPublicKey,
+				ecc: localStorage.eccPublicKey,
 				falcon: localStorage.falconPublicKey
 			}
 		});
@@ -113,21 +113,21 @@ where available or an efficient JavaScript implementation from
 		console.log(keyPair2);
 
 		// Constructing an entirely new SuperFALCON key pair from
-		// the original FALCON key pair and a new RSA key pair
+		// the original FALCON key pair and a new ECC key pair
 		const keyPair3 = await superFalcon.importKeys(
 			{
 				private: {
-					rsa: (
+					ecc: (
 						await superFalcon.exportKeys(
 							await superFalcon.keyPair(),
 							'hunter2'
 						)
-					).private.rsa,
+					).private.ecc,
 					falcon: localStorage.falconPrivateKey
 				}
 			},
 			{
-				rsa: 'hunter2',
+				ecc: 'hunter2',
 				falcon: 'secret passphrase'
 			}
 		);
@@ -136,28 +136,3 @@ where available or an efficient JavaScript implementation from
 		console.log('Import #3:');
 		console.log(keyPair3);
 	})();
-
-## Changelog
-
-Breaking changes in major versions:
-
-6.0.0:
-
-* Additional data optional with default value of `new Uint8Array(0)`.
-
-5.0.0:
-
-* Additional data format change.
-
-4.0.0:
-
-* As part of upgrading from asm.js to WebAssembly (with asm.js included as a fallback),
-the API is fully asynchronous.
-
-3.0.0:
-
-* General API cleanup.
-
-2.0.0:
-
-* Split into module (superfalcon.js) and standalone pre-bundled version (dist/superfalcon.js).

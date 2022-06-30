@@ -7,7 +7,7 @@ var isNode	=
 
 
 var sha512		= require('./nacl-sha512');
-var rsaSign		= require('rsasign');
+var eccSign		= require('eccsign');
 var sodiumUtil	= require('sodiumutil');
 var falcon		= require('falcon');
 
@@ -325,9 +325,9 @@ var initiated	= Promise.all([
 		bytes: results[2]
 	};
 
-	publicKeyBytes	= rsaSign.publicKeyBytes + falconBytes.publicKeyBytes;
-	privateKeyBytes	= rsaSign.privateKeyBytes + falconBytes.privateKeyBytes;
-	bytes			= rsaSign.bytes + falconBytes.bytes;
+	publicKeyBytes	= eccSign.publicKeyBytes + falconBytes.publicKeyBytes;
+	privateKeyBytes	= eccSign.privateKeyBytes + falconBytes.privateKeyBytes;
+	bytes			= eccSign.bytes + falconBytes.bytes;
 });
 
 
@@ -353,10 +353,10 @@ var superFalcon	= {
 
 	keyPair: function () { return initiated.then(function () {
 		return Promise.all([
-			rsaSign.keyPair(),
+			eccSign.keyPair(),
 			falcon.keyPair()
 		]).then(function (results) {
-			var rsaKeyPair		= results[0];
+			var eccKeyPair		= results[0];
 			var falconKeyPair	= results[1];
 
 			var keyPair	= {
@@ -365,15 +365,15 @@ var superFalcon	= {
 				privateKey: new Uint8Array(privateKeyBytes)
 			};
 
-			keyPair.publicKey.set(rsaKeyPair.publicKey);
-			keyPair.privateKey.set(rsaKeyPair.privateKey);
-			keyPair.publicKey.set(falconKeyPair.publicKey, rsaSign.publicKeyBytes);
-			keyPair.privateKey.set(falconKeyPair.privateKey, rsaSign.privateKeyBytes);
+			keyPair.publicKey.set(eccKeyPair.publicKey);
+			keyPair.privateKey.set(eccKeyPair.privateKey);
+			keyPair.publicKey.set(falconKeyPair.publicKey, eccSign.publicKeyBytes);
+			keyPair.privateKey.set(falconKeyPair.privateKey, eccSign.privateKeyBytes);
 
 			sodiumUtil.memzero(falconKeyPair.privateKey);
-			sodiumUtil.memzero(rsaKeyPair.privateKey);
+			sodiumUtil.memzero(eccKeyPair.privateKey);
 			sodiumUtil.memzero(falconKeyPair.publicKey);
-			sodiumUtil.memzero(rsaKeyPair.publicKey);
+			sodiumUtil.memzero(eccKeyPair.publicKey);
 
 			return keyPair;
 		});
@@ -429,35 +429,35 @@ var superFalcon	= {
 		return hashWithAdditionalData(message, additionalData, preHashed).then(function (hash) {
 			return Promise.all([
 				hash,
-				rsaSign.signDetached(
+				eccSign.signDetached(
 					hash,
 					new Uint8Array(
 						privateKey.buffer,
 						privateKey.byteOffset,
-						rsaSign.privateKeyBytes
+						eccSign.privateKeyBytes
 					)
 				),
 				falcon.signDetached(
 					hash,
 					new Uint8Array(
 						privateKey.buffer,
-						privateKey.byteOffset + rsaSign.privateKeyBytes
+						privateKey.byteOffset + eccSign.privateKeyBytes
 					)
 				)
 			]);
 		}).then(function (results) {
 			var hash				= results[0];
-			var rsaSignature		= results[1];
+			var eccSignature		= results[1];
 			var falconSignature	= results[2];
 
 			var signature	= new Uint8Array(bytes);
 
-			signature.set(rsaSignature);
-			signature.set(falconSignature, rsaSign.bytes);
+			signature.set(eccSignature);
+			signature.set(falconSignature, eccSign.bytes);
 
 			sodiumUtil.memzero(hash);
 			sodiumUtil.memzero(falconSignature);
-			sodiumUtil.memzero(rsaSignature);
+			sodiumUtil.memzero(eccSignature);
 
 			return signature;
 		});
@@ -606,29 +606,29 @@ var superFalcon	= {
 			return Promise.all([
 				hash,
 				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
-					return rsaSign.verifyDetached(
-						new Uint8Array(signature.buffer, signature.byteOffset, rsaSign.bytes),
+					return eccSign.verifyDetached(
+						new Uint8Array(signature.buffer, signature.byteOffset, eccSign.bytes),
 						hash,
-						new Uint8Array(pk.buffer, pk.byteOffset, rsaSign.publicKeyBytes)
+						new Uint8Array(pk.buffer, pk.byteOffset, eccSign.publicKeyBytes)
 					);
 				}),
 				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
 					return falcon.verifyDetached(
 						new Uint8Array(
 							signature.buffer,
-							signature.byteOffset + rsaSign.bytes,
+							signature.byteOffset + eccSign.bytes,
 							falconBytes.bytes
 						),
 						hash,
-						new Uint8Array(pk.buffer, pk.byteOffset + rsaSign.publicKeyBytes)
+						new Uint8Array(pk.buffer, pk.byteOffset + eccSign.publicKeyBytes)
 					);
 				})
 			]);
 		}).then(function (results) {
 			var hash			= results[0];
-			var rsaIsValid		= results[1];
+			var eccIsValid		= results[1];
 			var falconIsValid	= results[2];
-			var valid			= rsaIsValid && falconIsValid;
+			var valid			= eccIsValid && falconIsValid;
 
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
@@ -656,9 +656,9 @@ var superFalcon	= {
 				return null;
 			}
 
-			var rsaPrivateKey			= new Uint8Array(
-				rsaSign.publicKeyBytes +
-				rsaSign.privateKeyBytes
+			var eccPrivateKey			= new Uint8Array(
+				eccSign.publicKeyBytes +
+				eccSign.privateKeyBytes
 			);
 
 			var falconPrivateKey		= new Uint8Array(
@@ -671,28 +671,28 @@ var superFalcon	= {
 				privateKeyBytes
 			);
 
-			rsaPrivateKey.set(new Uint8Array(
+			eccPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
 				keyPair.publicKey.byteOffset,
-				rsaSign.publicKeyBytes
+				eccSign.publicKeyBytes
 			));
-			rsaPrivateKey.set(
+			eccPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
 					keyPair.privateKey.byteOffset,
-					rsaSign.privateKeyBytes
+					eccSign.privateKeyBytes
 				),
-				rsaSign.publicKeyBytes
+				eccSign.publicKeyBytes
 			);
 
 			falconPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
-				keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
+				keyPair.publicKey.byteOffset + eccSign.publicKeyBytes
 			));
 			falconPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
-					keyPair.privateKey.byteOffset + rsaSign.privateKeyBytes
+					keyPair.privateKey.byteOffset + eccSign.privateKeyBytes
 				),
 				falconBytes.publicKeyBytes
 			);
@@ -702,20 +702,20 @@ var superFalcon	= {
 
 			if (password) {
 				return Promise.all([
-					encrypt(rsaPrivateKey, password),
+					encrypt(eccPrivateKey, password),
 					encrypt(falconPrivateKey, password),
 					encrypt(superFalconPrivateKey, password)
 				]).then(function (results) {
 					sodiumUtil.memzero(superFalconPrivateKey);
 					sodiumUtil.memzero(falconPrivateKey);
-					sodiumUtil.memzero(rsaPrivateKey);
+					sodiumUtil.memzero(eccPrivateKey);
 
 					return results;
 				});
 			}
 			else {
 				return [
-					rsaPrivateKey,
+					eccPrivateKey,
 					falconPrivateKey,
 					superFalconPrivateKey
 				];
@@ -723,39 +723,39 @@ var superFalcon	= {
 		}).then(function (results) {
 			if (!results) {
 				return {
-					rsa: null,
+					ecc: null,
 					falcon: null,
 					superFalcon: null
 				};
 			}
 
-			var rsaPrivateKey			= results[0];
+			var eccPrivateKey			= results[0];
 			var falconPrivateKey		= results[1];
 			var superFalconPrivateKey	= results[2];
 
 			var privateKeyData	= {
-				rsa: sodiumUtil.to_base64(rsaPrivateKey),
+				ecc: sodiumUtil.to_base64(eccPrivateKey),
 				falcon: sodiumUtil.to_base64(falconPrivateKey),
 				superFalcon: sodiumUtil.to_base64(superFalconPrivateKey)
 			};
 
 			sodiumUtil.memzero(superFalconPrivateKey);
 			sodiumUtil.memzero(falconPrivateKey);
-			sodiumUtil.memzero(rsaPrivateKey);
+			sodiumUtil.memzero(eccPrivateKey);
 
 			return privateKeyData;
 		}).then(function (privateKeyData) {
 			return {
 				private: privateKeyData,
 				public: {
-					rsa: sodiumUtil.to_base64(new Uint8Array(
+					ecc: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset,
-						rsaSign.publicKeyBytes
+						eccSign.publicKeyBytes
 					)),
 					falcon: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
-						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
+						keyPair.publicKey.byteOffset + eccSign.publicKeyBytes
 					)),
 					superFalcon: sodiumUtil.to_base64(keyPair.publicKey)
 				}
@@ -777,17 +777,17 @@ var superFalcon	= {
 			}
 			else if (
 				keyData.private &&
-				typeof keyData.private.rsa === 'string' &&
+				typeof keyData.private.ecc === 'string' &&
 				typeof keyData.private.falcon === 'string'
 			) {
-				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
+				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
 				var falconPrivateKey	= sodiumUtil.from_base64(keyData.private.falcon);
 
 				if (password) {
 					return Promise.all([
 						decrypt(
-							rsaPrivateKey,
-							typeof password === 'string' ? password : password.rsa
+							eccPrivateKey,
+							typeof password === 'string' ? password : password.ecc
 						),
 						decrypt(
 							falconPrivateKey,
@@ -796,7 +796,7 @@ var superFalcon	= {
 					]);
 				}
 				else {
-					return [rsaPrivateKey, falconPrivateKey];
+					return [eccPrivateKey, falconPrivateKey];
 				}
 
 				return null;
@@ -828,14 +828,14 @@ var superFalcon	= {
 				));
 			}
 			else {
-				var rsaPrivateKey		= results[0];
+				var eccPrivateKey		= results[0];
 				var falconPrivateKey	= results[1];
 
 				keyPair.publicKey.set(
 					new Uint8Array(
-						rsaPrivateKey.buffer,
-						rsaPrivateKey.byteOffset,
-						rsaSign.publicKeyBytes
+						eccPrivateKey.buffer,
+						eccPrivateKey.byteOffset,
+						eccSign.publicKeyBytes
 					)
 				);
 				keyPair.publicKey.set(
@@ -844,13 +844,13 @@ var superFalcon	= {
 						falconPrivateKey.byteOffset,
 						falconBytes.publicKeyBytes
 					),
-					rsaSign.publicKeyBytes
+					eccSign.publicKeyBytes
 				);
 
 				keyPair.privateKey.set(
 					new Uint8Array(
-						rsaPrivateKey.buffer,
-						rsaPrivateKey.byteOffset + rsaSign.publicKeyBytes
+						eccPrivateKey.buffer,
+						eccPrivateKey.byteOffset + eccSign.publicKeyBytes
 					)
 				);
 				keyPair.privateKey.set(
@@ -858,7 +858,7 @@ var superFalcon	= {
 						falconPrivateKey.buffer,
 						falconPrivateKey.byteOffset + falconBytes.publicKeyBytes
 					),
-					rsaSign.privateKeyBytes
+					eccSign.privateKeyBytes
 				);
 			}
 
@@ -868,11 +868,11 @@ var superFalcon	= {
 				if (keyData.public.superFalcon) {
 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superFalcon));
 				}
-				else if (keyData.public.rsa && keyData.public.falcon) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.rsa));
+				else if (keyData.public.ecc && keyData.public.falcon) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.ecc));
 					keyPair.publicKey.set(
 						sodiumUtil.from_base64(keyData.public.falcon),
-						rsaSign.publicKeyBytes
+						eccSign.publicKeyBytes
 					);
 				}
 			}

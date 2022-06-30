@@ -15,12 +15,12 @@ declare module 'superfalcon' {
 		/** Serializes key pair. */
 		exportKeys (keyPair: {publicKey: Uint8Array}) : Promise<{
 			private: {
-				rsa: null;
+				ecc: null;
 				falcon: null;
 				superFalcon: null;
 			};
 			public: {
-				rsa: string;
+				ecc: string;
 				falcon: string;
 				superFalcon: string;
 			};
@@ -38,12 +38,12 @@ declare module 'superfalcon' {
 			password?: string
 		) : Promise<{
 			private: {
-				rsa: string;
+				ecc: string;
 				falcon: string;
 				superFalcon: string;
 			};
 			public: {
-				rsa: string;
+				ecc: string;
 				falcon: string;
 				superFalcon: string;
 			};
@@ -60,7 +60,7 @@ declare module 'superfalcon' {
 
 		/** Imports exported keys and creates key pair object. */
 		importKeys (keyData: {
-			public: {rsa: string; falcon: string}|{superFalcon: string}
+			public: {ecc: string; falcon: string}|{superFalcon: string}
 		}) : Promise<{
 			privateKey: null;
 			publicKey: Uint8Array;
@@ -72,7 +72,7 @@ declare module 'superfalcon' {
 		 */
 		importKeys (
 			keyData: {
-				private: {rsa: string; falcon: string}|{superFalcon: string};
+				private: {ecc: string; falcon: string}|{superFalcon: string};
 				public?: any;
 			},
 			password?: string
@@ -88,7 +88,7 @@ declare module 'superfalcon' {
 		open (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {rsa: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; falcon: string}|{superFalcon: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -98,7 +98,7 @@ declare module 'superfalcon' {
 		open (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {rsa: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; falcon: string}|{superFalcon: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -112,7 +112,7 @@ declare module 'superfalcon' {
 		openString (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {rsa: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; falcon: string}|{superFalcon: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -122,7 +122,7 @@ declare module 'superfalcon' {
 		openString (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {rsa: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; falcon: string}|{superFalcon: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -167,7 +167,7 @@ declare module 'superfalcon' {
 			signature: Uint8Array|string,
 			message: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {rsa: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; falcon: string}|{superFalcon: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -178,7 +178,7 @@ declare module 'superfalcon' {
 			signature: Uint8Array|string,
 			message: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {rsa: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; falcon: string}|{superFalcon: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
