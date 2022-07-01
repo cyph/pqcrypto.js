@@ -1,17 +1,20 @@
 {
 	"name": "sodiumutil",
-	"version": "3.0.0",
+	"version": "4.0.0",
 	"description": "Pulls out some useful functions from libsodium.js",
-	"main": "dist/sodiumutil.js",
-	"types": "./sodiumutil.d.ts",
+	"main": "dist/index.js",
+	"types": "./index.d.ts",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/cyph/sodiumutil.git"
+		"url": "git://github.com/cyph/pqcrypto.js.git"
 	},
 	"keywords": ["cryptography"],
-	"author": "Cyph, Inc. <sodiumutil@cyph.com> (https://github.com/cyph)",
-	"license": "BSD-2-Clause",
+	"author": "Cyph, Inc. <pqcrypto.js@cyph.com> (https://github.com/cyph)",
+	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/cyph/sodiumutil/issues"
+		"url": "https://github.com/cyph/pqcrypto.js/issues"
+	},
+	"peerDependencies": {
+		"libsodium-wrappers-sumo": "*"
 	}
 }
