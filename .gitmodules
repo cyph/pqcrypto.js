@@ -21,3 +21,6 @@
 	path = lib/openssl
 	url = https://github.com/openssl/openssl
 	branch = OpenSSL_1_1_1-stable
+[submodule "lib/libsodium.js"]
+	path = lib/libsodium.js
+	url = https://github.com/jedisct1/libsodium.js
