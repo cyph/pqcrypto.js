@@ -2,11 +2,11 @@
 
 ## Overview
 
-SuperFALCON combines the post-quantum [FALCON](https://falcon.cr.yp.to) with the more conventional
-[ECCSSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
-FALCON is provided by [falcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/falcon)
-and ECC signing is performed using
-[eccsign](https://github.com/cyph/pqcrypto.js/tree/master/packages/eccsign).
+SuperFALCON combines the post-quantum [FALCON](https://falcon-sign.info) with the more conventional
+elliptic-curve (ECC) [Ed25519](https://ed25519.cr.yp.to) as a single signing scheme. FALCON is
+provided by [falcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/falcon)
+and Ed25519 signing is performed using
+[libsodium.js](https://github.com/jedisct1/libsodium.js).
 
 Before signing, a SHA-512 hash is performed, using the current platform's native implementation
 where available or an efficient JavaScript implementation from
@@ -79,10 +79,10 @@ where available or an efficient JavaScript implementation from
 		// May now save exported keys to disk (or whatever)
 		localStorage.superFalconPrivateKey = keyData.private.superFalcon;
 		localStorage.falconPrivateKey      = keyData.private.falcon;
-		localStorage.eccPrivateKey          = keyData.private.ecc;
+		localStorage.eccPrivateKey         = keyData.private.ecc;
 		localStorage.superFalconPublicKey  = keyData.public.superFalcon;
 		localStorage.falconPublicKey       = keyData.public.falcon;
-		localStorage.eccPublicKey           = keyData.public.ecc;
+		localStorage.eccPublicKey          = keyData.public.ecc;
 
 
 		/* Reconstruct an exported key using either the superFalcon
