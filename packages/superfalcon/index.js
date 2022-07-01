@@ -9,7 +9,7 @@ var isNode	=
 var sha512		= require('./nacl-sha512');
 var falcon		= require('falcon-crypto');
 var sodium		= require('libsodium-wrappers-sumo');
-var sodiumUtil	= require('sodiumutil');
+var sodiumUtil	= require('sodiumutil/dist/sodium-wrapper');
 
 
 var nodeCrypto, Buffer;

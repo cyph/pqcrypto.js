@@ -10,9 +10,9 @@ module.exports = {
 	},
 	resolve: {
 		fallback: {
-			crypto: require.resolve('crypto-browserify'),
-			path: require.resolve('path-browserify'),
-			stream: require.resolve('stream-browserify'),
+			crypto: false,
+			path: false,
+			stream: false,
 			vm: require.resolve('vm-browserify')
 		}
 	}

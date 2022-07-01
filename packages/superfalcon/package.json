@@ -27,9 +27,6 @@
 		"sodiumutil": "*"
 	},
 	"devDependencies": {
-		"crypto-browserify": "*",
-		"path-browserify": "*",
-		"stream-browserify": "*",
 		"vm-browserify": "*",
 		"webpack": "*",
 		"webpack-cli": "*"
