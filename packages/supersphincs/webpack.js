@@ -10,6 +10,8 @@ module.exports = {
 	},
 	resolve: {
 		fallback: {
+			rsasign: require.resolve('../rsasign'),
+			sphincs: require.resolve('../sphincs'),
 			vm: require.resolve('vm-browserify')
 		}
 	}
