@@ -1,5 +1,5 @@
 declare module 'falcon' {
-	interface IFALCON {
+	interface IFalcon {
 		/** Signature length. */
 		bytes: Promise<number>;
 
@@ -29,5 +29,5 @@ declare module 'falcon' {
 		) : Promise<boolean>;
 	}
 
-	const falcon: IFALCON;
+	const falcon: IFalcon;
 }

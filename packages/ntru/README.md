@@ -38,7 +38,7 @@ To change this, modify line 13 of Makefile and rebuild with `make`.
 Note: NTRU is a low-level cryptographic primitive, not a high-level construct like libsodium's
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
 This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
-should avoid using ntru.js directly for anything important if you lack the experience to do so.
+should avoid using ntru directly for anything important if you lack the experience to do so.
 
 ## Changelog
 

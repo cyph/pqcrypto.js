@@ -5,7 +5,7 @@ function dataReturn (returnValue, result) {
 		return result;
 	}
 	else {
-		throw new Error('FALCON error: ' + returnValue);
+		throw new Error('Falcon error: ' + returnValue);
 	}
 }
 
@@ -106,7 +106,7 @@ var falcon	= {
 				return message;
 			}
 			else {
-				throw new Error('Failed to open FALCON signed message.');
+				throw new Error('Failed to open Falcon signed message.');
 			}
 		});
 	}); },

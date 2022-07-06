@@ -37,7 +37,7 @@ The parameters are configured to 128-bit strength (SIKEp503).
 Note: SIDH is a low-level cryptographic primitive, not a high-level construct like libsodium's
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
 This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
-should avoid using sidh.js directly for anything important if you lack the experience to do so.
+should avoid using sidh directly for anything important if you lack the experience to do so.
 
 ## Changelog
 
@@ -45,7 +45,7 @@ Breaking changes in major versions:
 
 5.0.0:
 
-* Upgraded to SIDH 3.0 and built new API in line with mceliece.js and ntru.js.
+* Upgraded to SIDH 3.0 and built new API in line with mceliece and ntru.
 
 4.0.0:
 

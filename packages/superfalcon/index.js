@@ -527,7 +527,7 @@ var superFalcon	= {
 				return includeHash ? {hash: hash, message: message} : message;
 			}
 			else {
-				throw new Error('Failed to open SuperFALCON signed message.');
+				throw new Error('Failed to open SuperFalcon signed message.');
 			}
 		}).catch(function (err) {
 			if (shouldClearSigned) {

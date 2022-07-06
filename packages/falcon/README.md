@@ -2,11 +2,11 @@
 
 ## Overview
 
-The [FALCON](https://falcon-sign.info) post-quantum cryptographic signing scheme
+The [Falcon](https://falcon-sign.info) post-quantum cryptographic signing scheme
 compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
-A simple JavaScript wrapper is provided to make FALCON easy to use in Web applications.
+A simple JavaScript wrapper is provided to make Falcon easy to use in Web applications.
 
-N.B. Unless interoperability with other FALCON implementations is a hard requirement,
+N.B. Unless interoperability with other Falcon implementations is a hard requirement,
 it is recommended to use [superfalcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/superfalcon)
 instead.
 

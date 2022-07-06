@@ -2,8 +2,8 @@
 
 ## Overview
 
-SuperFALCON combines the post-quantum [FALCON](https://falcon-sign.info) with the more conventional
-elliptic-curve (ECC) [Ed25519](https://ed25519.cr.yp.to) as a single signing scheme. FALCON is
+SuperFalcon combines the post-quantum [Falcon](https://falcon-sign.info) with the more conventional
+elliptic-curve (ECC) [Ed25519](https://ed25519.cr.yp.to) as a single signing scheme. Falcon is
 provided by [falcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/falcon)
 and Ed25519 signing is performed using
 [libsodium.js](https://github.com/jedisct1/libsodium.js).
@@ -112,8 +112,8 @@ where available or an efficient JavaScript implementation from
 		console.log('Import #2:');
 		console.log(keyPair2);
 
-		// Constructing an entirely new SuperFALCON key pair from
-		// the original FALCON key pair and a new ECC key pair
+		// Constructing an entirely new SuperFalcon key pair from
+		// the original Falcon key pair and a new ECC key pair
 		const keyPair3 = await superFalcon.importKeys(
 			{
 				private: {
