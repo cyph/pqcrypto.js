@@ -6,7 +6,7 @@ all:
 			--memory-init-file 0 \
 			-s SINGLE_FILE=1 \
 			-DCYPHERTEXT_LEN=123 \
-			-D_GENERIC_ -D__NIX__ -D_X86_ \
+			-D_GENERIC_ -D__LINUX__ -D_X86_ \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
 			-s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 \
