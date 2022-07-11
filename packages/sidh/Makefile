@@ -1,6 +1,10 @@
 all:
 	make clean
 
+	cp -Hrf libsodium libsodium.tmp
+	patch libsodium.tmp/src/libsodium/include/sodium/randombytes.h randombytes.h.patch
+	patch libsodium.tmp/src/libsodium/randombytes/randombytes.c randombytes.c.patch
+
 	bash -c ' \
 		args="$$(echo " \
 			--memory-init-file 0 \
@@ -14,10 +18,10 @@ all:
 			-s DISABLE_EXCEPTION_CATCHING=1 \
 			-s NO_FILESYSTEM=1 \
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
-			-Ilibsodium/src/libsodium/include \
-			-Ilibsodium/src/libsodium/include/sodium \
+			-Ilibsodium.tmp/src/libsodium/include \
+			-Ilibsodium.tmp/src/libsodium/include/sodium \
 			-Isidh/src/P503 \
-			$$(find libsodium/src/libsodium -type f -name '\\*.c') \
+			$$(find libsodium.tmp/src/libsodium -type f -name '\\*.c') \
 			sidh/src/sha3/*.c \
 			sidh/src/P503/generic/*.c \
 			sidh/src/P503/P503.c \
@@ -85,11 +89,11 @@ all:
 	sed -i 's|use asm||g' dist/index.js
 	sed -i 's|require(|eval("require")(|g' dist/index.js
 
-	rm -rf dist/index.*.js
+	rm -rf dist/index.*.js libsodium.tmp
 	chmod -R 777 dist
 
 clean:
-	rm -rf dist 2> /dev/null
+	rm -rf dist libsodium.tmp 2> /dev/null
 	mkdir dist
 
 test:
