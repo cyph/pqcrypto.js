@@ -1,3 +1,5 @@
+packages/**/dist/nacl-sha512.js
+
 # Logs
 logs
 *.log
