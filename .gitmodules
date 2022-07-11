@@ -24,3 +24,6 @@
 [submodule "lib/libsodium.js"]
 	path = lib/libsodium.js
 	url = https://github.com/jedisct1/libsodium.js
+[submodule "lib/legacy/sidh"]
+	path = lib/legacy/sidh
+	url = https://github.com/Microsoft/PQCrypto-SIDH
