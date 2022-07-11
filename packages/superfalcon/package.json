@@ -21,12 +21,18 @@
 	"bugs": {
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
 	},
+	"scripts": {
+		"prepublishOnly": "cp nacl-sha512.js dist/",
+		"test": "npm run prepublishOnly && npx jest"
+	},
 	"dependencies": {
 		"falcon-crypto": "*",
 		"libsodium-wrappers-sumo": "*",
 		"sodiumutil": "*"
 	},
 	"devDependencies": {
+		"jest": "*",
+		"superfalcon": "1.0.0",
 		"vm-browserify": "*",
 		"webpack": "*",
 		"webpack-cli": "*"

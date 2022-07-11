@@ -102,3 +102,6 @@ all:
 clean:
 	rm -rf dist mcbits 2> /dev/null
 	mkdir dist
+
+test:
+	npm run test

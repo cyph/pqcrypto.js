@@ -19,5 +19,12 @@
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
+	},
+	"scripts": {
+		"test": "npx jest"
+	},
+	"devDependencies": {
+		"jest": "*",
+		"sphincs": "2.4.1"
 	}
 }

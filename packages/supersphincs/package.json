@@ -21,12 +21,18 @@
 	"bugs": {
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
 	},
+	"scripts": {
+		"prepublishOnly": "cp nacl-sha512.js dist/",
+		"test": "npm run prepublishOnly && npx jest"
+	},
 	"dependencies": {
 		"rsasign": "*",
 		"sodiumutil": "*",
 		"sphincs": "*"
 	},
 	"devDependencies": {
+		"jest": "*",
+		"supersphincs": "6.3.2",
 		"vm-browserify": "*",
 		"webpack": "*",
 		"webpack-cli": "*"

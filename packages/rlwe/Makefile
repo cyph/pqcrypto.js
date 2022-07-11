@@ -89,3 +89,6 @@ all:
 clean:
 	rm -rf dist rlwe 2> /dev/null
 	mkdir dist
+
+test:
+	npm run test

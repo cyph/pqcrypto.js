@@ -70,3 +70,6 @@ all:
 clean:
 	rm -rf dist 2> /dev/null
 	mkdir dist
+
+test:
+	echo

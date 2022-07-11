@@ -85,3 +85,6 @@ all:
 clean:
 	rm -rf dist tmp 2> /dev/null
 	mkdir dist
+
+test:
+	echo

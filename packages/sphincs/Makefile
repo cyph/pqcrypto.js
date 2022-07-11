@@ -105,3 +105,6 @@ all:
 clean:
 	rm -rf dist c_src 2> /dev/null
 	mkdir dist
+
+test:
+	npm run test
