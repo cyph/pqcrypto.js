@@ -13,8 +13,8 @@ all:
 	echo >> tmp/index.js
 	cat post.js >> tmp/index.js
 
-	terser tmp/index.js -cmo dist/index.js
-	cat pre.js module.js post.js | terser -cmo dist/sodium-wrapper.js
+	npx terser tmp/index.js -cmo dist/index.js
+	cat pre.js module.js post.js | npx terser -cmo dist/sodium-wrapper.js
 
 	rm -rf tmp
 

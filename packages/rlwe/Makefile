@@ -45,6 +45,9 @@ all:
 		bash -c "emcc -O3 -s WASM=1 $$args -o dist/index.wasm.js"; \
 	'
 
+	npx babel --no-babelrc --presets @babel/preset-env dist/index.asm.js -o dist/index.asm.js
+	npx babel --no-babelrc --presets @babel/preset-env dist/index.wasm.js -o dist/index.wasm.js
+
 	cp pre.js dist/index.tmp.js
 	echo " \
 		var Module = {}; \
@@ -78,7 +81,7 @@ all:
 	" >> dist/index.tmp.js
 	cat post.js >> dist/index.tmp.js
 
-	terser dist/index.tmp.js -cmo dist/index.js
+	npx terser dist/index.tmp.js -cmo dist/index.js
 
 	sed -i 's|use asm||g' dist/index.js
 	sed -i 's|require(|eval("require")(|g' dist/index.js

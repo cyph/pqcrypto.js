@@ -12,5 +12,6 @@ module.exports = {
 		fallback: {
 			vm: require.resolve('vm-browserify')
 		}
-	}
+	},
+	target: ['web', 'es5']
 };

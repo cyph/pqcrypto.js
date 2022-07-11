@@ -24,7 +24,10 @@
 		"test": "npx jest"
 	},
 	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
 		"jest": "*",
-		"ntru": "3.2.2"
+		"ntru": "3.2.2",
+		"terser": "*"
 	}
 }

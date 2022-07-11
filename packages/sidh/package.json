@@ -24,7 +24,10 @@
 		"test": "npx jest"
 	},
 	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
 		"jest": "*",
-		"sidh": "5.1.4"
+		"sidh": "5.1.4",
+		"terser": "*"
 	}
 }

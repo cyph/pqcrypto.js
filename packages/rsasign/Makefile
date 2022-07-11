@@ -46,6 +46,8 @@ all:
 		bash -c "emcc -Oz -s WASM=0 $$args -o dist/index.tmp.js"; \
 	'
 
+	npx babel --no-babelrc --presets @babel/preset-env dist/index.tmp.js -o dist/index.tmp.js
+
 	cp pre.js dist/index.module.js
 	cat dist/index.tmp.js >> dist/index.module.js
 	cat post.js | \
@@ -61,8 +63,8 @@ all:
 
 	npx webpack --config webpack.js
 
-	terser dist/index.module.js -cmo dist/index.module.js
-	terser dist/index.js -cmo dist/index.js
+	npx terser dist/index.module.js -cmo dist/index.module.js
+	npx terser dist/index.js -cmo dist/index.js
 
 	rm -rf dist/index.tmp.js
 	chmod -R 777 dist

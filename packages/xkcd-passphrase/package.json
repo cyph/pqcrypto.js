@@ -22,5 +22,10 @@
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
+	},
+	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
+		"terser": "*"
 	}
 }

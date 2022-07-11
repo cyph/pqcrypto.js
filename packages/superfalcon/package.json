@@ -31,8 +31,11 @@
 		"sodiumutil": "*"
 	},
 	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
 		"jest": "*",
 		"superfalcon": "1.0.0",
+		"terser": "*",
 		"vm-browserify": "*",
 		"webpack": "*",
 		"webpack-cli": "*"

@@ -8,11 +8,18 @@
 		"type": "git",
 		"url": "git://github.com/cyph/pqcrypto.js.git"
 	},
-	"keywords": ["cryptography"],
+	"keywords": [
+		"cryptography"
+	],
 	"author": "Cyph, Inc. <pqcrypto.js@cyph.com> (https://github.com/cyph)",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
+	},
+	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
+		"terser": "*"
 	},
 	"peerDependencies": {
 		"libsodium-wrappers-sumo": "*"

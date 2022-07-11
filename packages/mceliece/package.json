@@ -24,7 +24,10 @@
 		"test": "npx jest"
 	},
 	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
 		"jest": "*",
-		"mceliece": "4.1.2"
+		"mceliece": "4.1.2",
+		"terser": "*"
 	}
 }

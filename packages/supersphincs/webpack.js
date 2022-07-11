@@ -14,5 +14,6 @@ module.exports = {
 			sphincs: require.resolve('../sphincs'),
 			vm: require.resolve('vm-browserify')
 		}
-	}
+	},
+	target: ['web', 'es5']
 };

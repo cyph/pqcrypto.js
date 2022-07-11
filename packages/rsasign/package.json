@@ -25,6 +25,9 @@
 		"sodiumutil": "*"
 	},
 	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
+		"terser": "*",
 		"vm-browserify": "*",
 		"webpack": "*",
 		"webpack-cli": "*"

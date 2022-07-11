@@ -16,5 +16,6 @@ module.exports = {
 			stream: false,
 			vm: require.resolve('vm-browserify')
 		}
-	}
+	},
+	target: ['web', 'es5']
 };

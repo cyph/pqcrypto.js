@@ -24,7 +24,10 @@
 		"test": "npx jest"
 	},
 	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
 		"falcon-crypto": "1.0.0",
-		"jest": "*"
+		"jest": "*",
+		"terser": "*"
 	}
 }

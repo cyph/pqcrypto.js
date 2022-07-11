@@ -11,7 +11,7 @@ all:
 			self.superFalcon	= superFalcon; \
 		} \
 	" >> dist/index.js
-	terser dist/index.js -cmo dist/index.js
+	npx terser dist/index.js -cmo dist/index.js
 
 	chmod -R 777 dist
 

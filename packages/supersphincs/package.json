@@ -31,8 +31,11 @@
 		"sphincs": "*"
 	},
 	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
 		"jest": "*",
 		"supersphincs": "6.3.2",
+		"terser": "*",
 		"vm-browserify": "*",
 		"webpack": "*",
 		"webpack-cli": "*"

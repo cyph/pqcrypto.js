@@ -24,7 +24,10 @@
 		"test": "npx jest"
 	},
 	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
 		"jest": "*",
-		"sphincs": "2.4.1"
+		"sphincs": "2.4.1",
+		"terser": "*"
 	}
 }
