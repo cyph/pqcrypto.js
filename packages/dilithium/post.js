@@ -5,7 +5,7 @@ function dataReturn (returnValue, result) {
 		return result;
 	}
 	else {
-		throw new Error('Falcon error: ' + returnValue);
+		throw new Error('Dilithium error: ' + returnValue);
 	}
 }
 
@@ -28,15 +28,15 @@ function dataFree (buffer) {
 var publicKeyBytes, privateKeyBytes, bytes;
 
 var initiated	= Module.ready.then(function () {
-	Module._falconjs_init();
+	Module._dilithiumjs_init();
 
-	publicKeyBytes	= Module._falconjs_public_key_bytes();
-	privateKeyBytes	= Module._falconjs_secret_key_bytes();
-	bytes			= Module._falconjs_signature_bytes();
+	publicKeyBytes	= Module._dilithiumjs_public_key_bytes();
+	privateKeyBytes	= Module._dilithiumjs_secret_key_bytes();
+	bytes			= Module._dilithiumjs_signature_bytes();
 });
 
 
-var falcon	= {
+var dilithium	= {
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
 	bytes: initiated.then(function () { return bytes; }),
@@ -46,7 +46,7 @@ var falcon	= {
 		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 
 		try {
-			var returnValue	= Module._falconjs_keypair(
+			var returnValue	= Module._dilithiumjs_keypair(
 				publicKeyBuffer,
 				privateKeyBuffer
 			);
@@ -63,7 +63,7 @@ var falcon	= {
 	}); },
 
 	sign: function (message, privateKey) {
-		return falcon.signDetached(message, privateKey).then(function (signature) {
+		return dilithium.signDetached(message, privateKey).then(function (signature) {
 			var signed	= new Uint8Array(bytes + message.length);
 			signed.set(signature);
 			signed.set(message, bytes);
@@ -81,7 +81,7 @@ var falcon	= {
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
 		try {
-			var returnValue	= Module._falconjs_sign(
+			var returnValue	= Module._dilithiumjs_sign(
 				signatureBuffer,
 				messageBuffer,
 				message.length,
@@ -101,12 +101,12 @@ var falcon	= {
 		var signature	= new Uint8Array(signed.buffer, signed.byteOffset, bytes);
 		var message		= new Uint8Array(signed.buffer, signed.byteOffset + bytes);
 
-		return falcon.verifyDetached(signature, message, publicKey).then(function (isValid) {
+		return dilithium.verifyDetached(signature, message, publicKey).then(function (isValid) {
 			if (isValid) {
 				return message;
 			}
 			else {
-				throw new Error('Failed to open Falcon signed message.');
+				throw new Error('Failed to open Dilithium signed message.');
 			}
 		});
 	}); },
@@ -122,7 +122,7 @@ var falcon	= {
 			Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 
 			try {
-				var returnValue	= Module._falconjs_verify(
+				var returnValue	= Module._dilithiumjs_verify(
 					messageBuffer,
 					message.length,
 					signatureBuffer,
@@ -142,15 +142,15 @@ var falcon	= {
 
 
 
-return falcon;
+return dilithium;
 
 }());
 
 
 if (typeof module !== 'undefined' && module.exports) {
-	falcon.falcon	= falcon;
-	module.exports	= falcon;
+	dilithium.dilithium	= dilithium;
+	module.exports	= dilithium;
 }
 else {
-	self.falcon	= falcon;
+	self.dilithium	= dilithium;
 }

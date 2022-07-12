@@ -1,14 +1,14 @@
 const targets = [
-	{name: 'local build', falcon: require('.')},
-	{name: 'stable release', falcon: require('falcon-crypto')}
+	{name: 'local build', dilithium: require('.')},
+	{name: 'stable release', dilithium: require('dilithium-crypto')}
 ];
 
 const message = new Uint8Array([98, 97, 108, 108, 115, 0]);
 
 const toHex = bytes => Buffer.from(bytes).toString('hex');
 
-for (const {name, falcon} of targets) {
-	test(`${name} key pair generation`, async () => falcon.keyPair());
+for (const {name, dilithium} of targets) {
+	test(`${name} key pair generation`, async () => dilithium.keyPair());
 }
 
 for (const [keyPairTarget, signTarget, verifyTarget] of targets.flatMap(a =>
@@ -22,22 +22,22 @@ for (const [keyPairTarget, signTarget, verifyTarget] of targets.flatMap(a =>
 	)
 )) {
 	test(`end-to-end test (${keyPairTarget.name} key pair, ${signTarget.name} signing, ${verifyTarget.name} verification)`, async () => {
-		const keyPair = await keyPairTarget.falcon.keyPair();
+		const keyPair = await keyPairTarget.dilithium.keyPair();
 
-		const signed = await signTarget.falcon.sign(
+		const signed = await signTarget.dilithium.sign(
 			message,
 			keyPair.privateKey
 		);
-		const verified = await verifyTarget.falcon.open(
+		const verified = await verifyTarget.dilithium.open(
 			signed,
 			keyPair.publicKey
 		);
 
-		const signature = await signTarget.falcon.signDetached(
+		const signature = await signTarget.dilithium.signDetached(
 			message,
 			keyPair.privateKey
 		);
-		const isValid = await verifyTarget.falcon.verifyDetached(
+		const isValid = await verifyTarget.dilithium.verifyDetached(
 			signature,
 			message,
 			keyPair.publicKey

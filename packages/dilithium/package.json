@@ -1,7 +1,7 @@
 {
-	"name": "falcon-crypto",
+	"name": "dilithium-crypto",
 	"version": "1.0.2",
-	"description": "JavaScript wrapper for a WebAssembly build of Falcon",
+	"description": "JavaScript wrapper for a WebAssembly build of Dilithium",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",
 	"repository": {
@@ -11,7 +11,7 @@
 	"keywords": [
 		"cryptography",
 		"post-quantum",
-		"falcon",
+		"dilithium",
 		"asm.js",
 		"webassembly"
 	],
@@ -26,7 +26,7 @@
 	"devDependencies": {
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
-		"falcon-crypto": "1.0.0",
+		"dilithium-crypto": "1.0.0",
 		"jest": "*",
 		"terser": "*"
 	}

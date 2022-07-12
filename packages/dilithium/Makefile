@@ -14,12 +14,12 @@ all:
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include/sodium \
 			-Ipqclean/common \
-			-Ipqclean/crypto_sign/falcon-1024/clean \
+			-Ipqclean/crypto_sign/dilithium-1024/clean \
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$( \
 				find \
 					pqclean/common \
-					pqclean/crypto_sign/falcon-1024/clean \
+					pqclean/crypto_sign/dilithium-1024/clean \
 				-name '"'"'*.c'"'"' -type f \
 				-not \( \
 					-path '*/keccak4x/*' -or \
@@ -33,13 +33,13 @@ all:
 			-s EXPORTED_FUNCTIONS=\"[ \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
-				'"'"'_falconjs_init'"'"', \
-				'"'"'_falconjs_keypair'"'"', \
-				'"'"'_falconjs_sign'"'"', \
-				'"'"'_falconjs_verify'"'"', \
-				'"'"'_falconjs_public_key_bytes'"'"', \
-				'"'"'_falconjs_secret_key_bytes'"'"', \
-				'"'"'_falconjs_signature_bytes'"'"' \
+				'"'"'_dilithiumjs_init'"'"', \
+				'"'"'_dilithiumjs_keypair'"'"', \
+				'"'"'_dilithiumjs_sign'"'"', \
+				'"'"'_dilithiumjs_verify'"'"', \
+				'"'"'_dilithiumjs_public_key_bytes'"'"', \
+				'"'"'_dilithiumjs_secret_key_bytes'"'"', \
+				'"'"'_dilithiumjs_signature_bytes'"'"' \
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
@@ -58,7 +58,7 @@ all:
 			Module.onAbort = reject; \
 			Module.onRuntimeInitialized = function () { \
 				try { \
-					Module._falconjs_public_key_bytes(); \
+					Module._dilithiumjs_public_key_bytes(); \
 					resolve(Module); \
 				} \
 				catch (err) { \

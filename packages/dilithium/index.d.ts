@@ -1,5 +1,5 @@
-declare module 'falcon-crypto' {
-	interface IFalcon {
+declare module 'dilithium-crypto' {
+	interface IDilithium {
 		/** Signature length. */
 		bytes: Promise<number>;
 
@@ -29,5 +29,5 @@ declare module 'falcon-crypto' {
 		) : Promise<boolean>;
 	}
 
-	const falcon: IFalcon;
+	const dilithium: IDilithium;
 }
