@@ -1,6 +1,6 @@
 {
 	"name": "superdilithium",
-	"version": "1.0.2",
+	"version": "1.0.0",
 	"description": "Dilithium and Ed25519 paired together as a single signing scheme",
 	"main": "index.js",
 	"types": "./index.d.ts",
@@ -26,7 +26,7 @@
 		"test": "npm run prepublishOnly && npx jest"
 	},
 	"dependencies": {
-		"dilithium-crypto": "*",
+		"dilithium-crystals": "*",
 		"libsodium-wrappers-sumo": "*",
 		"sodiumutil": "*"
 	},
@@ -34,7 +34,7 @@
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"superdilithium": "1.0.2",
+		"superdilithium": "1.0.0",
 		"terser": "*",
 		"vm-browserify": "*",
 		"webpack": "*",

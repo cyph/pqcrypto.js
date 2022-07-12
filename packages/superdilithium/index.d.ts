@@ -15,13 +15,13 @@ declare module 'superdilithium' {
 		/** Serializes key pair. */
 		exportKeys (keyPair: {publicKey: Uint8Array}) : Promise<{
 			private: {
-				ecc: null;
 				dilithium: null;
+				ecc: null;
 				superDilithium: null;
 			};
 			public: {
-				ecc: string;
 				dilithium: string;
+				ecc: string;
 				superDilithium: string;
 			};
 		}>;
@@ -38,13 +38,13 @@ declare module 'superdilithium' {
 			password?: string
 		) : Promise<{
 			private: {
-				ecc: string;
 				dilithium: string;
+				ecc: string;
 				superDilithium: string;
 			};
 			public: {
-				ecc: string;
 				dilithium: string;
+				ecc: string;
 				superDilithium: string;
 			};
 		}>;
@@ -60,7 +60,7 @@ declare module 'superdilithium' {
 
 		/** Imports exported keys and creates key pair object. */
 		importKeys (keyData: {
-			public: {ecc: string; dilithium: string}|{superDilithium: string}
+			public: {dilithium: string; ecc: string}|{superDilithium: string}
 		}) : Promise<{
 			privateKey: null;
 			publicKey: Uint8Array;
@@ -72,7 +72,7 @@ declare module 'superdilithium' {
 		 */
 		importKeys (
 			keyData: {
-				private: {ecc: string; dilithium: string}|{superDilithium: string};
+				private: {dilithium: string; ecc: string}|{superDilithium: string};
 				public?: any;
 			},
 			password?: string
@@ -88,7 +88,7 @@ declare module 'superdilithium' {
 		open (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; dilithium: string}|{superDilithium: string}
+				public: {dilithium: string; ecc: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -98,7 +98,7 @@ declare module 'superdilithium' {
 		open (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; dilithium: string}|{superDilithium: string}
+				public: {dilithium: string; ecc: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -112,7 +112,7 @@ declare module 'superdilithium' {
 		openString (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; dilithium: string}|{superDilithium: string}
+				public: {dilithium: string; ecc: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -122,7 +122,7 @@ declare module 'superdilithium' {
 		openString (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; dilithium: string}|{superDilithium: string}
+				public: {dilithium: string; ecc: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -167,7 +167,7 @@ declare module 'superdilithium' {
 			signature: Uint8Array|string,
 			message: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; dilithium: string}|{superDilithium: string}
+				public: {dilithium: string; ecc: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -178,7 +178,7 @@ declare module 'superdilithium' {
 			signature: Uint8Array|string,
 			message: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; dilithium: string}|{superDilithium: string}
+				public: {dilithium: string; ecc: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,

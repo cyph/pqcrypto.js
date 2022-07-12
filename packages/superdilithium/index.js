@@ -7,7 +7,7 @@ var isNode	=
 
 
 var sha512		= require('./dist/nacl-sha512');
-var dilithium		= require('dilithium-crypto');
+var dilithium	= require('dilithium-crystals');
 var sodium		= require('libsodium-wrappers-sumo');
 var sodiumUtil	= require('sodiumutil/dist/sodium-wrapper');
 
@@ -357,7 +357,7 @@ var superDilithium	= {
 			sodium.crypto_sign_keypair(),
 			dilithium.keyPair()
 		]).then(function (results) {
-			var eccKeyPair		= results[0];
+			var eccKeyPair			= results[0];
 			var dilithiumKeyPair	= results[1];
 
 			var keyPair	= {
@@ -447,8 +447,8 @@ var superDilithium	= {
 				)
 			]);
 		}).then(function (results) {
-			var hash			= results[0];
-			var eccSignature	= results[1];
+			var hash				= results[0];
+			var eccSignature		= results[1];
 			var dilithiumSignature	= results[2];
 
 			var signature	= new Uint8Array(bytes);
@@ -626,10 +626,10 @@ var superDilithium	= {
 				})
 			]);
 		}).then(function (results) {
-			var hash			= results[0];
-			var eccIsValid		= results[1];
+			var hash				= results[0];
+			var eccIsValid			= results[1];
 			var dilithiumIsValid	= results[2];
-			var valid			= eccIsValid && dilithiumIsValid;
+			var valid				= eccIsValid && dilithiumIsValid;
 
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
@@ -724,19 +724,19 @@ var superDilithium	= {
 		}).then(function (results) {
 			if (!results) {
 				return {
-					ecc: null,
 					dilithium: null,
+					ecc: null,
 					superDilithium: null
 				};
 			}
 
-			var eccPrivateKey			= results[0];
-			var dilithiumPrivateKey		= results[1];
+			var eccPrivateKey				= results[0];
+			var dilithiumPrivateKey			= results[1];
 			var superDilithiumPrivateKey	= results[2];
 
 			var privateKeyData	= {
-				ecc: sodiumUtil.to_base64(eccPrivateKey),
 				dilithium: sodiumUtil.to_base64(dilithiumPrivateKey),
+				ecc: sodiumUtil.to_base64(eccPrivateKey),
 				superDilithium: sodiumUtil.to_base64(superDilithiumPrivateKey)
 			};
 
@@ -749,14 +749,14 @@ var superDilithium	= {
 			return {
 				private: privateKeyData,
 				public: {
+					dilithium: sodiumUtil.to_base64(new Uint8Array(
+						keyPair.publicKey.buffer,
+						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+					)),
 					ecc: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset,
 						sodium.crypto_sign_PUBLICKEYBYTES
-					)),
-					dilithium: sodiumUtil.to_base64(new Uint8Array(
-						keyPair.publicKey.buffer,
-						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
 					)),
 					superDilithium: sodiumUtil.to_base64(keyPair.publicKey)
 				}
@@ -886,4 +886,4 @@ var superDilithium	= {
 
 
 superDilithium.superDilithium	= superDilithium;
-module.exports			= superDilithium;
+module.exports					= superDilithium;
