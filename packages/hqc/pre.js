@@ -1,1 +1,1 @@
-var kyber = (function () {
+var hqc = (function () {

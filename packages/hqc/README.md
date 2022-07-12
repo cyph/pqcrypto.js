@@ -1,27 +1,27 @@
-# kyber-crystals
+# hqc
 
 ## Overview
 
-The [Kyber](https://pq-crystals.org/kyber) post-quantum asymmetric
+The [HQC](https://pq-crystals.org/hqc) post-quantum asymmetric
 cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
-A simple JavaScript wrapper is provided to make Kyber easy to use in web applications.
+A simple JavaScript wrapper is provided to make HQC easy to use in web applications.
 
-The default parameter set is Kyber-1024 (roughly 256-bit strength).
+The default parameter set is HQC-1024 (roughly 256-bit strength).
 
 ## Example Usage
 
-	import {kyber} from 'kyber-crystals';
+	import {hqc} from 'hqc';
 
 	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-		await kyber.keyPair()
+		await hqc.keyPair()
 	;
 
 	const {cyphertext, secret} /*: {cyphertext: Uint8Array; secret: Uint8Array} */ =
-		await kyber.encrypt(keyPair.publicKey)
+		await hqc.encrypt(keyPair.publicKey)
 	;
 
 	const decrypted /*: Uint8Array */ =
-		await kyber.decrypt(cyphertext, keyPair.privateKey) // same as secret
+		await hqc.decrypt(cyphertext, keyPair.privateKey) // same as secret
 	;
 
 	console.log(keyPair);

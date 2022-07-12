@@ -14,12 +14,12 @@ all:
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include/sodium \
 			-Ipqclean/common \
-			-Ipqclean/crypto_kem/kyber1024/clean \
+			-Ipqclean/crypto_kem/hqc1024/clean \
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$( \
 				find \
 					pqclean/common \
-					pqclean/crypto_kem/kyber1024/clean \
+					pqclean/crypto_kem/hqc1024/clean \
 				-name '"'"'*.c'"'"' -type f \
 				-not \( \
 					-path '*/keccak4x/*' -or \
@@ -34,14 +34,14 @@ all:
 				'"'"'_calloc'"'"', \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
-				'"'"'_kyberjs_init'"'"', \
-				'"'"'_kyberjs_keypair'"'"', \
-				'"'"'_kyberjs_encrypt'"'"', \
-				'"'"'_kyberjs_decrypt'"'"', \
-				'"'"'_kyberjs_public_key_bytes'"'"', \
-				'"'"'_kyberjs_private_key_bytes'"'"', \
-				'"'"'_kyberjs_cyphertext_bytes'"'"', \
-				'"'"'_kyberjs_secret_bytes'"'"' \
+				'"'"'_hqcjs_init'"'"', \
+				'"'"'_hqcjs_keypair'"'"', \
+				'"'"'_hqcjs_encrypt'"'"', \
+				'"'"'_hqcjs_decrypt'"'"', \
+				'"'"'_hqcjs_public_key_bytes'"'"', \
+				'"'"'_hqcjs_private_key_bytes'"'"', \
+				'"'"'_hqcjs_cyphertext_bytes'"'"', \
+				'"'"'_hqcjs_secret_bytes'"'"' \
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
@@ -60,7 +60,7 @@ all:
 			Module.onAbort = reject; \
 			Module.onRuntimeInitialized = function () { \
 				try { \
-					Module._kyberjs_public_key_bytes(); \
+					Module._hqcjs_public_key_bytes(); \
 					resolve(Module); \
 				} \
 				catch (err) { \

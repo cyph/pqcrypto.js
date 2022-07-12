@@ -1,7 +1,7 @@
 {
-	"name": "kyber-crystals",
+	"name": "hqc",
 	"version": "1.0.2",
-	"description": "JavaScript wrapper for a WebAssembly build of Kyber",
+	"description": "JavaScript wrapper for a WebAssembly build of HQC",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",
 	"repository": {
@@ -11,7 +11,7 @@
 	"keywords": [
 		"cryptography",
 		"post-quantum",
-		"kyber",
+		"hqc",
 		"asm.js",
 		"webassembly"
 	],
@@ -27,7 +27,7 @@
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"kyber-crystals": "1.0.2",
+		"hqc": "1.0.2",
 		"terser": "*"
 	}
 }

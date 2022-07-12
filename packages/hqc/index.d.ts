@@ -1,5 +1,5 @@
-declare module 'kyber-crystals' {
-	interface IKyber {
+declare module 'hqc' {
+	interface IHQC {
 		/** Secret length. */
 		bytes: Promise<number>;
 
@@ -22,5 +22,5 @@ declare module 'kyber-crystals' {
 		keyPair () : Promise<{privateKey: Uint8Array; publicKey: Uint8Array}>;
 	}
 
-	const kyber: IKyber;
+	const hqc: IHQC;
 }

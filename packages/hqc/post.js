@@ -5,7 +5,7 @@ function dataReturn (returnValue, result) {
 		return result;
 	}
 	else {
-		throw new Error('Kyber error: ' + returnValue);
+		throw new Error('HQC error: ' + returnValue);
 	}
 }
 
@@ -28,16 +28,16 @@ function dataFree (buffer) {
 var publicKeyBytes, privateKeyBytes, cyphertextBytes, bytes;
 
 var initiated	= Module.ready.then(function () {
-	Module._kyberjs_init();
+	Module._hqcjs_init();
 
-	publicKeyBytes	= Module._kyberjs_public_key_bytes();
-	privateKeyBytes	= Module._kyberjs_private_key_bytes();
-	cyphertextBytes	= Module._kyberjs_cyphertext_bytes();
-	bytes			= Module._kyberjs_secret_bytes();
+	publicKeyBytes	= Module._hqcjs_public_key_bytes();
+	privateKeyBytes	= Module._hqcjs_private_key_bytes();
+	cyphertextBytes	= Module._hqcjs_cyphertext_bytes();
+	bytes			= Module._hqcjs_secret_bytes();
 });
 
 
-var kyber	= {
+var hqc	= {
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
 	cyphertextBytes: initiated.then(function () { return cyphertextBytes; }),
@@ -48,7 +48,7 @@ var kyber	= {
 		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 
 		try {
-			var returnValue	= Module._kyberjs_keypair(
+			var returnValue	= Module._hqcjs_keypair(
 				publicKeyBuffer,
 				privateKeyBuffer
 			);
@@ -72,7 +72,7 @@ var kyber	= {
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 
 		try {
-			var returnValue	= Module._kyberjs_encrypt(
+			var returnValue	= Module._hqcjs_encrypt(
 				publicKeyBuffer,
 				cyphertextBuffer,
 				secretBuffer
@@ -99,7 +99,7 @@ var kyber	= {
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
 		try {
-			var returnValue	= Module._kyberjs_decrypt(
+			var returnValue	= Module._hqcjs_decrypt(
 				cyphertextBuffer,
 				privateKeyBuffer,
 				secretBuffer
@@ -120,15 +120,15 @@ var kyber	= {
 
 
 
-return kyber;
+return hqc;
 
 }());
 
 
 if (typeof module !== 'undefined' && module.exports) {
-	kyber.kyber		= kyber;
-	module.exports	= kyber;
+	hqc.hqc		= hqc;
+	module.exports	= hqc;
 }
 else {
-	self.kyber		= kyber;
+	self.hqc		= hqc;
 }
