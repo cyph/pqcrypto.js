@@ -1,41 +1,31 @@
 all:
 	make clean
 
-	cp pre.js dist/index.tmp.js
-	cat ../../lib/sodiumutil/dist/sodiumutil.js | \
-		perl -pe 's/if\(typeof module!=="undefined".*//g' >> dist/index.tmp.js
-
-	cp -a ../../lib/legacy/mcbits/m12_t62_simple mcbits
-	grep -rl crypt mcbits | xargs -I% sed -i 's|crypt(|crypt_mcbits(|g' %
-	sed -i 's|crypto_encrypt_mcbits|crypto_encrypt|g' mcbits/operations.c
-	sed -i 's|_keccakc1024||g' mcbits/operations.c
-	sed -i 's|salsa20_ref|salsa20|g' mcbits/operations.c
-	sed -i 's|salsa20|chacha20|g' mcbits/operations.c
-
-	cp ../../lib/legacy/supercop/crypto_hash/keccakc1024/simple/Keccak-simple* mcbits/
-
 	bash -c ' \
 		args="$$(echo " \
 			--memory-init-file 0 \
 			-s SINGLE_FILE=1 \
-			-DCYPHERTEXT_LEN=216 \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
 			-s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 \
 			-s ALIASING_FUNCTION_POINTERS=1 \
 			-s DISABLE_EXCEPTION_CATCHING=1 \
 			-s NO_FILESYSTEM=1 \
+			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include/sodium \
-			-Imcbits \
-			-I. \
+			-Ipqclean/common \
+			-Ipqclean/crypto_kem/kyber1024/clean \
 			libsodium/src/libsodium/randombytes/randombytes.c \
-			libsodium/src/libsodium/sodium/core.c \
-			libsodium/src/libsodium/sodium/utils.c \
-			$$(find libsodium/src/libsodium/crypto_core/salsa -type f -name "*.c" | tr "\n" " ") \
-			$$(find libsodium/src/libsodium/crypto_onetimeauth/poly1305 -type f -name "*.c" | tr "\n" " ") \
-			$$(find libsodium/src/libsodium/crypto_stream/chacha20 -type f -name "*.c" | tr "\n" " ") \
-			$$(find libsodium/src/libsodium/crypto_verify -type f -name "*.c" | tr "\n" " ") \
-			$$(ls mcbits/*.c) \
+			$$( \
+				find \
+					pqclean/common \
+					pqclean/crypto_kem/kyber1024/clean \
+				-name '"'"'*.c'"'"' -type f \
+				-not \( \
+					-path '*/keccak4x/*' -or \
+					-name randombytes.c \
+				\) \
+			) \
 			main.c \
 			-s EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
@@ -62,6 +52,7 @@ all:
 	npx babel --no-babelrc --presets @babel/preset-env dist/index.asm.js -o dist/index.asm.js
 	npx babel --no-babelrc --presets @babel/preset-env dist/index.wasm.js -o dist/index.wasm.js
 
+	cp pre.js dist/index.tmp.js
 	echo " \
 		var Module = {}; \
 		Module.ready = new Promise(function (resolve, reject) { \
@@ -99,11 +90,11 @@ all:
 	sed -i 's|use asm||g' dist/index.js
 	sed -i 's|require(|eval("require")(|g' dist/index.js
 
-	rm -rf mcbits dist/index.*.js
+	rm -rf dist/index.*.js
 	chmod -R 777 dist
 
 clean:
-	rm -rf dist mcbits 2> /dev/null
+	rm -rf dist 2> /dev/null
 	mkdir dist
 
 test:

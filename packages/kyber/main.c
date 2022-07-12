@@ -1,5 +1,4 @@
-#include "api.h"
-#include "crypto_encrypt.h"
+#include "pqclean/crypto_kem/kyber1024/clean/indcpa.h"
 #include "randombytes.h"
 
 
@@ -8,61 +7,58 @@ void kyberjs_init () {
 }
 
 long kyberjs_public_key_bytes () {
-	return CRYPTO_PUBLICKEYBYTES;
+	return KYBER_INDCPA_PUBLICKEYBYTES;
 }
 
 long kyberjs_private_key_bytes () {
-	return CRYPTO_SECRETKEYBYTES;
+	return KYBER_INDCPA_SECRETKEYBYTES;
 }
 
 long kyberjs_encrypted_bytes () {
-	return CYPHERTEXT_LEN;
+	return KYBER_INDCPA_BYTES;
 }
 
 long kyberjs_decrypted_bytes () {
-	return CYPHERTEXT_LEN - CRYPTO_BYTES;
+	return KYBER_INDCPA_MSGBYTES;
 }
 
 long kyberjs_keypair (
 	uint8_t* public_key,
 	uint8_t* private_key
 ) {
-	return crypto_encrypt_keypair(public_key, private_key);
+	PQCLEAN_KYBER1024_CLEAN_indcpa_keypair(public_key, private_key);
+	return 0;
 }
 
 long kyberjs_encrypt (
-	uint8_t* message,
+	const uint8_t* message,
 	long message_len,
-	uint8_t* public_key,
-	uint8_t cyphertext[]
+	const uint8_t* public_key,
+	uint8_t* cyphertext
 ) {
-	unsigned long long cyphertext_len;
+	uint8_t coins[KYBER_SYMBYTES];
+	randombytes_buf(coins, KYBER_SYMBYTES);
 
-	long status	= crypto_encrypt(
+	PQCLEAN_KYBER1024_CLEAN_indcpa_enc(
 		cyphertext,
-		&cyphertext_len,
 		message,
-		kyberjs_decrypted_bytes(),
-		public_key
+		public_key,
+		coins
 	);
 
-	return status;
+	return 0;
 }
 
 long kyberjs_decrypt (
-	uint8_t* cyphertext,
-	uint8_t* private_key,
+	const uint8_t* cyphertext,
+	const uint8_t* private_key,
 	uint8_t* decrypted
 ) {
-	unsigned long long decrypted_len;
-
-	long status	= crypto_encrypt_open(
+	PQCLEAN_KYBER1024_CLEAN_indcpa_dec(
 		decrypted,
-		&decrypted_len,
 		cyphertext,
-		CYPHERTEXT_LEN,
 		private_key
 	);
 
-	return status;
+	return 0;
 }

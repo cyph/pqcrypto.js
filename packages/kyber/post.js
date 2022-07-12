@@ -132,12 +132,12 @@ var kyber	= {
 
 return kyber;
 
-}()); }());
+}());
 
 
 if (typeof module !== 'undefined' && module.exports) {
-	kyber.kyber	= kyber;
-	module.exports		= kyber;
+	kyber.kyber		= kyber;
+	module.exports	= kyber;
 }
 else {
 	self.kyber		= kyber;

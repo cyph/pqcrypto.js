@@ -1,4 +1,4 @@
-declare module 'kyber' {
+declare module 'kyber-crystals' {
 	interface IKyber {
 		/** Maximum plaintext length. */
 		plaintextBytes: Promise<number>;

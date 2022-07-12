@@ -1,6 +1,6 @@
 const targets = [
 	{name: 'local build', kyber: require('.')},
-	{name: 'stable release', kyber: require('kyber')}
+	{name: 'stable release', kyber: require('kyber-crystals')}
 ];
 
 const plaintext = new Uint8Array([98, 97, 108, 108, 115, 0]);
