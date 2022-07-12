@@ -1,4 +1,4 @@
-# dilithium
+# dilithium-crystals
 
 ## Overview
 

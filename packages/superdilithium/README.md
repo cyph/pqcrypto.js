@@ -5,8 +5,8 @@
 SuperDilithium combines the post-quantum [Dilithium](https://pq-crystals.org/dilithium) with
 the more conventional elliptic-curve (ECC) [Ed25519](https://ed25519.cr.yp.to) as a single
 signing scheme. Dilithium is provided by
-[dilithium](https://github.com/cyph/pqcrypto.js/tree/master/packages/dilithium) and Ed25519
-signing is performed using [libsodium.js](https://github.com/jedisct1/libsodium.js).
+[dilithium-crystals](https://github.com/cyph/pqcrypto.js/tree/master/packages/dilithium-crystals)
+and Ed25519 signing is performed using [libsodium.js](https://github.com/jedisct1/libsodium.js).
 
 Before signing, a SHA-512 hash is performed, using the current platform's native implementation
 where available or an efficient JavaScript implementation from

@@ -11,7 +11,7 @@ module.exports = {
 	resolve: {
 		fallback: {
 			crypto: false,
-			'falcon-crypto': require.resolve('../falcon'),
+			'falcon-crypto': require.resolve('../falcon-crypto'),
 			path: false,
 			stream: false,
 			vm: require.resolve('vm-browserify')

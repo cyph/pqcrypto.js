@@ -4,9 +4,8 @@
 
 SuperFalcon combines the post-quantum [Falcon](https://falcon-sign.info) with the more conventional
 elliptic-curve (ECC) [Ed25519](https://ed25519.cr.yp.to) as a single signing scheme. Falcon is
-provided by [falcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/falcon)
-and Ed25519 signing is performed using
-[libsodium.js](https://github.com/jedisct1/libsodium.js).
+provided by [falcon-crypto](https://github.com/cyph/pqcrypto.js/tree/master/packages/falcon-crypto)
+and Ed25519 signing is performed using [libsodium.js](https://github.com/jedisct1/libsodium.js).
 
 Before signing, a SHA-512 hash is performed, using the current platform's native implementation
 where available or an efficient JavaScript implementation from

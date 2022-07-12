@@ -1,4 +1,4 @@
-# kyber
+# kyber-crystals
 
 ## Overview
 
