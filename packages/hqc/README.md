@@ -2,11 +2,11 @@
 
 ## Overview
 
-The [HQC](https://pq-crystals.org/hqc) post-quantum asymmetric
+The [HQC](https://pqc-hqc.org) post-quantum asymmetric
 cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
 A simple JavaScript wrapper is provided to make HQC easy to use in web applications.
 
-The default parameter set is HQC-1024 (roughly 256-bit strength).
+The default parameter set is HQC-RMRS-256 (roughly 256-bit strength).
 
 ## Example Usage
 

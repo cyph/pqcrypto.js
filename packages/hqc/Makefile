@@ -14,12 +14,12 @@ all:
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include/sodium \
 			-Ipqclean/common \
-			-Ipqclean/crypto_kem/hqc1024/clean \
+			-Ipqclean/crypto_kem/hqc-rmrs-256/clean \
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$( \
 				find \
 					pqclean/common \
-					pqclean/crypto_kem/hqc1024/clean \
+					pqclean/crypto_kem/hqc-rmrs-256/clean \
 				-name '"'"'*.c'"'"' -type f \
 				-not \( \
 					-path '*/keccak4x/*' -or \

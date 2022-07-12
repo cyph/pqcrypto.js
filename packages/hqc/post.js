@@ -126,7 +126,7 @@ return hqc;
 
 
 if (typeof module !== 'undefined' && module.exports) {
-	hqc.hqc		= hqc;
+	hqc.hqc			= hqc;
 	module.exports	= hqc;
 }
 else {
