@@ -2,7 +2,7 @@
 
 ## Overview
 
-The [Dilithium](https://dilithium-sign.info) post-quantum cryptographic signing scheme
+The [Dilithium](https://pq-crystals.org/dilithium) post-quantum cryptographic signing scheme
 compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
 A simple JavaScript wrapper is provided to make Dilithium easy to use in Web applications.
 

@@ -1,4 +1,4 @@
-declare module 'dilithium-crypto' {
+declare module 'dilithium-crystals' {
 	interface IDilithium {
 		/** Signature length. */
 		bytes: Promise<number>;

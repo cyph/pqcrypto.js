@@ -1,6 +1,6 @@
 const targets = [
 	{name: 'local build', dilithium: require('.')},
-	{name: 'stable release', dilithium: require('dilithium-crypto')}
+	{name: 'stable release', dilithium: require('dilithium-crystals')}
 ];
 
 const message = new Uint8Array([98, 97, 108, 108, 115, 0]);
