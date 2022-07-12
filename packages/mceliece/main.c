@@ -31,9 +31,9 @@ long mceliecejs_keypair (
 }
 
 long mceliecejs_encrypt (
-	uint8_t* message,
+	const uint8_t* message,
 	long message_len,
-	uint8_t* public_key,
+	const uint8_t* public_key,
 	uint8_t cyphertext[]
 ) {
 	unsigned long long cyphertext_len;
@@ -50,8 +50,8 @@ long mceliecejs_encrypt (
 }
 
 long mceliecejs_decrypt (
-	uint8_t* cyphertext,
-	uint8_t* private_key,
+	const uint8_t* cyphertext,
+	const uint8_t* private_key,
 	uint8_t* decrypted
 ) {
 	unsigned long long decrypted_len;

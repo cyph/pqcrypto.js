@@ -1,4 +1,4 @@
-declare module 'falcon' {
+declare module 'falcon-crypto' {
 	interface IFalcon {
 		/** Signature length. */
 		bytes: Promise<number>;

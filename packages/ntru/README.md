@@ -8,7 +8,6 @@ A simple JavaScript wrapper is provided to make NTRU easy to use in web applicat
 
 The default parameter set is EES743EP1 (roughly 256-bit strength, as per
 [NTRU's documentation](https://github.com/buu700/NTRUEncrypt-Archive/blob/master/doc/UserNotes-NTRUEncrypt.pdf)).
-To change this, modify line 13 of Makefile and rebuild with `make`.
 
 ## Example Usage
 

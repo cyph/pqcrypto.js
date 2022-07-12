@@ -70,9 +70,9 @@ long ntrujs_keypair (
 }
 
 long ntrujs_encrypt (
-	uint8_t* message,
+	const uint8_t* message,
 	long message_len,
-	uint8_t* public_key,
+	const uint8_t* public_key,
 	uint8_t* cyphertext
 ) {
 	return ntru_crypto_ntru_encrypt(
@@ -87,8 +87,8 @@ long ntrujs_encrypt (
 }
 
 long ntrujs_decrypt (
-	uint8_t* cyphertext,
-	uint8_t* private_key,
+	const uint8_t* cyphertext,
+	const uint8_t* private_key,
 	uint8_t* decrypted
 ) {
 	uint16_t decrypted_len	= plaintext_len;

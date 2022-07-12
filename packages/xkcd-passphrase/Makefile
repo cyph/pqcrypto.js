@@ -5,7 +5,7 @@ all:
 	cp pre.js tmp/pre.js
 	echo >> tmp/pre.js
 
-	cat ../../lib/sodiumutil/dist/sodiumutil.js >> tmp/pre.js
+	cat ../sodiumutil/dist/index.js >> tmp/pre.js
 
 	# Temporarily using /usr/bin/node as workaround for emscripten
 	/usr/bin/node -e 'fs.writeFileSync("tmp/post.js", fs.readFileSync("post.js").toString().replace("DEFAULT_WORD_LIST", JSON.stringify(fs.readFileSync("word-list.txt").toString().trim().split("\n"))))'

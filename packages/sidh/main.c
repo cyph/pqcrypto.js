@@ -30,9 +30,9 @@ long sidhjs_keypair (
 }
 
 long sidhjs_encrypt (
-	uint8_t* message,
+	const uint8_t* message,
 	long message_len,
-	uint8_t* public_key,
+	const uint8_t* public_key,
 	uint8_t* cyphertext
 ) {
 	uint8_t sike_secret[CRYPTO_BYTES];
@@ -85,8 +85,8 @@ long sidhjs_encrypt (
 }
 
 long sidhjs_decrypt (
-	uint8_t* cyphertext,
-	uint8_t* private_key,
+	const uint8_t* cyphertext,
+	const uint8_t* private_key,
 	uint8_t* decrypted
 ) {
 	uint8_t sike_secret[CRYPTO_BYTES];

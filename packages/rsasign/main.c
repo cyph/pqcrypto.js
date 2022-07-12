@@ -48,7 +48,7 @@ long rsasignjs_keypair (
 
 long rsasignjs_sign (
 	uint8_t* signature,
-	uint8_t* message,
+	const uint8_t* message,
 	long message_len,
 	const uint8_t* private_key,
 	long private_key_len
@@ -80,8 +80,8 @@ long rsasignjs_sign (
 }
 
 long rsasignjs_verify (
-	uint8_t* signature,
-	uint8_t* message,
+	const uint8_t* signature,
+	const uint8_t* message,
 	long message_len,
 	const uint8_t* public_key,
 	long public_key_len

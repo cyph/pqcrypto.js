@@ -7,18 +7,18 @@ long asm_test () {
 long generate (
 	char password[],
 	long numWords,
-	uint32_t randomValues[],
-	char* wordList[],
-	long wordLengths[],
+	const uint32_t randomValues[],
+	const char* wordList[],
+	const long wordLengths[],
 	long wordListLength,
 	long maxWordLength
 ) {
 	long passwordLength	= 0;
 
 	for (long i = 0 ; i < numWords ; ++i) {
-		long index		= randomValues[i] / 4294967296.0 * wordListLength;
-		char* word		= wordList[index];
-		long wordLength	= wordLengths[index];
+		long index			= randomValues[i] / 4294967296.0 * wordListLength;
+		const char* word	= wordList[index];
+		long wordLength		= wordLengths[index];
 
 		for (long j = 0 ; j < maxWordLength ; ++j) {
 			passwordLength += 2;
