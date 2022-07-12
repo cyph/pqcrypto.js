@@ -44,14 +44,14 @@ all:
 				'"'"'_calloc'"'"', \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
-				'"'"'_mceliecejs_init'"'"', \
-				'"'"'_mceliecejs_keypair'"'"', \
-				'"'"'_mceliecejs_encrypt'"'"', \
-				'"'"'_mceliecejs_decrypt'"'"', \
-				'"'"'_mceliecejs_public_key_bytes'"'"', \
-				'"'"'_mceliecejs_private_key_bytes'"'"', \
-				'"'"'_mceliecejs_encrypted_bytes'"'"', \
-				'"'"'_mceliecejs_decrypted_bytes'"'"' \
+				'"'"'_kyberjs_init'"'"', \
+				'"'"'_kyberjs_keypair'"'"', \
+				'"'"'_kyberjs_encrypt'"'"', \
+				'"'"'_kyberjs_decrypt'"'"', \
+				'"'"'_kyberjs_public_key_bytes'"'"', \
+				'"'"'_kyberjs_private_key_bytes'"'"', \
+				'"'"'_kyberjs_encrypted_bytes'"'"', \
+				'"'"'_kyberjs_decrypted_bytes'"'"' \
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
@@ -69,7 +69,7 @@ all:
 			Module.onAbort = reject; \
 			Module.onRuntimeInitialized = function () { \
 				try { \
-					Module._mceliecejs_public_key_bytes(); \
+					Module._kyberjs_public_key_bytes(); \
 					resolve(Module); \
 				} \
 				catch (err) { \

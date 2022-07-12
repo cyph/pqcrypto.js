@@ -1,5 +1,5 @@
-declare module 'mceliece' {
-	interface IMcEliece {
+declare module 'kyber' {
+	interface IKyber {
 		/** Maximum plaintext length. */
 		plaintextBytes: Promise<number>;
 
@@ -22,5 +22,5 @@ declare module 'mceliece' {
 		keyPair () : Promise<{privateKey: Uint8Array; publicKey: Uint8Array}>;
 	}
 
-	const mceliece: IMcEliece;
+	const kyber: IKyber;
 }

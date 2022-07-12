@@ -5,7 +5,7 @@ function dataReturn (returnValue, result) {
 		return result;
 	}
 	else {
-		throw new Error('McEliece error: ' + returnValue);
+		throw new Error('Kyber error: ' + returnValue);
 	}
 }
 
@@ -28,16 +28,16 @@ function dataFree (buffer) {
 var publicKeyBytes, privateKeyBytes, cyphertextBytes, plaintextBytes;
 
 var initiated	= Module.ready.then(function () {
-	Module._mceliecejs_init();
+	Module._kyberjs_init();
 
-	publicKeyBytes	= Module._mceliecejs_public_key_bytes();
-	privateKeyBytes	= Module._mceliecejs_private_key_bytes();
-	cyphertextBytes	= Module._mceliecejs_encrypted_bytes();
-	plaintextBytes	= Module._mceliecejs_decrypted_bytes();
+	publicKeyBytes	= Module._kyberjs_public_key_bytes();
+	privateKeyBytes	= Module._kyberjs_private_key_bytes();
+	cyphertextBytes	= Module._kyberjs_encrypted_bytes();
+	plaintextBytes	= Module._kyberjs_decrypted_bytes();
 });
 
 
-var mceliece	= {
+var kyber	= {
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
 	cyphertextBytes: initiated.then(function () { return cyphertextBytes; }),
@@ -48,7 +48,7 @@ var mceliece	= {
 		var privateKeyBuffer	= Module._malloc(privateKeyBytes);
 
 		try {
-			var returnValue	= Module._mceliecejs_keypair(
+			var returnValue	= Module._kyberjs_keypair(
 				publicKeyBuffer,
 				privateKeyBuffer
 			);
@@ -66,7 +66,7 @@ var mceliece	= {
 
 	encrypt: function (message, publicKey) { return initiated.then(function () {
 		if (message.length > (plaintextBytes - 1)) {
-			throw new Error('Plaintext length exceeds mceliece.plaintextBytes.');
+			throw new Error('Plaintext length exceeds kyber.plaintextBytes.');
 		}
 
 		var messageBuffer	= Module._calloc(plaintextBytes, 1);
@@ -78,7 +78,7 @@ var mceliece	= {
 		Module.writeArrayToMemory(publicKey, publicKeyBuffer);
 
 		try {
-			var returnValue	= Module._mceliecejs_encrypt(
+			var returnValue	= Module._kyberjs_encrypt(
 				messageBuffer,
 				message.length,
 				publicKeyBuffer,
@@ -106,7 +106,7 @@ var mceliece	= {
 		Module.writeArrayToMemory(privateKey, privateKeyBuffer);
 
 		try {
-			var returnValue	= Module._mceliecejs_decrypt(
+			var returnValue	= Module._kyberjs_decrypt(
 				encryptedBuffer,
 				privateKeyBuffer,
 				decryptedBuffer
@@ -130,15 +130,15 @@ var mceliece	= {
 
 
 
-return mceliece;
+return kyber;
 
 }()); }());
 
 
 if (typeof module !== 'undefined' && module.exports) {
-	mceliece.mceliece	= mceliece;
-	module.exports		= mceliece;
+	kyber.kyber	= kyber;
+	module.exports		= kyber;
 }
 else {
-	self.mceliece		= mceliece;
+	self.kyber		= kyber;
 }

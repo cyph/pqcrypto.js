@@ -1,4 +1,4 @@
-var mceliece = (function () {
+var kyber = (function () {
 
 /* Workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=736602 */
 
