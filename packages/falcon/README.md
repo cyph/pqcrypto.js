@@ -12,39 +12,39 @@ instead.
 
 ## Example Usage
 
-	(async () => {
-		const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await falcon.keyPair()
-		;
+	import {falcon} from 'falcon-crypto';
 
-		const message /*: Uint8Array */ =
-			new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
-		;
+	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		await falcon.keyPair()
+	;
 
-		/* Combined signatures */
+	const message /*: Uint8Array */ =
+		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
+	;
 
-		const signed /*: Uint8Array */ =
-			await falcon.sign(message, keyPair.privateKey)
-		;
+	/* Combined signatures */
 
-		const verified /*: Uint8Array */ =
-			await falcon.open(signed, keyPair.publicKey) // same as message
-		;
+	const signed /*: Uint8Array */ =
+		await falcon.sign(message, keyPair.privateKey)
+	;
 
-		/* Detached signatures */
+	const verified /*: Uint8Array */ =
+		await falcon.open(signed, keyPair.publicKey) // same as message
+	;
 
-		const signature /*: Uint8Array */ =
-			await falcon.signDetached(message, keyPair.privateKey)
-		;
+	/* Detached signatures */
 
-		const isValid /*: boolean */ =
-			await falcon.verifyDetached(signature, message, keyPair.publicKey) // true
-		;
+	const signature /*: Uint8Array */ =
+		await falcon.signDetached(message, keyPair.privateKey)
+	;
 
-		console.log(keyPair);
-		console.log(message);
-		console.log(signed);
-		console.log(verified);
-		console.log(signature);
-		console.log(isValid);
-	})();
+	const isValid /*: boolean */ =
+		await falcon.verifyDetached(signature, message, keyPair.publicKey) // true
+	;
+
+	console.log(keyPair);
+	console.log(message);
+	console.log(signed);
+	console.log(verified);
+	console.log(signature);
+	console.log(isValid);

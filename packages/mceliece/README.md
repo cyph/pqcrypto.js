@@ -12,28 +12,28 @@ The underlying cypher implementation in use is [McBits](https://tungchou.github.
 
 ## Example Usage
 
-	(async () => {
-		const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await mceliece.keyPair()
-		;
+	import {mceliece} from 'mceliece';
 
-		const plaintext /*: Uint8Array */ =
-			new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
-		;
+	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		await mceliece.keyPair()
+	;
 
-		const encrypted /*: Uint8Array */ =
-			await mceliece.encrypt(plaintext, keyPair.publicKey)
-		;
+	const plaintext /*: Uint8Array */ =
+		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
+	;
 
-		const decrypted /*: Uint8Array */ =
-			await mceliece.decrypt(encrypted, keyPair.privateKey) // same as plaintext
-		;
+	const encrypted /*: Uint8Array */ =
+		await mceliece.encrypt(plaintext, keyPair.publicKey)
+	;
 
-		console.log(keyPair);
-		console.log(plaintext);
-		console.log(encrypted);
-		console.log(decrypted);
-	})();
+	const decrypted /*: Uint8Array */ =
+		await mceliece.decrypt(encrypted, keyPair.privateKey) // same as plaintext
+	;
+
+	console.log(keyPair);
+	console.log(plaintext);
+	console.log(encrypted);
+	console.log(decrypted);
 
 Note: McEliece is a low-level cryptographic primitive, not a high-level construct like libsodium's
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).

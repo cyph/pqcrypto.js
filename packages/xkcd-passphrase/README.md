@@ -17,41 +17,41 @@ itself has not yet been audited. Use at your own risk.
 
 ## Example Usage
 
-	(async () => {
-		console.log(await xkcdPassphrase.generate());
-		/* collision pest numerous baboon tarnish aimee airgas swivel navigate */
+	import {xkcdPassphrase} from 'xkcd-passphrase';
 
-		console.log(await xkcdPassphrase.generate(256));
-		/*
-		 * provolone email darkish symptom unending bridges bianca carport culminate vacancy
-		 * rehydrate disjoin rotten cornball mousiness cephalon appear buddhism vanity
-		 */
+	console.log(await xkcdPassphrase.generate());
+	/* collision pest numerous baboon tarnish aimee airgas swivel navigate */
 
-		console.log(await xkcdPassphrase.generate(512));
-		/*
-		 * minneapolis detonate headsman jacob lumber custodian glimmer silt lipton carded
-		 * avalanche shady launder issueless freebee maude unedited spearhead nickname fleshed
-		 * dissuade rudolph spouse lupe babolat severity chapman liquefy skunk humongous chatroom
-		 * eatable kay cypress olson found emergency tree
-		 */
+	console.log(await xkcdPassphrase.generate(256));
+	/*
+		* provolone email darkish symptom unending bridges bianca carport culminate vacancy
+		* rehydrate disjoin rotten cornball mousiness cephalon appear buddhism vanity
+		*/
 
-		console.log(await xkcdPassphrase.generate(32, [
-			'my',
-			'awful',
-			'custom',
-			'word',
-			'list',
-			'that',
-			'I',
-			'created',
-			'while',
-			'drunk'
-		]));
-		/* that awful that custom list word list that custom custom */
+	console.log(await xkcdPassphrase.generate(512));
+	/*
+		* minneapolis detonate headsman jacob lumber custodian glimmer silt lipton carded
+		* avalanche shady launder issueless freebee maude unedited spearhead nickname fleshed
+		* dissuade rudolph spouse lupe babolat severity chapman liquefy skunk humongous chatroom
+		* eatable kay cypress olson found emergency tree
+		*/
 
-		console.log(await xkcdPassphrase.generateWithWordCount(4));
-		/* oscar jury email tugboat */
-	})();
+	console.log(await xkcdPassphrase.generate(32, [
+		'my',
+		'awful',
+		'custom',
+		'word',
+		'list',
+		'that',
+		'I',
+		'created',
+		'while',
+		'drunk'
+	]));
+	/* that awful that custom list word list that custom custom */
+
+	console.log(await xkcdPassphrase.generateWithWordCount(4));
+	/* oscar jury email tugboat */
 
 ## Changelog
 

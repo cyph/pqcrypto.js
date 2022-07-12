@@ -12,23 +12,23 @@ The parameters are configured to 128-bit strength. (More specifically, the secur
 
 ## Example Usage
 
-	(async () => {
-		const aliceKeyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await rlwe.aliceKeyPair()
-		;
+	import {rlwe} from 'rlwe';
 
-		const bob /*: {publicKey: Uint8Array; secret: Uint8Array} */ =
-			await rlwe.bobSecret(aliceKeyPair.publicKey)
-		;
+	const aliceKeyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		await rlwe.aliceKeyPair()
+	;
 
-		const aliceSecret /*: Uint8Array */ =
-			await rlwe.aliceSecret(bob.publicKey, aliceKeyPair.privateKey) // equal to bob.secret
-		;
+	const bob /*: {publicKey: Uint8Array; secret: Uint8Array} */ =
+		await rlwe.bobSecret(aliceKeyPair.publicKey)
+	;
 
-		console.log(aliceKeyPair);
-		console.log(bob);
-		console.log(aliceSecret);
-	})();
+	const aliceSecret /*: Uint8Array */ =
+		await rlwe.aliceSecret(bob.publicKey, aliceKeyPair.privateKey) // equal to bob.secret
+	;
+
+	console.log(aliceKeyPair);
+	console.log(bob);
+	console.log(aliceSecret);
 
 Note: This library only handles generating shared secrets; you'll need to handle key derivation
 and symmetric encryption from there.

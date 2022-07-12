@@ -11,28 +11,28 @@ The parameters are configured to 128-bit strength (SIKEp503).
 
 ## Example Usage
 
-	(async () => {
-		const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await sidh.keyPair()
-		;
+	import {sidh} from 'sidh';
 
-		const plaintext /*: Uint8Array */ =
-			new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
-		;
+	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		await sidh.keyPair()
+	;
 
-		const encrypted /*: Uint8Array */ =
-			await sidh.encrypt(plaintext, keyPair.publicKey)
-		;
+	const plaintext /*: Uint8Array */ =
+		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
+	;
 
-		const decrypted /*: Uint8Array */ =
-			await sidh.decrypt(encrypted, keyPair.privateKey) // same as plaintext
-		;
+	const encrypted /*: Uint8Array */ =
+		await sidh.encrypt(plaintext, keyPair.publicKey)
+	;
 
-		console.log(keyPair);
-		console.log(plaintext);
-		console.log(encrypted);
-		console.log(decrypted);
-	})();
+	const decrypted /*: Uint8Array */ =
+		await sidh.decrypt(encrypted, keyPair.privateKey) // same as plaintext
+	;
+
+	console.log(keyPair);
+	console.log(plaintext);
+	console.log(encrypted);
+	console.log(decrypted);
 
 Note: SIDH is a low-level cryptographic primitive, not a high-level construct like libsodium's
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).

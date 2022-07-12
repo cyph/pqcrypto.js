@@ -14,125 +14,125 @@ where available or an efficient JavaScript implementation from
 
 ## Example Usage
 
-	(async () => {
-		const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await superFalcon.keyPair()
-		;
+	import {superFalcon} from 'superfalcon';
 
-		const message /*: Uint8Array */ =
-			new Uint8Array([104, 101, 108, 108, 111]) // "hello"
-		;
+	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+		await superFalcon.keyPair()
+	;
 
-		// Optional additional data argument, similar conceptually to what AEAD cyphers support.
-		// If specified, must be the same when signing and verifying. For more information and
-		// usage advice, see: https://download.libsodium.org/doc/secret-key_cryptography/aead.html
-		const additionalData /*: Uint8Array */ =
-			new Uint8Array([119, 111, 114, 108, 100]) // "world"
-		;
+	const message /*: Uint8Array */ =
+		new Uint8Array([104, 101, 108, 108, 111]) // "hello"
+	;
 
-		/* Combined signatures */
+	// Optional additional data argument, similar conceptually to what AEAD cyphers support.
+	// If specified, must be the same when signing and verifying. For more information and
+	// usage advice, see: https://download.libsodium.org/doc/secret-key_cryptography/aead.html
+	const additionalData /*: Uint8Array */ =
+		new Uint8Array([119, 111, 114, 108, 100]) // "world"
+	;
 
-		const signed /*: Uint8Array */ =
-			await superFalcon.sign(message, keyPair.privateKey, additionalData)
-		;
+	/* Combined signatures */
 
-		const verified /*: Uint8Array */ =
-			await superFalcon.open(signed, keyPair.publicKey, additionalData) // same as message
-		;
+	const signed /*: Uint8Array */ =
+		await superFalcon.sign(message, keyPair.privateKey, additionalData)
+	;
 
-		/* Detached signatures */
+	const verified /*: Uint8Array */ =
+		await superFalcon.open(signed, keyPair.publicKey, additionalData) // same as message
+	;
 
-		const signature /*: Uint8Array */ =
-			await superFalcon.signDetached(message, keyPair.privateKey, additionalData)
-		;
+	/* Detached signatures */
 
-		const isValid /*: boolean */ =
-			await superFalcon.verifyDetached(
-				signature,
-				message,
-				keyPair.publicKey,
-				additionalData
-			) // true
-		;
+	const signature /*: Uint8Array */ =
+		await superFalcon.signDetached(message, keyPair.privateKey, additionalData)
+	;
 
-		/* Export and optionally encrypt keys */
+	const isValid /*: boolean */ =
+		await superFalcon.verifyDetached(
+			signature,
+			message,
+			keyPair.publicKey,
+			additionalData
+		) // true
+	;
 
-		const keyData /*: {
-			private: {
-				ecc: string;
-				falcon: string;
-				superFalcon: string;
-			};
-			public: {
-				ecc: string;
-				falcon: string;
-				superFalcon: string;
-			};
-		} */ =
-			await superFalcon.exportKeys(keyPair, 'secret passphrase')
-		;
+	/* Export and optionally encrypt keys */
 
-		if (typeof localStorage === 'undefined') {
-			localStorage	= {};
+	const keyData /*: {
+		private: {
+			ecc: string;
+			falcon: string;
+			superFalcon: string;
+		};
+		public: {
+			ecc: string;
+			falcon: string;
+			superFalcon: string;
+		};
+	} */ =
+		await superFalcon.exportKeys(keyPair, 'secret passphrase')
+	;
+
+	if (typeof localStorage === 'undefined') {
+		localStorage	= {};
+	}
+
+	// May now save exported keys to disk (or whatever)
+	localStorage.superFalconPrivateKey = keyData.private.superFalcon;
+	localStorage.falconPrivateKey      = keyData.private.falcon;
+	localStorage.eccPrivateKey         = keyData.private.ecc;
+	localStorage.superFalconPublicKey  = keyData.public.superFalcon;
+	localStorage.falconPublicKey       = keyData.public.falcon;
+	localStorage.eccPublicKey          = keyData.public.ecc;
+
+
+	/* Reconstruct an exported key using either the superFalcon
+		value or any pair of valid falcon and ecc values */
+
+	const keyPair1 = await superFalcon.importKeys({
+		public: {
+			ecc: localStorage.eccPublicKey,
+			falcon: localStorage.falconPublicKey
 		}
+	});
 
-		// May now save exported keys to disk (or whatever)
-		localStorage.superFalconPrivateKey = keyData.private.superFalcon;
-		localStorage.falconPrivateKey      = keyData.private.falcon;
-		localStorage.eccPrivateKey         = keyData.private.ecc;
-		localStorage.superFalconPublicKey  = keyData.public.superFalcon;
-		localStorage.falconPublicKey       = keyData.public.falcon;
-		localStorage.eccPublicKey          = keyData.public.ecc;
+	// May now use keyPair1.publicKey as in the above examples
+	console.log('Import #1:');
+	console.log(keyPair1);
 
-
-		/* Reconstruct an exported key using either the superFalcon
-			value or any pair of valid falcon and ecc values */
-
-		const keyPair1 = await superFalcon.importKeys({
-			public: {
-				ecc: localStorage.eccPublicKey,
-				falcon: localStorage.falconPublicKey
+	const keyPair2 = await superFalcon.importKeys(
+		{
+			private: {
+				superFalcon: localStorage.superFalconPrivateKey
 			}
-		});
+		},
+		'secret passphrase'
+	);
 
-		// May now use keyPair1.publicKey as in the above examples
-		console.log('Import #1:');
-		console.log(keyPair1);
+	// May now use keyPair2 as in the above examples
+	console.log('Import #2:');
+	console.log(keyPair2);
 
-		const keyPair2 = await superFalcon.importKeys(
-			{
-				private: {
-					superFalcon: localStorage.superFalconPrivateKey
-				}
-			},
-			'secret passphrase'
-		);
-
-		// May now use keyPair2 as in the above examples
-		console.log('Import #2:');
-		console.log(keyPair2);
-
-		// Constructing an entirely new SuperFalcon key pair from
-		// the original Falcon key pair and a new ECC key pair
-		const keyPair3 = await superFalcon.importKeys(
-			{
-				private: {
-					ecc: (
-						await superFalcon.exportKeys(
-							await superFalcon.keyPair(),
-							'hunter2'
-						)
-					).private.ecc,
-					falcon: localStorage.falconPrivateKey
-				}
-			},
-			{
-				ecc: 'hunter2',
-				falcon: 'secret passphrase'
+	// Constructing an entirely new SuperFalcon key pair from
+	// the original Falcon key pair and a new ECC key pair
+	const keyPair3 = await superFalcon.importKeys(
+		{
+			private: {
+				ecc: (
+					await superFalcon.exportKeys(
+						await superFalcon.keyPair(),
+						'hunter2'
+					)
+				).private.ecc,
+				falcon: localStorage.falconPrivateKey
 			}
-		);
+		},
+		{
+			ecc: 'hunter2',
+			falcon: 'secret passphrase'
+		}
+	);
 
-		// May now use keyPair3 as in the above examples
-		console.log('Import #3:');
-		console.log(keyPair3);
-	})();
+	// May now use keyPair3 as in the above examples
+	console.log('Import #3:');
+	console.log(keyPair3);
