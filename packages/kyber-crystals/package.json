@@ -1,6 +1,6 @@
 {
 	"name": "kyber-crystals",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "JavaScript wrapper for a WebAssembly build of Kyber",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",
@@ -27,7 +27,7 @@
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"kyber-crystals": "1.0.0",
+		"kyber-crystals": "1.0.2",
 		"terser": "*"
 	}
 }

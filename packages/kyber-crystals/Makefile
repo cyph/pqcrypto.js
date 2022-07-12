@@ -40,8 +40,8 @@ all:
 				'"'"'_kyberjs_decrypt'"'"', \
 				'"'"'_kyberjs_public_key_bytes'"'"', \
 				'"'"'_kyberjs_private_key_bytes'"'"', \
-				'"'"'_kyberjs_encrypted_bytes'"'"', \
-				'"'"'_kyberjs_decrypted_bytes'"'"' \
+				'"'"'_kyberjs_cyphertext_bytes'"'"', \
+				'"'"'_kyberjs_secret_bytes'"'"' \
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\

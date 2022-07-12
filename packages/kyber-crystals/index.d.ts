@@ -1,7 +1,7 @@
 declare module 'kyber-crystals' {
 	interface IKyber {
-		/** Maximum plaintext length. */
-		plaintextBytes: Promise<number>;
+		/** Secret length. */
+		bytes: Promise<number>;
 
 		/** Cyphertext length. */
 		cyphertextBytes: Promise<number>;
@@ -12,11 +12,11 @@ declare module 'kyber-crystals' {
 		/** Public key length. */
 		publicKeyBytes: Promise<number>;
 
-		/** Decrypts cyphertext with privateKey. */
-		decrypt (encrypted: Uint8Array|string, privateKey: Uint8Array) : Promise<Uint8Array>;
+		/** Decrypts secret with privateKey. */
+		decrypt (cyphertext: Uint8Array|string, privateKey: Uint8Array) : Promise<Uint8Array>;
 
-		/** Encrypts plaintext with publicKey. */
-		encrypt (message: Uint8Array|string, publicKey: Uint8Array) : Promise<Uint8Array>;
+		/** Encrypts secret with publicKey. */
+		encrypt (publicKey: Uint8Array) : Promise<{cyphertext: Uint8Array; secret: Uint8Array}>;
 
 		/** Generates key pair. */
 		keyPair () : Promise<{privateKey: Uint8Array; publicKey: Uint8Array}>;

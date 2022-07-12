@@ -3,8 +3,6 @@ const targets = [
 	{name: 'stable release', kyber: require('kyber-crystals')}
 ];
 
-const plaintext = new Uint8Array([98, 97, 108, 108, 115, 0]);
-
 const toHex = bytes => Buffer.from(bytes).toString('hex');
 
 for (const {name, kyber} of targets) {
@@ -24,16 +22,15 @@ for (const [keyPairTarget, encryptTarget, decryptTarget] of targets.flatMap(a =>
 	test(`end-to-end test (${keyPairTarget.name} key pair, ${encryptTarget.name} encryption, ${decryptTarget.name} decryption)`, async () => {
 		const keyPair = await keyPairTarget.kyber.keyPair();
 
-		const encrypted = await encryptTarget.kyber.encrypt(
-			plaintext,
+		const {cyphertext, secret} = await encryptTarget.kyber.encrypt(
 			keyPair.publicKey
 		);
 
 		const decrypted = await decryptTarget.kyber.decrypt(
-			encrypted,
+			cyphertext,
 			keyPair.privateKey
 		);
 
-		expect(toHex(decrypted)).toBe(toHex(plaintext));
+		expect(toHex(decrypted)).toBe(toHex(secret));
 	});
 }
