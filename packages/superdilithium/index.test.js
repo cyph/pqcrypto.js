@@ -1,14 +1,14 @@
 const targets = [
-	{name: 'local build', superFalcon: require('.')},
-	{name: 'stable release', superFalcon: require('superfalcon')}
+	{name: 'local build', superDilithium: require('.')},
+	{name: 'stable release', superDilithium: require('superdilithium')}
 ];
 
 const message = new Uint8Array([98, 97, 108, 108, 115, 0]);
 
 const toHex = bytes => Buffer.from(bytes).toString('hex');
 
-for (const {name, superFalcon} of targets) {
-	test(`${name} key pair generation`, async () => superFalcon.keyPair());
+for (const {name, superDilithium} of targets) {
+	test(`${name} key pair generation`, async () => superDilithium.keyPair());
 }
 
 for (const [keyPairTarget, signTarget, verifyTarget] of targets.flatMap(a =>
@@ -22,22 +22,22 @@ for (const [keyPairTarget, signTarget, verifyTarget] of targets.flatMap(a =>
 	)
 )) {
 	test(`end-to-end test (${keyPairTarget.name} key pair, ${signTarget.name} signing, ${verifyTarget.name} verification)`, async () => {
-		const keyPair = await keyPairTarget.superFalcon.keyPair();
+		const keyPair = await keyPairTarget.superDilithium.keyPair();
 
-		const signed = await signTarget.superFalcon.sign(
+		const signed = await signTarget.superDilithium.sign(
 			message,
 			keyPair.privateKey
 		);
-		const verified = await verifyTarget.superFalcon.open(
+		const verified = await verifyTarget.superDilithium.open(
 			signed,
 			keyPair.publicKey
 		);
 
-		const signature = await signTarget.superFalcon.signDetached(
+		const signature = await signTarget.superDilithium.signDetached(
 			message,
 			keyPair.privateKey
 		);
-		const isValid = await verifyTarget.superFalcon.verifyDetached(
+		const isValid = await verifyTarget.superDilithium.verifyDetached(
 			signature,
 			message,
 			keyPair.publicKey

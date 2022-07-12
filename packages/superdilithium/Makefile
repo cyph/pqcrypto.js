@@ -6,10 +6,10 @@ all:
 
 	echo " \
 		if (typeof module !== 'undefined' && module.exports) { \
-			module.exports		= superFalcon; \
+			module.exports		= superDilithium; \
 		} \
 		else { \
-			self.superFalcon	= superFalcon; \
+			self.superDilithium	= superDilithium; \
 		} \
 	" >> dist/index.js
 	npx terser dist/index.js -cmo dist/index.js

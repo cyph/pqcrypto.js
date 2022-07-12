@@ -5,13 +5,13 @@ module.exports = {
 	mode: 'none',
 	output: {
 		filename: 'index.js',
-		library: 'superFalcon',
+		library: 'superDilithium',
 		libraryTarget: 'var'
 	},
 	resolve: {
 		fallback: {
 			crypto: false,
-			falcon: require.resolve('../falcon'),
+			dilithium: require.resolve('../dilithium'),
 			path: false,
 			stream: false,
 			vm: require.resolve('vm-browserify')

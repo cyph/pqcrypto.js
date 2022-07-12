@@ -1,7 +1,7 @@
 {
-	"name": "superfalcon",
+	"name": "superdilithium",
 	"version": "1.0.2",
-	"description": "Falcon and Ed25519 paired together as a single signing scheme",
+	"description": "Dilithium and Ed25519 paired together as a single signing scheme",
 	"main": "index.js",
 	"types": "./index.d.ts",
 	"repository": {
@@ -11,7 +11,7 @@
 	"keywords": [
 		"cryptography",
 		"post-quantum",
-		"falcon",
+		"dilithium",
 		"ecc",
 		"asm.js",
 		"webassembly"
@@ -26,7 +26,7 @@
 		"test": "npm run prepublishOnly && npx jest"
 	},
 	"dependencies": {
-		"falcon-crypto": "*",
+		"dilithium-crypto": "*",
 		"libsodium-wrappers-sumo": "*",
 		"sodiumutil": "*"
 	},
@@ -34,7 +34,7 @@
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"superfalcon": "1.0.2",
+		"superdilithium": "1.0.2",
 		"terser": "*",
 		"vm-browserify": "*",
 		"webpack": "*",

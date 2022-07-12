@@ -7,7 +7,7 @@ var isNode	=
 
 
 var sha512		= require('./dist/nacl-sha512');
-var falcon		= require('falcon-crypto');
+var dilithium		= require('dilithium-crypto');
 var sodium		= require('libsodium-wrappers-sumo');
 var sodiumUtil	= require('sodiumutil/dist/sodium-wrapper');
 
@@ -312,27 +312,27 @@ var aes	= {
 };
 
 
-var publicKeyBytes, privateKeyBytes, bytes, falconBytes;
+var publicKeyBytes, privateKeyBytes, bytes, dilithiumBytes;
 
 var initiated	= Promise.all([
-	falcon.publicKeyBytes,
-	falcon.privateKeyBytes,
-	falcon.bytes,
+	dilithium.publicKeyBytes,
+	dilithium.privateKeyBytes,
+	dilithium.bytes,
 	sodium.ready
 ]).then(function (results) {
-	falconBytes	= {
+	dilithiumBytes	= {
 		publicKeyBytes: results[0],
 		privateKeyBytes: results[1],
 		bytes: results[2]
 	};
 
-	publicKeyBytes	= sodium.crypto_sign_PUBLICKEYBYTES + falconBytes.publicKeyBytes;
-	privateKeyBytes	= sodium.crypto_sign_SECRETKEYBYTES + falconBytes.privateKeyBytes;
-	bytes			= sodium.crypto_sign_BYTES + falconBytes.bytes;
+	publicKeyBytes	= sodium.crypto_sign_PUBLICKEYBYTES + dilithiumBytes.publicKeyBytes;
+	privateKeyBytes	= sodium.crypto_sign_SECRETKEYBYTES + dilithiumBytes.privateKeyBytes;
+	bytes			= sodium.crypto_sign_BYTES + dilithiumBytes.bytes;
 });
 
 
-var superFalcon	= {
+var superDilithium	= {
 	_sodiumUtil: sodiumUtil,
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
@@ -355,25 +355,25 @@ var superFalcon	= {
 	keyPair: function () { return initiated.then(function () {
 		return Promise.all([
 			sodium.crypto_sign_keypair(),
-			falcon.keyPair()
+			dilithium.keyPair()
 		]).then(function (results) {
 			var eccKeyPair		= results[0];
-			var falconKeyPair	= results[1];
+			var dilithiumKeyPair	= results[1];
 
 			var keyPair	= {
-				keyType: 'superfalcon',
+				keyType: 'superdilithium',
 				publicKey: new Uint8Array(publicKeyBytes),
 				privateKey: new Uint8Array(privateKeyBytes)
 			};
 
 			keyPair.publicKey.set(eccKeyPair.publicKey);
 			keyPair.privateKey.set(eccKeyPair.privateKey);
-			keyPair.publicKey.set(falconKeyPair.publicKey, sodium.crypto_sign_PUBLICKEYBYTES);
-			keyPair.privateKey.set(falconKeyPair.privateKey, sodium.crypto_sign_SECRETKEYBYTES);
+			keyPair.publicKey.set(dilithiumKeyPair.publicKey, sodium.crypto_sign_PUBLICKEYBYTES);
+			keyPair.privateKey.set(dilithiumKeyPair.privateKey, sodium.crypto_sign_SECRETKEYBYTES);
 
-			sodiumUtil.memzero(falconKeyPair.privateKey);
+			sodiumUtil.memzero(dilithiumKeyPair.privateKey);
 			sodiumUtil.memzero(eccKeyPair.privateKey);
-			sodiumUtil.memzero(falconKeyPair.publicKey);
+			sodiumUtil.memzero(dilithiumKeyPair.publicKey);
 			sodiumUtil.memzero(eccKeyPair.publicKey);
 
 			return keyPair;
@@ -383,7 +383,7 @@ var superFalcon	= {
 	sign: function (message, privateKey, additionalData) { return initiated.then(function () {
 		var shouldClearMessage	= typeof message === 'string';
 
-		return superFalcon.signDetached(
+		return superDilithium.signDetached(
 			message,
 			privateKey,
 			additionalData
@@ -414,7 +414,7 @@ var superFalcon	= {
 	}); },
 
 	signBase64: function (message, privateKey, additionalData) { return initiated.then(function () {
-		return superFalcon.sign(message, privateKey, additionalData).then(function (signed) {
+		return superDilithium.sign(message, privateKey, additionalData).then(function (signed) {
 			var s	= sodiumUtil.to_base64(signed);
 			sodiumUtil.memzero(signed);
 			return s;
@@ -438,7 +438,7 @@ var superFalcon	= {
 						sodium.crypto_sign_SECRETKEYBYTES
 					)
 				),
-				falcon.signDetached(
+				dilithium.signDetached(
 					hash,
 					new Uint8Array(
 						privateKey.buffer,
@@ -449,15 +449,15 @@ var superFalcon	= {
 		}).then(function (results) {
 			var hash			= results[0];
 			var eccSignature	= results[1];
-			var falconSignature	= results[2];
+			var dilithiumSignature	= results[2];
 
 			var signature	= new Uint8Array(bytes);
 
 			signature.set(eccSignature);
-			signature.set(falconSignature, sodium.crypto_sign_BYTES);
+			signature.set(dilithiumSignature, sodium.crypto_sign_BYTES);
 
 			sodiumUtil.memzero(hash);
-			sodiumUtil.memzero(falconSignature);
+			sodiumUtil.memzero(dilithiumSignature);
 			sodiumUtil.memzero(eccSignature);
 
 			return signature;
@@ -470,7 +470,7 @@ var superFalcon	= {
 		additionalData,
 		preHashed
 	) { return initiated.then(function () {
-			return superFalcon.signDetached(
+			return superDilithium.signDetached(
 				message,
 				privateKey,
 				additionalData,
@@ -506,7 +506,7 @@ var superFalcon	= {
 				signed.byteOffset + bytes
 			);
 
-			return Promise.all([message, superFalcon.verifyDetached(
+			return Promise.all([message, superDilithium.verifyDetached(
 				signature,
 				message,
 				publicKey,
@@ -527,7 +527,7 @@ var superFalcon	= {
 				return includeHash ? {hash: hash, message: message} : message;
 			}
 			else {
-				throw new Error('Failed to open SuperFalcon signed message.');
+				throw new Error('Failed to open SuperDilithium signed message.');
 			}
 		}).catch(function (err) {
 			if (shouldClearSigned) {
@@ -545,7 +545,7 @@ var superFalcon	= {
 		knownGoodHash,
 		includeHash
 	) { return initiated.then(function () {
-		return superFalcon.open(
+		return superDilithium.open(
 			signed,
 			publicKey,
 			additionalData,
@@ -599,7 +599,7 @@ var superFalcon	= {
 					undefined :
 				publicKey instanceof Uint8Array ?
 					Promise.resolve(publicKey) :
-					superFalcon.importKeys(publicKey).then(function (kp) {
+					superDilithium.importKeys(publicKey).then(function (kp) {
 						return kp.publicKey;
 					})
 			;
@@ -614,11 +614,11 @@ var superFalcon	= {
 					);
 				}),
 				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
-					return falcon.verifyDetached(
+					return dilithium.verifyDetached(
 						new Uint8Array(
 							signature.buffer,
 							signature.byteOffset + sodium.crypto_sign_BYTES,
-							falconBytes.bytes
+							dilithiumBytes.bytes
 						),
 						hash,
 						new Uint8Array(pk.buffer, pk.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES)
@@ -628,8 +628,8 @@ var superFalcon	= {
 		}).then(function (results) {
 			var hash			= results[0];
 			var eccIsValid		= results[1];
-			var falconIsValid	= results[2];
-			var valid			= eccIsValid && falconIsValid;
+			var dilithiumIsValid	= results[2];
+			var valid			= eccIsValid && dilithiumIsValid;
 
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
@@ -662,12 +662,12 @@ var superFalcon	= {
 				sodium.crypto_sign_SECRETKEYBYTES
 			);
 
-			var falconPrivateKey		= new Uint8Array(
-				falconBytes.publicKeyBytes +
-				falconBytes.privateKeyBytes
+			var dilithiumPrivateKey		= new Uint8Array(
+				dilithiumBytes.publicKeyBytes +
+				dilithiumBytes.privateKeyBytes
 			);
 
-			var superFalconPrivateKey	= new Uint8Array(
+			var superDilithiumPrivateKey	= new Uint8Array(
 				publicKeyBytes +
 				privateKeyBytes
 			);
@@ -686,29 +686,29 @@ var superFalcon	= {
 				sodium.crypto_sign_PUBLICKEYBYTES
 			);
 
-			falconPrivateKey.set(new Uint8Array(
+			dilithiumPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
 				keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
 			));
-			falconPrivateKey.set(
+			dilithiumPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
 					keyPair.privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
 				),
-				falconBytes.publicKeyBytes
+				dilithiumBytes.publicKeyBytes
 			);
 
-			superFalconPrivateKey.set(keyPair.publicKey);
-			superFalconPrivateKey.set(keyPair.privateKey, publicKeyBytes);
+			superDilithiumPrivateKey.set(keyPair.publicKey);
+			superDilithiumPrivateKey.set(keyPair.privateKey, publicKeyBytes);
 
 			if (password) {
 				return Promise.all([
 					encrypt(eccPrivateKey, password),
-					encrypt(falconPrivateKey, password),
-					encrypt(superFalconPrivateKey, password)
+					encrypt(dilithiumPrivateKey, password),
+					encrypt(superDilithiumPrivateKey, password)
 				]).then(function (results) {
-					sodiumUtil.memzero(superFalconPrivateKey);
-					sodiumUtil.memzero(falconPrivateKey);
+					sodiumUtil.memzero(superDilithiumPrivateKey);
+					sodiumUtil.memzero(dilithiumPrivateKey);
 					sodiumUtil.memzero(eccPrivateKey);
 
 					return results;
@@ -717,31 +717,31 @@ var superFalcon	= {
 			else {
 				return [
 					eccPrivateKey,
-					falconPrivateKey,
-					superFalconPrivateKey
+					dilithiumPrivateKey,
+					superDilithiumPrivateKey
 				];
 			}
 		}).then(function (results) {
 			if (!results) {
 				return {
 					ecc: null,
-					falcon: null,
-					superFalcon: null
+					dilithium: null,
+					superDilithium: null
 				};
 			}
 
 			var eccPrivateKey			= results[0];
-			var falconPrivateKey		= results[1];
-			var superFalconPrivateKey	= results[2];
+			var dilithiumPrivateKey		= results[1];
+			var superDilithiumPrivateKey	= results[2];
 
 			var privateKeyData	= {
 				ecc: sodiumUtil.to_base64(eccPrivateKey),
-				falcon: sodiumUtil.to_base64(falconPrivateKey),
-				superFalcon: sodiumUtil.to_base64(superFalconPrivateKey)
+				dilithium: sodiumUtil.to_base64(dilithiumPrivateKey),
+				superDilithium: sodiumUtil.to_base64(superDilithiumPrivateKey)
 			};
 
-			sodiumUtil.memzero(superFalconPrivateKey);
-			sodiumUtil.memzero(falconPrivateKey);
+			sodiumUtil.memzero(superDilithiumPrivateKey);
+			sodiumUtil.memzero(dilithiumPrivateKey);
 			sodiumUtil.memzero(eccPrivateKey);
 
 			return privateKeyData;
@@ -754,11 +754,11 @@ var superFalcon	= {
 						keyPair.publicKey.byteOffset,
 						sodium.crypto_sign_PUBLICKEYBYTES
 					)),
-					falcon: sodiumUtil.to_base64(new Uint8Array(
+					dilithium: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
 					)),
-					superFalcon: sodiumUtil.to_base64(keyPair.publicKey)
+					superDilithium: sodiumUtil.to_base64(keyPair.publicKey)
 				}
 			};
 		});
@@ -766,23 +766,23 @@ var superFalcon	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private && typeof keyData.private.superFalcon === 'string') {
-				var superFalconPrivateKey	= sodiumUtil.from_base64(keyData.private.superFalcon);
+			if (keyData.private && typeof keyData.private.superDilithium === 'string') {
+				var superDilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.superDilithium);
 
 				if (password) {
-					return Promise.all([decrypt(superFalconPrivateKey, password)]);
+					return Promise.all([decrypt(superDilithiumPrivateKey, password)]);
 				}
 				else {
-					return [superFalconPrivateKey];
+					return [superDilithiumPrivateKey];
 				}
 			}
 			else if (
 				keyData.private &&
 				typeof keyData.private.ecc === 'string' &&
-				typeof keyData.private.falcon === 'string'
+				typeof keyData.private.dilithium === 'string'
 			) {
 				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
-				var falconPrivateKey	= sodiumUtil.from_base64(keyData.private.falcon);
+				var dilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.dilithium);
 
 				if (password) {
 					return Promise.all([
@@ -791,13 +791,13 @@ var superFalcon	= {
 							typeof password === 'string' ? password : password.ecc
 						),
 						decrypt(
-							falconPrivateKey,
-							typeof password === 'string' ? password : password.falcon
+							dilithiumPrivateKey,
+							typeof password === 'string' ? password : password.dilithium
 						)
 					]);
 				}
 				else {
-					return [eccPrivateKey, falconPrivateKey];
+					return [eccPrivateKey, dilithiumPrivateKey];
 				}
 
 				return null;
@@ -815,22 +815,22 @@ var superFalcon	= {
 			keyPair.privateKey	= new Uint8Array(privateKeyBytes);
 
 			if (results.length === 1) {
-				var superFalconPrivateKey	= results[0];
+				var superDilithiumPrivateKey	= results[0];
 
 				keyPair.publicKey.set(new Uint8Array(
-					superFalconPrivateKey.buffer,
-					superFalconPrivateKey.byteOffset,
+					superDilithiumPrivateKey.buffer,
+					superDilithiumPrivateKey.byteOffset,
 					publicKeyBytes
 				));
 
 				keyPair.privateKey.set(new Uint8Array(
-					superFalconPrivateKey.buffer,
-					superFalconPrivateKey.byteOffset + publicKeyBytes
+					superDilithiumPrivateKey.buffer,
+					superDilithiumPrivateKey.byteOffset + publicKeyBytes
 				));
 			}
 			else {
 				var eccPrivateKey		= results[0];
-				var falconPrivateKey	= results[1];
+				var dilithiumPrivateKey	= results[1];
 
 				keyPair.publicKey.set(
 					new Uint8Array(
@@ -841,9 +841,9 @@ var superFalcon	= {
 				);
 				keyPair.publicKey.set(
 					new Uint8Array(
-						falconPrivateKey.buffer,
-						falconPrivateKey.byteOffset,
-						falconBytes.publicKeyBytes
+						dilithiumPrivateKey.buffer,
+						dilithiumPrivateKey.byteOffset,
+						dilithiumBytes.publicKeyBytes
 					),
 					sodium.crypto_sign_PUBLICKEYBYTES
 				);
@@ -856,8 +856,8 @@ var superFalcon	= {
 				);
 				keyPair.privateKey.set(
 					new Uint8Array(
-						falconPrivateKey.buffer,
-						falconPrivateKey.byteOffset + falconBytes.publicKeyBytes
+						dilithiumPrivateKey.buffer,
+						dilithiumPrivateKey.byteOffset + dilithiumBytes.publicKeyBytes
 					),
 					sodium.crypto_sign_SECRETKEYBYTES
 				);
@@ -866,13 +866,13 @@ var superFalcon	= {
 			return keyPair;
 		}).then(function (keyPair) {
 			if (!keyPair.privateKey) {
-				if (keyData.public.superFalcon) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superFalcon));
+				if (keyData.public.superDilithium) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superDilithium));
 				}
-				else if (keyData.public.ecc && keyData.public.falcon) {
+				else if (keyData.public.ecc && keyData.public.dilithium) {
 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.ecc));
 					keyPair.publicKey.set(
-						sodiumUtil.from_base64(keyData.public.falcon),
+						sodiumUtil.from_base64(keyData.public.dilithium),
 						sodium.crypto_sign_PUBLICKEYBYTES
 					);
 				}
@@ -885,5 +885,5 @@ var superFalcon	= {
 
 
 
-superFalcon.superFalcon	= superFalcon;
-module.exports			= superFalcon;
+superDilithium.superDilithium	= superDilithium;
+module.exports			= superDilithium;

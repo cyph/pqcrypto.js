@@ -1,5 +1,5 @@
-declare module 'superfalcon' {
-	interface ISuperFalcon {
+declare module 'superdilithium' {
+	interface ISuperDilithium {
 		/** Signature length. */
 		bytes: Promise<number>;
 
@@ -16,13 +16,13 @@ declare module 'superfalcon' {
 		exportKeys (keyPair: {publicKey: Uint8Array}) : Promise<{
 			private: {
 				ecc: null;
-				falcon: null;
-				superFalcon: null;
+				dilithium: null;
+				superDilithium: null;
 			};
 			public: {
 				ecc: string;
-				falcon: string;
-				superFalcon: string;
+				dilithium: string;
+				superDilithium: string;
 			};
 		}>;
 
@@ -39,13 +39,13 @@ declare module 'superfalcon' {
 		) : Promise<{
 			private: {
 				ecc: string;
-				falcon: string;
-				superFalcon: string;
+				dilithium: string;
+				superDilithium: string;
 			};
 			public: {
 				ecc: string;
-				falcon: string;
-				superFalcon: string;
+				dilithium: string;
+				superDilithium: string;
 			};
 		}>;
 
@@ -60,7 +60,7 @@ declare module 'superfalcon' {
 
 		/** Imports exported keys and creates key pair object. */
 		importKeys (keyData: {
-			public: {ecc: string; falcon: string}|{superFalcon: string}
+			public: {ecc: string; dilithium: string}|{superDilithium: string}
 		}) : Promise<{
 			privateKey: null;
 			publicKey: Uint8Array;
@@ -72,7 +72,7 @@ declare module 'superfalcon' {
 		 */
 		importKeys (
 			keyData: {
-				private: {ecc: string; falcon: string}|{superFalcon: string};
+				private: {ecc: string; dilithium: string}|{superDilithium: string};
 				public?: any;
 			},
 			password?: string
@@ -88,7 +88,7 @@ declare module 'superfalcon' {
 		open (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; dilithium: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -98,7 +98,7 @@ declare module 'superfalcon' {
 		open (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; dilithium: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -112,7 +112,7 @@ declare module 'superfalcon' {
 		openString (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; dilithium: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -122,7 +122,7 @@ declare module 'superfalcon' {
 		openString (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; dilithium: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -167,7 +167,7 @@ declare module 'superfalcon' {
 			signature: Uint8Array|string,
 			message: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; dilithium: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -178,7 +178,7 @@ declare module 'superfalcon' {
 			signature: Uint8Array|string,
 			message: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; falcon: string}|{superFalcon: string}
+				public: {ecc: string; dilithium: string}|{superDilithium: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -189,5 +189,5 @@ declare module 'superfalcon' {
 		}>;
 	}
 
-	const superFalcon: ISuperFalcon;
+	const superDilithium: ISuperDilithium;
 }

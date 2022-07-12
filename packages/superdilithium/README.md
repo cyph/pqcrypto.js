@@ -1,10 +1,10 @@
-# superfalcon
+# superdilithium
 
 ## Overview
 
-SuperFalcon combines the post-quantum [Falcon](https://falcon-sign.info) with the more conventional
-elliptic-curve (ECC) [Ed25519](https://ed25519.cr.yp.to) as a single signing scheme. Falcon is
-provided by [falcon](https://github.com/cyph/pqcrypto.js/tree/master/packages/falcon)
+SuperDilithium combines the post-quantum [Dilithium](https://dilithium-sign.info) with the more conventional
+elliptic-curve (ECC) [Ed25519](https://ed25519.cr.yp.to) as a single signing scheme. Dilithium is
+provided by [dilithium](https://github.com/cyph/pqcrypto.js/tree/master/packages/dilithium)
 and Ed25519 signing is performed using
 [libsodium.js](https://github.com/jedisct1/libsodium.js).
 
@@ -16,7 +16,7 @@ where available or an efficient JavaScript implementation from
 
 	(async () => {
 		const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
-			await superFalcon.keyPair()
+			await superDilithium.keyPair()
 		;
 
 		const message /*: Uint8Array */ =
@@ -33,21 +33,21 @@ where available or an efficient JavaScript implementation from
 		/* Combined signatures */
 
 		const signed /*: Uint8Array */ =
-			await superFalcon.sign(message, keyPair.privateKey, additionalData)
+			await superDilithium.sign(message, keyPair.privateKey, additionalData)
 		;
 
 		const verified /*: Uint8Array */ =
-			await superFalcon.open(signed, keyPair.publicKey, additionalData) // same as message
+			await superDilithium.open(signed, keyPair.publicKey, additionalData) // same as message
 		;
 
 		/* Detached signatures */
 
 		const signature /*: Uint8Array */ =
-			await superFalcon.signDetached(message, keyPair.privateKey, additionalData)
+			await superDilithium.signDetached(message, keyPair.privateKey, additionalData)
 		;
 
 		const isValid /*: boolean */ =
-			await superFalcon.verifyDetached(
+			await superDilithium.verifyDetached(
 				signature,
 				message,
 				keyPair.publicKey,
@@ -60,16 +60,16 @@ where available or an efficient JavaScript implementation from
 		const keyData /*: {
 			private: {
 				ecc: string;
-				falcon: string;
-				superFalcon: string;
+				dilithium: string;
+				superDilithium: string;
 			};
 			public: {
 				ecc: string;
-				falcon: string;
-				superFalcon: string;
+				dilithium: string;
+				superDilithium: string;
 			};
 		} */ =
-			await superFalcon.exportKeys(keyPair, 'secret passphrase')
+			await superDilithium.exportKeys(keyPair, 'secret passphrase')
 		;
 
 		if (typeof localStorage === 'undefined') {
@@ -77,21 +77,21 @@ where available or an efficient JavaScript implementation from
 		}
 
 		// May now save exported keys to disk (or whatever)
-		localStorage.superFalconPrivateKey = keyData.private.superFalcon;
-		localStorage.falconPrivateKey      = keyData.private.falcon;
+		localStorage.superDilithiumPrivateKey = keyData.private.superDilithium;
+		localStorage.dilithiumPrivateKey      = keyData.private.dilithium;
 		localStorage.eccPrivateKey         = keyData.private.ecc;
-		localStorage.superFalconPublicKey  = keyData.public.superFalcon;
-		localStorage.falconPublicKey       = keyData.public.falcon;
+		localStorage.superDilithiumPublicKey  = keyData.public.superDilithium;
+		localStorage.dilithiumPublicKey       = keyData.public.dilithium;
 		localStorage.eccPublicKey          = keyData.public.ecc;
 
 
-		/* Reconstruct an exported key using either the superFalcon
-			value or any pair of valid falcon and ecc values */
+		/* Reconstruct an exported key using either the superDilithium
+			value or any pair of valid dilithium and ecc values */
 
-		const keyPair1 = await superFalcon.importKeys({
+		const keyPair1 = await superDilithium.importKeys({
 			public: {
 				ecc: localStorage.eccPublicKey,
-				falcon: localStorage.falconPublicKey
+				dilithium: localStorage.dilithiumPublicKey
 			}
 		});
 
@@ -99,10 +99,10 @@ where available or an efficient JavaScript implementation from
 		console.log('Import #1:');
 		console.log(keyPair1);
 
-		const keyPair2 = await superFalcon.importKeys(
+		const keyPair2 = await superDilithium.importKeys(
 			{
 				private: {
-					superFalcon: localStorage.superFalconPrivateKey
+					superDilithium: localStorage.superDilithiumPrivateKey
 				}
 			},
 			'secret passphrase'
@@ -112,23 +112,23 @@ where available or an efficient JavaScript implementation from
 		console.log('Import #2:');
 		console.log(keyPair2);
 
-		// Constructing an entirely new SuperFalcon key pair from
-		// the original Falcon key pair and a new ECC key pair
-		const keyPair3 = await superFalcon.importKeys(
+		// Constructing an entirely new SuperDilithium key pair from
+		// the original Dilithium key pair and a new ECC key pair
+		const keyPair3 = await superDilithium.importKeys(
 			{
 				private: {
 					ecc: (
-						await superFalcon.exportKeys(
-							await superFalcon.keyPair(),
+						await superDilithium.exportKeys(
+							await superDilithium.keyPair(),
 							'hunter2'
 						)
 					).private.ecc,
-					falcon: localStorage.falconPrivateKey
+					dilithium: localStorage.dilithiumPrivateKey
 				}
 			},
 			{
 				ecc: 'hunter2',
-				falcon: 'secret passphrase'
+				dilithium: 'secret passphrase'
 			}
 		);
 
