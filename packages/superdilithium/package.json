@@ -1,0 +1,43 @@
+{
+	"name": "superfalcon",
+	"version": "1.0.2",
+	"description": "Falcon and Ed25519 paired together as a single signing scheme",
+	"main": "index.js",
+	"types": "./index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/cyph/pqcrypto.js.git"
+	},
+	"keywords": [
+		"cryptography",
+		"post-quantum",
+		"falcon",
+		"ecc",
+		"asm.js",
+		"webassembly"
+	],
+	"author": "Cyph, Inc. <pqcrypto.js@cyph.com> (https://github.com/cyph)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/cyph/pqcrypto.js/issues"
+	},
+	"scripts": {
+		"prepublishOnly": "cp nacl-sha512.js dist/",
+		"test": "npm run prepublishOnly && npx jest"
+	},
+	"dependencies": {
+		"falcon-crypto": "*",
+		"libsodium-wrappers-sumo": "*",
+		"sodiumutil": "*"
+	},
+	"devDependencies": {
+		"@babel/cli": "*",
+		"@babel/preset-env": "*",
+		"jest": "*",
+		"superfalcon": "1.0.2",
+		"terser": "*",
+		"vm-browserify": "*",
+		"webpack": "*",
+		"webpack-cli": "*"
+	}
+}
