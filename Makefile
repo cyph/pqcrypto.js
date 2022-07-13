@@ -4,6 +4,9 @@ all:
 clean:
 	for d in packages/* ; do cd $${d} ; make clean || exit 1 ; cd - ; done
 
+publish:
+	for d in packages/* ; do cd $${d} ; npm publish || exit 1 ; cd - ; done
+
 test:
 	for d in packages/* ; do cd $${d} ; make test || exit 1 ; cd - ; done
 
