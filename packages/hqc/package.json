@@ -26,8 +26,8 @@
 	"devDependencies": {
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
-		"jest": "*",
 		"hqc": "1.0.0",
+		"jest": "*",
 		"terser": "*"
 	}
 }
