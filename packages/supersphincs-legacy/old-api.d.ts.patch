@@ -1,0 +1,4 @@
+1c1
+< declare module 'supersphincs-legacy' {
+---
+> declare module 'supersphincs-legacy/dist/old-api.js' {
