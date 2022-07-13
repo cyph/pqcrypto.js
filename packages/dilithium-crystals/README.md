@@ -6,6 +6,8 @@ The [Dilithium](https://pq-crystals.org/dilithium) post-quantum cryptographic si
 compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
 A simple JavaScript wrapper is provided to make Dilithium easy to use in Web applications.
 
+The default parameter set is Dilithium5 (roughly 256-bit strength).
+
 N.B. Unless interoperability with other Dilithium implementations is a hard requirement,
 it is recommended to use [superdilithium](https://github.com/cyph/pqcrypto.js/tree/master/packages/superdilithium)
 instead.

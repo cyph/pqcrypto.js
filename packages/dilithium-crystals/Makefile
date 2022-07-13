@@ -14,12 +14,12 @@ all:
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include/sodium \
 			-Ipqclean/common \
-			-Ipqclean/crypto_sign/dilithium3/clean \
+			-Ipqclean/crypto_sign/dilithium5/clean \
 			libsodium/src/libsodium/randombytes/randombytes.c \
 			$$( \
 				find \
 					pqclean/common \
-					pqclean/crypto_sign/dilithium3/clean \
+					pqclean/crypto_sign/dilithium5/clean \
 				-name '"'"'*.c'"'"' -type f \
 				-not \( \
 					-path '*/keccak4x/*' -or \
