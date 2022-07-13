@@ -1,0 +1,4 @@
+65c65
+< void randombytes(unsigned char * const buf, const unsigned long long buf_len)
+---
+> int randombytes(unsigned char * const buf, const unsigned long long buf_len)
