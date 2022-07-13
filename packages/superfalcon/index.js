@@ -701,7 +701,7 @@ var superFalcon	= {
 			superFalconPrivateKey.set(keyPair.publicKey);
 			superFalconPrivateKey.set(keyPair.privateKey, publicKeyBytes);
 
-			if (password) {
+			if (password != null && password.length > 0) {
 				return Promise.all([
 					encrypt(eccPrivateKey, password),
 					encrypt(falconPrivateKey, password),
@@ -769,7 +769,7 @@ var superFalcon	= {
 			if (keyData.private && typeof keyData.private.superFalcon === 'string') {
 				var superFalconPrivateKey	= sodiumUtil.from_base64(keyData.private.superFalcon);
 
-				if (password) {
+				if (password != null && password.length > 0) {
 					return Promise.all([decrypt(superFalconPrivateKey, password)]);
 				}
 				else {
@@ -784,24 +784,23 @@ var superFalcon	= {
 				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
 				var falconPrivateKey	= sodiumUtil.from_base64(keyData.private.falcon);
 
-				if (password) {
-					return Promise.all([
-						decrypt(
-							eccPrivateKey,
-							typeof password === 'string' ? password : password.ecc
-						),
-						decrypt(
-							falconPrivateKey,
-							typeof password === 'string' ? password : password.falcon
-						)
-					]);
-				}
-				else {
+				if (password == null || password.length > 0) {
 					return [eccPrivateKey, falconPrivateKey];
 				}
 
-				return null;
+				return Promise.all([
+					decrypt(
+						eccPrivateKey,
+						typeof password === 'string' ? password : password.ecc
+					),
+					decrypt(
+						falconPrivateKey,
+						typeof password === 'string' ? password : password.falcon
+					)
+				]);
 			}
+
+			return null;
 		}).then(function (results) {
 			var keyPair	= {
 				publicKey: new Uint8Array(publicKeyBytes),

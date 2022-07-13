@@ -701,7 +701,7 @@ var superDilithium	= {
 			superDilithiumPrivateKey.set(keyPair.publicKey);
 			superDilithiumPrivateKey.set(keyPair.privateKey, publicKeyBytes);
 
-			if (password) {
+			if (password != null && password.length > 0) {
 				return Promise.all([
 					encrypt(eccPrivateKey, password),
 					encrypt(dilithiumPrivateKey, password),
@@ -769,7 +769,7 @@ var superDilithium	= {
 			if (keyData.private && typeof keyData.private.superDilithium === 'string') {
 				var superDilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.superDilithium);
 
-				if (password) {
+				if (password != null && password.length > 0) {
 					return Promise.all([decrypt(superDilithiumPrivateKey, password)]);
 				}
 				else {
@@ -784,24 +784,23 @@ var superDilithium	= {
 				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
 				var dilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.dilithium);
 
-				if (password) {
-					return Promise.all([
-						decrypt(
-							eccPrivateKey,
-							typeof password === 'string' ? password : password.ecc
-						),
-						decrypt(
-							dilithiumPrivateKey,
-							typeof password === 'string' ? password : password.dilithium
-						)
-					]);
-				}
-				else {
+				if (password == null || password.length < 1) {
 					return [eccPrivateKey, dilithiumPrivateKey];
 				}
 
-				return null;
+				return Promise.all([
+					decrypt(
+						eccPrivateKey,
+						typeof password === 'string' ? password : password.ecc
+					),
+					decrypt(
+						dilithiumPrivateKey,
+						typeof password === 'string' ? password : password.dilithium
+					)
+				]);
 			}
+
+			return null;
 		}).then(function (results) {
 			var keyPair	= {
 				publicKey: new Uint8Array(publicKeyBytes),

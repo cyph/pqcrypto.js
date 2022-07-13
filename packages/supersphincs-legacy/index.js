@@ -700,7 +700,7 @@ var superSphincs	= {
 			superSphincsPrivateKey.set(keyPair.publicKey);
 			superSphincsPrivateKey.set(keyPair.privateKey, publicKeyBytes);
 
-			if (password) {
+			if (password != null && password.length > 0) {
 				return Promise.all([
 					encrypt(rsaPrivateKey, password),
 					encrypt(sphincsPrivateKey, password),
@@ -768,7 +768,7 @@ var superSphincs	= {
 			if (keyData.private && typeof keyData.private.superSphincs === 'string') {
 				var superSphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.superSphincs);
 
-				if (password) {
+				if (password != null && password.length > 0) {
 					return Promise.all([decrypt(superSphincsPrivateKey, password)]);
 				}
 				else {
@@ -783,24 +783,23 @@ var superSphincs	= {
 				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
 				var sphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.sphincs);
 
-				if (password) {
-					return Promise.all([
-						decrypt(
-							rsaPrivateKey,
-							typeof password === 'string' ? password : password.rsa
-						),
-						decrypt(
-							sphincsPrivateKey,
-							typeof password === 'string' ? password : password.sphincs
-						)
-					]);
-				}
-				else {
+				if (password == null || password.length < 1) {
 					return [rsaPrivateKey, sphincsPrivateKey];
 				}
 
-				return null;
+				return Promise.all([
+					decrypt(
+						rsaPrivateKey,
+						typeof password === 'string' ? password : password.rsa
+					),
+					decrypt(
+						sphincsPrivateKey,
+						typeof password === 'string' ? password : password.sphincs
+					)
+				]);
 			}
+
+			return null;
 		}).then(function (results) {
 			var keyPair	= {
 				publicKey: new Uint8Array(publicKeyBytes),
