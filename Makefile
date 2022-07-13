@@ -11,7 +11,7 @@ test:
 	for d in packages/* ; do cd $${d} ; make test || exit 1 ; cd - ; done
 
 updatelibs:
-	git submodule update --recursive --remote
+	grep 'path =' .gitmodules | awk '{print $3}' | grep -vP '^lib/legacy/' | xargs git submodule update --remote
 
 	for d in packages/* ; do \
 		cd $${d}; \
