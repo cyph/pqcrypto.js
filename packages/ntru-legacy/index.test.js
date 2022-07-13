@@ -1,6 +1,6 @@
 const targets = [
 	{name: 'local build', ntru: require('.')},
-	{name: 'stable release', ntru: require('ntru')}
+	{name: 'stable release', ntru: require('ntru-legacy')}
 ];
 
 const plaintext = new Uint8Array([98, 97, 108, 108, 115, 0]);

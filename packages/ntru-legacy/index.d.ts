@@ -1,4 +1,4 @@
-declare module 'ntru' {
+declare module 'ntru-legacy' {
 	interface INTRU {
 		/** Maximum plaintext length. */
 		plaintextBytes: Promise<number>;

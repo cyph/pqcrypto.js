@@ -1,4 +1,18 @@
-# ntru
+# ntru-legacy
+
+## Note
+
+The variant of NTRU used in this package is ***no longer recommended***. Instead prefer
+NTRU Prime, which is a more robust alternative that was a NIST PQC Round 3 alternate
+candidate. An implementation of NTRU Prime is provided by
+[ntru](https://github.com/cyph/pqcrypto.js/tree/master/packages/ntru).
+
+That being said, unless you specifically require NTRU, Kyber should be preferred. Kyber is
+a NIST PQC winner that has been selected for standardization, and works similarly to NTRU
+(both being lattice-based). An implementation of Kyber is provided by
+[kyber-crystals](https://github.com/cyph/pqcrypto.js/tree/master/packages/kyber-crystals).
+
+---
 
 ## Overview
 
@@ -11,7 +25,7 @@ The default parameter set is EES743EP1 (roughly 256-bit strength, as per
 
 ## Example Usage
 
-	import {ntru} from 'ntru';
+	import {ntru} from 'ntru-legacy';
 
 	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
 		await ntru.keyPair()
@@ -38,16 +52,3 @@ Note: NTRU is a low-level cryptographic primitive, not a high-level construct li
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
 This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
 should avoid using ntru directly for anything important if you lack the experience to do so.
-
-## Changelog
-
-Breaking changes in major versions:
-
-3.0.0:
-
-* As part of upgrading from asm.js to WebAssembly (with asm.js included as a fallback),
-the API is fully asynchronous.
-
-2.0.0:
-
-* Removed some undocumented functions as part of minor API cleanup.
