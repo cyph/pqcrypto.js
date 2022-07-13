@@ -2,13 +2,15 @@
 
 ## Overview
 
-The [SPHINCS](https://sphincs.cr.yp.to) post-quantum cryptographic signing scheme
+The [SPHINCS+](https://sphincs.org) post-quantum cryptographic signing scheme
 compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
-A simple JavaScript wrapper is provided to make SPHINCS easy to use in Web applications.
+A simple JavaScript wrapper is provided to make SPHINCS+ easy to use in Web applications.
 
-N.B. Unless interoperability with other SPHINCS implementations is a hard requirement,
-it is recommended to use [supersphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/supersphincs)
-instead.
+The default parameter set is SPHINCS+-SHAKE-256s-robust (roughly 256-bit strength).
+
+N.B. Unless interoperability with other SPHINCS+ implementations is a hard requirement,
+it is recommended to use
+[supersphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/supersphincs) instead.
 
 ## Example Usage
 
@@ -52,6 +54,12 @@ instead.
 ## Changelog
 
 Breaking changes in major versions:
+
+3.0.0:
+
+* Upgraded from SPHINCS to SPHINCS+. For backwards compatibility with previous versions
+of this package, use
+[sphincs-legacy](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs-legacy).
 
 2.0.0:
 
