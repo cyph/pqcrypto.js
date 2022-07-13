@@ -6,3 +6,13 @@ clean:
 
 test:
 	for d in packages/* ; do cd $${d} ; make test || exit 1 ; cd - ; done
+
+updatelibs:
+	git submodule update --recursive --remote
+
+	for d in packages/* ; do \
+		cd $${d}; \
+		rm -rf node_modules package-lock.json; \
+		npm install || exit 1; \
+		cd -; \
+	done
