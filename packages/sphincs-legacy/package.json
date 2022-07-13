@@ -1,6 +1,6 @@
 {
-	"name": "sphincs",
-	"version": "2.4.3",
+	"name": "sphincs-legacy",
+	"version": "1.0.0",
 	"description": "JavaScript wrapper for a WebAssembly build of SPHINCS",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",
@@ -27,7 +27,7 @@
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"sphincs": "2.4.1",
+		"sphincs-legacy": "1.0.0",
 		"terser": "*"
 	}
 }

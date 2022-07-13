@@ -1,6 +1,6 @@
 const targets = [
 	{name: 'local build', sphincs: require('.')},
-	{name: 'stable release', sphincs: require('sphincs')}
+	{name: 'stable release', sphincs: require('sphincs-legacy')}
 ];
 
 const message = new Uint8Array([98, 97, 108, 108, 115, 0]);

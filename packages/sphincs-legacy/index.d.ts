@@ -1,4 +1,4 @@
-declare module 'sphincs' {
+declare module 'sphincs-legacy' {
 	interface ISPHINCS {
 		/** Signature length. */
 		bytes: Promise<number>;
