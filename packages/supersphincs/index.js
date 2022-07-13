@@ -7,8 +7,8 @@ var isNode	=
 
 
 var sha512		= require('./dist/nacl-sha512');
-var rsaSign		= require('rsasign');
-var sodiumUtil	= require('sodiumutil');
+var sodium		= require('libsodium-wrappers-sumo');
+var sodiumUtil	= require('sodiumutil/dist/sodium-wrapper');
 var sphincs		= require('sphincs');
 
 
@@ -317,7 +317,8 @@ var publicKeyBytes, privateKeyBytes, bytes, sphincsBytes;
 var initiated	= Promise.all([
 	sphincs.publicKeyBytes,
 	sphincs.privateKeyBytes,
-	sphincs.bytes
+	sphincs.bytes,
+	sodium.ready
 ]).then(function (results) {
 	sphincsBytes	= {
 		publicKeyBytes: results[0],
@@ -325,9 +326,9 @@ var initiated	= Promise.all([
 		bytes: results[2]
 	};
 
-	publicKeyBytes	= rsaSign.publicKeyBytes + sphincsBytes.publicKeyBytes;
-	privateKeyBytes	= rsaSign.privateKeyBytes + sphincsBytes.privateKeyBytes;
-	bytes			= rsaSign.bytes + sphincsBytes.bytes;
+	publicKeyBytes	= sodium.crypto_sign_PUBLICKEYBYTES + sphincsBytes.publicKeyBytes;
+	privateKeyBytes	= sodium.crypto_sign_SECRETKEYBYTES + sphincsBytes.privateKeyBytes;
+	bytes			= sodium.crypto_sign_BYTES + sphincsBytes.bytes;
 });
 
 
@@ -353,10 +354,10 @@ var superSphincs	= {
 
 	keyPair: function () { return initiated.then(function () {
 		return Promise.all([
-			rsaSign.keyPair(),
+			sodium.crypto_sign_keypair(),
 			sphincs.keyPair()
 		]).then(function (results) {
-			var rsaKeyPair		= results[0];
+			var eccKeyPair		= results[0];
 			var sphincsKeyPair	= results[1];
 
 			var keyPair	= {
@@ -365,15 +366,15 @@ var superSphincs	= {
 				privateKey: new Uint8Array(privateKeyBytes)
 			};
 
-			keyPair.publicKey.set(rsaKeyPair.publicKey);
-			keyPair.privateKey.set(rsaKeyPair.privateKey);
-			keyPair.publicKey.set(sphincsKeyPair.publicKey, rsaSign.publicKeyBytes);
-			keyPair.privateKey.set(sphincsKeyPair.privateKey, rsaSign.privateKeyBytes);
+			keyPair.publicKey.set(eccKeyPair.publicKey);
+			keyPair.privateKey.set(eccKeyPair.privateKey);
+			keyPair.publicKey.set(sphincsKeyPair.publicKey, sodium.crypto_sign_PUBLICKEYBYTES);
+			keyPair.privateKey.set(sphincsKeyPair.privateKey, sodium.crypto_sign_SECRETKEYBYTES);
 
 			sodiumUtil.memzero(sphincsKeyPair.privateKey);
-			sodiumUtil.memzero(rsaKeyPair.privateKey);
+			sodiumUtil.memzero(eccKeyPair.privateKey);
 			sodiumUtil.memzero(sphincsKeyPair.publicKey);
-			sodiumUtil.memzero(rsaKeyPair.publicKey);
+			sodiumUtil.memzero(eccKeyPair.publicKey);
 
 			return keyPair;
 		});
@@ -429,35 +430,35 @@ var superSphincs	= {
 		return hashWithAdditionalData(message, additionalData, preHashed).then(function (hash) {
 			return Promise.all([
 				hash,
-				rsaSign.signDetached(
+				sodium.crypto_sign_detached(
 					hash,
 					new Uint8Array(
 						privateKey.buffer,
 						privateKey.byteOffset,
-						rsaSign.privateKeyBytes
+						sodium.crypto_sign_SECRETKEYBYTES
 					)
 				),
 				sphincs.signDetached(
 					hash,
 					new Uint8Array(
 						privateKey.buffer,
-						privateKey.byteOffset + rsaSign.privateKeyBytes
+						privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
 					)
 				)
 			]);
 		}).then(function (results) {
 			var hash				= results[0];
-			var rsaSignature		= results[1];
+			var eccSignature		= results[1];
 			var sphincsSignature	= results[2];
 
 			var signature	= new Uint8Array(bytes);
 
-			signature.set(rsaSignature);
-			signature.set(sphincsSignature, rsaSign.bytes);
+			signature.set(eccSignature);
+			signature.set(sphincsSignature, sodium.crypto_sign_BYTES);
 
 			sodiumUtil.memzero(hash);
 			sodiumUtil.memzero(sphincsSignature);
-			sodiumUtil.memzero(rsaSignature);
+			sodiumUtil.memzero(eccSignature);
 
 			return signature;
 		});
@@ -606,29 +607,29 @@ var superSphincs	= {
 			return Promise.all([
 				hash,
 				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
-					return rsaSign.verifyDetached(
-						new Uint8Array(signature.buffer, signature.byteOffset, rsaSign.bytes),
+					return sodium.crypto_sign_verify_detached(
+						new Uint8Array(signature.buffer, signature.byteOffset, sodium.crypto_sign_BYTES),
 						hash,
-						new Uint8Array(pk.buffer, pk.byteOffset, rsaSign.publicKeyBytes)
+						new Uint8Array(pk.buffer, pk.byteOffset, sodium.crypto_sign_PUBLICKEYBYTES)
 					);
 				}),
 				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
 					return sphincs.verifyDetached(
 						new Uint8Array(
 							signature.buffer,
-							signature.byteOffset + rsaSign.bytes,
+							signature.byteOffset + sodium.crypto_sign_BYTES,
 							sphincsBytes.bytes
 						),
 						hash,
-						new Uint8Array(pk.buffer, pk.byteOffset + rsaSign.publicKeyBytes)
+						new Uint8Array(pk.buffer, pk.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES)
 					);
 				})
 			]);
 		}).then(function (results) {
 			var hash			= results[0];
-			var rsaIsValid		= results[1];
+			var eccIsValid		= results[1];
 			var sphincsIsValid	= results[2];
-			var valid			= rsaIsValid && sphincsIsValid;
+			var valid			= eccIsValid && sphincsIsValid;
 
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
@@ -656,9 +657,9 @@ var superSphincs	= {
 				return null;
 			}
 
-			var rsaPrivateKey			= new Uint8Array(
-				rsaSign.publicKeyBytes +
-				rsaSign.privateKeyBytes
+			var eccPrivateKey			= new Uint8Array(
+				sodium.crypto_sign_PUBLICKEYBYTES +
+				sodium.crypto_sign_SECRETKEYBYTES
 			);
 
 			var sphincsPrivateKey		= new Uint8Array(
@@ -671,28 +672,28 @@ var superSphincs	= {
 				privateKeyBytes
 			);
 
-			rsaPrivateKey.set(new Uint8Array(
+			eccPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
 				keyPair.publicKey.byteOffset,
-				rsaSign.publicKeyBytes
+				sodium.crypto_sign_PUBLICKEYBYTES
 			));
-			rsaPrivateKey.set(
+			eccPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
 					keyPair.privateKey.byteOffset,
-					rsaSign.privateKeyBytes
+					sodium.crypto_sign_SECRETKEYBYTES
 				),
-				rsaSign.publicKeyBytes
+				sodium.crypto_sign_PUBLICKEYBYTES
 			);
 
 			sphincsPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
-				keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
+				keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
 			));
 			sphincsPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
-					keyPair.privateKey.byteOffset + rsaSign.privateKeyBytes
+					keyPair.privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
 				),
 				sphincsBytes.publicKeyBytes
 			);
@@ -702,20 +703,20 @@ var superSphincs	= {
 
 			if (password != null && password.length > 0) {
 				return Promise.all([
-					encrypt(rsaPrivateKey, password),
+					encrypt(eccPrivateKey, password),
 					encrypt(sphincsPrivateKey, password),
 					encrypt(superSphincsPrivateKey, password)
 				]).then(function (results) {
 					sodiumUtil.memzero(superSphincsPrivateKey);
 					sodiumUtil.memzero(sphincsPrivateKey);
-					sodiumUtil.memzero(rsaPrivateKey);
+					sodiumUtil.memzero(eccPrivateKey);
 
 					return results;
 				});
 			}
 			else {
 				return [
-					rsaPrivateKey,
+					eccPrivateKey,
 					sphincsPrivateKey,
 					superSphincsPrivateKey
 				];
@@ -723,39 +724,39 @@ var superSphincs	= {
 		}).then(function (results) {
 			if (!results) {
 				return {
-					rsa: null,
+					ecc: null,
 					sphincs: null,
 					superSphincs: null
 				};
 			}
 
-			var rsaPrivateKey			= results[0];
+			var eccPrivateKey			= results[0];
 			var sphincsPrivateKey		= results[1];
 			var superSphincsPrivateKey	= results[2];
 
 			var privateKeyData	= {
-				rsa: sodiumUtil.to_base64(rsaPrivateKey),
+				ecc: sodiumUtil.to_base64(eccPrivateKey),
 				sphincs: sodiumUtil.to_base64(sphincsPrivateKey),
 				superSphincs: sodiumUtil.to_base64(superSphincsPrivateKey)
 			};
 
 			sodiumUtil.memzero(superSphincsPrivateKey);
 			sodiumUtil.memzero(sphincsPrivateKey);
-			sodiumUtil.memzero(rsaPrivateKey);
+			sodiumUtil.memzero(eccPrivateKey);
 
 			return privateKeyData;
 		}).then(function (privateKeyData) {
 			return {
 				private: privateKeyData,
 				public: {
-					rsa: sodiumUtil.to_base64(new Uint8Array(
+					ecc: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset,
-						rsaSign.publicKeyBytes
+						sodium.crypto_sign_PUBLICKEYBYTES
 					)),
 					sphincs: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
-						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
+						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
 					)),
 					superSphincs: sodiumUtil.to_base64(keyPair.publicKey)
 				}
@@ -777,20 +778,20 @@ var superSphincs	= {
 			}
 			else if (
 				keyData.private &&
-				typeof keyData.private.rsa === 'string' &&
+				typeof keyData.private.ecc === 'string' &&
 				typeof keyData.private.sphincs === 'string'
 			) {
-				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
+				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
 				var sphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.sphincs);
 
-				if (password == null || password.length < 1) {
-					return [rsaPrivateKey, sphincsPrivateKey];
+				if (password == null || password.length > 0) {
+					return [eccPrivateKey, sphincsPrivateKey];
 				}
 
 				return Promise.all([
 					decrypt(
-						rsaPrivateKey,
-						typeof password === 'string' ? password : password.rsa
+						eccPrivateKey,
+						typeof password === 'string' ? password : password.ecc
 					),
 					decrypt(
 						sphincsPrivateKey,
@@ -827,14 +828,14 @@ var superSphincs	= {
 				));
 			}
 			else {
-				var rsaPrivateKey		= results[0];
+				var eccPrivateKey		= results[0];
 				var sphincsPrivateKey	= results[1];
 
 				keyPair.publicKey.set(
 					new Uint8Array(
-						rsaPrivateKey.buffer,
-						rsaPrivateKey.byteOffset,
-						rsaSign.publicKeyBytes
+						eccPrivateKey.buffer,
+						eccPrivateKey.byteOffset,
+						sodium.crypto_sign_PUBLICKEYBYTES
 					)
 				);
 				keyPair.publicKey.set(
@@ -843,13 +844,13 @@ var superSphincs	= {
 						sphincsPrivateKey.byteOffset,
 						sphincsBytes.publicKeyBytes
 					),
-					rsaSign.publicKeyBytes
+					sodium.crypto_sign_PUBLICKEYBYTES
 				);
 
 				keyPair.privateKey.set(
 					new Uint8Array(
-						rsaPrivateKey.buffer,
-						rsaPrivateKey.byteOffset + rsaSign.publicKeyBytes
+						eccPrivateKey.buffer,
+						eccPrivateKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
 					)
 				);
 				keyPair.privateKey.set(
@@ -857,7 +858,7 @@ var superSphincs	= {
 						sphincsPrivateKey.buffer,
 						sphincsPrivateKey.byteOffset + sphincsBytes.publicKeyBytes
 					),
-					rsaSign.privateKeyBytes
+					sodium.crypto_sign_SECRETKEYBYTES
 				);
 			}
 
@@ -867,11 +868,11 @@ var superSphincs	= {
 				if (keyData.public.superSphincs) {
 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superSphincs));
 				}
-				else if (keyData.public.rsa && keyData.public.sphincs) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.rsa));
+				else if (keyData.public.ecc && keyData.public.sphincs) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.ecc));
 					keyPair.publicKey.set(
 						sodiumUtil.from_base64(keyData.public.sphincs),
-						rsaSign.publicKeyBytes
+						sodium.crypto_sign_PUBLICKEYBYTES
 					);
 				}
 			}

@@ -2,11 +2,10 @@
 
 ## Overview
 
-SuperSPHINCS combines the post-quantum [SPHINCS](https://sphincs.cr.yp.to) with the more conventional
-[RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
-SPHINCS is provided by [sphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs)
-and RSA signing is performed using
-[rsasign](https://github.com/cyph/pqcrypto.js/tree/master/packages/rsasign).
+SuperSPHINCS combines the post-quantum [SPHINCS+](https://sphincs.org) with the more conventional
+elliptic-curve (ECC) [Ed25519](https://ed25519.cr.yp.to) as a single signing scheme. SPHINCS+ is
+provided by [sphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs) and
+Ed25519 signing is performed using [libsodium.js](https://github.com/jedisct1/libsodium.js).
 
 Before signing, a SHA-512 hash is performed, using the current platform's native implementation
 where available or an efficient JavaScript implementation from
@@ -60,12 +59,12 @@ where available or an efficient JavaScript implementation from
 
 	const keyData /*: {
 		private: {
-			rsa: string;
+			ecc: string;
 			sphincs: string;
 			superSphincs: string;
 		};
 		public: {
-			rsa: string;
+			ecc: string;
 			sphincs: string;
 			superSphincs: string;
 		};
@@ -80,18 +79,18 @@ where available or an efficient JavaScript implementation from
 	// May now save exported keys to disk (or whatever)
 	localStorage.superSphincsPrivateKey = keyData.private.superSphincs;
 	localStorage.sphincsPrivateKey      = keyData.private.sphincs;
-	localStorage.rsaPrivateKey          = keyData.private.rsa;
+	localStorage.eccPrivateKey          = keyData.private.ecc;
 	localStorage.superSphincsPublicKey  = keyData.public.superSphincs;
 	localStorage.sphincsPublicKey       = keyData.public.sphincs;
-	localStorage.rsaPublicKey           = keyData.public.rsa;
+	localStorage.eccPublicKey           = keyData.public.ecc;
 
 
 	/* Reconstruct an exported key using either the superSphincs
-		value or any pair of valid sphincs and rsa values */
+		value or any pair of valid sphincs and ecc values */
 
 	const keyPair1 = await superSphincs.importKeys({
 		public: {
-			rsa: localStorage.rsaPublicKey,
+			ecc: localStorage.eccPublicKey,
 			sphincs: localStorage.sphincsPublicKey
 		}
 	});
@@ -114,21 +113,21 @@ where available or an efficient JavaScript implementation from
 	console.log(keyPair2);
 
 	// Constructing an entirely new SuperSPHINCS key pair from
-	// the original SPHINCS key pair and a new RSA key pair
+	// the original SPHINCS+ key pair and a new ECC key pair
 	const keyPair3 = await superSphincs.importKeys(
 		{
 			private: {
-				rsa: (
+				ecc: (
 					await superSphincs.exportKeys(
 						await superSphincs.keyPair(),
 						'hunter2'
 					)
-				).private.rsa,
+				).private.ecc,
 				sphincs: localStorage.sphincsPrivateKey
 			}
 		},
 		{
-			rsa: 'hunter2',
+			ecc: 'hunter2',
 			sphincs: 'secret passphrase'
 		}
 	);
@@ -140,6 +139,12 @@ where available or an efficient JavaScript implementation from
 ## Changelog
 
 Breaking changes in major versions:
+
+7.0.0:
+
+* Upgraded from SPHINCS and RSA to SPHINCS+ and ECC. For backwards compatibility with
+previous versions of this package, use
+[supersphincs-legacy](https://github.com/cyph/pqcrypto.js/tree/master/packages/supersphincs-legacy).
 
 6.0.0:
 

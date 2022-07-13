@@ -1,7 +1,7 @@
 {
 	"name": "supersphincs",
-	"version": "6.3.5",
-	"description": "SPHINCS and RSASSA-PKCS1-v1_5 paired together as a single signing scheme",
+	"version": "7.0.0",
+	"description": "SPHINCS+ and Ed25519 paired together as a single signing scheme",
 	"main": "index.js",
 	"types": "./index.d.ts",
 	"repository": {
@@ -12,7 +12,7 @@
 		"cryptography",
 		"post-quantum",
 		"sphincs",
-		"rsa",
+		"ecc",
 		"asm.js",
 		"webassembly"
 	],
@@ -26,7 +26,7 @@
 		"test": "npm run prepublishOnly && npx jest"
 	},
 	"dependencies": {
-		"rsasign": "*",
+		"libsodium-wrappers-sumo": "*",
 		"sodiumutil": "*",
 		"sphincs": "*"
 	},
@@ -34,7 +34,7 @@
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"supersphincs": "6.3.4",
+		"supersphincs": "7.0.0",
 		"terser": "*",
 		"vm-browserify": "*",
 		"webpack": "*",
