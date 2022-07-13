@@ -31,7 +31,6 @@ all:
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \
-				'"'"'_calloc'"'"', \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
 				'"'"'_ntrujs_init'"'"', \
