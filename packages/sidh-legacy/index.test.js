@@ -1,6 +1,6 @@
 const targets = [
 	{name: 'local build', sidh: require('.')},
-	{name: 'stable release', sidh: require('sidh')}
+	{name: 'stable release', sidh: require('sidh-legacy')}
 ];
 
 const plaintext = new Uint8Array([98, 97, 108, 108, 115, 0]);

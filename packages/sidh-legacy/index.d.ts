@@ -1,4 +1,4 @@
-declare module 'sidh' {
+declare module 'sidh-legacy' {
 	interface ISIDH {
 		/** Maximum plaintext length. */
 		plaintextBytes: Promise<number>;

@@ -1,4 +1,13 @@
-# sidh
+# sidh-legacy
+
+## Note
+
+The version of SIDH used in this package is ***no longer recommended***. Instead prefer the
+latest version, which is currently being evaluated for standardization as a NIST PQC Round 4
+candidate. An up-to-date implementation of SIDH is provided by
+[sidh](https://github.com/cyph/pqcrypto.js/tree/master/packages/sidh).
+
+---
 
 ## Overview
 
@@ -11,7 +20,7 @@ The parameters are configured to 128-bit strength (SIKEp503).
 
 ## Example Usage
 
-	import {sidh} from 'sidh';
+	import {sidh} from 'sidh-legacy';
 
 	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
 		await sidh.keyPair()
@@ -38,24 +47,3 @@ Note: SIDH is a low-level cryptographic primitive, not a high-level construct li
 [crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
 This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
 should avoid using sidh directly for anything important if you lack the experience to do so.
-
-## Changelog
-
-Breaking changes in major versions:
-
-5.0.0:
-
-* Upgraded to SIDH 3.0 and built new API in line with mceliece and ntru.
-
-4.0.0:
-
-* As part of upgrading from asm.js to WebAssembly (with asm.js included as a fallback),
-the API is fully asynchronous.
-
-3.0.0:
-
-* Removed some undocumented functions as part of minor API cleanup.
-
-2.0.0:
-
-* Upgraded to SIDH 2.0.
