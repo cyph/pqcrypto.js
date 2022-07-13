@@ -1,10 +1,18 @@
-# supersphincs
+# supersphincs-legacy
+
+## Note
+
+The original SPHINCS algorithm is ***no longer recommended***. Instead prefer SPHINCS+, which
+has been selected by NIST for standardization. An implementation with SPHINCS+ is provided by
+[supersphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/supersphincs).
+
+---
 
 ## Overview
 
 SuperSPHINCS combines the post-quantum [SPHINCS](https://sphincs.cr.yp.to) with the more conventional
 [RSASSA-PKCS1-v1_5](https://tools.ietf.org/html/rfc3447#section-8.2) as a single signing scheme.
-SPHINCS is provided by [sphincs](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs)
+SPHINCS is provided by [sphincs-legacy](https://github.com/cyph/pqcrypto.js/tree/master/packages/sphincs-legacy)
 and RSA signing is performed using
 [rsasign](https://github.com/cyph/pqcrypto.js/tree/master/packages/rsasign).
 
@@ -14,7 +22,7 @@ where available or an efficient JavaScript implementation from
 
 ## Example Usage
 
-	import {superSphincs} from 'supersphincs';
+	import {superSphincs} from 'supersphincs-legacy';
 
 	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
 		await superSphincs.keyPair()
@@ -136,28 +144,3 @@ where available or an efficient JavaScript implementation from
 	// May now use keyPair3 as in the above examples
 	console.log('Import #3:');
 	console.log(keyPair3);
-
-## Changelog
-
-Breaking changes in major versions:
-
-6.0.0:
-
-* Additional data optional with default value of `new Uint8Array(0)`.
-
-5.0.0:
-
-* Additional data format change.
-
-4.0.0:
-
-* As part of upgrading from asm.js to WebAssembly (with asm.js included as a fallback),
-the API is fully asynchronous.
-
-3.0.0:
-
-* General API cleanup.
-
-2.0.0:
-
-* Split into module (supersphincs.js) and standalone pre-bundled version (dist/supersphincs.js).

@@ -1,4 +1,4 @@
-declare module 'supersphincs' {
+declare module 'supersphincs-legacy' {
 	interface ISuperSphincs {
 		/** Signature length. */
 		bytes: Promise<number>;

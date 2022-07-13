@@ -1,6 +1,6 @@
 const targets = [
 	{name: 'local build', superSphincs: require('.')},
-	{name: 'stable release', superSphincs: require('supersphincs')}
+	{name: 'stable release', superSphincs: require('supersphincs-legacy')}
 ];
 
 const message = new Uint8Array([98, 97, 108, 108, 115, 0]);

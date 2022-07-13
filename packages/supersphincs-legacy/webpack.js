@@ -11,7 +11,7 @@ module.exports = {
 	resolve: {
 		fallback: {
 			rsasign: require.resolve('../rsasign'),
-			sphincs: require.resolve('../sphincs'),
+			'sphincs-legacy': require.resolve('../sphincs-legacy'),
 			vm: require.resolve('vm-browserify')
 		}
 	},

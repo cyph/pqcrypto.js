@@ -9,7 +9,7 @@ var isNode	=
 var sha512		= require('./dist/nacl-sha512');
 var rsaSign		= require('rsasign');
 var sodiumUtil	= require('sodiumutil');
-var sphincs		= require('sphincs');
+var sphincs		= require('sphincs-legacy');
 
 
 var nodeCrypto, Buffer;

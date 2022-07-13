@@ -1,6 +1,6 @@
 {
-	"name": "supersphincs",
-	"version": "6.3.5",
+	"name": "supersphincs-legacy",
+	"version": "1.0.0",
 	"description": "SPHINCS and RSASSA-PKCS1-v1_5 paired together as a single signing scheme",
 	"main": "index.js",
 	"types": "./index.d.ts",
@@ -28,13 +28,13 @@
 	"dependencies": {
 		"rsasign": "*",
 		"sodiumutil": "*",
-		"sphincs": "*"
+		"sphincs-legacy": "*"
 	},
 	"devDependencies": {
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"supersphincs": "6.3.4",
+		"supersphincs-legacy": "1.0.0",
 		"terser": "*",
 		"vm-browserify": "*",
 		"webpack": "*",
