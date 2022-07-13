@@ -1,4 +1,4 @@
-declare module 'mceliece' {
+declare module 'mceliece-legacy' {
 	interface IMcEliece {
 		/** Maximum plaintext length. */
 		plaintextBytes: Promise<number>;

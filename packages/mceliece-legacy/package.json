@@ -1,6 +1,6 @@
 {
-	"name": "mceliece",
-	"version": "4.1.4",
+	"name": "mceliece-legacy",
+	"version": "1.0.0",
 	"description": "JavaScript wrapper for a WebAssembly build of McEliece",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",
@@ -27,7 +27,7 @@
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"mceliece": "4.1.2",
+		"mceliece": "1.0.0",
 		"terser": "*"
 	}
 }

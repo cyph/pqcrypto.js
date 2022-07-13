@@ -1,6 +1,6 @@
 const targets = [
 	{name: 'local build', mceliece: require('.')},
-	{name: 'stable release', mceliece: require('mceliece')}
+	{name: 'stable release', mceliece: require('mceliece-legacy')}
 ];
 
 const plaintext = new Uint8Array([98, 97, 108, 108, 115, 0]);
