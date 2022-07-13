@@ -9,7 +9,6 @@ all:
 		args="$$(echo " \
 			--memory-init-file 0 \
 			-s SINGLE_FILE=1 \
-			-DCYPHERTEXT_LEN=123 \
 			-D_GENERIC_ -D__NIX__ -D_X86_ \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
 			-s ASSERTIONS=0 \
@@ -20,17 +19,16 @@ all:
 			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium.tmp/src/libsodium/include \
 			-Ilibsodium.tmp/src/libsodium/include/sodium \
-			-Isidh/src/P503 \
+			-Isidh/src/P751 \
 			$$(find libsodium.tmp/src/libsodium -type f -name '\\*.c') \
 			sidh/src/sha3/*.c \
-			sidh/src/P503/generic/*.c \
-			sidh/src/P503/P503.c \
+			sidh/src/P751/generic/*.c \
+			sidh/src/P751/P751.c \
 			main.c \
 			-s EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \
-				'"'"'_calloc'"'"', \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
 				'"'"'_sidhjs_init'"'"', \
@@ -39,8 +37,8 @@ all:
 				'"'"'_sidhjs_decrypt'"'"', \
 				'"'"'_sidhjs_public_key_bytes'"'"', \
 				'"'"'_sidhjs_private_key_bytes'"'"', \
-				'"'"'_sidhjs_encrypted_bytes'"'"', \
-				'"'"'_sidhjs_decrypted_bytes'"'"' \
+				'"'"'_sidhjs_cyphertext_bytes'"'"', \
+				'"'"'_sidhjs_secret_bytes'"'"' \
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\

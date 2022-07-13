@@ -7,7 +7,7 @@ cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/ems
 The specific implementation in use is [from Microsoft Research](https://github.com/Microsoft/PQCrypto-SIDH).
 A simple JavaScript wrapper is provided to make SIDH easy to use in web applications.
 
-The parameters are configured to 128-bit strength (SIKEp503).
+The default parameter set is SIKEp751 (roughly 256-bit strength).
 
 ## Example Usage
 
@@ -17,31 +17,28 @@ The parameters are configured to 128-bit strength (SIKEp503).
 		await sidh.keyPair()
 	;
 
-	const plaintext /*: Uint8Array */ =
-		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
-	;
-
-	const encrypted /*: Uint8Array */ =
-		await sidh.encrypt(plaintext, keyPair.publicKey)
+	const {cyphertext, secret} /*: {cyphertext: Uint8Array; secret: Uint8Array} */ =
+		await sidh.encrypt(keyPair.publicKey)
 	;
 
 	const decrypted /*: Uint8Array */ =
-		await sidh.decrypt(encrypted, keyPair.privateKey) // same as plaintext
+		await sidh.decrypt(cyphertext, keyPair.privateKey) // same as secret
 	;
 
 	console.log(keyPair);
-	console.log(plaintext);
-	console.log(encrypted);
+	console.log(secret);
+	console.log(cyphertext);
 	console.log(decrypted);
-
-Note: SIDH is a low-level cryptographic primitive, not a high-level construct like libsodium's
-[crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
-This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
-should avoid using sidh directly for anything important if you lack the experience to do so.
 
 ## Changelog
 
 Breaking changes in major versions:
+
+6.0.0:
+
+* Upgraded to SIDH 3.5.1 with stronger parameters and a KEM API. For backwards compatibility
+with previous versions of this package, use
+[sidh-legacy](https://github.com/cyph/pqcrypto.js/tree/master/packages/sidh-legacy).
 
 5.0.0:
 
