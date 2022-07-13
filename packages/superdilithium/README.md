@@ -80,10 +80,10 @@ where available or an efficient JavaScript implementation from
 	// May now save exported keys to disk (or whatever)
 	localStorage.superDilithiumPrivateKey = keyData.private.superDilithium;
 	localStorage.dilithiumPrivateKey      = keyData.private.dilithium;
-	localStorage.eccPrivateKey         = keyData.private.ecc;
+	localStorage.eccPrivateKey            = keyData.private.ecc;
 	localStorage.superDilithiumPublicKey  = keyData.public.superDilithium;
 	localStorage.dilithiumPublicKey       = keyData.public.dilithium;
-	localStorage.eccPublicKey          = keyData.public.ecc;
+	localStorage.eccPublicKey             = keyData.public.ecc;
 
 
 	/* Reconstruct an exported key using either the superDilithium
