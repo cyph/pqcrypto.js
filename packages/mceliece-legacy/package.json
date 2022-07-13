@@ -27,7 +27,7 @@
 		"@babel/cli": "*",
 		"@babel/preset-env": "*",
 		"jest": "*",
-		"mceliece": "1.0.0",
+		"mceliece-legacy": "1.0.0",
 		"terser": "*"
 	}
 }

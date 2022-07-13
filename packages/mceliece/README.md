@@ -2,13 +2,11 @@
 
 ## Overview
 
-The [McEliece](https://en.wikipedia.org/wiki/McEliece_cryptosystem) post-quantum asymmetric
+The [Classic McEliece](https://classic.mceliece.org) post-quantum asymmetric
 cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
 A simple JavaScript wrapper is provided to make McEliece easy to use in web applications.
 
-The parameters are configured to slightly above 128-bit strength.
-
-The underlying cypher implementation in use is [McBits](https://tungchou.github.io/mcbits).
+The default parameter set is mceliece8192128 (roughly 256-bit strength).
 
 ## Example Usage
 
@@ -18,31 +16,28 @@ The underlying cypher implementation in use is [McBits](https://tungchou.github.
 		await mceliece.keyPair()
 	;
 
-	const plaintext /*: Uint8Array */ =
-		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
-	;
-
-	const encrypted /*: Uint8Array */ =
-		await mceliece.encrypt(plaintext, keyPair.publicKey)
+	const {cyphertext, secret} /*: {cyphertext: Uint8Array; secret: Uint8Array} */ =
+		await mceliece.encrypt(keyPair.publicKey)
 	;
 
 	const decrypted /*: Uint8Array */ =
-		await mceliece.decrypt(encrypted, keyPair.privateKey) // same as plaintext
+		await mceliece.decrypt(cyphertext, keyPair.privateKey) // same as secret
 	;
 
 	console.log(keyPair);
-	console.log(plaintext);
-	console.log(encrypted);
+	console.log(secret);
+	console.log(cyphertext);
 	console.log(decrypted);
-
-Note: McEliece is a low-level cryptographic primitive, not a high-level construct like libsodium's
-[crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
-This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
-should avoid using mceliece directly for anything important if you lack the experience to do so.
 
 ## Changelog
 
 Breaking changes in major versions:
+
+5.0.0:
+
+* Switched from McBits to Classic McEliece. For backwards compatibility with previous versions
+of this package, use
+[mceliece-legacy](https://github.com/cyph/pqcrypto.js/tree/master/packages/mceliece-legacy).
 
 4.0.0:
 

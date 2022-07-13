@@ -1,5 +1,4 @@
-#include "api.h"
-#include "crypto_encrypt.h"
+#include "pqclean/crypto_kem/mceliece8192128/clean/api.h"
 #include "randombytes.h"
 
 
@@ -8,61 +7,48 @@ void mceliecejs_init () {
 }
 
 long mceliecejs_public_key_bytes () {
-	return CRYPTO_PUBLICKEYBYTES;
+	return PQCLEAN_MCELIECE8192128_CLEAN_CRYPTO_PUBLICKEYBYTES;
 }
 
 long mceliecejs_private_key_bytes () {
-	return CRYPTO_SECRETKEYBYTES;
+	return PQCLEAN_MCELIECE8192128_CLEAN_CRYPTO_SECRETKEYBYTES;
 }
 
-long mceliecejs_encrypted_bytes () {
-	return CYPHERTEXT_LEN;
+long mceliecejs_cyphertext_bytes () {
+	return PQCLEAN_MCELIECE8192128_CLEAN_CRYPTO_CIPHERTEXTBYTES;
 }
 
-long mceliecejs_decrypted_bytes () {
-	return CYPHERTEXT_LEN - CRYPTO_BYTES;
+long mceliecejs_secret_bytes () {
+	return PQCLEAN_MCELIECE8192128_CLEAN_CRYPTO_BYTES;
 }
 
 long mceliecejs_keypair (
 	uint8_t* public_key,
 	uint8_t* private_key
 ) {
-	return crypto_encrypt_keypair(public_key, private_key);
+	return PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_keypair(public_key, private_key);
 }
 
 long mceliecejs_encrypt (
-	const uint8_t* message,
-	long message_len,
 	const uint8_t* public_key,
-	uint8_t cyphertext[]
+	uint8_t* cyphertext,
+	uint8_t* secret
 ) {
-	unsigned long long cyphertext_len;
-
-	long status	= crypto_encrypt(
+	return PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_enc(
 		cyphertext,
-		&cyphertext_len,
-		message,
-		mceliecejs_decrypted_bytes(),
+		secret,
 		public_key
 	);
-
-	return status;
 }
 
 long mceliecejs_decrypt (
 	const uint8_t* cyphertext,
 	const uint8_t* private_key,
-	uint8_t* decrypted
+	uint8_t* secret
 ) {
-	unsigned long long decrypted_len;
-
-	long status	= crypto_encrypt_open(
-		decrypted,
-		&decrypted_len,
+	return PQCLEAN_MCELIECE8192128_CLEAN_crypto_kem_dec(
+		secret,
 		cyphertext,
-		CYPHERTEXT_LEN,
 		private_key
 	);
-
-	return status;
 }
