@@ -2,12 +2,11 @@
 
 ## Overview
 
-The [NTRU](https://ntru.org) post-quantum asymmetric
+The [NTRU Prime](https://ntruprime.cr.yp.to) post-quantum asymmetric
 cypher compiled to WebAssembly using [Emscripten](https://github.com/kripken/emscripten).
 A simple JavaScript wrapper is provided to make NTRU easy to use in web applications.
 
-The default parameter set is EES743EP1 (roughly 256-bit strength, as per
-[NTRU's documentation](https://github.com/buu700/NTRUEncrypt-Archive/blob/master/doc/UserNotes-NTRUEncrypt.pdf)).
+The default parameter set is sntrup1277 (roughly 256-bit strength).
 
 ## Example Usage
 
@@ -17,31 +16,28 @@ The default parameter set is EES743EP1 (roughly 256-bit strength, as per
 		await ntru.keyPair()
 	;
 
-	const plaintext /*: Uint8Array */ =
-		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
-	;
-
-	const encrypted /*: Uint8Array */ =
-		await ntru.encrypt(plaintext, keyPair.publicKey)
+	const {cyphertext, secret} /*: {cyphertext: Uint8Array; secret: Uint8Array} */ =
+		await ntru.encrypt(keyPair.publicKey)
 	;
 
 	const decrypted /*: Uint8Array */ =
-		await ntru.decrypt(encrypted, keyPair.privateKey) // same as plaintext
+		await ntru.decrypt(cyphertext, keyPair.privateKey) // same as secret
 	;
 
 	console.log(keyPair);
-	console.log(plaintext);
-	console.log(encrypted);
+	console.log(secret);
+	console.log(cyphertext);
 	console.log(decrypted);
-
-Note: NTRU is a low-level cryptographic primitive, not a high-level construct like libsodium's
-[crypto_box](https://download.libsodium.org/doc/public-key_cryptography/authenticated_encryption.html).
-This module can be combined with a symmetric cypher and a MAC to provide such a construct, but you
-should avoid using ntru directly for anything important if you lack the experience to do so.
 
 ## Changelog
 
 Breaking changes in major versions:
+
+4.0.0:
+
+* Switched from legacy NTRUEncrypt to NTRU Prime. For backwards compatibility with previous versions
+of this package, use
+[ntru-legacy](https://github.com/cyph/pqcrypto.js/tree/master/packages/ntru-legacy).
 
 3.0.0:
 

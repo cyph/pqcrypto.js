@@ -1,111 +1,54 @@
+#include "pqclean/crypto_kem/sntrup1277/clean/api.h"
 #include "randombytes.h"
-#include "ntru_crypto.h"
-#include "ntru_crypto_ntru_encrypt_param_sets.h"
 
-
-DRBG_HANDLE drbg;
-uint16_t public_key_len;
-uint16_t private_key_len;
-uint16_t cyphertext_len;
-uint16_t plaintext_len;
-
-
-uint32_t dbrg_randombytes (uint8_t *out, uint32_t num_bytes) {
-	randombytes_buf(out, num_bytes);
-	DRBG_RET(DRBG_OK);
-}
 
 void ntrujs_init () {
 	randombytes_stir();
-	ntru_crypto_drbg_external_instantiate(
-		(RANDOM_BYTES_FN) &dbrg_randombytes,
-		&drbg
-	);
-
-	NTRU_ENCRYPT_PARAM_SET* params_data	=
-		ntru_encrypt_get_params_with_id(PARAMS)
-	;
-
-	ntru_crypto_ntru_encrypt_keygen(
-		drbg,
-		PARAMS,
-		&public_key_len,
-		NULL,
-		&private_key_len,
-		NULL
-	);
-
-	cyphertext_len	= public_key_len - 5;
-	plaintext_len	= params_data->m_len_max;
 }
 
 long ntrujs_public_key_bytes () {
-	return public_key_len;
+	return PQCLEAN_SNTRUP1277_CLEAN_CRYPTO_PUBLICKEYBYTES;
 }
 
 long ntrujs_private_key_bytes () {
-	return private_key_len;
+	return PQCLEAN_SNTRUP1277_CLEAN_CRYPTO_SECRETKEYBYTES;
 }
 
-long ntrujs_encrypted_bytes () {
-	return cyphertext_len;
+long ntrujs_cyphertext_bytes () {
+	return PQCLEAN_SNTRUP1277_CLEAN_CRYPTO_CIPHERTEXTBYTES;
 }
 
-long ntrujs_decrypted_bytes () {
-	return plaintext_len;
+long ntrujs_secret_bytes () {
+	return PQCLEAN_SNTRUP1277_CLEAN_CRYPTO_BYTES;
 }
 
 long ntrujs_keypair (
 	uint8_t* public_key,
 	uint8_t* private_key
 ) {
-	return ntru_crypto_ntru_encrypt_keygen(
-		drbg,
-		PARAMS,
-		&public_key_len,
-		public_key,
-		&private_key_len,
-		private_key
-	);
+	return PQCLEAN_SNTRUP1277_CLEAN_crypto_kem_keypair(public_key, private_key);
 }
 
 long ntrujs_encrypt (
-	const uint8_t* message,
-	long message_len,
 	const uint8_t* public_key,
-	uint8_t* cyphertext
+	uint8_t* cyphertext,
+	uint8_t* secret
 ) {
-	return ntru_crypto_ntru_encrypt(
-		drbg,
-		public_key_len,
-		public_key,
-		message_len,
-		message,
-		&cyphertext_len,
-		cyphertext
+	return PQCLEAN_SNTRUP1277_CLEAN_crypto_kem_enc(
+		cyphertext,
+		secret,
+		public_key
 	);
 }
 
 long ntrujs_decrypt (
 	const uint8_t* cyphertext,
 	const uint8_t* private_key,
-	uint8_t* decrypted
+	uint8_t* secret
 ) {
-	uint16_t decrypted_len	= plaintext_len;
-
-	long rc	= ntru_crypto_ntru_decrypt(
-		private_key_len,
-		private_key,
-		cyphertext_len,
+	return PQCLEAN_SNTRUP1277_CLEAN_crypto_kem_dec(
+		secret,
 		cyphertext,
-		&decrypted_len,
-		decrypted
+		private_key
 	);
-
-	if (rc == NTRU_OK) {
-		return decrypted_len;
-	}
-	else {
-		return -rc;
-	}
 }

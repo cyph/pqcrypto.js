@@ -5,22 +5,33 @@ all:
 		args="$$(echo " \
 			--memory-init-file 0 \
 			-s SINGLE_FILE=1 \
-			-DPARAMS=NTRU_EES743EP1 \
 			-s TOTAL_MEMORY=16777216 -s TOTAL_STACK=8388608 \
 			-s ASSERTIONS=0 \
 			-s AGGRESSIVE_VARIABLE_ELIMINATION=1 \
 			-s ALIASING_FUNCTION_POINTERS=1 \
 			-s DISABLE_EXCEPTION_CATCHING=1 \
 			-s NO_FILESYSTEM=1 \
+			-s ERROR_ON_UNDEFINED_SYMBOLS=0 \
 			-Ilibsodium/src/libsodium/include/sodium \
-			-Intru/include -Intru/src \
+			-Ipqclean/common \
+			-Ipqclean/crypto_kem/sntrup1277/clean \
 			libsodium/src/libsodium/randombytes/randombytes.c \
-			$$(ls ntru/src/*.c | grep -v _simd.c | grep -v _32.c | grep -v _64.c) \
+			$$( \
+				find \
+					pqclean/common \
+					pqclean/crypto_kem/sntrup1277/clean \
+				-name '"'"'*.c'"'"' -type f \
+				-not \( \
+					-path '*/keccak4x/*' -or \
+					-name randombytes.c \
+				\) \
+			) \
 			main.c \
 			-s EXPORTED_RUNTIME_METHODS=\"[ \
 				'"'"'writeArrayToMemory'"'"' \
 			]\" \
 			-s EXPORTED_FUNCTIONS=\"[ \
+				'"'"'_calloc'"'"', \
 				'"'"'_free'"'"', \
 				'"'"'_malloc'"'"', \
 				'"'"'_ntrujs_init'"'"', \
@@ -29,8 +40,8 @@ all:
 				'"'"'_ntrujs_decrypt'"'"', \
 				'"'"'_ntrujs_public_key_bytes'"'"', \
 				'"'"'_ntrujs_private_key_bytes'"'"', \
-				'"'"'_ntrujs_encrypted_bytes'"'"', \
-				'"'"'_ntrujs_decrypted_bytes'"'"' \
+				'"'"'_ntrujs_cyphertext_bytes'"'"', \
+				'"'"'_ntrujs_secret_bytes'"'"' \
 			]\" \
 		" | perl -pe "s/\s+/ /g" | perl -pe "s/\[ /\[/g" | perl -pe "s/ \]/\]/g")"; \
 		\
