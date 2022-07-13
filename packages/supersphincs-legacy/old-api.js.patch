@@ -1,3 +1,7 @@
+9c9
+< var sha512		= require('./dist/nacl-sha512');
+---
+> var sha512		= require('./nacl-sha512');
 341c341,349
 < 	hash: function (message, onlyBinary) {
 ---
