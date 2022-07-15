@@ -1,6 +1,6 @@
 {
 	"name": "supersphincs",
-	"version": "7.0.1",
+	"version": "7.0.2",
 	"description": "SPHINCS+ and Ed25519 paired together as a single signing scheme",
 	"main": "index.js",
 	"types": "./index.d.ts",
