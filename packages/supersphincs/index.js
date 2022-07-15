@@ -737,7 +737,7 @@ var superSphincs	= {
 				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
 				var sphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.sphincs);
 
-				if (password == null || password.length > 0) {
+				if (password == null || password.length < 1) {
 					return [eccPrivateKey, sphincsPrivateKey];
 				}
 

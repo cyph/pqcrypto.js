@@ -737,7 +737,7 @@ var superFalcon	= {
 				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
 				var falconPrivateKey	= sodiumUtil.from_base64(keyData.private.falcon);
 
-				if (password == null || password.length > 0) {
+				if (password == null || password.length < 1) {
 					return [eccPrivateKey, falconPrivateKey];
 				}
 
