@@ -1,7 +1,6 @@
 all:
 	make clean
 
-	cp nacl-sha512.js dist/
 	npx webpack --config webpack.js
 
 	echo " \

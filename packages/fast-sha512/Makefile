@@ -1,14 +1,15 @@
 all:
 	make clean
 
+	cp nacl-sha512.js dist/
 	npx webpack --config webpack.js
 
 	echo " \
 		if (typeof module !== 'undefined' && module.exports) { \
-			module.exports		= superFalcon; \
+			module.exports	= fastSHA512; \
 		} \
 		else { \
-			self.superFalcon	= superFalcon; \
+			self.fastSHA512	= fastSHA512; \
 		} \
 	" >> dist/index.js
 	npx terser dist/index.js -cmo dist/index.js
@@ -20,4 +21,4 @@ clean:
 	mkdir dist
 
 test:
-	npm run test
+	echo

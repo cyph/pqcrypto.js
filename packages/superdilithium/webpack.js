@@ -12,6 +12,7 @@ module.exports = {
 		fallback: {
 			crypto: false,
 			'dilithium-crystals': require.resolve('../dilithium-crystals'),
+			'fast-sha512': require.resolve('../fast-sha512'),
 			path: false,
 			stream: false,
 			vm: require.resolve('vm-browserify')

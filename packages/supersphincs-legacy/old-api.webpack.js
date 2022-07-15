@@ -10,6 +10,7 @@ module.exports = {
 	},
 	resolve: {
 		fallback: {
+			'fast-sha512': require.resolve('../fast-sha512'),
 			rsasign: require.resolve('../rsasign'),
 			'sphincs-legacy': require.resolve('../sphincs-legacy'),
 			vm: require.resolve('vm-browserify')

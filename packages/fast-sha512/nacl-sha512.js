@@ -1,0 +1,1 @@
+../../lib/nacl-sha512.js

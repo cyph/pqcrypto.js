@@ -11,8 +11,9 @@ module.exports = {
 	resolve: {
 		fallback: {
 			crypto: false,
-			sphincs: require.resolve('../sphincs'),
+			'fast-sha512': require.resolve('../fast-sha512'),
 			path: false,
+			sphincs: require.resolve('../sphincs'),
 			stream: false,
 			vm: require.resolve('vm-browserify')
 		}

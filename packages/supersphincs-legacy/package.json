@@ -22,10 +22,10 @@
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
 	},
 	"scripts": {
-		"prepublishOnly": "cp nacl-sha512.js dist/",
-		"test": "npm run prepublishOnly && npx jest"
+		"test": "npx jest"
 	},
 	"dependencies": {
+		"fast-sha512": "*",
 		"rsasign": "*",
 		"sodiumutil": "*",
 		"sphincs-legacy": "*"

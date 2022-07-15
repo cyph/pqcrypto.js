@@ -1,7 +1,7 @@
 {
-	"name": "supersphincs",
-	"version": "7.0.1",
-	"description": "SPHINCS+ and Ed25519 paired together as a single signing scheme",
+	"name": "fast-sha512",
+	"version": "1.0.1",
+	"description": "Native SHA-512 with an efficient fallback implementation from TweetNaCl.js",
 	"main": "index.js",
 	"types": "./index.d.ts",
 	"repository": {
@@ -10,11 +10,8 @@
 	},
 	"keywords": [
 		"cryptography",
-		"post-quantum",
-		"sphincs",
-		"ecc",
-		"asm.js",
-		"webassembly"
+		"sha-512",
+		"hash"
 	],
 	"author": "Cyph, Inc. <pqcrypto.js@cyph.com> (https://github.com/cyph)",
 	"license": "MIT",
@@ -22,21 +19,13 @@
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
 	},
 	"scripts": {
-		"test": "npx jest"
+		"prepublishOnly": "cp nacl-sha512.js dist/"
 	},
 	"dependencies": {
-		"fast-sha512": "*",
-		"libsodium-wrappers-sumo": "*",
-		"sodiumutil": "*",
-		"sphincs": "*"
+		"sodiumutil": "*"
 	},
 	"devDependencies": {
-		"@babel/cli": "*",
-		"@babel/preset-env": "*",
-		"jest": "*",
-		"supersphincs": "7.0.0",
 		"terser": "*",
-		"vm-browserify": "*",
 		"webpack": "*",
 		"webpack-cli": "*"
 	}

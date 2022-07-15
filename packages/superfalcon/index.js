@@ -6,10 +6,10 @@ var isNode	=
 ;
 
 
-var sha512		= require('./dist/nacl-sha512');
 var falcon		= require('falcon-crypto');
+var fastSHA512	= require('fast-sha512');
 var sodium		= require('libsodium-wrappers-sumo');
-var sodiumUtil	= require('sodiumutil/dist/sodium-wrapper');
+var sodiumUtil	= require('sodiumutil');
 
 
 var nodeCrypto, Buffer;
@@ -19,44 +19,6 @@ if (isNode) {
 }
 
 
-var hashBytes	= 64;
-
-
-function hashInternal (message, shouldClearMessage) {
-	return Promise.resolve().then(function () {
-		if (message === undefined) {
-			message	= new Uint8Array(0);
-		}
-		if (!ArrayBuffer.isView(message)) {
-			throw new Error('Cannot hash invalid input.');
-		}
-
-		if (isNode) {
-			var hasher	= nodeCrypto.createHash('sha512');
-			hasher.update(Buffer.from(message));
-
-			return hasher.digest();
-		}
-		else {
-			return crypto.subtle.digest(
-				{
-					name: 'SHA-512'
-				},
-				message
-			);
-		}
-	}).then(function (hash) {
-		return new Uint8Array(hash);
-	}).catch(function () {
-		return sha512(message);
-	}).then(function (hash) {
-		if (shouldClearMessage) {
-			sodiumUtil.memzero(message);
-		}
-		return hash;
-	});
-}
-
 function hashWithAdditionalData (message, additionalData, preHashed) {
 	var shouldClearAdditionalData	= typeof additionalData === 'string';
 	var shouldClearMessage			= typeof message === 'string';
@@ -64,22 +26,22 @@ function hashWithAdditionalData (message, additionalData, preHashed) {
 	return Promise.resolve().then(function () {
 		message	= sodiumUtil.from_string(message);
 
-		if (preHashed && message.length !== hashBytes) {
+		if (preHashed && message.length !== fastSHA512.bytes) {
 			throw new Error('Invalid pre-hashed message.');
 		}
 
 		return Promise.all([
-			hashInternal(
+			fastSHA512.baseHash(
 				additionalData ? sodiumUtil.from_string(additionalData) : new Uint8Array(0),
 				shouldClearAdditionalData
 			),
-			preHashed ? message : hashInternal(message, shouldClearMessage)
+			preHashed ? message : fastSHA512.baseHash(message, shouldClearMessage)
 		]);
 	}).then(function (results) {
 		var additionalDataHash	= results[0];
 		var messageToHash		= results[1];
 
-		var fullMessage	= new Uint8Array(additionalDataHash.length + hashBytes);
+		var fullMessage	= new Uint8Array(additionalDataHash.length + fastSHA512.bytes);
 		fullMessage.set(additionalDataHash);
 		fullMessage.set(messageToHash, additionalDataHash.length);
 		sodiumUtil.memzero(additionalDataHash);
@@ -88,7 +50,7 @@ function hashWithAdditionalData (message, additionalData, preHashed) {
 			sodiumUtil.memzero(messageToHash);
 		}
 
-		return hashInternal(fullMessage, true);
+		return fastSHA512.baseHash(fullMessage, true);
 	});
 }
 
@@ -337,19 +299,10 @@ var superFalcon	= {
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
 	bytes: initiated.then(function () { return bytes; }),
-	hashBytes: Promise.resolve(hashBytes),
+	hashBytes: Promise.resolve(fastSHA512.bytes),
 
 	hash: function (message, onlyBinary) {
-		return Promise.resolve().then(function () {
-			return hashInternal(sodiumUtil.from_string(message), typeof message === 'string');
-		}).then(function (hash) {
-			if (onlyBinary) {
-				return hash;
-			}
-			else {
-				return {binary: hash, hex: sodiumUtil.to_hex(hash)};
-			}
-		});
+		return fastSHA512.hash(message, onlyBinary);
 	},
 
 	keyPair: function () { return initiated.then(function () {

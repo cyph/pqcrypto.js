@@ -1,7 +1,6 @@
 all:
 	make clean
 
-	cp nacl-sha512.js dist/
 	patch -o dist/old-api.js index.js old-api.js.patch
 	patch -o dist/old-api.d.ts index.d.ts old-api.d.ts.patch
 	npx webpack --config webpack.js
