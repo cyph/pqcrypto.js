@@ -6,10 +6,10 @@ var isNode	=
 ;
 
 
+var dilithium	= require('dilithium-crystals');
 var fastSHA512	= require('fast-sha512');
 var rsaSign		= require('rsasign');
 var sodiumUtil	= require('sodiumutil');
-var sphincs		= require('sphincs-legacy');
 
 
 var nodeCrypto, Buffer;
@@ -274,112 +274,58 @@ var aes	= {
 };
 
 
-var publicKeyBytes, privateKeyBytes, bytes, sphincsBytes;
+var publicKeyBytes, privateKeyBytes, bytes, dilithiumBytes;
 
 var initiated	= Promise.all([
-	sphincs.publicKeyBytes,
-	sphincs.privateKeyBytes,
-	sphincs.bytes
+	dilithium.publicKeyBytes,
+	dilithium.privateKeyBytes,
+	dilithium.bytes
 ]).then(function (results) {
-	sphincsBytes	= {
+	dilithiumBytes	= {
 		publicKeyBytes: results[0],
 		privateKeyBytes: results[1],
 		bytes: results[2]
 	};
 
-	publicKeyBytes	= rsaSign.publicKeyBytes + sphincsBytes.publicKeyBytes;
-	privateKeyBytes	= rsaSign.privateKeyBytes + sphincsBytes.privateKeyBytes;
-	bytes			= rsaSign.bytes + sphincsBytes.bytes;
+	publicKeyBytes	= rsaSign.publicKeyBytes + dilithiumBytes.publicKeyBytes;
+	privateKeyBytes	= rsaSign.privateKeyBytes + dilithiumBytes.privateKeyBytes;
+	bytes			= rsaSign.bytes + dilithiumBytes.bytes;
 });
 
 
-var superSphincs	= {
+var superDilithium	= {
 	_sodiumUtil: sodiumUtil,
 	publicKeyBytes: initiated.then(function () { return publicKeyBytes; }),
 	privateKeyBytes: initiated.then(function () { return privateKeyBytes; }),
 	bytes: initiated.then(function () { return bytes; }),
 	hashBytes: Promise.resolve(fastSHA512.bytes),
 
-	hash: function (
-		message,
-		onlyBinary,
-		additionalData,
-		preHashed
-	) { return initiated.then(function () {
-		var shouldClearAdditionalData	= typeof additionalData === 'string';
-		var shouldClearMessage			= typeof message === 'string';
-
-		return Promise.resolve().then(function () {
-			message	= sodiumUtil.from_string(message);
-
-			if (preHashed && message.length !== fastSHA512.bytes) {
-				throw new Error('Invalid pre-hashed message.');
-			}
-
-			return Promise.all([
-				additionalData === undefined ?
-					undefined :
-					fastSHA512.baseHash(
-						sodiumUtil.from_string(additionalData),
-						shouldClearAdditionalData
-					)
-				,
-				preHashed ? message : fastSHA512.baseHash(message)
-			]);
-		}).then(function (results) {
-			var additionalDataHash	= results[0];
-			var messageToHash		= results[1];
-
-			if (!additionalDataHash) {
-				return messageToHash;
-			}
-
-			var fullMessage	= new Uint8Array(additionalDataHash.length + fastSHA512.bytes);
-			fullMessage.set(additionalDataHash);
-			fullMessage.set(messageToHash, additionalDataHash.length);
-			sodiumUtil.memzero(additionalDataHash);
-
-			if (!preHashed) {
-				sodiumUtil.memzero(messageToHash);
-			}
-
-			return fastSHA512.baseHash(fullMessage, true);
-		}).then(function (hash) {
-			if (shouldClearMessage) {
-				sodiumUtil.memzero(message);
-			}
-
-			if (onlyBinary) {
-				return hash;
-			}
-			else {
-				return {binary: hash, hex: sodiumUtil.to_hex(hash)};
-			}
-		});
-	}); },
+	hash: function (message, onlyBinary) {
+		return fastSHA512.hash(message, onlyBinary);
+	},
 
 	keyPair: function () { return initiated.then(function () {
 		return Promise.all([
 			rsaSign.keyPair(),
-			sphincs.keyPair()
+			dilithium.keyPair()
 		]).then(function (results) {
-			var rsaKeyPair		= results[0];
-			var sphincsKeyPair	= results[1];
+			var rsaKeyPair			= results[0];
+			var dilithiumKeyPair	= results[1];
 
 			var keyPair	= {
-				keyType: 'supersphincs',
+				keyType: 'superdilithium',
 				publicKey: new Uint8Array(publicKeyBytes),
 				privateKey: new Uint8Array(privateKeyBytes)
 			};
 
 			keyPair.publicKey.set(rsaKeyPair.publicKey);
 			keyPair.privateKey.set(rsaKeyPair.privateKey);
-			keyPair.publicKey.set(sphincsKeyPair.publicKey, rsaSign.publicKeyBytes);
-			keyPair.privateKey.set(sphincsKeyPair.privateKey, rsaSign.privateKeyBytes);
+			keyPair.publicKey.set(dilithiumKeyPair.publicKey, rsaSign.publicKeyBytes);
+			keyPair.privateKey.set(dilithiumKeyPair.privateKey, rsaSign.privateKeyBytes);
 
-			sodiumUtil.memzero(sphincsKeyPair.privateKey);
+			sodiumUtil.memzero(dilithiumKeyPair.privateKey);
 			sodiumUtil.memzero(rsaKeyPair.privateKey);
-			sodiumUtil.memzero(sphincsKeyPair.publicKey);
+			sodiumUtil.memzero(dilithiumKeyPair.publicKey);
 			sodiumUtil.memzero(rsaKeyPair.publicKey);
 
 			return keyPair;
@@ -389,7 +335,7 @@ var superSphincs	= {
 	sign: function (message, privateKey, additionalData) { return initiated.then(function () {
 		var shouldClearMessage	= typeof message === 'string';
 
-		return superSphincs.signDetached(
+		return superDilithium.signDetached(
 			message,
 			privateKey,
 			additionalData
@@ -420,7 +366,7 @@ var superSphincs	= {
 	}); },
 
 	signBase64: function (message, privateKey, additionalData) { return initiated.then(function () {
-		return superSphincs.sign(message, privateKey, additionalData).then(function (signed) {
+		return superDilithium.sign(message, privateKey, additionalData).then(function (signed) {
 			var s	= sodiumUtil.to_base64(signed);
 			sodiumUtil.memzero(signed);
 			return s;
@@ -433,31 +379,19 @@ var superSphincs	= {
 		additionalData,
 		preHashed
 	) { return initiated.then(function () {
-		if (
-			additionalData === undefined &&
-			typeof console !== 'undefined' &&
-			typeof console.warn === 'function'
-		) {
-			console.warn(
-				'If possible, `additionalData` should be specified as at least ' +
-				'`new Uint8Array(0)`. See here for clarification: ' +
-				'https://github.com/cyph/supersphincs/blob/8337ad7/supersphincs.js#L307'
-			);
-		}
-
-		return superSphincs.hash(message, false, additionalData, preHashed).then(function (hash) {
+		return hashWithAdditionalData(message, additionalData, preHashed).then(function (hash) {
 			return Promise.all([
 				hash,
 				rsaSign.signDetached(
-					hash.binary,
+					hash,
 					new Uint8Array(
 						privateKey.buffer,
 						privateKey.byteOffset,
 						rsaSign.privateKeyBytes
 					)
 				),
-				sphincs.signDetached(
-					hash.binary,
+				dilithium.signDetached(
+					hash,
 					new Uint8Array(
 						privateKey.buffer,
 						privateKey.byteOffset + rsaSign.privateKeyBytes
@@ -467,15 +401,15 @@ var superSphincs	= {
 		}).then(function (results) {
 			var hash				= results[0];
 			var rsaSignature		= results[1];
-			var sphincsSignature	= results[2];
+			var dilithiumSignature	= results[2];
 
 			var signature	= new Uint8Array(bytes);
 
 			signature.set(rsaSignature);
-			signature.set(sphincsSignature, rsaSign.bytes);
+			signature.set(dilithiumSignature, rsaSign.bytes);
 
-			sodiumUtil.memzero(hash.binary);
-			sodiumUtil.memzero(sphincsSignature);
+			sodiumUtil.memzero(hash);
+			sodiumUtil.memzero(dilithiumSignature);
 			sodiumUtil.memzero(rsaSignature);
 
 			return signature;
@@ -488,7 +422,7 @@ var superSphincs	= {
 		additionalData,
 		preHashed
 	) { return initiated.then(function () {
-			return superSphincs.signDetached(
+			return superDilithium.signDetached(
 				message,
 				privateKey,
 				additionalData,
@@ -501,7 +435,13 @@ var superSphincs	= {
 		});
 	},
 
-	open: function (signed, publicKey, additionalData) { return initiated.then(function () {
+	open: function (
+		signed,
+		publicKey,
+		additionalData,
+		knownGoodHash,
+		includeHash
+	) { return initiated.then(function () {
 		var shouldClearSigned	= typeof signed === 'string';
 
 		return Promise.resolve().then(function () {
@@ -518,25 +458,28 @@ var superSphincs	= {
 				signed.byteOffset + bytes
 			);
 
-			return Promise.all([message, superSphincs.verifyDetached(
+			return Promise.all([message, superDilithium.verifyDetached(
 				signature,
 				message,
 				publicKey,
-				additionalData
+				additionalData,
+				knownGoodHash,
+				includeHash
 			)]);
 		}).then(function (results) {
 			var message	= new Uint8Array(results[0]);
-			var isValid	= results[1];
+			var hash	= includeHash ? results[1].hash : undefined;
+			var isValid	= includeHash ? results[1].valid : results[1];
 
 			if (shouldClearSigned) {
 				sodiumUtil.memzero(signed);
 			}
 
 			if (isValid) {
-				return message;
+				return includeHash ? {hash: hash, message: message} : message;
 			}
 			else {
-				throw new Error('Failed to open SuperSPHINCS signed message.');
+				throw new Error('Failed to open SuperDilithium signed message.');
 			}
 		}).catch(function (err) {
 			if (shouldClearSigned) {
@@ -547,11 +490,32 @@ var superSphincs	= {
 		});
 	}); },
 
-	openString: function (signed, publicKey, additionalData) { return initiated.then(function () {
-		return superSphincs.open(signed, publicKey, additionalData).then(function (message) {
+	openString: function (
+		signed,
+		publicKey,
+		additionalData,
+		knownGoodHash,
+		includeHash
+	) { return initiated.then(function () {
+		return superDilithium.open(
+			signed,
+			publicKey,
+			additionalData,
+			knownGoodHash,
+			includeHash
+		).then(function (message) {
+			var hash	= undefined;
+
+			if (includeHash) {
+				hash	= sodiumUtil.to_hex(message.hash);
+				sodiumUtil.memzero(message.hash);
+				message	= message.message;
+			}
+
 			var s	= sodiumUtil.to_string(message);
 			sodiumUtil.memzero(message);
-			return s;
+
+			return includeHash ? {hash: hash, message: s} : s;
 		});
 	}); },
 
@@ -559,42 +523,77 @@ var superSphincs	= {
 		signature,
 		message,
 		publicKey,
-		additionalData
+		additionalData,
+		knownGoodHash,
+		includeHash
 	) { return initiated.then(function () {
 		var shouldClearSignature	= typeof signature === 'string';
 
-		return superSphincs.hash(message, false, additionalData).then(function (hash) {
+		return hashWithAdditionalData(message, additionalData).then(function (hash) {
 			signature	= sodiumUtil.from_base64(signature);
+
+			var shouldClearKnownGoodHash	= false;
+			if (typeof knownGoodHash === 'string' && knownGoodHash.length > 0) {
+				knownGoodHash				= sodiumUtil.from_hex(knownGoodHash);
+				shouldClearKnownGoodHash	= true;
+			}
+			var hashAlreadyVerified	=
+				knownGoodHash instanceof Uint8Array &&
+				knownGoodHash.length > 0 &&
+				sodiumUtil.memcmp(hash, knownGoodHash)
+			;
+			if (shouldClearKnownGoodHash) {
+				sodiumUtil.memzero(knownGoodHash);
+			}
+
+			var publicKeyPromise	=
+				hashAlreadyVerified ?
+					undefined :
+				publicKey instanceof Uint8Array ?
+					Promise.resolve(publicKey) :
+					superDilithium.importKeys(publicKey).then(function (kp) {
+						return kp.publicKey;
+					})
+			;
 
 			return Promise.all([
 				hash,
-				rsaSign.verifyDetached(
-					new Uint8Array(signature.buffer, signature.byteOffset, rsaSign.bytes),
-					hash.binary,
-					new Uint8Array(publicKey.buffer, publicKey.byteOffset, rsaSign.publicKeyBytes)
-				),
-				sphincs.verifyDetached(
-					new Uint8Array(
-						signature.buffer,
-						signature.byteOffset + rsaSign.bytes,
-						sphincsBytes.bytes
-					),
-					hash.binary,
-					new Uint8Array(publicKey.buffer, publicKey.byteOffset + rsaSign.publicKeyBytes)
-				)
+				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
+					return rsaSign.verifyDetached(
+						new Uint8Array(signature.buffer, signature.byteOffset, rsaSign.bytes),
+						hash,
+						new Uint8Array(pk.buffer, pk.byteOffset, rsaSign.publicKeyBytes)
+					);
+				}),
+				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
+					return dilithium.verifyDetached(
+						new Uint8Array(
+							signature.buffer,
+							signature.byteOffset + rsaSign.bytes,
+							dilithiumBytes.bytes
+						),
+						hash,
+						new Uint8Array(pk.buffer, pk.byteOffset + rsaSign.publicKeyBytes)
+					);
+				})
 			]);
 		}).then(function (results) {
-			var hash			= results[0];
-			var rsaIsValid		= results[1];
-			var sphincsIsValid	= results[2];
+			var hash				= results[0];
+			var rsaIsValid			= results[1];
+			var dilithiumIsValid	= results[2];
+			var valid				= rsaIsValid && dilithiumIsValid;
 
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
 			}
 
-			sodiumUtil.memzero(hash.binary);
+			if (includeHash) {
+				return {hash: hash, valid: valid};
+			}
 
-			return rsaIsValid && sphincsIsValid;
+			sodiumUtil.memzero(hash);
+
+			return valid;
 		}).catch(function (err) {
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
@@ -615,12 +614,12 @@ var superSphincs	= {
 				rsaSign.privateKeyBytes
 			);
 
-			var sphincsPrivateKey		= new Uint8Array(
-				sphincsBytes.publicKeyBytes +
-				sphincsBytes.privateKeyBytes
+			var dilithiumPrivateKey		= new Uint8Array(
+				dilithiumBytes.publicKeyBytes +
+				dilithiumBytes.privateKeyBytes
 			);
 
-			var superSphincsPrivateKey	= new Uint8Array(
+			var superDilithiumPrivateKey	= new Uint8Array(
 				publicKeyBytes +
 				privateKeyBytes
 			);
@@ -639,29 +638,29 @@ var superSphincs	= {
 				rsaSign.publicKeyBytes
 			);
 
-			sphincsPrivateKey.set(new Uint8Array(
+			dilithiumPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
 				keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
 			));
-			sphincsPrivateKey.set(
+			dilithiumPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
 					keyPair.privateKey.byteOffset + rsaSign.privateKeyBytes
 				),
-				sphincsBytes.publicKeyBytes
+				dilithiumBytes.publicKeyBytes
 			);
 
-			superSphincsPrivateKey.set(keyPair.publicKey);
-			superSphincsPrivateKey.set(keyPair.privateKey, publicKeyBytes);
+			superDilithiumPrivateKey.set(keyPair.publicKey);
+			superDilithiumPrivateKey.set(keyPair.privateKey, publicKeyBytes);
 
 			if (password != null && password.length > 0) {
 				return Promise.all([
 					encrypt(rsaPrivateKey, password),
-					encrypt(sphincsPrivateKey, password),
-					encrypt(superSphincsPrivateKey, password)
+					encrypt(dilithiumPrivateKey, password),
+					encrypt(superDilithiumPrivateKey, password)
 				]).then(function (results) {
-					sodiumUtil.memzero(superSphincsPrivateKey);
-					sodiumUtil.memzero(sphincsPrivateKey);
+					sodiumUtil.memzero(superDilithiumPrivateKey);
+					sodiumUtil.memzero(dilithiumPrivateKey);
 					sodiumUtil.memzero(rsaPrivateKey);
 
 					return results;
@@ -670,31 +669,31 @@ var superSphincs	= {
 			else {
 				return [
 					rsaPrivateKey,
-					sphincsPrivateKey,
-					superSphincsPrivateKey
+					dilithiumPrivateKey,
+					superDilithiumPrivateKey
 				];
 			}
 		}).then(function (results) {
 			if (!results) {
 				return {
+					dilithium: null,
 					rsa: null,
-					sphincs: null,
-					superSphincs: null
+					superDilithium: null
 				};
 			}
 
-			var rsaPrivateKey			= results[0];
-			var sphincsPrivateKey		= results[1];
-			var superSphincsPrivateKey	= results[2];
+			var rsaPrivateKey				= results[0];
+			var dilithiumPrivateKey			= results[1];
+			var superDilithiumPrivateKey	= results[2];
 
 			var privateKeyData	= {
+				dilithium: sodiumUtil.to_base64(dilithiumPrivateKey),
 				rsa: sodiumUtil.to_base64(rsaPrivateKey),
-				sphincs: sodiumUtil.to_base64(sphincsPrivateKey),
-				superSphincs: sodiumUtil.to_base64(superSphincsPrivateKey)
+				superDilithium: sodiumUtil.to_base64(superDilithiumPrivateKey)
 			};
 
-			sodiumUtil.memzero(superSphincsPrivateKey);
-			sodiumUtil.memzero(sphincsPrivateKey);
+			sodiumUtil.memzero(superDilithiumPrivateKey);
+			sodiumUtil.memzero(dilithiumPrivateKey);
 			sodiumUtil.memzero(rsaPrivateKey);
 
 			return privateKeyData;
@@ -702,16 +701,16 @@ var superSphincs	= {
 			return {
 				private: privateKeyData,
 				public: {
+					dilithium: sodiumUtil.to_base64(new Uint8Array(
+						keyPair.publicKey.buffer,
+						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
+					)),
 					rsa: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset,
 						rsaSign.publicKeyBytes
 					)),
-					sphincs: sodiumUtil.to_base64(new Uint8Array(
-						keyPair.publicKey.buffer,
-						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
-					)),
-					superSphincs: sodiumUtil.to_base64(keyPair.publicKey)
+					superDilithium: sodiumUtil.to_base64(keyPair.publicKey)
 				}
 			};
 		});
@@ -719,26 +718,26 @@ var superSphincs	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private) {
-				return null;
-			}
-
-			if (keyData.private.superSphincs) {
-				var superSphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.superSphincs);
+			if (keyData.private && typeof keyData.private.superDilithium === 'string') {
+				var superDilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.superDilithium);
 
 				if (password != null && password.length > 0) {
-					return Promise.all([decrypt(superSphincsPrivateKey, password)]);
+					return Promise.all([decrypt(superDilithiumPrivateKey, password)]);
 				}
 				else {
-					return [superSphincsPrivateKey];
+					return [superDilithiumPrivateKey];
 				}
 			}
-			else {
+			else if (
+				keyData.private &&
+				typeof keyData.private.rsa === 'string' &&
+				typeof keyData.private.dilithium === 'string'
+			) {
 				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
-				var sphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.sphincs);
+				var dilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.dilithium);
 
 				if (password == null || password.length < 1) {
-					return [rsaPrivateKey, sphincsPrivateKey];
+					return [rsaPrivateKey, dilithiumPrivateKey];
 				}
 
 				return Promise.all([
@@ -747,8 +746,8 @@ var superSphincs	= {
 						typeof password === 'string' ? password : password.rsa
 					),
 					decrypt(
-						sphincsPrivateKey,
-						typeof password === 'string' ? password : password.sphincs
+						dilithiumPrivateKey,
+						typeof password === 'string' ? password : password.dilithium
 					)
 				]);
 			}
@@ -767,22 +766,22 @@ var superSphincs	= {
 			keyPair.privateKey	= new Uint8Array(privateKeyBytes);
 
 			if (results.length === 1) {
-				var superSphincsPrivateKey	= results[0];
+				var superDilithiumPrivateKey	= results[0];
 
 				keyPair.publicKey.set(new Uint8Array(
-					superSphincsPrivateKey.buffer,
-					superSphincsPrivateKey.byteOffset,
+					superDilithiumPrivateKey.buffer,
+					superDilithiumPrivateKey.byteOffset,
 					publicKeyBytes
 				));
 
 				keyPair.privateKey.set(new Uint8Array(
-					superSphincsPrivateKey.buffer,
-					superSphincsPrivateKey.byteOffset + publicKeyBytes
+					superDilithiumPrivateKey.buffer,
+					superDilithiumPrivateKey.byteOffset + publicKeyBytes
 				));
 			}
 			else {
 				var rsaPrivateKey		= results[0];
-				var sphincsPrivateKey	= results[1];
+				var dilithiumPrivateKey	= results[1];
 
 				keyPair.publicKey.set(
 					new Uint8Array(
@@ -793,9 +792,9 @@ var superSphincs	= {
 				);
 				keyPair.publicKey.set(
 					new Uint8Array(
-						sphincsPrivateKey.buffer,
-						sphincsPrivateKey.byteOffset,
-						sphincsBytes.publicKeyBytes
+						dilithiumPrivateKey.buffer,
+						dilithiumPrivateKey.byteOffset,
+						dilithiumBytes.publicKeyBytes
 					),
 					rsaSign.publicKeyBytes
 				);
@@ -808,8 +807,8 @@ var superSphincs	= {
 				);
 				keyPair.privateKey.set(
 					new Uint8Array(
-						sphincsPrivateKey.buffer,
-						sphincsPrivateKey.byteOffset + sphincsBytes.publicKeyBytes
+						dilithiumPrivateKey.buffer,
+						dilithiumPrivateKey.byteOffset + dilithiumBytes.publicKeyBytes
 					),
 					rsaSign.privateKeyBytes
 				);
@@ -818,13 +817,13 @@ var superSphincs	= {
 			return keyPair;
 		}).then(function (keyPair) {
 			if (!keyPair.privateKey) {
-				if (keyData.public.superSphincs) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superSphincs));
+				if (keyData.public.superDilithium) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superDilithium));
 				}
-				else if (keyData.public.rsa && keyData.public.sphincs) {
+				else if (keyData.public.rsa && keyData.public.dilithium) {
 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.rsa));
 					keyPair.publicKey.set(
-						sodiumUtil.from_base64(keyData.public.sphincs),
+						sodiumUtil.from_base64(keyData.public.dilithium),
 						rsaSign.publicKeyBytes
 					);
 				}
@@ -837,5 +836,5 @@ var superSphincs	= {
 
 
 
-superSphincs.superSphincs	= superSphincs;
-module.exports				= superSphincs;
+superDilithium.superDilithium	= superDilithium;
+module.exports					= superDilithium;

@@ -9,7 +9,7 @@ var isNode	=
 var fastSHA512	= require('fast-sha512');
 var rsaSign		= require('rsasign');
 var sodiumUtil	= require('sodiumutil');
-var sphincs		= require('sphincs-legacy');
+var sphincs		= require('sphincs');
 
 
 var nodeCrypto, Buffer;
@@ -300,63 +300,9 @@ var superSphincs	= {
 	bytes: initiated.then(function () { return bytes; }),
 	hashBytes: Promise.resolve(fastSHA512.bytes),
 
-	hash: function (
-		message,
-		onlyBinary,
-		additionalData,
-		preHashed
-	) { return initiated.then(function () {
-		var shouldClearAdditionalData	= typeof additionalData === 'string';
-		var shouldClearMessage			= typeof message === 'string';
-
-		return Promise.resolve().then(function () {
-			message	= sodiumUtil.from_string(message);
-
-			if (preHashed && message.length !== fastSHA512.bytes) {
-				throw new Error('Invalid pre-hashed message.');
-			}
-
-			return Promise.all([
-				additionalData === undefined ?
-					undefined :
-					fastSHA512.baseHash(
-						sodiumUtil.from_string(additionalData),
-						shouldClearAdditionalData
-					)
-				,
-				preHashed ? message : fastSHA512.baseHash(message)
-			]);
-		}).then(function (results) {
-			var additionalDataHash	= results[0];
-			var messageToHash		= results[1];
-
-			if (!additionalDataHash) {
-				return messageToHash;
-			}
-
-			var fullMessage	= new Uint8Array(additionalDataHash.length + fastSHA512.bytes);
-			fullMessage.set(additionalDataHash);
-			fullMessage.set(messageToHash, additionalDataHash.length);
-			sodiumUtil.memzero(additionalDataHash);
-
-			if (!preHashed) {
-				sodiumUtil.memzero(messageToHash);
-			}
-
-			return fastSHA512.baseHash(fullMessage, true);
-		}).then(function (hash) {
-			if (shouldClearMessage) {
-				sodiumUtil.memzero(message);
-			}
-
-			if (onlyBinary) {
-				return hash;
-			}
-			else {
-				return {binary: hash, hex: sodiumUtil.to_hex(hash)};
-			}
-		});
-	}); },
+	hash: function (message, onlyBinary) {
+		return fastSHA512.hash(message, onlyBinary);
+	},
 
 	keyPair: function () { return initiated.then(function () {
 		return Promise.all([
@@ -433,23 +379,11 @@ var superSphincs	= {
 		additionalData,
 		preHashed
 	) { return initiated.then(function () {
-		if (
-			additionalData === undefined &&
-			typeof console !== 'undefined' &&
-			typeof console.warn === 'function'
-		) {
-			console.warn(
-				'If possible, `additionalData` should be specified as at least ' +
-				'`new Uint8Array(0)`. See here for clarification: ' +
-				'https://github.com/cyph/supersphincs/blob/8337ad7/supersphincs.js#L307'
-			);
-		}
-
-		return superSphincs.hash(message, false, additionalData, preHashed).then(function (hash) {
+		return hashWithAdditionalData(message, additionalData, preHashed).then(function (hash) {
 			return Promise.all([
 				hash,
 				rsaSign.signDetached(
-					hash.binary,
+					hash,
 					new Uint8Array(
 						privateKey.buffer,
 						privateKey.byteOffset,
@@ -457,7 +391,7 @@ var superSphincs	= {
 					)
 				),
 				sphincs.signDetached(
-					hash.binary,
+					hash,
 					new Uint8Array(
 						privateKey.buffer,
 						privateKey.byteOffset + rsaSign.privateKeyBytes
@@ -474,7 +408,7 @@ var superSphincs	= {
 			signature.set(rsaSignature);
 			signature.set(sphincsSignature, rsaSign.bytes);
 
-			sodiumUtil.memzero(hash.binary);
+			sodiumUtil.memzero(hash);
 			sodiumUtil.memzero(sphincsSignature);
 			sodiumUtil.memzero(rsaSignature);
 
@@ -501,7 +435,13 @@ var superSphincs	= {
 		});
 	},
 
-	open: function (signed, publicKey, additionalData) { return initiated.then(function () {
+	open: function (
+		signed,
+		publicKey,
+		additionalData,
+		knownGoodHash,
+		includeHash
+	) { return initiated.then(function () {
 		var shouldClearSigned	= typeof signed === 'string';
 
 		return Promise.resolve().then(function () {
@@ -522,18 +462,21 @@ var superSphincs	= {
 				signature,
 				message,
 				publicKey,
-				additionalData
+				additionalData,
+				knownGoodHash,
+				includeHash
 			)]);
 		}).then(function (results) {
 			var message	= new Uint8Array(results[0]);
-			var isValid	= results[1];
+			var hash	= includeHash ? results[1].hash : undefined;
+			var isValid	= includeHash ? results[1].valid : results[1];
 
 			if (shouldClearSigned) {
 				sodiumUtil.memzero(signed);
 			}
 
 			if (isValid) {
-				return message;
+				return includeHash ? {hash: hash, message: message} : message;
 			}
 			else {
 				throw new Error('Failed to open SuperSPHINCS signed message.');
@@ -547,11 +490,32 @@ var superSphincs	= {
 		});
 	}); },
 
-	openString: function (signed, publicKey, additionalData) { return initiated.then(function () {
-		return superSphincs.open(signed, publicKey, additionalData).then(function (message) {
+	openString: function (
+		signed,
+		publicKey,
+		additionalData,
+		knownGoodHash,
+		includeHash
+	) { return initiated.then(function () {
+		return superSphincs.open(
+			signed,
+			publicKey,
+			additionalData,
+			knownGoodHash,
+			includeHash
+		).then(function (message) {
+			var hash	= undefined;
+
+			if (includeHash) {
+				hash	= sodiumUtil.to_hex(message.hash);
+				sodiumUtil.memzero(message.hash);
+				message	= message.message;
+			}
+
 			var s	= sodiumUtil.to_string(message);
 			sodiumUtil.memzero(message);
-			return s;
+
+			return includeHash ? {hash: hash, message: s} : s;
 		});
 	}); },
 
@@ -559,42 +523,77 @@ var superSphincs	= {
 		signature,
 		message,
 		publicKey,
-		additionalData
+		additionalData,
+		knownGoodHash,
+		includeHash
 	) { return initiated.then(function () {
 		var shouldClearSignature	= typeof signature === 'string';
 
-		return superSphincs.hash(message, false, additionalData).then(function (hash) {
+		return hashWithAdditionalData(message, additionalData).then(function (hash) {
 			signature	= sodiumUtil.from_base64(signature);
+
+			var shouldClearKnownGoodHash	= false;
+			if (typeof knownGoodHash === 'string' && knownGoodHash.length > 0) {
+				knownGoodHash				= sodiumUtil.from_hex(knownGoodHash);
+				shouldClearKnownGoodHash	= true;
+			}
+			var hashAlreadyVerified	=
+				knownGoodHash instanceof Uint8Array &&
+				knownGoodHash.length > 0 &&
+				sodiumUtil.memcmp(hash, knownGoodHash)
+			;
+			if (shouldClearKnownGoodHash) {
+				sodiumUtil.memzero(knownGoodHash);
+			}
+
+			var publicKeyPromise	=
+				hashAlreadyVerified ?
+					undefined :
+				publicKey instanceof Uint8Array ?
+					Promise.resolve(publicKey) :
+					superSphincs.importKeys(publicKey).then(function (kp) {
+						return kp.publicKey;
+					})
+			;
 
 			return Promise.all([
 				hash,
-				rsaSign.verifyDetached(
-					new Uint8Array(signature.buffer, signature.byteOffset, rsaSign.bytes),
-					hash.binary,
-					new Uint8Array(publicKey.buffer, publicKey.byteOffset, rsaSign.publicKeyBytes)
-				),
-				sphincs.verifyDetached(
-					new Uint8Array(
-						signature.buffer,
-						signature.byteOffset + rsaSign.bytes,
-						sphincsBytes.bytes
-					),
-					hash.binary,
-					new Uint8Array(publicKey.buffer, publicKey.byteOffset + rsaSign.publicKeyBytes)
-				)
+				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
+					return rsaSign.verifyDetached(
+						new Uint8Array(signature.buffer, signature.byteOffset, rsaSign.bytes),
+						hash,
+						new Uint8Array(pk.buffer, pk.byteOffset, rsaSign.publicKeyBytes)
+					);
+				}),
+				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
+					return sphincs.verifyDetached(
+						new Uint8Array(
+							signature.buffer,
+							signature.byteOffset + rsaSign.bytes,
+							sphincsBytes.bytes
+						),
+						hash,
+						new Uint8Array(pk.buffer, pk.byteOffset + rsaSign.publicKeyBytes)
+					);
+				})
 			]);
 		}).then(function (results) {
 			var hash			= results[0];
 			var rsaIsValid		= results[1];
 			var sphincsIsValid	= results[2];
+			var valid			= rsaIsValid && sphincsIsValid;
 
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
 			}
 
-			sodiumUtil.memzero(hash.binary);
+			if (includeHash) {
+				return {hash: hash, valid: valid};
+			}
 
-			return rsaIsValid && sphincsIsValid;
+			sodiumUtil.memzero(hash);
+
+			return valid;
 		}).catch(function (err) {
 			if (shouldClearSignature) {
 				sodiumUtil.memzero(signature);
@@ -719,11 +718,7 @@ var superSphincs	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private) {
-				return null;
-			}
-
-			if (keyData.private.superSphincs) {
+			if (keyData.private && typeof keyData.private.superSphincs === 'string') {
 				var superSphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.superSphincs);
 
 				if (password != null && password.length > 0) {
@@ -733,7 +728,11 @@ var superSphincs	= {
 					return [superSphincsPrivateKey];
 				}
 			}
-			else {
+			else if (
+				keyData.private &&
+				typeof keyData.private.rsa === 'string' &&
+				typeof keyData.private.sphincs === 'string'
+			) {
 				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
 				var sphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.sphincs);
 
