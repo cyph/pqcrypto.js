@@ -1,7 +1,10 @@
 all:
 	make clean
 
+	patch -o dist/rsa-variant.js index.js rsa-variant.js.patch
+	patch -o dist/rsa-variant.d.ts index.d.ts rsa-variant.d.ts.patch
 	npx webpack --config webpack.js
+	npx webpack --config rsa-variant.webpack.js
 
 	echo " \
 		if (typeof module !== 'undefined' && module.exports) { \

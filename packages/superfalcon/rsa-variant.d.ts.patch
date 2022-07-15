@@ -1,0 +1,52 @@
+1c1
+< declare module 'superfalcon' {
+---
+> declare module 'superfalcon/dist/rsa-variant.js' {
+18c18
+< 				ecc: null;
+---
+> 				rsa: null;
+23c23
+< 				ecc: string;
+---
+> 				rsa: string;
+41c41
+< 				ecc: string;
+---
+> 				rsa: string;
+46c46
+< 				ecc: string;
+---
+> 				rsa: string;
+63c63
+< 			public: {ecc: string; falcon: string}|{superFalcon: string}
+---
+> 			public: {rsa: string; falcon: string}|{superFalcon: string}
+75c75
+< 				private: {ecc: string; falcon: string}|{superFalcon: string};
+---
+> 				private: {rsa: string; falcon: string}|{superFalcon: string};
+91c91
+< 				public: {ecc: string; falcon: string}|{superFalcon: string}
+---
+> 				public: {rsa: string; falcon: string}|{superFalcon: string}
+101c101
+< 				public: {ecc: string; falcon: string}|{superFalcon: string}
+---
+> 				public: {rsa: string; falcon: string}|{superFalcon: string}
+115c115
+< 				public: {ecc: string; falcon: string}|{superFalcon: string}
+---
+> 				public: {rsa: string; falcon: string}|{superFalcon: string}
+125c125
+< 				public: {ecc: string; falcon: string}|{superFalcon: string}
+---
+> 				public: {rsa: string; falcon: string}|{superFalcon: string}
+170c170
+< 				public: {ecc: string; falcon: string}|{superFalcon: string}
+---
+> 				public: {rsa: string; falcon: string}|{superFalcon: string}
+181c181
+< 				public: {ecc: string; falcon: string}|{superFalcon: string}
+---
+> 				public: {rsa: string; falcon: string}|{superFalcon: string}

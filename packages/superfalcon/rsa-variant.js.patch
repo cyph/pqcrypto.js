@@ -1,0 +1,225 @@
+11c11
+< var sodium		= require('libsodium-wrappers-sumo');
+---
+> var rsaSign		= require('rsasign');
+282,283c282
+< 	falcon.bytes,
+< 	sodium.ready
+---
+> 	falcon.bytes
+291,293c290,292
+< 	publicKeyBytes	= sodium.crypto_sign_PUBLICKEYBYTES + falconBytes.publicKeyBytes;
+< 	privateKeyBytes	= sodium.crypto_sign_SECRETKEYBYTES + falconBytes.privateKeyBytes;
+< 	bytes			= sodium.crypto_sign_BYTES + falconBytes.bytes;
+---
+> 	publicKeyBytes	= rsaSign.publicKeyBytes + falconBytes.publicKeyBytes;
+> 	privateKeyBytes	= rsaSign.privateKeyBytes + falconBytes.privateKeyBytes;
+> 	bytes			= rsaSign.bytes + falconBytes.bytes;
+310c309
+< 			sodium.crypto_sign_keypair(),
+---
+> 			rsaSign.keyPair(),
+313c312
+< 			var eccKeyPair		= results[0];
+---
+> 			var rsaKeyPair		= results[0];
+322,325c321,324
+< 			keyPair.publicKey.set(eccKeyPair.publicKey);
+< 			keyPair.privateKey.set(eccKeyPair.privateKey);
+< 			keyPair.publicKey.set(falconKeyPair.publicKey, sodium.crypto_sign_PUBLICKEYBYTES);
+< 			keyPair.privateKey.set(falconKeyPair.privateKey, sodium.crypto_sign_SECRETKEYBYTES);
+---
+> 			keyPair.publicKey.set(rsaKeyPair.publicKey);
+> 			keyPair.privateKey.set(rsaKeyPair.privateKey);
+> 			keyPair.publicKey.set(falconKeyPair.publicKey, rsaSign.publicKeyBytes);
+> 			keyPair.privateKey.set(falconKeyPair.privateKey, rsaSign.privateKeyBytes);
+328c327
+< 			sodiumUtil.memzero(eccKeyPair.privateKey);
+---
+> 			sodiumUtil.memzero(rsaKeyPair.privateKey);
+330c329
+< 			sodiumUtil.memzero(eccKeyPair.publicKey);
+---
+> 			sodiumUtil.memzero(rsaKeyPair.publicKey);
+386c385
+< 				sodium.crypto_sign_detached(
+---
+> 				rsaSign.signDetached(
+391c390
+< 						sodium.crypto_sign_SECRETKEYBYTES
+---
+> 						rsaSign.privateKeyBytes
+398c397
+< 						privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
+---
+> 						privateKey.byteOffset + rsaSign.privateKeyBytes
+404c403
+< 			var eccSignature	= results[1];
+---
+> 			var rsaSignature	= results[1];
+409,410c408,409
+< 			signature.set(eccSignature);
+< 			signature.set(falconSignature, sodium.crypto_sign_BYTES);
+---
+> 			signature.set(rsaSignature);
+> 			signature.set(falconSignature, rsaSign.bytes);
+414c413
+< 			sodiumUtil.memzero(eccSignature);
+---
+> 			sodiumUtil.memzero(rsaSignature);
+563,564c562,563
+< 					return sodium.crypto_sign_verify_detached(
+< 						new Uint8Array(signature.buffer, signature.byteOffset, sodium.crypto_sign_BYTES),
+---
+> 					return rsaSign.verifyDetached(
+> 						new Uint8Array(signature.buffer, signature.byteOffset, rsaSign.bytes),
+566c565
+< 						new Uint8Array(pk.buffer, pk.byteOffset, sodium.crypto_sign_PUBLICKEYBYTES)
+---
+> 						new Uint8Array(pk.buffer, pk.byteOffset, rsaSign.publicKeyBytes)
+573c572
+< 							signature.byteOffset + sodium.crypto_sign_BYTES,
+---
+> 							signature.byteOffset + rsaSign.bytes,
+577c576
+< 						new Uint8Array(pk.buffer, pk.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES)
+---
+> 						new Uint8Array(pk.buffer, pk.byteOffset + rsaSign.publicKeyBytes)
+583c582
+< 			var eccIsValid		= results[1];
+---
+> 			var rsaIsValid		= results[1];
+585c584
+< 			var valid			= eccIsValid && falconIsValid;
+---
+> 			var valid			= rsaIsValid && falconIsValid;
+613,615c612,614
+< 			var eccPrivateKey			= new Uint8Array(
+< 				sodium.crypto_sign_PUBLICKEYBYTES +
+< 				sodium.crypto_sign_SECRETKEYBYTES
+---
+> 			var rsaPrivateKey			= new Uint8Array(
+> 				rsaSign.publicKeyBytes +
+> 				rsaSign.privateKeyBytes
+628c627
+< 			eccPrivateKey.set(new Uint8Array(
+---
+> 			rsaPrivateKey.set(new Uint8Array(
+631c630
+< 				sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 				rsaSign.publicKeyBytes
+633c632
+< 			eccPrivateKey.set(
+---
+> 			rsaPrivateKey.set(
+637c636
+< 					sodium.crypto_sign_SECRETKEYBYTES
+---
+> 					rsaSign.privateKeyBytes
+639c638
+< 				sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 				rsaSign.publicKeyBytes
+644c643
+< 				keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 				keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
+649c648
+< 					keyPair.privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
+---
+> 					keyPair.privateKey.byteOffset + rsaSign.privateKeyBytes
+659c658
+< 					encrypt(eccPrivateKey, password),
+---
+> 					encrypt(rsaPrivateKey, password),
+665c664
+< 					sodiumUtil.memzero(eccPrivateKey);
+---
+> 					sodiumUtil.memzero(rsaPrivateKey);
+672c671
+< 					eccPrivateKey,
+---
+> 					rsaPrivateKey,
+680c679
+< 					ecc: null,
+---
+> 					rsa: null,
+686c685
+< 			var eccPrivateKey			= results[0];
+---
+> 			var rsaPrivateKey			= results[0];
+691c690
+< 				ecc: sodiumUtil.to_base64(eccPrivateKey),
+---
+> 				rsa: sodiumUtil.to_base64(rsaPrivateKey),
+698c697
+< 			sodiumUtil.memzero(eccPrivateKey);
+---
+> 			sodiumUtil.memzero(rsaPrivateKey);
+705c704
+< 					ecc: sodiumUtil.to_base64(new Uint8Array(
+---
+> 					rsa: sodiumUtil.to_base64(new Uint8Array(
+708c707
+< 						sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 						rsaSign.publicKeyBytes
+712c711
+< 						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
+734c733
+< 				typeof keyData.private.ecc === 'string' &&
+---
+> 				typeof keyData.private.rsa === 'string' &&
+737c736
+< 				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
+---
+> 				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
+741c740
+< 					return [eccPrivateKey, falconPrivateKey];
+---
+> 					return [rsaPrivateKey, falconPrivateKey];
+746,747c745,746
+< 						eccPrivateKey,
+< 						typeof password === 'string' ? password : password.ecc
+---
+> 						rsaPrivateKey,
+> 						typeof password === 'string' ? password : password.rsa
+784c783
+< 				var eccPrivateKey		= results[0];
+---
+> 				var rsaPrivateKey		= results[0];
+789,791c788,790
+< 						eccPrivateKey.buffer,
+< 						eccPrivateKey.byteOffset,
+< 						sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 						rsaPrivateKey.buffer,
+> 						rsaPrivateKey.byteOffset,
+> 						rsaSign.publicKeyBytes
+800c799
+< 					sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 					rsaSign.publicKeyBytes
+805,806c804,805
+< 						eccPrivateKey.buffer,
+< 						eccPrivateKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 						rsaPrivateKey.buffer,
+> 						rsaPrivateKey.byteOffset + rsaSign.publicKeyBytes
+814c813
+< 					sodium.crypto_sign_SECRETKEYBYTES
+---
+> 					rsaSign.privateKeyBytes
+824,825c823,824
+< 				else if (keyData.public.ecc && keyData.public.falcon) {
+< 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.ecc));
+---
+> 				else if (keyData.public.rsa && keyData.public.falcon) {
+> 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.rsa));
+828c827
+< 						sodium.crypto_sign_PUBLICKEYBYTES
+---
+> 						rsaSign.publicKeyBytes
