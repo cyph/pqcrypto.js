@@ -14,7 +14,9 @@ all:
 			self.superSphincs	= superSphincs; \
 		} \
 	" >> dist/index.js
+
 	npx terser dist/index.js -cmo dist/index.js
+	npx terser dist/old-api.bundle.js -cmo dist/old-api.bundle.js
 
 	chmod -R 777 dist
 
