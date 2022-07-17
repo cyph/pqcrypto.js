@@ -676,9 +676,9 @@ var superFalcon	= {
 		}).then(function (results) {
 			if (!results) {
 				return {
-					rsa: null,
-					falcon: null,
-					superFalcon: null
+					classical: null,
+					combined: null,
+					postQuantum: null
 				};
 			}
 
@@ -687,9 +687,9 @@ var superFalcon	= {
 			var superFalconPrivateKey	= results[2];
 
 			var privateKeyData	= {
-				rsa: sodiumUtil.to_base64(rsaPrivateKey),
-				falcon: sodiumUtil.to_base64(falconPrivateKey),
-				superFalcon: sodiumUtil.to_base64(superFalconPrivateKey)
+				classical: sodiumUtil.to_base64(rsaPrivateKey),
+				combined: sodiumUtil.to_base64(superFalconPrivateKey),
+				postQuantum: sodiumUtil.to_base64(falconPrivateKey)
 			};
 
 			sodiumUtil.memzero(superFalconPrivateKey);
@@ -701,16 +701,16 @@ var superFalcon	= {
 			return {
 				private: privateKeyData,
 				public: {
-					rsa: sodiumUtil.to_base64(new Uint8Array(
+					classical: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset,
 						rsaSign.publicKeyBytes
 					)),
-					falcon: sodiumUtil.to_base64(new Uint8Array(
+					combined: sodiumUtil.to_base64(keyPair.publicKey),
+					postQuantum: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
-					)),
-					superFalcon: sodiumUtil.to_base64(keyPair.publicKey)
+					))
 				}
 			};
 		});
@@ -718,8 +718,8 @@ var superFalcon	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private && typeof keyData.private.superFalcon === 'string') {
-				var superFalconPrivateKey	= sodiumUtil.from_base64(keyData.private.superFalcon);
+			if (keyData.private && typeof keyData.private.combined === 'string') {
+				var superFalconPrivateKey	= sodiumUtil.from_base64(keyData.private.combined);
 
 				if (password != null && password.length > 0) {
 					return Promise.all([decrypt(superFalconPrivateKey, password)]);
@@ -730,11 +730,11 @@ var superFalcon	= {
 			}
 			else if (
 				keyData.private &&
-				typeof keyData.private.rsa === 'string' &&
-				typeof keyData.private.falcon === 'string'
+				typeof keyData.private.classical === 'string' &&
+				typeof keyData.private.postQuantum === 'string'
 			) {
-				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
-				var falconPrivateKey	= sodiumUtil.from_base64(keyData.private.falcon);
+				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.classical);
+				var falconPrivateKey	= sodiumUtil.from_base64(keyData.private.postQuantum);
 
 				if (password == null || password.length < 1) {
 					return [rsaPrivateKey, falconPrivateKey];
@@ -743,11 +743,11 @@ var superFalcon	= {
 				return Promise.all([
 					decrypt(
 						rsaPrivateKey,
-						typeof password === 'string' ? password : password.rsa
+						typeof password === 'string' ? password : password.classical
 					),
 					decrypt(
 						falconPrivateKey,
-						typeof password === 'string' ? password : password.falcon
+						typeof password === 'string' ? password : password.postQuantum
 					)
 				]);
 			}
@@ -817,13 +817,13 @@ var superFalcon	= {
 			return keyPair;
 		}).then(function (keyPair) {
 			if (!keyPair.privateKey) {
-				if (keyData.public.superFalcon) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superFalcon));
+				if (keyData.public.combined) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.combined));
 				}
-				else if (keyData.public.rsa && keyData.public.falcon) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.rsa));
+				else if (keyData.public.classical && keyData.public.postQuantum) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.classical));
 					keyPair.publicKey.set(
-						sodiumUtil.from_base64(keyData.public.falcon),
+						sodiumUtil.from_base64(keyData.public.postQuantum),
 						rsaSign.publicKeyBytes
 					);
 				}

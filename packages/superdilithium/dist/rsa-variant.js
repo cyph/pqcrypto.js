@@ -676,9 +676,9 @@ var superDilithium	= {
 		}).then(function (results) {
 			if (!results) {
 				return {
-					dilithium: null,
-					rsa: null,
-					superDilithium: null
+					classical: null,
+					combined: null,
+					postQuantum: null
 				};
 			}
 
@@ -687,9 +687,9 @@ var superDilithium	= {
 			var superDilithiumPrivateKey	= results[2];
 
 			var privateKeyData	= {
-				dilithium: sodiumUtil.to_base64(dilithiumPrivateKey),
-				rsa: sodiumUtil.to_base64(rsaPrivateKey),
-				superDilithium: sodiumUtil.to_base64(superDilithiumPrivateKey)
+				classical: sodiumUtil.to_base64(rsaPrivateKey),
+				combined: sodiumUtil.to_base64(superDilithiumPrivateKey),
+				postQuantum: sodiumUtil.to_base64(dilithiumPrivateKey)
 			};
 
 			sodiumUtil.memzero(superDilithiumPrivateKey);
@@ -701,16 +701,16 @@ var superDilithium	= {
 			return {
 				private: privateKeyData,
 				public: {
-					dilithium: sodiumUtil.to_base64(new Uint8Array(
-						keyPair.publicKey.buffer,
-						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
-					)),
-					rsa: sodiumUtil.to_base64(new Uint8Array(
+					classical: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset,
 						rsaSign.publicKeyBytes
 					)),
-					superDilithium: sodiumUtil.to_base64(keyPair.publicKey)
+					combined: sodiumUtil.to_base64(keyPair.publicKey),
+					postQuantum: sodiumUtil.to_base64(new Uint8Array(
+						keyPair.publicKey.buffer,
+						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
+					))
 				}
 			};
 		});
@@ -718,8 +718,8 @@ var superDilithium	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private && typeof keyData.private.superDilithium === 'string') {
-				var superDilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.superDilithium);
+			if (keyData.private && typeof keyData.private.combined === 'string') {
+				var superDilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.combined);
 
 				if (password != null && password.length > 0) {
 					return Promise.all([decrypt(superDilithiumPrivateKey, password)]);
@@ -730,11 +730,11 @@ var superDilithium	= {
 			}
 			else if (
 				keyData.private &&
-				typeof keyData.private.rsa === 'string' &&
-				typeof keyData.private.dilithium === 'string'
+				typeof keyData.private.classical === 'string' &&
+				typeof keyData.private.postQuantum === 'string'
 			) {
-				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
-				var dilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.dilithium);
+				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.classical);
+				var dilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.postQuantum);
 
 				if (password == null || password.length < 1) {
 					return [rsaPrivateKey, dilithiumPrivateKey];
@@ -743,11 +743,11 @@ var superDilithium	= {
 				return Promise.all([
 					decrypt(
 						rsaPrivateKey,
-						typeof password === 'string' ? password : password.rsa
+						typeof password === 'string' ? password : password.classical
 					),
 					decrypt(
 						dilithiumPrivateKey,
-						typeof password === 'string' ? password : password.dilithium
+						typeof password === 'string' ? password : password.postQuantum
 					)
 				]);
 			}
@@ -817,13 +817,13 @@ var superDilithium	= {
 			return keyPair;
 		}).then(function (keyPair) {
 			if (!keyPair.privateKey) {
-				if (keyData.public.superDilithium) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superDilithium));
+				if (keyData.public.combined) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.combined));
 				}
-				else if (keyData.public.rsa && keyData.public.dilithium) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.rsa));
+				else if (keyData.public.classical && keyData.public.postQuantum) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.classical));
 					keyPair.publicKey.set(
-						sodiumUtil.from_base64(keyData.public.dilithium),
+						sodiumUtil.from_base64(keyData.public.postQuantum),
 						rsaSign.publicKeyBytes
 					);
 				}
