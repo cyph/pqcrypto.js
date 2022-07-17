@@ -228,18 +228,18 @@
 ---
 > 			return rsaIsValid && sphincsIsValid;
 721c722,726
-< 			if (keyData.private && typeof keyData.private.superSphincs === 'string') {
+< 			if (keyData.private && typeof keyData.private.combined === 'string') {
 ---
 > 			if (keyData.private) {
 > 				return null;
 > 			}
 > 
-> 			if (keyData.private.superSphincs) {
+> 			if (keyData.private.combined) {
 731,735c736
 < 			else if (
 < 				keyData.private &&
-< 				typeof keyData.private.rsa === 'string' &&
-< 				typeof keyData.private.sphincs === 'string'
+< 				typeof keyData.private.classical === 'string' &&
+< 				typeof keyData.private.postQuantum === 'string'
 < 			) {
 ---
 > 			else {

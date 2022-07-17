@@ -677,9 +677,9 @@ var superSphincs	= {
 		}).then(function (results) {
 			if (!results) {
 				return {
-					ecc: null,
-					sphincs: null,
-					superSphincs: null
+					classical: null,
+					combined: null,
+					postQuantum: null
 				};
 			}
 
@@ -688,9 +688,9 @@ var superSphincs	= {
 			var superSphincsPrivateKey	= results[2];
 
 			var privateKeyData	= {
-				ecc: sodiumUtil.to_base64(eccPrivateKey),
-				sphincs: sodiumUtil.to_base64(sphincsPrivateKey),
-				superSphincs: sodiumUtil.to_base64(superSphincsPrivateKey)
+				classical: sodiumUtil.to_base64(eccPrivateKey),
+				combined: sodiumUtil.to_base64(superSphincsPrivateKey),
+				postQuantum: sodiumUtil.to_base64(sphincsPrivateKey)
 			};
 
 			sodiumUtil.memzero(superSphincsPrivateKey);
@@ -702,16 +702,16 @@ var superSphincs	= {
 			return {
 				private: privateKeyData,
 				public: {
-					ecc: sodiumUtil.to_base64(new Uint8Array(
+					classical: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset,
 						sodium.crypto_sign_PUBLICKEYBYTES
 					)),
-					sphincs: sodiumUtil.to_base64(new Uint8Array(
+					combined: sodiumUtil.to_base64(keyPair.publicKey),
+					postQuantum: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
-					)),
-					superSphincs: sodiumUtil.to_base64(keyPair.publicKey)
+					))
 				}
 			};
 		});
@@ -719,8 +719,8 @@ var superSphincs	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private && typeof keyData.private.superSphincs === 'string') {
-				var superSphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.superSphincs);
+			if (keyData.private && typeof keyData.private.combined === 'string') {
+				var superSphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.combined);
 
 				if (password != null && password.length > 0) {
 					return Promise.all([decrypt(superSphincsPrivateKey, password)]);
@@ -731,11 +731,11 @@ var superSphincs	= {
 			}
 			else if (
 				keyData.private &&
-				typeof keyData.private.ecc === 'string' &&
-				typeof keyData.private.sphincs === 'string'
+				typeof keyData.private.classical === 'string' &&
+				typeof keyData.private.postQuantum === 'string'
 			) {
-				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
-				var sphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.sphincs);
+				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.classical);
+				var sphincsPrivateKey	= sodiumUtil.from_base64(keyData.private.postQuantum);
 
 				if (password == null || password.length < 1) {
 					return [eccPrivateKey, sphincsPrivateKey];
@@ -744,11 +744,11 @@ var superSphincs	= {
 				return Promise.all([
 					decrypt(
 						eccPrivateKey,
-						typeof password === 'string' ? password : password.ecc
+						typeof password === 'string' ? password : password.classical
 					),
 					decrypt(
 						sphincsPrivateKey,
-						typeof password === 'string' ? password : password.sphincs
+						typeof password === 'string' ? password : password.postQuantum
 					)
 				]);
 			}
@@ -818,13 +818,13 @@ var superSphincs	= {
 			return keyPair;
 		}).then(function (keyPair) {
 			if (!keyPair.privateKey) {
-				if (keyData.public.superSphincs) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superSphincs));
+				if (keyData.public.combined) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.combined));
 				}
-				else if (keyData.public.ecc && keyData.public.sphincs) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.ecc));
+				else if (keyData.public.classical && keyData.public.postQuantum) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.classical));
 					keyPair.publicKey.set(
-						sodiumUtil.from_base64(keyData.public.sphincs),
+						sodiumUtil.from_base64(keyData.public.postQuantum),
 						sodium.crypto_sign_PUBLICKEYBYTES
 					);
 				}

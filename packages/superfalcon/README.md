@@ -59,14 +59,14 @@ where available or an efficient JavaScript implementation from
 
 	const keyData /*: {
 		private: {
-			ecc: string;
-			falcon: string;
-			superFalcon: string;
+			classical: string;
+			combined: string;
+			postQuantum: string;
 		};
 		public: {
-			ecc: string;
-			falcon: string;
-			superFalcon: string;
+			classical: string;
+			combined: string;
+			postQuantum: string;
 		};
 	} */ =
 		await superFalcon.exportKeys(keyPair, 'secret passphrase')
@@ -77,12 +77,12 @@ where available or an efficient JavaScript implementation from
 	}
 
 	// May now save exported keys to disk (or whatever)
-	localStorage.superFalconPrivateKey = keyData.private.superFalcon;
-	localStorage.falconPrivateKey      = keyData.private.falcon;
-	localStorage.eccPrivateKey         = keyData.private.ecc;
-	localStorage.superFalconPublicKey  = keyData.public.superFalcon;
-	localStorage.falconPublicKey       = keyData.public.falcon;
-	localStorage.eccPublicKey          = keyData.public.ecc;
+	localStorage.superFalconPrivateKey = keyData.private.combined;
+	localStorage.falconPrivateKey      = keyData.private.postQuantum;
+	localStorage.eccPrivateKey         = keyData.private.classical;
+	localStorage.superFalconPublicKey  = keyData.public.combined;
+	localStorage.falconPublicKey       = keyData.public.postQuantum;
+	localStorage.eccPublicKey          = keyData.public.classical;
 
 
 	/* Reconstruct an exported key using either the superFalcon
@@ -90,8 +90,8 @@ where available or an efficient JavaScript implementation from
 
 	const keyPair1 = await superFalcon.importKeys({
 		public: {
-			ecc: localStorage.eccPublicKey,
-			falcon: localStorage.falconPublicKey
+			classical: localStorage.eccPublicKey,
+			postQuantum: localStorage.falconPublicKey
 		}
 	});
 
@@ -102,7 +102,7 @@ where available or an efficient JavaScript implementation from
 	const keyPair2 = await superFalcon.importKeys(
 		{
 			private: {
-				superFalcon: localStorage.superFalconPrivateKey
+				combined: localStorage.superFalconPrivateKey
 			}
 		},
 		'secret passphrase'
@@ -117,21 +117,29 @@ where available or an efficient JavaScript implementation from
 	const keyPair3 = await superFalcon.importKeys(
 		{
 			private: {
-				ecc: (
+				classical: (
 					await superFalcon.exportKeys(
 						await superFalcon.keyPair(),
 						'hunter2'
 					)
-				).private.ecc,
-				falcon: localStorage.falconPrivateKey
+				).private.classical,
+				postQuantum: localStorage.falconPrivateKey
 			}
 		},
 		{
-			ecc: 'hunter2',
-			falcon: 'secret passphrase'
+			classical: 'hunter2',
+			postQuantum: 'secret passphrase'
 		}
 	);
 
 	// May now use keyPair3 as in the above examples
 	console.log('Import #3:');
 	console.log(keyPair3);
+
+## Changelog
+
+Breaking changes in major versions:
+
+2.0.0:
+
+* Standardized method signatures across packages.

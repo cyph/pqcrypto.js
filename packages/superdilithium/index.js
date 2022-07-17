@@ -677,9 +677,9 @@ var superDilithium	= {
 		}).then(function (results) {
 			if (!results) {
 				return {
-					dilithium: null,
-					ecc: null,
-					superDilithium: null
+					classical: null,
+					combined: null,
+					postQuantum: null
 				};
 			}
 
@@ -688,9 +688,9 @@ var superDilithium	= {
 			var superDilithiumPrivateKey	= results[2];
 
 			var privateKeyData	= {
-				dilithium: sodiumUtil.to_base64(dilithiumPrivateKey),
-				ecc: sodiumUtil.to_base64(eccPrivateKey),
-				superDilithium: sodiumUtil.to_base64(superDilithiumPrivateKey)
+				classical: sodiumUtil.to_base64(eccPrivateKey),
+				combined: sodiumUtil.to_base64(superDilithiumPrivateKey),
+				postQuantum: sodiumUtil.to_base64(dilithiumPrivateKey)
 			};
 
 			sodiumUtil.memzero(superDilithiumPrivateKey);
@@ -702,16 +702,16 @@ var superDilithium	= {
 			return {
 				private: privateKeyData,
 				public: {
-					dilithium: sodiumUtil.to_base64(new Uint8Array(
-						keyPair.publicKey.buffer,
-						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
-					)),
-					ecc: sodiumUtil.to_base64(new Uint8Array(
+					classical: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
 						keyPair.publicKey.byteOffset,
 						sodium.crypto_sign_PUBLICKEYBYTES
 					)),
-					superDilithium: sodiumUtil.to_base64(keyPair.publicKey)
+					combined: sodiumUtil.to_base64(keyPair.publicKey),
+					postQuantum: sodiumUtil.to_base64(new Uint8Array(
+						keyPair.publicKey.buffer,
+						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+					))
 				}
 			};
 		});
@@ -719,8 +719,8 @@ var superDilithium	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private && typeof keyData.private.superDilithium === 'string') {
-				var superDilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.superDilithium);
+			if (keyData.private && typeof keyData.private.combined === 'string') {
+				var superDilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.combined);
 
 				if (password != null && password.length > 0) {
 					return Promise.all([decrypt(superDilithiumPrivateKey, password)]);
@@ -731,11 +731,11 @@ var superDilithium	= {
 			}
 			else if (
 				keyData.private &&
-				typeof keyData.private.ecc === 'string' &&
-				typeof keyData.private.dilithium === 'string'
+				typeof keyData.private.classical === 'string' &&
+				typeof keyData.private.postQuantum === 'string'
 			) {
-				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
-				var dilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.dilithium);
+				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.classical);
+				var dilithiumPrivateKey	= sodiumUtil.from_base64(keyData.private.postQuantum);
 
 				if (password == null || password.length < 1) {
 					return [eccPrivateKey, dilithiumPrivateKey];
@@ -744,11 +744,11 @@ var superDilithium	= {
 				return Promise.all([
 					decrypt(
 						eccPrivateKey,
-						typeof password === 'string' ? password : password.ecc
+						typeof password === 'string' ? password : password.classical
 					),
 					decrypt(
 						dilithiumPrivateKey,
-						typeof password === 'string' ? password : password.dilithium
+						typeof password === 'string' ? password : password.postQuantum
 					)
 				]);
 			}
@@ -818,13 +818,13 @@ var superDilithium	= {
 			return keyPair;
 		}).then(function (keyPair) {
 			if (!keyPair.privateKey) {
-				if (keyData.public.superDilithium) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.superDilithium));
+				if (keyData.public.combined) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.combined));
 				}
-				else if (keyData.public.ecc && keyData.public.dilithium) {
-					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.ecc));
+				else if (keyData.public.classical && keyData.public.postQuantum) {
+					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.classical));
 					keyPair.publicKey.set(
-						sodiumUtil.from_base64(keyData.public.dilithium),
+						sodiumUtil.from_base64(keyData.public.postQuantum),
 						sodium.crypto_sign_PUBLICKEYBYTES
 					);
 				}

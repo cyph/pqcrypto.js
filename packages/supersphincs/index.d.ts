@@ -15,14 +15,14 @@ declare module 'supersphincs' {
 		/** Serializes key pair. */
 		exportKeys (keyPair: {publicKey: Uint8Array}) : Promise<{
 			private: {
-				ecc: null;
-				sphincs: null;
-				superSphincs: null;
+				classical: null;
+				combined: null;
+				postQuantum: null;
 			};
 			public: {
-				ecc: string;
-				sphincs: string;
-				superSphincs: string;
+				classical: string;
+				combined: string;
+				postQuantum: string;
 			};
 		}>;
 
@@ -38,14 +38,14 @@ declare module 'supersphincs' {
 			password?: string
 		) : Promise<{
 			private: {
-				ecc: string;
-				sphincs: string;
-				superSphincs: string;
+				classical: string;
+				combined: string;
+				postQuantum: string;
 			};
 			public: {
-				ecc: string;
-				sphincs: string;
-				superSphincs: string;
+				classical: string;
+				combined: string;
+				postQuantum: string;
 			};
 		}>;
 
@@ -60,7 +60,7 @@ declare module 'supersphincs' {
 
 		/** Imports exported keys and creates key pair object. */
 		importKeys (keyData: {
-			public: {ecc: string; sphincs: string}|{superSphincs: string}
+			public: {classical: string; postQuantum: string}|{combined: string}
 		}) : Promise<{
 			privateKey: null;
 			publicKey: Uint8Array;
@@ -72,7 +72,7 @@ declare module 'supersphincs' {
 		 */
 		importKeys (
 			keyData: {
-				private: {ecc: string; sphincs: string}|{superSphincs: string};
+				private: {classical: string; postQuantum: string}|{combined: string};
 				public?: any;
 			},
 			password?: string
@@ -88,7 +88,7 @@ declare module 'supersphincs' {
 		open (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; sphincs: string}|{superSphincs: string}
+				public: {classical: string; postQuantum: string}|{combined: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -98,7 +98,7 @@ declare module 'supersphincs' {
 		open (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; sphincs: string}|{superSphincs: string}
+				public: {classical: string; postQuantum: string}|{combined: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -112,7 +112,7 @@ declare module 'supersphincs' {
 		openString (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; sphincs: string}|{superSphincs: string}
+				public: {classical: string; postQuantum: string}|{combined: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -122,7 +122,7 @@ declare module 'supersphincs' {
 		openString (
 			signed: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; sphincs: string}|{superSphincs: string}
+				public: {classical: string; postQuantum: string}|{combined: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
@@ -167,7 +167,7 @@ declare module 'supersphincs' {
 			signature: Uint8Array|string,
 			message: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; sphincs: string}|{superSphincs: string}
+				public: {classical: string; postQuantum: string}|{combined: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string
@@ -178,7 +178,7 @@ declare module 'supersphincs' {
 			signature: Uint8Array|string,
 			message: Uint8Array|string,
 			publicKey: Uint8Array|{
-				public: {ecc: string; sphincs: string}|{superSphincs: string}
+				public: {classical: string; postQuantum: string}|{combined: string}
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,

@@ -141,52 +141,38 @@
 < 					eccPrivateKey,
 ---
 > 					rsaPrivateKey,
-681c680
-< 					ecc: null,
----
-> 					rsa: null,
 686c685
 < 			var eccPrivateKey				= results[0];
 ---
 > 			var rsaPrivateKey				= results[0];
-692c691
-< 				ecc: sodiumUtil.to_base64(eccPrivateKey),
+691c690
+< 				classical: sodiumUtil.to_base64(eccPrivateKey),
 ---
-> 				rsa: sodiumUtil.to_base64(rsaPrivateKey),
+> 				classical: sodiumUtil.to_base64(rsaPrivateKey),
 698c697
 < 			sodiumUtil.memzero(eccPrivateKey);
 ---
 > 			sodiumUtil.memzero(rsaPrivateKey);
-707c706
-< 						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
----
-> 						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
-709c708
-< 					ecc: sodiumUtil.to_base64(new Uint8Array(
----
-> 					rsa: sodiumUtil.to_base64(new Uint8Array(
-712c711
+708c707
 < 						sodium.crypto_sign_PUBLICKEYBYTES
 ---
 > 						rsaSign.publicKeyBytes
-734c733
-< 				typeof keyData.private.ecc === 'string' &&
+713c712
+< 						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
 ---
-> 				typeof keyData.private.rsa === 'string' &&
+> 						keyPair.publicKey.byteOffset + rsaSign.publicKeyBytes
 737c736
-< 				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.ecc);
+< 				var eccPrivateKey		= sodiumUtil.from_base64(keyData.private.classical);
 ---
-> 				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.rsa);
+> 				var rsaPrivateKey		= sodiumUtil.from_base64(keyData.private.classical);
 741c740
 < 					return [eccPrivateKey, dilithiumPrivateKey];
 ---
 > 					return [rsaPrivateKey, dilithiumPrivateKey];
-746,747c745,746
+746c745
 < 						eccPrivateKey,
-< 						typeof password === 'string' ? password : password.ecc
 ---
 > 						rsaPrivateKey,
-> 						typeof password === 'string' ? password : password.rsa
 784c783
 < 				var eccPrivateKey		= results[0];
 ---
@@ -213,12 +199,6 @@
 < 					sodium.crypto_sign_SECRETKEYBYTES
 ---
 > 					rsaSign.privateKeyBytes
-824,825c823,824
-< 				else if (keyData.public.ecc && keyData.public.dilithium) {
-< 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.ecc));
----
-> 				else if (keyData.public.rsa && keyData.public.dilithium) {
-> 					keyPair.publicKey.set(sodiumUtil.from_base64(keyData.public.rsa));
 828c827
 < 						sodium.crypto_sign_PUBLICKEYBYTES
 ---

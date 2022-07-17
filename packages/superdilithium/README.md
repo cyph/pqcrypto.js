@@ -60,14 +60,14 @@ where available or an efficient JavaScript implementation from
 
 	const keyData /*: {
 		private: {
-			ecc: string;
-			dilithium: string;
-			superDilithium: string;
+			classical: string;
+			combined: string;
+			postQuantum: string;
 		};
 		public: {
-			ecc: string;
-			dilithium: string;
-			superDilithium: string;
+			classical: string;
+			combined: string;
+			postQuantum: string;
 		};
 	} */ =
 		await superDilithium.exportKeys(keyPair, 'secret passphrase')
@@ -78,12 +78,12 @@ where available or an efficient JavaScript implementation from
 	}
 
 	// May now save exported keys to disk (or whatever)
-	localStorage.superDilithiumPrivateKey = keyData.private.superDilithium;
-	localStorage.dilithiumPrivateKey      = keyData.private.dilithium;
-	localStorage.eccPrivateKey            = keyData.private.ecc;
-	localStorage.superDilithiumPublicKey  = keyData.public.superDilithium;
-	localStorage.dilithiumPublicKey       = keyData.public.dilithium;
-	localStorage.eccPublicKey             = keyData.public.ecc;
+	localStorage.superDilithiumPrivateKey = keyData.private.combined;
+	localStorage.dilithiumPrivateKey      = keyData.private.postQuantum;
+	localStorage.eccPrivateKey            = keyData.private.classical;
+	localStorage.superDilithiumPublicKey  = keyData.public.combined;
+	localStorage.dilithiumPublicKey       = keyData.public.postQuantum;
+	localStorage.eccPublicKey             = keyData.public.classical;
 
 
 	/* Reconstruct an exported key using either the superDilithium
@@ -91,8 +91,8 @@ where available or an efficient JavaScript implementation from
 
 	const keyPair1 = await superDilithium.importKeys({
 		public: {
-			ecc: localStorage.eccPublicKey,
-			dilithium: localStorage.dilithiumPublicKey
+			classical: localStorage.eccPublicKey,
+			postQuantum: localStorage.dilithiumPublicKey
 		}
 	});
 
@@ -103,7 +103,7 @@ where available or an efficient JavaScript implementation from
 	const keyPair2 = await superDilithium.importKeys(
 		{
 			private: {
-				superDilithium: localStorage.superDilithiumPrivateKey
+				combined: localStorage.superDilithiumPrivateKey
 			}
 		},
 		'secret passphrase'
@@ -118,21 +118,29 @@ where available or an efficient JavaScript implementation from
 	const keyPair3 = await superDilithium.importKeys(
 		{
 			private: {
-				ecc: (
+				classical: (
 					await superDilithium.exportKeys(
 						await superDilithium.keyPair(),
 						'hunter2'
 					)
-				).private.ecc,
-				dilithium: localStorage.dilithiumPrivateKey
+				).private.classical,
+				postQuantum: localStorage.dilithiumPrivateKey
 			}
 		},
 		{
-			ecc: 'hunter2',
-			dilithium: 'secret passphrase'
+			classical: 'hunter2',
+			postQuantum: 'secret passphrase'
 		}
 	);
 
 	// May now use keyPair3 as in the above examples
 	console.log('Import #3:');
 	console.log(keyPair3);
+
+## Changelog
+
+Breaking changes in major versions:
+
+2.0.0:
+
+* Standardized method signatures across packages.

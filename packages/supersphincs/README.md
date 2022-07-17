@@ -59,14 +59,14 @@ where available or an efficient JavaScript implementation from
 
 	const keyData /*: {
 		private: {
-			ecc: string;
-			sphincs: string;
-			superSphincs: string;
+			classical: string;
+			combined: string;
+			postQuantum: string;
 		};
 		public: {
-			ecc: string;
-			sphincs: string;
-			superSphincs: string;
+			classical: string;
+			combined: string;
+			postQuantum: string;
 		};
 	} */ =
 		await superSphincs.exportKeys(keyPair, 'secret passphrase')
@@ -77,12 +77,12 @@ where available or an efficient JavaScript implementation from
 	}
 
 	// May now save exported keys to disk (or whatever)
-	localStorage.superSphincsPrivateKey = keyData.private.superSphincs;
-	localStorage.sphincsPrivateKey      = keyData.private.sphincs;
-	localStorage.eccPrivateKey          = keyData.private.ecc;
-	localStorage.superSphincsPublicKey  = keyData.public.superSphincs;
-	localStorage.sphincsPublicKey       = keyData.public.sphincs;
-	localStorage.eccPublicKey           = keyData.public.ecc;
+	localStorage.superSphincsPrivateKey = keyData.private.combined;
+	localStorage.sphincsPrivateKey      = keyData.private.postQuantum;
+	localStorage.eccPrivateKey          = keyData.private.classical;
+	localStorage.superSphincsPublicKey  = keyData.public.combined;
+	localStorage.sphincsPublicKey       = keyData.public.postQuantum;
+	localStorage.eccPublicKey           = keyData.public.classical;
 
 
 	/* Reconstruct an exported key using either the superSphincs
@@ -90,8 +90,8 @@ where available or an efficient JavaScript implementation from
 
 	const keyPair1 = await superSphincs.importKeys({
 		public: {
-			ecc: localStorage.eccPublicKey,
-			sphincs: localStorage.sphincsPublicKey
+			classical: localStorage.eccPublicKey,
+			postQuantum: localStorage.sphincsPublicKey
 		}
 	});
 
@@ -102,7 +102,7 @@ where available or an efficient JavaScript implementation from
 	const keyPair2 = await superSphincs.importKeys(
 		{
 			private: {
-				superSphincs: localStorage.superSphincsPrivateKey
+				combined: localStorage.superSphincsPrivateKey
 			}
 		},
 		'secret passphrase'
@@ -117,18 +117,18 @@ where available or an efficient JavaScript implementation from
 	const keyPair3 = await superSphincs.importKeys(
 		{
 			private: {
-				ecc: (
+				classical: (
 					await superSphincs.exportKeys(
 						await superSphincs.keyPair(),
 						'hunter2'
 					)
-				).private.ecc,
-				sphincs: localStorage.sphincsPrivateKey
+				).private.classical,
+				postQuantum: localStorage.sphincsPrivateKey
 			}
 		},
 		{
-			ecc: 'hunter2',
-			sphincs: 'secret passphrase'
+			classical: 'hunter2',
+			postQuantum: 'secret passphrase'
 		}
 	);
 
@@ -139,6 +139,10 @@ where available or an efficient JavaScript implementation from
 ## Changelog
 
 Breaking changes in major versions:
+
+8.0.0:
+
+* Standardized method signatures across packages.
 
 7.0.0:
 
