@@ -230,7 +230,7 @@
 721c722,726
 < 			if (keyData.private && typeof keyData.private.combined === 'string') {
 ---
-> 			if (keyData.private) {
+> 			if (keyData.private == null) {
 > 				return null;
 > 			}
 > 
