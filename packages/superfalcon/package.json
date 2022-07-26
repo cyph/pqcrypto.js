@@ -1,6 +1,6 @@
 {
 	"name": "superfalcon",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Falcon and Ed25519 paired together as a single signing scheme",
 	"main": "index.js",
 	"types": "./index.d.ts",
