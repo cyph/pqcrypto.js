@@ -719,7 +719,7 @@ var superSphincs	= {
 
 	importKeys: function (keyData, password) {
 		return initiated.then(function () {
-			if (keyData.private) {
+			if (keyData.private == null) {
 				return null;
 			}
 
