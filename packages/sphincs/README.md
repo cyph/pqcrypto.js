@@ -14,33 +14,34 @@ it is recommended to use
 
 ## Example Usage
 
+```typescript
 	import {sphincs} from 'sphincs';
 
-	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
+	const keyPair: {privateKey: Uint8Array; publicKey: Uint8Array} =
 		await sphincs.keyPair()
 	;
 
-	const message /*: Uint8Array */ =
+	const message: Uint8Array =
 		new Uint8Array([104, 101, 108, 108, 111, 0]) // "hello"
 	;
 
 	/* Combined signatures */
 
-	const signed /*: Uint8Array */ =
+	const signed: Uint8Array =
 		await sphincs.sign(message, keyPair.privateKey)
 	;
 
-	const verified /*: Uint8Array */ =
+	const verified: Uint8Array =
 		await sphincs.open(signed, keyPair.publicKey) // same as message
 	;
 
 	/* Detached signatures */
 
-	const signature /*: Uint8Array */ =
+	const signature: Uint8Array =
 		await sphincs.signDetached(message, keyPair.privateKey)
 	;
 
-	const isValid /*: boolean */ =
+	const isValid: boolean =
 		await sphincs.verifyDetached(signature, message, keyPair.publicKey) // true
 	;
 
@@ -50,7 +51,7 @@ it is recommended to use
 	console.log(verified);
 	console.log(signature);
 	console.log(isValid);
-
+```
 ## Changelog
 
 Breaking changes in major versions:
