@@ -9,6 +9,8 @@ A simple JavaScript wrapper is provided to make SIDH easy to use in web applicat
 
 The default parameter set is SIKEp751 (roughly 256-bit strength).
 
+[**WARNING:** You probably shouldn't use this.](https://news.ycombinator.com/item?id=32317865)
+
 ## Example Usage
 
 	import {sidh} from 'sidh';

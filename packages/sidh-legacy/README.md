@@ -7,6 +7,8 @@ latest version, which is currently being evaluated for standardization as a NIST
 candidate. An up-to-date implementation of SIDH is provided by
 [sidh](https://github.com/cyph/pqcrypto.js/tree/master/packages/sidh).
 
+[Either way, you probably shouldn't use this.](https://news.ycombinator.com/item?id=32317865)
+
 ---
 
 ## Overview
