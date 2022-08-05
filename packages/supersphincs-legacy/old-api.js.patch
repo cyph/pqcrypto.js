@@ -1,4 +1,4 @@
-303,305c303,359
+305,307c305,361
 < 	hash: function (message, onlyBinary) {
 < 		return fastSHA512.hash(message, onlyBinary);
 < 	},
@@ -60,7 +60,7 @@
 > 			}
 > 		});
 > 	}); },
-382c436,448
+384c438,450
 < 		return hashWithAdditionalData(message, additionalData, preHashed).then(function (hash) {
 ---
 > 		if (
@@ -76,19 +76,19 @@
 > 		}
 > 
 > 		return superSphincs.hash(message, false, additionalData, preHashed).then(function (hash) {
-386c452
+388c454
 < 					hash,
 ---
 > 					hash.binary,
-394c460
+396c462
 < 					hash,
 ---
 > 					hash.binary,
-411c477
+414c480
 < 			sodiumUtil.memzero(hash);
 ---
 > 			sodiumUtil.memzero(hash.binary);
-438,444c504
+441,447c507
 < 	open: function (
 < 		signed,
 < 		publicKey,
@@ -98,22 +98,22 @@
 < 	) { return initiated.then(function () {
 ---
 > 	open: function (signed, publicKey, additionalData) { return initiated.then(function () {
-465,467c525
+469,471c529
 < 				additionalData,
 < 				knownGoodHash,
 < 				includeHash
 ---
 > 				additionalData
-471,472c529
+475,476c533
 < 			var hash	= includeHash ? results[1].hash : undefined;
 < 			var isValid	= includeHash ? results[1].valid : results[1];
 ---
 > 			var isValid	= results[1];
-479c536
+483c540
 < 				return includeHash ? {hash: hash, message: message} : message;
 ---
 > 				return message;
-493,514c550,551
+497,518c554,555
 < 	openString: function (
 < 		signed,
 < 		publicKey,
@@ -139,22 +139,22 @@
 ---
 > 	openString: function (signed, publicKey, additionalData) { return initiated.then(function () {
 > 		return superSphincs.open(signed, publicKey, additionalData).then(function (message) {
-517,518c554
+521,522c558
 < 
 < 			return includeHash ? {hash: hash, message: s} : s;
 ---
 > 			return s;
-526,528c562
+530,532c566
 < 		additionalData,
 < 		knownGoodHash,
 < 		includeHash
 ---
 > 		additionalData
-532c566
+536c570
 < 		return hashWithAdditionalData(message, additionalData).then(function (hash) {
 ---
 > 		return superSphincs.hash(message, false, additionalData).then(function (hash) {
-535,558d568
+539,562d572
 < 			var shouldClearKnownGoodHash	= false;
 < 			if (typeof knownGoodHash === 'string' && knownGoodHash.length > 0) {
 < 				knownGoodHash				= sodiumUtil.from_hex(knownGoodHash);
@@ -179,7 +179,7 @@
 < 					})
 < 			;
 < 
-561,578c571,584
+565,586c575,592
 < 				hashAlreadyVerified || publicKeyPromise.then(function (pk) {
 < 					return rsaSign.verifyDetached(
 < 						new Uint8Array(signature.buffer, signature.byteOffset, rsaSign.bytes),
@@ -195,7 +195,11 @@
 < 							sphincsBytes.bytes
 < 						),
 < 						hash,
-< 						new Uint8Array(pk.buffer, pk.byteOffset + rsaSign.publicKeyBytes)
+< 						new Uint8Array(
+< 							pk.buffer,
+< 							pk.byteOffset + rsaSign.publicKeyBytes,
+< 							sphincsBytes.publicKeyBytes
+< 						)
 < 					);
 < 				})
 ---
@@ -211,11 +215,15 @@
 > 						sphincsBytes.bytes
 > 					),
 > 					hash.binary,
-> 					new Uint8Array(publicKey.buffer, publicKey.byteOffset + rsaSign.publicKeyBytes)
+> 					new Uint8Array(
+> 						publicKey.buffer,
+> 						publicKey.byteOffset + rsaSign.publicKeyBytes,
+> 						sphincsBytes.publicKeyBytes
+> 					)
 > 				)
-584d589
+592d597
 < 			var valid			= rsaIsValid && sphincsIsValid;
-590,594c595
+598,602c603
 < 			if (includeHash) {
 < 				return {hash: hash, valid: valid};
 < 			}
@@ -223,11 +231,11 @@
 < 			sodiumUtil.memzero(hash);
 ---
 > 			sodiumUtil.memzero(hash.binary);
-596c597
+604c605
 < 			return valid;
 ---
 > 			return rsaIsValid && sphincsIsValid;
-721c722,726
+732c733,737
 < 			if (keyData.private && typeof keyData.private.combined === 'string') {
 ---
 > 			if (keyData.private == null) {
@@ -235,7 +243,7 @@
 > 			}
 > 
 > 			if (keyData.private.combined) {
-731,735c736
+742,746c747
 < 			else if (
 < 				keyData.private &&
 < 				typeof keyData.private.classical === 'string' &&

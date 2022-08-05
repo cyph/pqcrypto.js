@@ -209,7 +209,8 @@ function decrypt (cyphertext, password) {
 
 			var authTag		= new Uint8Array(
 				cyphertext.buffer,
-				cyphertext.byteOffset + cyphertext.length - aes.tagBytes
+				cyphertext.byteOffset + cyphertext.length - aes.tagBytes,
+				aes.tagBytes
 			);
 
 			var decipher	= nodeCrypto.createDecipheriv(
@@ -231,7 +232,8 @@ function decrypt (cyphertext, password) {
 		else {
 			var encrypted	= new Uint8Array(
 				cyphertext.buffer,
-				cyphertext.byteOffset + aes.ivBytes + aes.keyDerivation.saltBytes
+				cyphertext.byteOffset + aes.ivBytes + aes.keyDerivation.saltBytes,
+				cyphertext.length - aes.ivBytes - aes.keyDerivation.saltBytes
 			);
 
 			decrypted	= crypto.subtle.decrypt(
@@ -395,7 +397,8 @@ var superFalcon	= {
 					hash,
 					new Uint8Array(
 						privateKey.buffer,
-						privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
+						privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES,
+						falconBytes.privateKeyBytes
 					)
 				)
 			]);
@@ -456,7 +459,8 @@ var superFalcon	= {
 
 			var message		= new Uint8Array(
 				signed.buffer,
-				signed.byteOffset + bytes
+				signed.byteOffset + bytes,
+				signed.length - bytes
 			);
 
 			return Promise.all([message, superFalcon.verifyDetached(
@@ -574,7 +578,11 @@ var superFalcon	= {
 							falconBytes.bytes
 						),
 						hash,
-						new Uint8Array(pk.buffer, pk.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES)
+						new Uint8Array(
+							pk.buffer,
+							pk.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES,
+							falconBytes.publicKeyBytes
+						)
 					);
 				})
 			]);
@@ -641,12 +649,14 @@ var superFalcon	= {
 
 			falconPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
-				keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+				keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES,
+				falconBytes.publicKeyBytes
 			));
 			falconPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
-					keyPair.privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
+					keyPair.privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES,
+					falconBytes.privateKeyBytes
 				),
 				falconBytes.publicKeyBytes
 			);
@@ -710,7 +720,8 @@ var superFalcon	= {
 					combined: sodiumUtil.to_base64(keyPair.publicKey),
 					postQuantum: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
-						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES,
+						falconBytes.publicKeyBytes
 					))
 				}
 			};
@@ -777,7 +788,8 @@ var superFalcon	= {
 
 				keyPair.privateKey.set(new Uint8Array(
 					superFalconPrivateKey.buffer,
-					superFalconPrivateKey.byteOffset + publicKeyBytes
+					superFalconPrivateKey.byteOffset + publicKeyBytes,
+					privateKeyBytes
 				));
 			}
 			else {
@@ -803,13 +815,15 @@ var superFalcon	= {
 				keyPair.privateKey.set(
 					new Uint8Array(
 						eccPrivateKey.buffer,
-						eccPrivateKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+						eccPrivateKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES,
+						sodium.crypto_sign_SECRETKEYBYTES
 					)
 				);
 				keyPair.privateKey.set(
 					new Uint8Array(
 						falconPrivateKey.buffer,
-						falconPrivateKey.byteOffset + falconBytes.publicKeyBytes
+						falconPrivateKey.byteOffset + falconBytes.publicKeyBytes,
+						falconBytes.privateKeyBytes
 					),
 					sodium.crypto_sign_SECRETKEYBYTES
 				);

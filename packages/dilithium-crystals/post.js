@@ -99,7 +99,11 @@ var dilithium	= {
 
 	open: function (signed, publicKey) { return initiated.then(function () {
 		var signature	= new Uint8Array(signed.buffer, signed.byteOffset, bytes);
-		var message		= new Uint8Array(signed.buffer, signed.byteOffset + bytes);
+		var message		= new Uint8Array(
+			signed.buffer,
+			signed.byteOffset + bytes,
+			signed.length - bytes
+		);
 
 		return dilithium.verifyDetached(signature, message, publicKey).then(function (isValid) {
 			if (isValid) {

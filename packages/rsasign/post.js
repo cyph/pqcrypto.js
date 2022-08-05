@@ -234,7 +234,11 @@ var rsaSign	= {
 	open: function (signed, publicKey) {
 		return Promise.resolve().then(function () {
 			var signature	= new Uint8Array(signed.buffer, signed.byteOffset, rsaSign.bytes);
-			var message		= new Uint8Array(signed.buffer, signed.byteOffset + rsaSign.bytes);
+			var message		= new Uint8Array(
+				signed.buffer,
+				signed.byteOffset + rsaSign.bytes,
+				signed.length - rsaSign.bytes
+			);
 
 			return rsaSign.verifyDetached(signature, message, publicKey).then(function (isValid) {
 				if (isValid) {

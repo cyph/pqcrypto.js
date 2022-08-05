@@ -209,7 +209,8 @@ function decrypt (cyphertext, password) {
 
 			var authTag		= new Uint8Array(
 				cyphertext.buffer,
-				cyphertext.byteOffset + cyphertext.length - aes.tagBytes
+				cyphertext.byteOffset + cyphertext.length - aes.tagBytes,
+				aes.tagBytes
 			);
 
 			var decipher	= nodeCrypto.createDecipheriv(
@@ -231,7 +232,8 @@ function decrypt (cyphertext, password) {
 		else {
 			var encrypted	= new Uint8Array(
 				cyphertext.buffer,
-				cyphertext.byteOffset + aes.ivBytes + aes.keyDerivation.saltBytes
+				cyphertext.byteOffset + aes.ivBytes + aes.keyDerivation.saltBytes,
+				cyphertext.length - aes.ivBytes - aes.keyDerivation.saltBytes
 			);
 
 			decrypted	= crypto.subtle.decrypt(
@@ -395,7 +397,8 @@ var superDilithium	= {
 					hash,
 					new Uint8Array(
 						privateKey.buffer,
-						privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
+						privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES,
+						dilithiumBytes.privateKeyBytes
 					)
 				)
 			]);
@@ -456,7 +459,8 @@ var superDilithium	= {
 
 			var message		= new Uint8Array(
 				signed.buffer,
-				signed.byteOffset + bytes
+				signed.byteOffset + bytes,
+				signed.length - bytes
 			);
 
 			return Promise.all([message, superDilithium.verifyDetached(
@@ -574,7 +578,11 @@ var superDilithium	= {
 							dilithiumBytes.bytes
 						),
 						hash,
-						new Uint8Array(pk.buffer, pk.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES)
+						new Uint8Array(
+							pk.buffer,
+							pk.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES,
+							dilithiumBytes.publicKeyBytes
+						)
 					);
 				})
 			]);
@@ -610,12 +618,12 @@ var superDilithium	= {
 				return null;
 			}
 
-			var eccPrivateKey			= new Uint8Array(
+			var eccPrivateKey				= new Uint8Array(
 				sodium.crypto_sign_PUBLICKEYBYTES +
 				sodium.crypto_sign_SECRETKEYBYTES
 			);
 
-			var dilithiumPrivateKey		= new Uint8Array(
+			var dilithiumPrivateKey			= new Uint8Array(
 				dilithiumBytes.publicKeyBytes +
 				dilithiumBytes.privateKeyBytes
 			);
@@ -641,12 +649,14 @@ var superDilithium	= {
 
 			dilithiumPrivateKey.set(new Uint8Array(
 				keyPair.publicKey.buffer,
-				keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+				keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES,
+				dilithiumBytes.publicKeyBytes
 			));
 			dilithiumPrivateKey.set(
 				new Uint8Array(
 					keyPair.privateKey.buffer,
-					keyPair.privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES
+					keyPair.privateKey.byteOffset + sodium.crypto_sign_SECRETKEYBYTES,
+					dilithiumBytes.privateKeyBytes
 				),
 				dilithiumBytes.publicKeyBytes
 			);
@@ -710,7 +720,8 @@ var superDilithium	= {
 					combined: sodiumUtil.to_base64(keyPair.publicKey),
 					postQuantum: sodiumUtil.to_base64(new Uint8Array(
 						keyPair.publicKey.buffer,
-						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+						keyPair.publicKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES,
+						dilithiumBytes.publicKeyBytes
 					))
 				}
 			};
@@ -777,7 +788,8 @@ var superDilithium	= {
 
 				keyPair.privateKey.set(new Uint8Array(
 					superDilithiumPrivateKey.buffer,
-					superDilithiumPrivateKey.byteOffset + publicKeyBytes
+					superDilithiumPrivateKey.byteOffset + publicKeyBytes,
+					privateKeyBytes
 				));
 			}
 			else {
@@ -803,13 +815,15 @@ var superDilithium	= {
 				keyPair.privateKey.set(
 					new Uint8Array(
 						eccPrivateKey.buffer,
-						eccPrivateKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES
+						eccPrivateKey.byteOffset + sodium.crypto_sign_PUBLICKEYBYTES,
+						sodium.crypto_sign_SECRETKEYBYTES
 					)
 				);
 				keyPair.privateKey.set(
 					new Uint8Array(
 						dilithiumPrivateKey.buffer,
-						dilithiumPrivateKey.byteOffset + dilithiumBytes.publicKeyBytes
+						dilithiumPrivateKey.byteOffset + dilithiumBytes.publicKeyBytes,
+						dilithiumBytes.privateKeyBytes
 					),
 					sodium.crypto_sign_SECRETKEYBYTES
 				);
