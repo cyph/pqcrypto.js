@@ -1,6 +1,6 @@
 {
 	"name": "sidh-legacy",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "JavaScript wrapper for a WebAssembly build of SIDH",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",

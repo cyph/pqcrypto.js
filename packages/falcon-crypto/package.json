@@ -1,6 +1,6 @@
 {
 	"name": "falcon-crypto",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "JavaScript wrapper for a WebAssembly build of Falcon",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",
