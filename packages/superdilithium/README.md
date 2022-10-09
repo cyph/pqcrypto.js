@@ -13,7 +13,7 @@ where available or an efficient JavaScript implementation from
 [TweetNaCl.js](https://github.com/dchest/tweetnacl-js) otherwise.
 
 ## Example Usage
-	```js
+```js
 	import {superDilithium} from 'superdilithium';
 
 	const keyPair /*: {privateKey: Uint8Array; publicKey: Uint8Array} */ =
@@ -136,7 +136,7 @@ where available or an efficient JavaScript implementation from
 	// May now use keyPair3 as in the above examples
 	console.log('Import #3:');
 	console.log(keyPair3);
-	```
+```
 ## Changelog
 
 Breaking changes in major versions:
