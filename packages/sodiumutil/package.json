@@ -1,6 +1,6 @@
 {
 	"name": "sodiumutil",
-	"version": "4.0.1",
+	"version": "4.0.2",
 	"description": "Pulls out some useful functions from libsodium.js",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",
