@@ -24,3 +24,6 @@
 [submodule "lib/legacy/sidh"]
 	path = lib/legacy/sidh
 	url = https://github.com/Microsoft/PQCrypto-SIDH
+[submodule "lib/legacy/pqclean-round3"]
+	path = lib/legacy/pqclean-round3
+	url = https://github.com/PQClean/PQClean
