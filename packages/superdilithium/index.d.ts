@@ -102,7 +102,7 @@ declare module 'superdilithium' {
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
-			includeHash: true
+			includeHash?: boolean
 		) : Promise<{
 			hash: Uint8Array;
 			message: Uint8Array;
@@ -126,7 +126,7 @@ declare module 'superdilithium' {
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
-			includeHash: true
+			includeHash?: boolean
 		) : Promise<{
 			hash: string;
 			message: Uint8Array;
@@ -182,7 +182,7 @@ declare module 'superdilithium' {
 			},
 			additionalData?: Uint8Array|string,
 			knownGoodHash?: Uint8Array|string,
-			includeHash: true
+			includeHash?: boolean
 		) : Promise<{
 			hash: Uint8Array;
 			valid: boolean;
