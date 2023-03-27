@@ -1,0 +1,33 @@
+{
+	"name": "pem-jwk-norecompute",
+	"version": "1.1.1",
+	"description": "pem-jwk fork optimized for browser module bundling",
+	"main": "index.js",
+	"bin": "./bin/pem-jwk.js",
+	"scripts": {
+		"test": "tap test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/cyph/pqcrypto.js.git"
+	},
+	"keywords": [
+		"cryptography",
+		"pem",
+		"jwk"
+	],
+	"author": "Cyph, Inc. <pqcrypto.js@cyph.com> (https://github.com/cyph)",
+	"license": "MPL-2.0",
+	"bugs": {
+		"url": "https://github.com/cyph/pqcrypto.js/issues"
+	},
+	"dependencies": {
+		"asn1.js": "^4"
+	},
+	"devDependencies": {
+		"tap": "0.7.1"
+	},
+	"directories": {
+		"test": "test"
+	}
+}
