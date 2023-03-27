@@ -22,7 +22,7 @@
 		"url": "https://github.com/cyph/pqcrypto.js/issues"
 	},
 	"dependencies": {
-		"asn1.js": "^4"
+		"asn1.js": "^5"
 	},
 	"devDependencies": {
 		"tap": "0.7.1"
