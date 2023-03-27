@@ -30,6 +30,7 @@ updatelibs:
 	grep 'path =' .gitmodules | \
 		awk '{print $$3}' | \
 		grep -vP '^lib/legacy/' | \
+		grep -vP '^lib/pqclean$$' | \
 		xargs git submodule update --remote
 
 	for d in $$(ls packages/*/package.json | sed 's|/package.json||g') ; do \
