@@ -27,7 +27,10 @@ test:
 	done
 
 updatelibs:
-	grep 'path =' .gitmodules | awk '{print $$3}' | grep -vP '^lib/legacy/' | xargs git submodule update --remote
+	grep 'path =' .gitmodules | \
+		awk '{print $$3}' | \
+		grep -vP '^lib/legacy/' | \
+		xargs git submodule update --remote
 
 	for d in $$(ls packages/*/package.json | sed 's|/package.json||g') ; do \
 		cd $${d}; \
