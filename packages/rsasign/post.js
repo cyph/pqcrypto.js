@@ -99,17 +99,16 @@ function exportKeyPair (keyPair) {
 }
 
 
-var algorithm	= isNode ?
-	'RSA-SHA256' :
-	{
-		name: 'RSASSA-PKCS1-v1_5',
-		hash: {
-			name: 'SHA-256'
-		},
-		modulusLength: 2048,
-		publicExponent: new Uint8Array([0x01, 0x00, 0x01])
-	}
-;
+var algorithmConfig	= {
+	name: 'RSASSA-PKCS1-v1_5',
+	hash: {
+		name: 'SHA-256'
+	},
+	modulusLength: 2048,
+	publicExponent: new Uint8Array([0x01, 0x00, 0x01])
+};
+
+var algorithm	= isNode ? 'RSA-SHA256' : algorithmConfig;
 
 
 var rsaSign	= {
@@ -120,12 +119,11 @@ var rsaSign	= {
 	keyPair: function () {
 		return Promise.resolve().then(function () {
 			if (isNode) {
-				var keyPair	= generateRSAKeypair();
-
-				return {
-					publicKey: keyPair.public,
-					privateKey: keyPair.private
-				};
+				return generateNodeKeyPair('rsa', {
+					modulusLength: algorithmConfig.modulusLength,
+					privateKeyEncoding: {format: 'pem', type: 'pkcs1'},
+					publicKeyEncoding: {format: 'pem', type: 'spki'}
+				});
 			}
 			else {
 				return crypto.subtle.generateKey(

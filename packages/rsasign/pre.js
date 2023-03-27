@@ -12,11 +12,11 @@ var pemJwk		= require('pem-jwk-norecompute');
 var sodiumUtil	= require('sodiumutil');
 
 
-var initiated, nodeCrypto, generateRSAKeypair;
+var initiated, nodeCrypto, generateNodeKeyPair;
 if (isNode) {
 	initiated			= Promise.resolve();
 	nodeCrypto			= require('crypto');
-	generateRSAKeypair	= require('generate-rsa-keypair');
+	generateNodeKeyPair	= require('util').promisify(nodeCrypto.generateKeyPair);
 }
 else {
 	initiated	= new Promise(function (resolve, reject) {
