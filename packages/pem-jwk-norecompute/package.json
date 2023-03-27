@@ -4,9 +4,6 @@
 	"description": "pem-jwk fork optimized for browser module bundling",
 	"main": "index.js",
 	"bin": "./bin/pem-jwk.js",
-	"scripts": {
-		"test": "tap test"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/cyph/pqcrypto.js.git"
@@ -23,11 +20,5 @@
 	},
 	"dependencies": {
 		"asn1.js": "^5"
-	},
-	"devDependencies": {
-		"tap": "0.7.1"
-	},
-	"directories": {
-		"test": "test"
 	}
 }
