@@ -15,7 +15,7 @@ clean:
 publish:
 	for d in $$(ls packages/*/package.json | sed 's|/package.json||g') ; do \
 		cd $${d}; \
-		npm publish || exit 1; \
+		npm publish; \
 		cd -; \
 	done
 
