@@ -1,9 +1,9 @@
 var Module	= {};
 
 var isNode	=
+	typeof global === 'object' &&
 	typeof process === 'object' &&
 	typeof require === 'function' &&
-	typeof window !== 'object' &&
 	typeof importScripts !== 'function'
 ;
 
