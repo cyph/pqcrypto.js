@@ -1,6 +1,6 @@
 {
 	"name": "mceliece",
-	"version": "5.0.2",
+	"version": "5.0.3",
 	"description": "JavaScript wrapper for a WebAssembly build of McEliece",
 	"main": "dist/index.js",
 	"types": "./index.d.ts",

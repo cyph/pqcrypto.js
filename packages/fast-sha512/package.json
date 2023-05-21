@@ -1,6 +1,6 @@
 {
 	"name": "fast-sha512",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Native SHA-512 with an efficient fallback implementation from TweetNaCl.js",
 	"main": "index.js",
 	"types": "./index.d.ts",
