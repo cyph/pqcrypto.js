@@ -1,9 +1,8 @@
-var isNode	=
-	typeof global === 'object' &&
-	typeof process === 'object' &&
-	typeof require === 'function' &&
-	typeof importScripts !== 'function'
-;
+var isNode	= false;
+try {
+	isNode	= eval('global').process.release.name === 'node';
+}
+catch (_) {}
 
 
 var fastSHA512	= require('fast-sha512');
