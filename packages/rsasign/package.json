@@ -1,6 +1,6 @@
 {
 	"name": "rsasign",
-	"version": "1.4.1",
+	"version": "1.4.2",
 	"description": "JavaScript wrapper for native RSASSA-PKCS1-v1_5",
 	"main": "dist/index.module.js",
 	"types": "./index.d.ts",
