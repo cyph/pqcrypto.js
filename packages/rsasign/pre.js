@@ -15,8 +15,8 @@ var sodiumUtil	= require('sodiumutil');
 var initiated, nodeCrypto, generateNodeKeyPair;
 if (isNode) {
 	initiated			= Promise.resolve();
-	nodeCrypto			= require('crypto');
-	generateNodeKeyPair	= require('util').promisify(nodeCrypto.generateKeyPair);
+	nodeCrypto			= eval('require')('crypto');
+	generateNodeKeyPair	= eval('require')('util').promisify(nodeCrypto.generateKeyPair);
 }
 else {
 	initiated	= new Promise(function (resolve, reject) {

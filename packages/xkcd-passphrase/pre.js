@@ -11,7 +11,7 @@ var isNode	=
 
 var nodeCrypto;
 if (isNode) {
-	nodeCrypto	= require('crypto');
+	nodeCrypto	= eval('require')('crypto');
 }
 
 
